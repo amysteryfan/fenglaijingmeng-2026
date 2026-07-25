@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>风来水榭 - 游客留言板</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Microsoft YaHei", SimSun, sans-serif;
+        }
+        body {
+            background-color: #28b8a8;
+            padding: 20px 15px;
+        }
+        .top-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #ffffff;
+            padding: 14px 22px;
+            border-radius: 6px;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        .header-title-box h1 {
+            font-size: 24px;
+            color: #007c70;
+        }
+        .header-title-box p {
+            font-size: 14px;
+            color: #555;
+            margin-top: 4px;
+        }
+        .back-btn {
+            background: #008c7e;
+            color: #fff;
+            border: none;
+            padding: 9px 20px;
+            border-radius: 4px;
+            font-size: 15px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .back-btn:hover {
+            background: #006e63;
+        }
+        .slogan-text {
+            text-align: center;
+            font-size: 20px;
+            color: #ffffff;
+            font-weight: 500;
+            margin-bottom: 22px;
+            letter-spacing: 2px;
+        }
+        .message-container {
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+        .message-card {
+            background: #fff;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 18px;
+            box-shadow: 0 1px 5px rgba(0,0,0,0.1);
+        }
+        .post-head {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+        }
+        .post-user-name {
+            font-size: 16px;
+            font-weight: 600;
+            color: #0058b8;
+            cursor: pointer;
+        }
+        .post-user-name:hover {
+            text-decoration: underline;
+        }
+        .post-meta {
+            font-size: 13px;
+            color: #777;
+        }
+        .post-content {
+            font-size: 15px;
+            line-height: 1.7;
+            color: #222;
+            margin-bottom: 16px;
+        }
+        .reply-block {
+            background: #f3f8f7;
+            border-left: 4px solid #28b8a8;
+            padding: 14px 16px;
+            margin-left: 12px;
+        }
+        .reply-head {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }
+        .reply-user {
+            font-size: 15px;
+            font-weight: 600;
+            color: #007c70;
+            cursor: pointer;
+        }
+        .reply-user:hover {
+            text-decoration: underline;
+        }
+        .reply-time {
+            font-size: 12px;
+            color: #666;
+        }
+        .reply-text {
+            font-size: 14px;
+            line-height: 1.6;
+            color: #333;
+        }
+        .footer-tips {
+            text-align: center;
+            margin-top: 30px;
+            font-size: 13px;
+            color: #fff;
+        }
+        /* 移动端适配 */
+        @media (max-width:768px) {
+            .top-header {
+                flex-direction: column;
+                gap: 12px;
+                text-align: center;
+            }
+            .slogan-text {
+                font-size: 17px;
+            }
+            .post-head {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 6px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="top-header">
+        <div class="header-title-box">
+            <h1>风来水榭 留言板</h1>
+            <p>游轮旅客意见交流平台</p>
+        </div>
+        <button class="back-btn" onclick="location.href='boat_guest.html'">返回首页</button>
+    </div>
+
+    <div class="slogan-text">请留下您的宝贵意见</div>
+
+    <div class="message-container">
+        <!-- 第一条帖子 -->
+        <div class="message-card">
+            <div class="post-head">
+                <span class="post-user-name" onclick="otherUserTip()">用户729415</span>
+                <span class="post-meta">2026-07-09 | 来自：艾希皇后号</span>
+            </div>
+            <div class="post-content">
+                谁的白纱衣不收好，大晚上的飘到我这里来，晦气死了
+            </div>
+        </div>
+
+        <!-- 第二条帖子+回复 -->
+        <div class="message-card">
+            <div class="post-head">
+                <span class="post-user-name" onclick="otherUserTip()">用户103684</span>
+                <span class="post-meta">2026-06-15 | 来自：石斛兰号</span>
+            </div>
+            <div class="post-content">
+                给302拿一条毛毯
+            </div>
+            <div class="reply-block">
+                <div class="reply-head">
+                    <span class="reply-user" onclick="location.href='boat_admin_login.html'">管理系统平台</span>
+                    <span class="reply-time">2026-06-15</span>
+                </div>
+                <div class="reply-text">
+                    已向石斛兰号的工作人员转达您的需求。您下次可选择‘呼叫服务’，以便我们更加及时为您送上服务。
+                </div>
+            </div>
+        </div>
+
+        <!-- 第三条帖子+回复 -->
+        <div class="message-card">
+            <div class="post-head">
+                <span class="post-user-name" onclick="otherUserTip()">用户581209</span>
+                <span class="post-meta">2026-06-02 | 来自：郁金香号</span>
+            </div>
+            <div class="post-content">
+                儿童水上乐园的开放时间能不能延长一些？
+            </div>
+            <div class="reply-block">
+                <div class="reply-head">
+                    <span class="reply-user" onclick="location.href='boat_admin_login.html'">管理系统平台</span>
+                    <span class="reply-time">2026-06-02</span>
+                </div>
+                <div class="reply-text">
+                    已向郁金香号的工作人员转达您的需求。儿童水上乐园延长开放一小时。
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer-tips">
+        风来水榭游轮综合服务系统 ©2026
+    </div>
+
+    <script>
+        // 点击普通用户ID弹窗提示，不跳转
+        function otherUserTip() {
+            alert("该用户仅为游客账号，暂无权限访问其主页");
+        }
+    </script>
+</body>
+</html>

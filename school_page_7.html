@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>明德私立学校学生行为规范及管理制度（2019年修订版） - 明德私立学校</title>
+
+    <!-- 引入全局样式和脚本 -->
+    <link rel="stylesheet" href="css/style.css">
+    <script src="js/main.js" defer></script>
+
+    <style>
+        /* --- 局部页面专属样式 --- */
+        
+        html, body {
+            height: auto;       /* 允许高度随内容拉伸 */
+            overflow-y: auto;   /* 强制启用纵向滚动 */
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Microsoft YaHei", "PingFang SC", sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        a { text-decoration: none; color: inherit; }
+        ul, ol { list-style: none; }
+
+        /* --- 顶部通栏 --- */
+        .top-bar {
+            background-color: #fff;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 40px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            z-index: 100;
+            width: 100%;
+            box-sizing: border-box;
+            flex-shrink: 0;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: #8B0000; /* 校徽红 */
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo img {
+            height: 40px;
+            margin-right: 12px;
+        }
+
+        .logo span {
+            margin-left: 10px;
+            font-size: 14px;
+            color: #666;
+            font-weight: normal;
+            letter-spacing: 1px;
+        }
+
+        /* 返回首页按钮 */
+        .back-home-btn {
+            background-color: #8B0000;
+            color: #fff;
+            padding: 8px 18px;
+            border-radius: 20px;
+            font-size: 14px;
+            transition: background 0.3s, transform 0.2s;
+            font-weight: bold;
+            box-shadow: 0 2px 4px rgba(139, 0, 0, 0.3);
+        }
+
+        .back-home-btn:hover {
+            background-color: #6d0000;
+            transform: translateY(-1px);
+        }
+
+        /* --- 文章容器 --- */
+        .article-container {
+            flex: 1 0 auto;
+            max-width: 880px;
+            margin: 40px auto;
+            padding: 0 20px;
+            width: 100%;
+        }
+
+        .article-card {
+            background-color: #fff;
+            border-radius: 8px;
+            padding: 50px 55px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+            border-top: 4px solid #8B0000;
+        }
+
+        /* 文章头部 */
+        .article-header {
+            text-align: center;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 25px;
+            margin-bottom: 30px;
+        }
+
+        .article-header h1 {
+            font-size: 30px;
+            color: #8B0000; /* 主标题深红 */
+            font-weight: bold; /* 主标题加粗 */
+            margin-bottom: 15px;
+            letter-spacing: 2px;
+        }
+
+        .article-meta {
+            color: #999;
+            font-size: 14px;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        /* 文章正文 */
+        .article-content {
+            font-size: 16px;
+            line-height: 1.8;
+            color: #444;
+        }
+
+        .article-content p {
+            margin-bottom: 12px;
+            text-indent: 2em; /* 首行缩进 */
+            font-weight: normal;
+        }
+
+        /* 对于作息时间表这种不使用首行缩进的清单段落，使用专用类 */
+        .article-content p.no-indent {
+            text-indent: 0;
+        }
+
+        /* 深红色加粗的子标题 */
+        .article-content p.sub-title-red {
+            color: #8B0000;
+            font-weight: bold;
+            text-indent: 0; /* 子标题不需要首行缩进 */
+            margin-top: 25px;
+            margin-bottom: 8px;
+        }
+
+        .article-footer {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+            text-align: right;
+            font-size: 15px;
+            color: #666;
+            line-height: 1.6;
+        }
+
+        /* --- 响应式设计 --- */
+        @media (max-width: 768px) {
+            .top-bar {
+                padding: 0 15px;
+                flex-wrap: wrap;
+                height: auto;
+                padding-top: 10px;
+                padding-bottom: 10px;
+            }
+            .logo img { height: 30px; }
+            .logo { font-size: 18px; }
+            .logo span { font-size: 12px; margin-left: 5px; }
+            .back-home-btn { padding: 6px 12px; font-size: 13px; }
+
+            .article-card {
+                padding: 30px 20px;
+            }
+            .article-header h1 {
+                font-size: 24px;
+            }
+            .article-content {
+                font-size: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 顶部通栏 (与官网保持统一) -->
+    <header class="top-bar">
+        <div class="logo">
+            <!-- 确保 images 下有 school_logo.png -->
+            <img src="images/school_logo.png" alt="明德私立学校校徽">
+            明德私立学校 <span>MINGDE PRIVATE SCHOOL</span>
+        </div>
+        <!-- 返回官网首页的按钮 -->
+        <a href="school.html" class="back-home-btn">← 返回首页</a>
+    </header>
+
+    <!-- 正文容器 -->
+    <main class="article-container">
+        <div class="article-card">
+            
+            <!-- 文章头部信息 -->
+            <div class="article-header">
+                <h1>明德私立学校学生行为规范及管理制度（2019年修订版）</h1>
+                <div class="article-meta">
+                    <span>发布部门：明德私立学校 教务处</span>
+                    <span>发布日期：2019年8月28日</span>
+                </div>
+            </div>
+
+            <!-- 文章正文内容 (已按要求执行红粗/不加粗规范) -->
+            <div class="article-content">
+                <p class="sub-title-red">1. 总则</p>
+                <p>1.1 本手册适用于明德私立学校高中部全体学生。</p>
+                <p>1.2 原则上全体学生必须住校，若有特殊状况，须有监护人向学校说明情况并提供凭证，由学生自己说明的无效。</p>
+                <p>1.3 每位学生均有一张学生证，新生报道后统一发放，学生证在校内的学习生活中由为重要，请及时领取并妥善保管。</p>
+                <p>1.4 学生证若有遗失、损坏将无法补办，须重新申请一张，期间部分校内设施可能无法使用。</p>
+                <p>1.5 由本校初中部直升的学生请于开学后一星期内找教务处更换新的学生证。</p>
+
+                <p class="sub-title-red">2. 新生报名流程</p>
+                <p>2.1 请于9月1日上午9:00~11:00之间到达学校进行开学登记、分配宿舍，下午请新生自行收拾好新宿舍。</p>
+                <p>2.2 9月2日举行开学典礼，特招生分配「成长导师」，开学典礼后有新生欢迎会，新生按意愿参加。</p>
+                <p>2.3 9月3日上午8:00~下午5:00前往多媒体教室参加分班考试，成绩将在9月4日上午公布，公布成绩后进行分班、派发教材，9月5日正式开始上课。</p>
+
+                <p class="sub-title-red">3. 学生宿舍</p>
+                <p>3.1 本校生每人配置独栋小型loft公寓，特招生为两人一间。如有需求，可申请别墅，别墅为三人一栋。申请别墅的学生，需在缴费处补齐住宿费差价。</p>
+                <p>3.2 绝对禁止男女生串寝室。</p>
+                <p>3.3 进入宿舍区域前需要用学生证在大门处完成验证。</p>
+                <p>3.4 宿舍每个月提供一次清洁服务，需要的学生请在宿管处登记。</p>
+
+                <p class="sub-title-red">4. 课外活动</p>
+                <p>4.1 积极参加学校组织的各种兴趣小组和社团。每生须加入至少一个社团。每周五下午三、四节课为固定的社团活动时间，不得推脱、逃避社团活动。期末各社团须进行考核，考核形式及内容由各社团自行决定，考核后由社团负责人撰写报告书上交学校，学校根据各人表现，计入学生评价。</p>
+                <p>4.2 每日晚饭后为自习时间，可自由申请教室、机房、实验室、练功房，用于完成个人项目，但不得离开校园，若项目有需要，必须开具假条后才能离校。特招生须在每学期上交的个人报告书上汇报个人项目进度。</p>
+                <p>4.3 每周三晚饭后固定在礼堂举行舞会。学校不定期举行讲座、读书会、联谊会、调查实践、社会服务等活动。如有想参与的活动，可在官网进行报名。如有建议学校举行的活动，可在校长信箱进行反馈。特招生须在每学期上交的个人报告书上汇报社会服务记录。</p>
+
+                <p class="sub-title-red">5. 学生食堂</p>
+                <p>5.1 学生食堂共有六层，其中三层为独立包厢式用餐区。</p>
+                <p>5.2 食堂开放时间为11:20~12:50、17:20~18:50。</p>
+                <p>5.3 食堂一层有超市及咖啡厅等设施。</p>
+
+                <p class="sub-title-red">6. 作息时间表</p>
+                <p class="no-indent">07:00 起床、自行处理需要处理的事</p>
+                <p class="no-indent">08:00～08:40 第一节课</p>
+                <p class="no-indent">08:50～09:30 第二节课</p>
+                <p class="no-indent">09:40～10:20 第三节课</p>
+                <p class="no-indent">10:30～11:10 第四节课</p>
+                <p class="no-indent">11:11～13:59 午饭、午休</p>
+                <p class="no-indent">14:00～14:40 第一节课</p>
+                <p class="no-indent">14:50～15:30 第二节课</p>
+                <p class="no-indent">15:40～16:20 第三节课</p>
+                <p class="no-indent">16:30～17:10 第四节课</p>
+                <p class="no-indent">19:00～21:00 晚间活动</p>
+
+                <p class="sub-title-red">7. 学生考核</p>
+                <p>7.1 每学年于6月最后一星期、12月最后一星期进行期末考核。考核内容包括学业成绩、社团考核、项目评估、社会服务记录和学生品德评价。特招生若连续两学期未达基本学业要求或出现严重违纪，将调整资助资格，但保留学籍，变为普通生，且须补缴学费。</p>
+                <p>7.2 严禁出现打架斗殴、出言辱骂、考试作弊等不端行为，一旦发现，学校会给予批评教育、全校通报、记过、记大过、留校察看、开除学籍等惩罚。</p>
+            </div>
+
+            <!-- 文章尾部签名 -->
+            <div class="article-footer">
+                <p>明德私立学校 教务处</p>
+                <p style="font-size: 13px; color: #999; margin-top: 5px;">2019年8月28日</p>
+            </div>
+
+        </div>
+    </main>
+
+</body>
+</html>

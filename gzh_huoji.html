@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <title>盘点那些你不知道的端午民俗</title>
+    <style>
+        /* 基础重置 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Helvetica Neue", Arial, sans-serif;
+            background-color: #f7f7f7;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        /* 模拟微信公众号容器 */
+        .app-container {
+            max-width: 680px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            min-height: 100vh;
+            position: relative;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.03);
+        }
+
+        @media (min-width: 769px) {
+            .app-container {
+                margin: 30px auto;
+                border-radius: 12px;
+                min-height: auto;
+                border: 1px solid #e6e6e6;
+            }
+        }
+
+        /* 顶部操作栏 (移除状态栏) */
+        .top-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 20px;
+            background-color: #fff;
+        }
+
+        .top-nav svg {
+            width: 24px;
+            height: 24px;
+            fill: #333;
+            cursor: pointer;
+        }
+
+        /* 文章主体 */
+        .article-body {
+            padding: 8px 24px 30px;
+        }
+
+        .article-title {
+            font-size: 26px;
+            font-weight: 700;
+            color: #222;
+            line-height: 1.4;
+            margin-bottom: 16px;
+        }
+
+        .meta-info {
+            display: flex;
+            align-items: center;
+            color: #999;
+            font-size: 14px;
+            margin-bottom: 24px;
+            gap: 8px;
+        }
+
+        .meta-info .divider {
+            color: #e6e6e6;
+        }
+
+        .article-content p {
+            font-size: 18px;
+            line-height: 1.8;
+            color: #333;
+            margin-bottom: 18px;
+            text-align: justify;
+            word-break: break-word;
+        }
+
+        .article-content p:last-child {
+            margin-bottom: 0;
+        }
+        
+        /* 引用/来源注释样式 */
+        .article-content .source-note {
+            color: #999;
+            font-size: 14px;
+            margin-top: 24px;
+            padding-top: 10px;
+            border-top: 1px solid #eee;
+            line-height: 1.6;
+            text-align: left;
+        }
+
+        /* 底部用户信息与互动栏 */
+        .footer-actions {
+            padding: 20px 24px 30px;
+            background-color: #fff;
+        }
+
+        .user-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #f0f0f0;
+            margin-bottom: 20px;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: #d8d8d8;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23bbbbbb"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>');
+            background-size: cover;
+            flex-shrink: 0;
+        }
+
+        .user-name {
+            font-size: 16px;
+            font-weight: 500;
+            color: #333;
+        }
+
+        .btn-follow {
+            background-color: #00c373;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            padding: 6px 14px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            margin-left: auto; /* 推到最右侧 */
+            transition: opacity 0.2s;
+        }
+
+        .btn-follow:active {
+            opacity: 0.8;
+        }
+
+        .action-row {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            padding: 0 10px;
+        }
+
+        .action-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            color: #666;
+            font-size: 13px;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+
+        .action-item:active {
+            color: #333;
+        }
+
+        .action-item svg {
+            width: 22px;
+            height: 22px;
+            fill: none;
+            stroke: #666;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+    </style>
+</head>
+<body>
+
+<div class="app-container">
+    <!-- 顶部导航 (无状态栏) -->
+    <div class="top-nav">
+        <!-- 修改处：将 X 图标包裹在 a 标签中，点击跳转到 search_jipin.html -->
+        <a href="search_jipin.html" style="display: flex; align-items: center; justify-content: center; width: 24px; height: 24px; text-decoration: none;">
+            <svg viewBox="0 0 24 24">
+                <path d="M18 6L6 18M6 6l12 12" stroke="#333" stroke-width="2" fill="none" stroke-linecap="round"/>
+            </svg>
+        </a>
+        
+        <!-- 更多按钮 ... -->
+        <svg viewBox="0 0 24 24">
+            <circle cx="12" cy="12" r="1.5" fill="#333"/>
+            <circle cx="12" cy="5" r="1.5" fill="#333"/>
+            <circle cx="12" cy="19" r="1.5" fill="#333"/>
+        </svg>
+    </div>
+
+    <!-- 文章内容区 -->
+    <div class="article-body">
+        <h1 class="article-title">盘点那些你不知道的端午民俗</h1>
+        <div class="meta-info">
+            <span>风来科普</span>
+            <span class="divider">|</span>
+            <span>2026年6月14日</span>
+            <span class="divider">|</span>
+            <span>风来</span>
+        </div>
+
+        <div class="article-content">
+            <p>端午节又要到了，你是不是又要开始一年一度的：吃粽子、赛龙舟、挂艾草、戴彩绳、忆屈原......了？除了这些耳熟能详的民俗之外，还有小众的端午民俗，你知道吗？</p>
+            <p>端午节处在农历五月初五，这时正值仲夏，气温升高，毒虫活跃，容易滋生疫病，因此，古人觉得这天阴气重、邪气多，容易招惹瘟疫和鬼神，所以视五月为“恶月”，将五月初五这天称为“恶日”，还会在端午节这天进行“斩五瘟”、挂钟馗像等仪式来驱疫。</p>
+            <p>这些端午仪式的核心还是祈福纳祥、驱瘟避祸，但有的地方，却会选择五月初五这天来祭祀亡灵、敬拜祖先，把端午节过成了清明节和中元节。</p>
+            <p>这就要从两千多年前说起了。战国末期，现在的韶光市晋岚一带，有着“活祭”的习俗。晋岚一带的先民会提前俘获外来者作为人牲，让人牲进行斋戒，每日不沾荤腥。斋戒时间不定，一般斋戒时间越长，代表所求越多。斋戒最长不超过五年，最终，在仪式前一天，人牲会服下祭酒，并用特定的净水清洁身体。到了农历五月初五丑时，就会举行祭祀仪式，焚烧人牲献给神灵，以换取神灵的保佑。</p>
+            <p>关于晋岚一带为何会有活祭传统，学者们溯源后认为，晋岚一带大概有知名的横死案例，而且在那不久之后就发生了天灾。于是，死者被当做法力高强且心怀怨恨的亡灵，又与当地的亡灵崇拜传统交织混杂，形成了向亡灵送上祭品以免鬼魂作祟、换取生人得到庇护的习俗。而先民为何使用外来者作为祭品，正是出于“替罪羊机制”，将罪恶与恶意转嫁给外来者，用此举化解内部冲突，合理宣泄集体暴力。控制人牲活动范围、喂下限制力气的祭酒、用火烧的方式献祭，既是为了剥夺外来者的反抗能力，使人牲“无害化”；又将其视为仪式的组成部分，共同构成了仪式的“神圣化”。</p>
+            <p>两千多年风雨过去，蒙昧与凶残已经留在昨日。现在的晋岚一带，已经没有“活祭”的习俗，只有在端午节祭祀先人的习俗保留下来，传承至今。“用火献祭”的仪式也已经转化为当地村民“点火以增添节日氛围”的活动。如果你在端午节时看到晋岚一带在举行小小的“火把节”，就不用再露出惊讶的表情了。</p>
+        </div>
+    </div>
+
+    <!-- 底部互动区 -->
+    <div class="footer-actions">
+        <div class="user-bar">
+            <div class="user-info">
+                <div class="user-avatar"></div>
+                <span class="user-name">风来科普</span>
+            </div>
+            <button class="btn-follow">+关注</button>
+        </div>
+
+        <div class="action-row">
+            <!-- 赞 -->
+            <div class="action-item">
+                <svg viewBox="0 0 24 24">
+                    <path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3H14zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"/>
+                </svg>
+                <span>2</span>
+            </div>
+            <!-- 转发 -->
+            <div class="action-item">
+                <svg viewBox="0 0 24 24">
+                    <path d="M10 21v-7a2 2 0 0 1 2-2h4v-4l4 4-4 4v-4h-4v9"/>
+                    <path d="M4 10v-3a3 3 0 0 1 3-3h11"/>
+                </svg>
+                <span>10</span>
+            </div>
+            <!-- 收藏/心形 -->
+            <div class="action-item">
+                <svg viewBox="0 0 24 24">
+                    <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+                </svg>
+                <span>1</span>
+            </div>
+            <!-- 评论 -->
+            <div class="action-item">
+                <svg viewBox="0 0 24 24">
+                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+                </svg>
+                <span>2</span>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+        <!-- 新增：游戏免责声明小字 -->
+        <div style="text-align: center; color: #999; font-size: 12px; margin-top: 20px;">
+            本页面纯属虚构，仅为游戏页面
+        </div>
+
+</body>
+</html>

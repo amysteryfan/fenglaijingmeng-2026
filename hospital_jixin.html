@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>济心医院 - 首页</title>
+    <link rel="stylesheet" href="css/style.css">
+    <script src="js/main.js" defer></script>
+    <style>
+        /* ===== 1. 基础重置与一屏强制排布 (不可滚动) ===== */
+        html, body {
+            margin: 0 !important;
+            padding: 0 !important;
+            height: 100vh !important;
+            overflow: hidden !important;
+            display: flex !important;
+            flex-direction: column !important;
+            background-color: #f8f9fa;
+            font-family: "PingFang SC", "Microsoft YaHei", sans-serif;
+        }
+
+        /* 内部区块防溢出 */
+        body > * {
+            flex-shrink: 0 !important;
+            width: 100% !important;
+            box-sizing: border-box !important;
+        }
+
+        :root {
+            --primary-blue: #005a9e;
+            --text-dark: #333333;
+        }
+
+        /* 1. 顶部导航栏 */
+        .hospital-header {
+            background: #ffffff;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            height: 64px;
+            display: flex;
+            align-items: center;
+            padding: 0 20px;
+            position: relative; /* 新增：为右上角的退出按钮提供定位参照 */
+        }
+
+        .header-container {
+            max-width: 1200px;
+            width: 100%;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        /* ===== 右上角退出按钮 ===== */
+        .exit-btn {
+            position: absolute;
+            right: 20px;
+            top: 17px;
+            font-size: 28px;
+            font-weight: bold;
+            color: #666;
+            text-decoration: none;
+            background: rgba(255, 255, 255, 0.9);
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.15);
+            transition: all 0.2s;
+            z-index: 10;
+            cursor: pointer;
+        }
+        .exit-btn:hover {
+            background: #f0f0f0;
+            color: #333;
+        }
+        /* ================================= */
+
+        /* Logo 区域 (分别引用 jixin_icon.png 和 jixin_text.png) */
+        .logo-area {
+            display: flex;
+            align-items: center;
+            gap: 8px; /* 图标和文字的间距 */
+            cursor: default;
+        }
+        .logo-icon {
+            height: 46px; /* 适当调整图标大小 */
+            width: auto;
+            display: block;
+            object-fit: contain;
+        }
+        .logo-text-img {
+            height: 28px; /* 文字比图标略小 */
+            width: auto;
+            display: block;
+            object-fit: contain;
+            transform: translateY(2px); 
+        }
+
+        /* 导航菜单 */
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 18px;
+            padding: 0;
+            margin: 0;
+        }
+        .nav-links li a {
+            text-decoration: none;
+            color: var(--text-dark);
+            font-size: 15px;
+            font-weight: 500;
+            padding-bottom: 5px;
+            transition: color 0.3s;
+        }
+        .nav-links li a:hover, .nav-links li a.active {
+            color: var(--primary-blue);
+        }
+
+        /* 顶部搜索框 */
+        .header-search {
+            display: flex;
+            align-items: center;
+            background: #f4f4f4;
+            border-radius: 20px;
+            padding: 5px 15px;
+            border: 1px solid #e0e0e0;
+        }
+        .header-search input {
+            border: none;
+            background: transparent;
+            padding: 6px 10px;
+            font-size: 14px;
+            outline: none;
+            width: 140px;
+        }
+        .header-search button {
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            color: #888;
+        }
+
+        /* 2. 医院大楼图片 */
+        .hero-section {
+            flex: 1 !important;
+            background-image: url('images/hospital.jpg');
+            background-size: cover;
+            background-position: center bottom;
+            background-color: #dceeff;
+            position: relative;
+        }
+        .hero-overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(0, 90, 158, 0.25);
+        }
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: #fff;
+            text-shadow: 0 2px 6px rgba(0,0,0,0.4);
+        }
+        .hero-content h2 {
+            font-size: 46px;
+            margin: 0 0 10px 0;
+            letter-spacing: 5px;
+        }
+        .hero-content p {
+            font-size: 18px;
+            opacity: 0.9;
+            letter-spacing: 2px;
+        }
+
+        /* 3. 蓝色功能栏 */
+        .quick-actions {
+            background-color: #25a8d6;
+            height: 75px;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+        }
+        .actions-container {
+            max-width: 1000px;
+            width: 100%;
+            margin: 0 auto;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 15px 30px;
+            padding: 0 20px;
+        }
+        .action-item {
+            color: #ffffff;
+            font-size: 18px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: opacity 0.2s;
+            background: transparent;
+            border: none;
+            font-family: inherit;
+            padding: 8px 15px;
+            border-radius: 6px;
+        }
+        .action-item:hover {
+            opacity: 0.8;
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        /* 4. 报告查询弹窗 */
+        .modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 9999;
+            background-color: rgba(0, 0, 0, 0.6);
+            justify-content: center;
+            align-items: center;
+        }
+        .modal-content {
+            background: #fff;
+            padding: 30px 40px;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 400px;
+            text-align: center;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+            position: relative;
+        }
+        .close-modal {
+            position: absolute;
+            right: 20px;
+            top: 10px;
+            font-size: 26px;
+            color: #aaa;
+            cursor: pointer;
+        }
+        .modal-content h3 {
+            color: var(--primary-blue);
+            margin-top: 0;
+            margin-bottom: 15px;
+        }
+        .modal-input-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        .modal-input-group input {
+            flex: 1;
+            padding: 10px 15px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            outline: none;
+        }
+        .modal-input-group input:focus { border-color: var(--primary-blue); }
+        .modal-input-group button {
+            padding: 10px 20px;
+            background: var(--primary-blue);
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        /* 手机适配 */
+        @media (max-width: 768px) {
+            .hospital-header {
+                height: auto;
+                padding: 10px 20px;
+                flex-wrap: wrap;
+            }
+            .exit-btn { right: 15px; top: 15px; } /* 移动端按钮微调 */
+            .header-container {
+                flex-direction: column;
+                align-items: stretch;
+                text-align: center;
+                gap: 8px;
+            }
+            .logo-area { justify-content: center; }
+            .logo-icon { height: 40px; }
+            .logo-text-img { height: 24px; }
+            .nav-links { justify-content: center; flex-wrap: wrap; gap: 8px 10px; font-size: 14px; }
+            .header-search { align-self: center; width: 100%; max-width: 250px; }
+            .header-search input { width: 100%; }
+
+            .hero-section { flex: 1; } 
+            .hero-content h2 { font-size: 30px; }
+            .hero-content p { font-size: 14px; }
+
+            .quick-actions { height: auto; padding: 12px 0; }
+            .actions-container { gap: 8px 15px; }
+            .action-item { font-size: 15px; padding: 6px 12px; }
+
+            .modal-content { padding: 20px; }
+            .modal-input-group { flex-direction: column; }
+            .modal-input-group button { width: 100%; }
+        }
+    </style>
+</head>
+<body>
+    <header class="hospital-header">
+        <!-- 修改点：点击后跳转到 search_jixinyiyuan.html 的退出按钮 -->
+        <a href="search_jixinyiyuan.html" class="exit-btn">×</a>
+
+        <div class="header-container">
+            <!-- 分别调用图标和文字文件 -->
+            <div class="logo-area">
+                <img src="images/jixin_icon.png" alt="济心图标" class="logo-icon">
+                <img src="images/jixin_text.png" alt="济心医院" class="logo-text-img">
+            </div>
+
+            <ul class="nav-links">
+                <li><a href="#" class="active">网站首页</a></li>
+                <li><a href="#">医院概况</a></li>
+                <li><a href="#">医疗团队</a></li>
+                <li><a href="#">专家介绍</a></li>
+                <li><a href="#">医院文化</a></li>
+                <li><a href="#">新闻天地</a></li>
+                <li><a href="#">健康知识</a></li>
+            </ul>
+
+            <div class="header-search">
+                <input type="text" id="header-search-input">
+                <button id="header-search-btn">🔍</button>
+            </div>
+        </div>
+    </header>
+
+    <section class="hero-section">
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <h2>济心医院</h2>
+            <p>专业 · 洁净 · 可信赖</p>
+        </div>
+    </section>
+
+    <section class="quick-actions">
+        <div class="actions-container">
+            <div class="action-item">预约挂号</div>
+            <div class="action-item" id="quick-report-query">报告查询</div>
+            <div class="action-item">专家出诊</div>
+            <div class="action-item">就诊指南</div>
+            <div class="action-item">来院导航</div>
+            <div class="action-item">联系我们</div>
+        </div>
+    </section>
+
+    <div id="report-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h3>报告查询</h3>
+            <p>请输入病人的姓名：</p>
+            <div class="modal-input-group">
+                <input type="text" id="patient-name">
+                <button id="patient-search-btn">搜索</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const modal = document.getElementById('report-modal');
+            const quickReportBtn = document.getElementById('quick-report-query');
+            const closeModal = document.querySelector('.close-modal');
+            const patientNameInput = document.getElementById('patient-name');
+            const patientSearchBtn = document.getElementById('patient-search-btn');
+            const headerSearchInput = document.getElementById('header-search-input');
+            const headerSearchBtn = document.getElementById('header-search-btn');
+
+            function openModal(e) {
+                if(e) e.preventDefault();
+                modal.style.display = 'flex';
+                patientNameInput.focus();
+            }
+            if (quickReportBtn) quickReportBtn.addEventListener('click', openModal);
+
+            closeModal.onclick = function() { modal.style.display = 'none'; };
+            window.onclick = function(e) { if (e.target == modal) modal.style.display = 'none'; };
+
+            // ===== 报告查询跳转逻辑 =====
+            function performPatientSearch() {
+                const name = patientNameInput.value.trim();
+                if (!name) {
+                    alert('请输入病人姓名！');
+                    return;
+                }
+
+                // 预设患者姓名与对应体检单页面的映射关系
+                const patientMap = {
+                    "沈淡云": "tijiandan_shendanyun.html",
+                    "宋远山": "tijiandan_songyuanshan.html",
+                    "宋闻溪": "tijiandan_songwenxi.html",
+                    "宋令仪": "tijiandan_songlingyi.html",
+                    "陈楚梦": "tijiandan_chenchumeng.html",
+                    "许故": "tijiandan_xugu.html"
+                };
+
+                if (patientMap[name]) {
+                    // 如果输入的姓名匹配了映射表，跳转至对应的体检单页面
+                    window.location.href = patientMap[name];
+                } else {
+                    // 如果姓名不存在，给予提示
+                    alert('未找到该患者的体检记录，请检查姓名输入是否正确。');
+                }
+            }
+
+            patientSearchBtn.addEventListener('click', performPatientSearch);
+            patientNameInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') performPatientSearch();
+            });
+
+            // ===== 修改点：右上角搜索框逻辑 =====
+            function performHeaderSearch() {
+                // 无论输入什么，只弹窗提示“暂无结果”，不跳转
+                alert('暂无结果');
+            }
+
+            headerSearchBtn.addEventListener('click', performHeaderSearch);
+            headerSearchInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') performHeaderSearch();
+            });
+        });
+    </script>
+</body>
+</html>

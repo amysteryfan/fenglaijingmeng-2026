@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2026年“金玉奖”初赛评审工作顺利完成 - 明德私立学校</title>
+
+    <!-- 引入全局样式和脚本 -->
+    <link rel="stylesheet" href="css/style.css">
+    <script src="js/main.js" defer></script>
+
+    <style>
+        /* --- 局部页面专属样式 (基于学校官网风格扩展) --- */
+        
+        html, body {
+            height: auto;       /* 允许高度随内容拉伸 */
+            overflow-y: auto;   /* 强制启用纵向滚动 */
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Microsoft YaHei", "PingFang SC", sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        a { text-decoration: none; color: inherit; }
+        ul, ol { list-style: none; }
+
+        /* --- 顶部通栏 --- */
+        .top-bar {
+            background-color: #fff;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 40px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            z-index: 100;
+            width: 100%;
+            box-sizing: border-box;
+            flex-shrink: 0;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: #8B0000; /* 校徽红 */
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo img {
+            height: 40px;
+            margin-right: 12px;
+        }
+
+        .logo span {
+            margin-left: 10px;
+            font-size: 14px;
+            color: #666;
+            font-weight: normal;
+            letter-spacing: 1px;
+        }
+
+        /* 返回首页按钮 */
+        .back-home-btn {
+            background-color: #8B0000;
+            color: #fff;
+            padding: 8px 18px;
+            border-radius: 20px;
+            font-size: 14px;
+            transition: background 0.3s, transform 0.2s;
+            font-weight: bold;
+            box-shadow: 0 2px 4px rgba(139, 0, 0, 0.3);
+        }
+
+        .back-home-btn:hover {
+            background-color: #6d0000;
+            transform: translateY(-1px);
+        }
+
+        /* --- 文章容器 --- */
+        .article-container {
+            flex: 1 0 auto;
+            max-width: 880px;
+            margin: 40px auto;
+            padding: 0 20px;
+            width: 100%;
+        }
+
+        .article-card {
+            background-color: #fff;
+            border-radius: 8px;
+            padding: 50px 55px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+            border-top: 4px solid #8B0000;
+        }
+
+        /* 文章头部 */
+        .article-header {
+            text-align: center;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 25px;
+            margin-bottom: 30px;
+        }
+
+        .article-header h1 {
+            font-size: 30px;
+            color: #8B0000;
+            margin-bottom: 15px;
+            letter-spacing: 2px;
+        }
+
+        .article-meta {
+            color: #999;
+            font-size: 14px;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        /* 文章正文 */
+        .article-content {
+            font-size: 16px;
+            line-height: 1.8;
+            color: #444;
+        }
+
+        .article-content p {
+            margin-bottom: 15px;
+            text-indent: 2em; /* 首行缩进 */
+        }
+
+        /* 默认 strong 标签为红色 */
+        .article-content p strong {
+            color: #8B0000;
+        }
+
+        /* 新增：追加黑色加粗的专用类 */
+        .article-content p strong.text-black {
+            color: #333333; /* 变回黑色 */
+        }
+
+        /* 自定义列表样式 */
+        .article-content ol, .article-content ul {
+            margin: 15px 0 15px 40px;
+        }
+
+        .article-content ol li {
+            list-style-type: decimal;
+            margin-bottom: 8px;
+        }
+
+        .article-content .highlight-box {
+            background-color: #FFF8E1;
+            border-left: 4px solid #C9A84A;
+            padding: 15px 20px;
+            margin: 20px 0;
+            text-indent: 0;
+            border-radius: 2px;
+        }
+
+        .article-footer {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+            text-align: right;
+            font-size: 15px;
+            color: #666;
+            line-height: 1.6;
+        }
+
+        /* --- 响应式设计 (适配手机端) --- */
+        @media (max-width: 768px) {
+            .top-bar {
+                padding: 0 15px;
+                flex-wrap: wrap;
+                height: auto;
+                padding-top: 10px;
+                padding-bottom: 10px;
+            }
+            .logo img { height: 30px; }
+            .logo { font-size: 18px; }
+            .logo span { font-size: 12px; margin-left: 5px; }
+            .back-home-btn { padding: 6px 12px; font-size: 13px; }
+
+            .article-card {
+                padding: 30px 20px;
+            }
+            .article-header h1 {
+                font-size: 24px;
+            }
+            .article-content {
+                font-size: 15px;
+            }
+            .article-content ol, .article-content ul {
+                margin-left: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 顶部通栏 (与官网保持统一) -->
+    <header class="top-bar">
+        <div class="logo">
+            <!-- 确保 images 下有 school_logo.png -->
+            <img src="images/school_logo.png" alt="明德私立学校校徽">
+            明德私立学校 <span>MINGDE PRIVATE SCHOOL</span>
+        </div>
+        <!-- 返回官网首页的按钮 -->
+        <a href="school.html" class="back-home-btn">← 返回首页</a>
+    </header>
+
+    <!-- 正文容器 -->
+    <main class="article-container">
+        <div class="article-card">
+            
+            <!-- 文章头部信息 -->
+            <div class="article-header">
+                <h1>2026年“金玉奖”初赛评审工作顺利完成</h1>
+                <div class="article-meta">
+                    <span>发布部门：明德私立学校 科技创新中心</span>
+                    <span>发布日期：2026年6月10日</span>
+                </div>
+            </div>
+
+            <!-- 文章正文内容 -->
+            <div class="article-content">
+                <p>6月10日下午，随着最后一组评审意见提交汇总，明德私立学校2026年度校园科技创新奖“金玉奖”初赛阶段正式结束。</p>
+                
+                <p>本届<strong class="text-black">“金玉奖”</strong>自2026年3月启动申报以来，共收到来自全校初高中六个年级的有效参赛项目61项，涵盖计算机软件开发、工程实物制作、自然科学实验、社会科学调研及商业创新方案等多个类别，较上一届增长约18%，创历史新高。</p>
+
+                <p>初赛评审以材料评审方式进行。评审组由校内骨干教师及外聘专家共9人组成，根据以下四项指标进行独立打分：</p>
+                <ol>
+                    <li>项目创新性（占比 35%）</li>
+                    <li>技术或研究完成度（占比 35%）</li>
+                    <li>实际应用价值（占比 20%）</li>
+                    <li>书面表达规范性（占比 10%）</li>
+                </ol>
+                
+                <p>经过为期两天的集中评审，共有22个项目晋级复赛（名单已于今日下午通过各年级公告栏及校园平台同步发布）。</p>
+
+                <p>复赛将于6月下旬以现场演示及答辩形式举行，届时入围选手需携带作品实物或可运行的系统原型进行15分钟展示。复赛晋级者将进入9月份的终审答辩，角逐最终的一、二、三等奖。</p>
+
+                <div class="highlight-box">
+                    <p><strong>重要提醒：</strong>科技创新中心提醒所有晋级选手，于6月15日前确认复赛参赛信息，并提交更新后的项目报告书。</p>
+                </div>
+
+                <p>第六届“金玉奖”决赛及颁奖典礼预计于2026年9月中旬举行，具体安排另行通知。</p>
+            </div>
+
+            <!-- 文章尾部签名 -->
+            <div class="article-footer">
+                <p>明德私立学校 科技创新中心</p>
+                <p style="font-size: 13px; color: #999; margin-top: 5px;">2026年6月10日</p>
+            </div>
+
+        </div>
+    </main>
+
+</body>
+</html>

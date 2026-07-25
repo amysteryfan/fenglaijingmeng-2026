@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>济心医院 - 体检报告单</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: "SimSun", "Microsoft YaHei", serif;
+        }
+        body {
+            background: #eef2f7;
+            padding: 30px 15px;
+        }
+        /* ===== 新增：X退出按钮样式 ===== */
+        .exit-btn {
+            position: fixed;
+            right: 20px;
+            top: 20px;
+            font-size: 28px;
+            font-weight: bold;
+            color: #666;
+            text-decoration: none;
+            background: rgba(255, 255, 255, 0.95);
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.15);
+            transition: all 0.2s;
+            z-index: 9999;
+            cursor: pointer;
+        }
+        .exit-btn:hover {
+            background: #f0f0f0;
+            color: #333;
+        }
+        /* ================================== */
+
+        .report-wrap {
+            width: 100%;
+            max-width: 860px;
+            margin: 0 auto;
+            background: #fff;
+            padding: 40px 50px;
+            box-shadow: 0 0 12px #d0d8e3;
+        }
+        .header-title {
+            text-align: center;
+            border-bottom: 2px solid #005a9e;
+            padding-bottom: 12px;
+            margin-bottom: 20px;
+        }
+        .header-title h1 {
+            font-size: 26px;
+            color: #003366;
+            letter-spacing: 4px;
+        }
+        .header-title p {
+            font-size: 14px;
+            margin-top: 6px;
+            color: #555;
+        }
+        .info-block {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            font-size: 15px;
+            margin-bottom: 30px;
+            line-height: 1.8;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 32px;
+        }
+        table caption {
+            font-size: 17px;
+            font-weight: bold;
+            text-align: left;
+            margin-bottom: 10px;
+            color: #003366;
+            padding-left: 4px;
+        }
+        table th, table td {
+            border: 1px solid #bbb;
+            padding: 8px 10px;
+            font-size: 14px;
+        }
+        table th {
+            background-color: #f0f6fc;
+        }
+        .up {
+            color: #c82423;
+            font-weight: bold;
+        }
+        .down {
+            color: #c82423;
+            font-weight: bold;
+        }
+        .conclusion-box {
+            border: 1px solid #005a9e;
+            padding: 16px 20px;
+            margin-bottom: 30px;
+            background: #f8fbff;
+        }
+        .conclusion-box h3 {
+            color: #003366;
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+        .conclusion-box p {
+            line-height: 1.7;
+            font-size: 14px;
+        }
+        .sign-area {
+            display: flex;
+            justify-content: space-between;
+            font-size: 14px;
+            padding-top: 10px;
+            border-top: 1px solid #ccc;
+        }
+        .footer-note {
+            margin-top: 25px;
+            font-size: 12px;
+            color: #666;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<body>
+    <!-- ===== 新增：右上角退出按钮，点击跳转 hospital_jixin.html ===== -->
+    <a href="hospital_jixin.html" class="exit-btn">×</a>
+
+    <div class="report-wrap">
+        <!-- 报告单头部 -->
+        <div class="header-title">
+            <h1>济心医院 体检中心报告单</h1>
+            <p>地址：韶光市青阳区仁济大道216号 | 咨询热线：XXXX-XX932788</p>
+        </div>
+
+        <!-- 个人基础信息 -->
+        <div class="info-block">
+            <div>姓名：许故</div>
+            <div>性别：男</div>
+            <div>年龄：15 岁</div>
+            <div>身份证号：XXXXXX20040217XXXX</div>
+            <div>体检套餐：新生体检套餐</div>
+            <div>体检日期：2019-09-07</div>
+            <div>送检医师：赵伟</div>
+            <div>审核医师：孙明远</div>
+        </div>
+
+        <!-- 一、一般检查 -->
+        <table>
+            <caption>一、一般项目检查</caption>
+            <tr>
+                <th>检查项目</th>
+                <th>检测结果</th>
+                <th>参考范围</th>
+                <th>状态</th>
+            </tr>
+            <tr>
+                <td>身高</td>
+                <td>182 cm</td>
+                <td>--</td>
+                <td>正常</td>
+            </tr>
+            <tr>
+                <td>体重</td>
+                <td>65 kg</td>
+                <td>--</td>
+                <td>正常</td>
+            </tr>
+            <tr>
+                <td>BMI指数</td>
+                <td>19.75</td>
+                <td>18.5 - 23.9</td>
+                <td>正常</td>
+            </tr>
+            <tr>
+                <td>血压(收缩压/舒张压)</td>
+                <td>115 / 72 mmHg</td>
+                <td>90-139 / 60-89</td>
+                <td>正常</td>
+            </tr>
+            <!-- ===== 修改点：插入了血型信息 ===== -->
+            <tr>
+                <td>血型</td>
+                <td>AB型</td>
+                <td>--</td>
+                <td>正常</td>
+            </tr>
+            <!-- ================================= -->
+            <tr>
+                <td>脉搏</td>
+                <td>69 次/分</td>
+                <td>60 - 100</td>
+                <td>正常</td>
+            </tr>
+        </table>
+
+        <!-- 二、血常规检验 -->
+        <table>
+            <caption>二、血常规检验</caption>
+            <tr>
+                <th>检查项目</th>
+                <th>检测结果</th>
+                <th>参考范围</th>
+                <th>状态</th>
+            </tr>
+            <tr>
+                <td>血红蛋白(HGB)</td>
+                <td>142 g/L</td>
+                <td>120 - 160</td>
+                <td>正常</td>
+            </tr>
+            <tr>
+                <td>红细胞计数(RBC)</td>
+                <td>4.78 ×10¹²/L</td>
+                <td>4.0 - 5.5</td>
+                <td>正常</td>
+            </tr>
+            <tr>
+                <td>平均红细胞体积(MCV)</td>
+                <td>89.2 fL</td>
+                <td>80.0 - 100.0</td>
+                <td>正常</td>
+            </tr>
+            <tr>
+                <td>平均血红蛋白含量(MCH)</td>
+                <td>29.7 pg</td>
+                <td>27.0 - 34.0</td>
+                <td>正常</td>
+            </tr>
+            <tr>
+                <td>白细胞总数(WBC)</td>
+                <td>5.91 ×10⁹/L</td>
+                <td>3.5 - 9.5</td>
+                <td>正常</td>
+            </tr>
+            <tr>
+                <td>血小板(PLT)</td>
+                <td>232 ×10⁹/L</td>
+                <td>100 - 300</td>
+                <td>正常</td>
+            </tr>
+        </table>
+
+        <!-- 三、生化全套 -->
+        <table>
+            <caption>三、生化全套</caption>
+            <tr>
+                <th>检查项目</th>
+                <th>检测结果</th>
+                <th>参考范围</th>
+                <th>状态</th>
+            </tr>
+            <tr>
+                <td>谷丙转氨酶ALT</td>
+                <td>22 U/L</td>
+                <td>7 - 40</td>
+                <td>正常</td>
+            </tr>
+            <tr>
+                <td>谷草转氨酶AST</td>
+                <td>21 U/L</td>
+                <td>13 - 35</td>
+                <td>正常</td>
+            </tr>
+            <tr>
+                <td>空腹血糖GLU</td>
+                <td>4.8 mmol/L</td>
+                <td>3.9 - 6.1</td>
+                <td>正常</td>
+            </tr>
+            <tr>
+                <td>总胆固醇CHOL</td>
+                <td>3.92 mmol/L</td>
+                <td>2.9 - 5.2</td>
+                <td>正常</td>
+            </tr>
+            <tr>
+                <td>肌酐CREA</td>
+                <td>67 μmol/L</td>
+                <td>57 - 111</td>
+                <td>正常</td>
+            </tr>
+            <tr>
+                <td>尿酸UA</td>
+                <td>325 μmol/L</td>
+                <td>208 - 428</td>
+                <td>正常</td>
+            </tr>
+        </table>
+
+        <!-- 四、尿常规 -->
+        <table>
+            <caption>四、尿常规</caption>
+            <tr>
+                <th>检查项目</th>
+                <th>检测结果</th>
+                <th>参考范围</th>
+                <th>状态</th>
+            </tr>
+            <tr>
+                <td>尿蛋白</td>
+                <td>阴性(-)</td>
+                <td>阴性</td>
+                <td>正常</td>
+            </tr>
+            <tr>
+                <td>尿糖</td>
+                <td>阴性(-)</td>
+                <td>阴性</td>
+                <td>正常</td>
+            </tr>
+            <tr>
+                <td>尿潜血</td>
+                <td>阴性(-)</td>
+                <td>阴性</td>
+                <td>正常</td>
+            </tr>
+        </table>
+
+        <!-- 五、视力检查（视力全部良好，无近视无需矫正） -->
+        <table>
+            <caption>五、视力检查</caption>
+            <tr>
+                <th>检查项目</th>
+                <th>检测结果</th>
+                <th>参考范围</th>
+                <th>状态</th>
+            </tr>
+            <tr>
+                <td>右眼裸眼视力</td>
+                <td>1.2</td>
+                <td>≥1.0</td>
+                <td>正常</td>
+            </tr>
+            <tr>
+                <td>左眼裸眼视力</td>
+                <td>1.2</td>
+                <td>≥1.0</td>
+                <td>正常</td>
+            </tr>
+            <tr>
+                <td>近视力调节功能</td>
+                <td>近距离视物清晰，调节力正常</td>
+                <td>近距离视物清晰</td>
+                <td>正常</td>
+            </tr>
+            <tr>
+                <td>眼压</td>
+                <td>16 mmHg</td>
+                <td>10 - 21 mmHg</td>
+                <td>正常</td>
+            </tr>
+        </table>
+
+        <!-- 六、影像、心电 -->
+        <table>
+            <caption>六、影像与心电图检查</caption>
+            <tr>
+                <th>检查项目</th>
+                <th>检查结论</th>
+            </tr>
+            <tr>
+                <td>胸部DR胸片</td>
+                <td>双肺纹理清晰，心影大小形态正常，未见明显异常病灶</td>
+            </tr>
+            <tr>
+                <td>腹部彩超（肝胆胰脾肾）</td>
+                <td>各脏器大小形态正常，无结石、占位病变</td>
+            </tr>
+            <tr>
+                <td>十二导联心电图</td>
+                <td>窦性心律，心电图未见明显异常</td>
+            </tr>
+        </table>
+
+        <!-- 体检综合结论 -->
+        <div class="conclusion-box">
+            <h3>【体检综合结论与医师建议】</h3>
+            <p>1、视力检查双眼裸眼视力良好，远近调节功能正常，无近视、老花等屈光异常，无需配镜矫正。</p>
+            <p>2、血常规、生化、尿常规、胸片、腹部彩超、心电图全部检验及影像指标均处于正常参考区间，无贫血、高血压、血糖血脂异常等任何基础疾病，青少年身体发育状况良好。</p>
+            <p>3、身高体重配比匀称，建议保持规律运动、均衡饮食、充足睡眠，助力持续生长发育，每年完成一次常规体检。</p>
+        </div>
+
+        <!-- 医师签字区域，直接打印名字 -->
+        <div class="sign-area">
+            <div>检验医师：赵伟</div>
+            <div>审核医师：孙明远</div>
+            <div>报告出具时间：2019-09-08</div>
+        </div>
+
+        <!-- 底部备注，删除ICP、公安备案 -->
+        <div class="footer-note">
+            备注：本报告仅对本次送检样本负责，不能替代临床医师诊断；异常指标请前往对应专科门诊复诊。
+            <br>济心医院体检中心
+        </div>
+    </div>
+</body>
+</html>

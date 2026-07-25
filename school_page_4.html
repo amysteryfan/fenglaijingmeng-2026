@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>明德启新程，汇流育英才——我校正式启动“明德特招生计划”暨深化教育教学改革实施方案 - 明德私立学校</title>
+
+    <!-- 引入全局样式和脚本 -->
+    <link rel="stylesheet" href="css/style.css">
+    <script src="js/main.js" defer></script>
+
+    <style>
+        /* --- 局部页面专属样式 (基于学校官网风格扩展) --- */
+        
+        html, body {
+            height: auto;       /* 允许高度随内容拉伸 */
+            overflow-y: auto;   /* 强制启用纵向滚动 */
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Microsoft YaHei", "PingFang SC", sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        a { text-decoration: none; color: inherit; }
+        ul, ol { list-style: none; }
+
+        /* --- 顶部通栏 --- */
+        .top-bar {
+            background-color: #fff;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 40px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            z-index: 100;
+            width: 100%;
+            box-sizing: border-box;
+            flex-shrink: 0;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: #8B0000; /* 校徽红 */
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo img {
+            height: 40px;
+            margin-right: 12px;
+        }
+
+        .logo span {
+            margin-left: 10px;
+            font-size: 14px;
+            color: #666;
+            font-weight: normal;
+            letter-spacing: 1px;
+        }
+
+        /* 返回首页按钮 */
+        .back-home-btn {
+            background-color: #8B0000;
+            color: #fff;
+            padding: 8px 18px;
+            border-radius: 20px;
+            font-size: 14px;
+            transition: background 0.3s, transform 0.2s;
+            font-weight: bold;
+            box-shadow: 0 2px 4px rgba(139, 0, 0, 0.3);
+        }
+
+        .back-home-btn:hover {
+            background-color: #6d0000;
+            transform: translateY(-1px);
+        }
+
+        /* --- 文章容器 --- */
+        .article-container {
+            flex: 1 0 auto;
+            max-width: 880px;
+            margin: 40px auto;
+            padding: 0 20px;
+            width: 100%;
+        }
+
+        .article-card {
+            background-color: #fff;
+            border-radius: 8px;
+            padding: 50px 55px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+            border-top: 4px solid #8B0000;
+        }
+
+        /* 文章头部 */
+        .article-header {
+            text-align: center;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 25px;
+            margin-bottom: 30px;
+        }
+
+        .article-header h1 {
+            font-size: 30px;
+            color: #8B0000; /* 主标题深红 */
+            font-weight: bold; /* 主标题加粗 */
+            margin-bottom: 15px;
+            letter-spacing: 2px;
+        }
+
+        .article-meta {
+            color: #999;
+            font-size: 14px;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        /* 文章正文 */
+        .article-content {
+            font-size: 16px;
+            line-height: 1.8;
+            color: #444;
+        }
+
+        .article-content p {
+            margin-bottom: 15px;
+            text-indent: 2em; /* 首行缩进 */
+            font-weight: normal; /* 确保正文不加粗 */
+        }
+
+        /* 深红色加粗的子标题（一、二、三...） */
+        .article-content p.sub-title {
+            color: #8B0000;
+            font-weight: bold;
+            text-indent: 0; /* 子标题不需要首行缩进 */
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+
+        /* 黑色加粗专用类（给特招生用的） */
+        .text-black-bold {
+            color: #333333; /* 黑色 */
+            font-weight: bold;
+        }
+
+        /* 自定义列表样式 */
+        .article-content ol, .article-content ul {
+            margin: 15px 0 15px 40px;
+            font-weight: normal;
+        }
+
+        .article-content ol li {
+            list-style-type: decimal;
+            margin-bottom: 8px;
+            font-weight: normal;
+        }
+
+        .article-footer {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+            text-align: right;
+            font-size: 15px;
+            color: #666;
+            line-height: 1.6;
+        }
+
+        /* --- 响应式设计 (适配手机端) --- */
+        @media (max-width: 768px) {
+            .top-bar {
+                padding: 0 15px;
+                flex-wrap: wrap;
+                height: auto;
+                padding-top: 10px;
+                padding-bottom: 10px;
+            }
+            .logo img { height: 30px; }
+            .logo { font-size: 18px; }
+            .logo span { font-size: 12px; margin-left: 5px; }
+            .back-home-btn { padding: 6px 12px; font-size: 13px; }
+
+            .article-card {
+                padding: 30px 20px;
+            }
+            .article-header h1 {
+                font-size: 24px;
+            }
+            .article-content {
+                font-size: 15px;
+            }
+            .article-content ol, .article-content ul {
+                margin-left: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 顶部通栏 (与官网保持统一) -->
+    <header class="top-bar">
+        <div class="logo">
+            <!-- 确保 images 下有 school_logo.png -->
+            <img src="images/school_logo.png" alt="明德私立学校校徽">
+            明德私立学校 <span>MINGDE PRIVATE SCHOOL</span>
+        </div>
+        <!-- 返回官网首页的按钮 -->
+        <a href="school.html" class="back-home-btn">← 返回首页</a>
+    </header>
+
+    <!-- 正文容器 -->
+    <main class="article-container">
+        <div class="article-card">
+            
+            <!-- 文章头部信息 -->
+            <div class="article-header">
+                <h1>明德启新程，汇流育英才——我校正式启动“明德特招生计划”暨深化教育教学改革实施方案</h1>
+                <div class="article-meta">
+                    <span>发布部门：明德私立学校 校长室</span>
+                    <span>发布日期：2019年6月11日</span>
+                </div>
+            </div>
+
+            <!-- 文章正文内容 -->
+            <div class="article-content">
+                <p>为进一步破除单一评价体系壁垒，激发校园文化活力，经校理事会第五次会议审议通过，明德私立学校决定于2019年秋季学期起，全面启动以“为有源头活水来”为核心宗旨的“明德<span class="text-black-bold">特招生</span>计划”，同步推进学风建设与课程体系深度改革。此举标志着我校从“优质生源集中培养”向“多元人才共育共生”的战略转型。</p>
+
+                <p class="sub-title">一、改革背景：从“精筛”到“深耕”</p>
+                <p>建校二十余年来，明德私立学校以卓越的教学质量和严谨的管理风格享誉市内外。然而，近年来校内调研显示，生源背景的高度同质化（以中高收入家庭子女为主）在一定程度上导致了学习生态的“温室化”倾向——学生竞争意识有余，而抗逆能力、现实关切与跨界视野不足。</p>
+                <p>“教育不是圈养，而是点燃原野上的火种。”校长顾怀远在6月10日的全校教职工大会上指出，“真正的名校，不应只证明自己能教好‘已经很好’的学生，而应证明自己能唤醒每一块独特的矿石。我们需要引入不同的流速、不同的温度，让整条河流活起来。”</p>
+                <p>基于此，学校将“扩大招生光谱”作为新一轮规划的破局点，以“特招生”为切入点，倒逼评价体系、德育体系与课堂教学方式的全面迭代。</p>
+
+                <p class="sub-title">二、“特招生计划”核心内容</p>
+                <p>1. 招生定位与对象</p>
+                <p>“特招生”不同于传统的“奖学金优等生”或“体育艺术特长生”。其核心标准为：家境普通或困难，但具备突出的学术潜质、坚韧的意志品质或跨领域的创造性思维。具体包括：</p>
+                <p>申请家庭人均年可支配收入不高于本市上一年度城镇居民人均可支配收入中位数，且学生本人学习成绩长期位列所在学校（含非重点校）年级前3%；</p>
+                <p>或在自然科学、人文社科、工程技术、艺术设计等领域有独立完成的、可验证的探究性成果（如小论文、发明方案、田野调查报告等）；</p>
+                <p>或在逆境中展现出显著的自律性、责任感或领导力（需提供详实事例与推荐信）。</p>
+                <p>2. 招生名额与培养方式</p>
+                <p>2026年首期计划招收 12-15名 特招生，覆盖高一年级，后续逐年扩大至每年30人。入选学生将：</p>
+                <p>享受全额学费减免，并给予每月定额生活补贴；</p>
+                <p>编入常规班级，不设“特招班”或“励志班”，实行完全融合教育；</p>
+                <p>配备一名“成长导师”（由骨干教师担任），负责学业规划、心理疏导与社会实践衔接，周期为三年。</p>
+                <p>3. 评价与退出机制</p>
+                <p>特招生须每学期提交《成长发展白皮书》，内容包括学业成绩、项目进展、自我反思与社团活动记录。若连续两学期未达基本学业要求或出现严重违纪，将调整资助资格，但保留学籍，确保“不因标签而优待，亦不因标签而歧视”。</p>
+
+                <p class="sub-title">三、配套改革：以“活水”激荡“全池”</p>
+                <p>特招生计划并非孤立政策，而是我校整体教改的“先手棋”。同步推行的配套措施包括：</p>
+                <p>课程模块重构：学校每周增设专门的社团活动时间（统一安排在周五下午第三、四节课），要求每位学生必须至少加入一个社团（涵盖学术、科技、艺术、体育、公益等类别）。各社团须在期末进行年度成果考核，由指导老师与社长共同撰写《社团考核报告书》提交至德育处，考核结果记入学生综合素质档案。</p>
+                <p>教师角色转型：设立“教学创新激励基金”，鼓励教师开发分层任务卡、项目式学习方案，适应不同基础学生的学习节奏；</p>
+                <p>德育评价革新：将“共情力”“协作贡献度”“挫折应对记录”纳入综合素质档案，打破唯分数论的学生画像。</p>
+                <p>教务长林芳表示：“我们不是在做慈善，也不是在做实验。我们是在修复一个完整的教育生态——让来自市井的敏锐与来自书斋的严谨对话，让操场上的汗水与实验室的数据互文。这才是‘明德’二字的本来含义：在明明德，在亲民，在止于至善。”</p>
+
+                <p class="sub-title">四、招生流程与公开透明承诺</p>
+                <p>为确保公平公正，特招生选拔将采取“两轮审核 + 一次实地家访 + 终审答辩”制度。评审委员会由校内外专家（包括高校教育学者、公益基金会代表、一线教师及家长委员会成员）共同组成，所有过程材料接受社会监督。</p>
+                <p>重要时间节点：</p>
+                <p>2019年6月20日 – 7月10日：在线提交申请材料（成绩证明、家庭情况说明、自述信、推荐信）</p>
+                <p>2019年7月15日 – 7月30日：初审名单公布，启动实地家访与线上补充访谈</p>
+                <p>2019年8月10日：终审答辩会</p>
+                <p>2019年8月15日：录取结果公示，为期一周，无异议后发放正式录取通知书</p>
+                <p>申请平台将于6月20日开放，详情请关注我校官网“招生专栏”或致电招生办公室咨询专线：XXXX-XXXX6713（工作日 9:00-17:00）。</p>
+
+                <p class="sub-title">五、结语：河流从不拒绝支流</p>
+                <p>明德私立学校此次改革，并非一时之举，而是基于对“教育公平”与“教育卓越”辩证关系的长期思考。我们相信，当不同流速的水相遇，激荡的不是浑浊，而是更深阔的奔涌。</p>
+                <p>特招生带来的，不只是新的面孔，更是新的问题、新的视角和新的韧性。对于原有学生而言，这是一堂无需课本的“差异课”；对于教师而言，这是一次检验教育本心的“开放考”；对于学校本身，这是一次从“筛选者”走向“培育者”的郑重转身。</p>
+                <p>我们诚挚欢迎所有怀抱热望的学子，无论来处，只问前路。明德，愿做那条因活水而常新的河。</p>
+            </div>
+
+            <!-- 文章尾部签名 -->
+            <div class="article-footer">
+                <p>明德私立学校 校长室</p>
+                <p style="font-size: 13px; color: #999; margin-top: 5px;">2019年6月11日</p>
+            </div>
+
+        </div>
+    </main>
+
+</body>
+</html>

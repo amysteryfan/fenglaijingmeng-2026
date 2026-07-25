@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>韶光大道突发两车相撞交通事故 致两人遇难一人受伤 - 韶光日报网</title>
+    <style>
+        /* --- 全局样式重置（与商战页面一致） --- */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: "Microsoft YaHei", "PingFang SC", Arial, sans-serif; line-height: 1.6; color: #333; background-color: #f4f4f4; }
+        a { text-decoration: none; color: #333; transition: color 0.2s; }
+        a:hover { color: #ff9900; }
+        ul { list-style: none; }
+
+        /* --- 顶部导航栏 --- */
+        .top-nav { background-color: #222; color: #fff; padding: 10px 0; position: sticky; top: 0; z-index: 1000; }
+        .nav-container { max-width: 1270px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; padding: 0 15px; }
+        .logo { font-size: 24px; font-weight: bold; color: #ff9900; letter-spacing: 1px; }
+        .nav-links { display: flex; gap: 25px; }
+        .nav-links a { color: #eee; font-size: 15px; font-weight: 500; }
+        .nav-links a:hover { color: #ff9900; }
+        
+        .search-area { display: flex; align-items: center; gap: 10px; }
+        .search-input { background: #333; border: 1px solid #555; color: #fff; padding: 6px 12px; border-radius: 4px; outline: none; width: 180px; transition: all 0.3s; }
+        .search-input:focus { border-color: #ff9900; background: #444; }
+        .search-btn { background: #ff9900; color: #fff; border: none; padding: 6px 15px; border-radius: 4px; cursor: pointer; font-size: 14px; transition: background 0.2s; }
+        .search-btn:hover { background: #e08800; }
+        .search-btn:active { transform: scale(0.98); }
+
+        /* --- 关闭按钮样式 --- */
+        .close-btn {
+            color: #eee;
+            font-size: 22px;
+            font-weight: 300;
+            line-height: 1;
+            margin-left: 5px;
+            cursor: pointer;
+            transition: color 0.2s, transform 0.2s;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 32px;
+            height: 32px;
+            text-decoration: none;
+            border-radius: 50%;
+        }
+        .close-btn:hover {
+            color: #ff9900;
+            transform: scale(1.1);
+            background-color: rgba(255, 255, 255, 0.08);
+        }
+
+        /* --- 主体布局 --- */
+        .main-wrapper { max-width: 1270px; margin: 20px auto; display: flex; gap: 20px; padding: 0 15px; align-items: flex-start; }
+
+        /* --- 左侧边栏 --- */
+        .left-sidebar { width: 220px; background: #fff; border-radius: 6px; padding: 20px; text-align: center; box-shadow: 0 2px 5px rgba(0,0,0,0.05); flex-shrink: 0; }
+        .media-avatar { width: 70px; height: 70px; background: #ff9900; border-radius: 50%; margin: 0 auto 10px; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 24px; font-weight: bold; }
+        .media-name { font-size: 18px; font-weight: bold; margin-bottom: 5px; color: #ff9900; }
+        .media-desc { font-size: 12px; color: #888; margin-bottom: 15px; }
+        .subscribe-btn { display: block; width: 100%; background: #ff9900; color: #fff; border: none; padding: 8px 0; border-radius: 20px; cursor: pointer; margin-bottom: 20px; font-weight: bold; transition: background 0.2s; }
+        .subscribe-btn:hover { background: #e08800; }
+        .stats-row { display: flex; justify-content: space-around; border-top: 1px solid #eee; padding-top: 15px; }
+        .stat-item span { display: block; }
+        .stat-num { font-weight: bold; font-size: 16px; }
+        .stat-label { font-size: 12px; color: #999; }
+
+        /* --- 中间新闻内容区 --- */
+        .news-article { 
+            flex: 1; 
+            background: #fff; 
+            padding: 40px; 
+            border-radius: 6px; 
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05); 
+            min-width: 0; 
+        }
+        .article-title { font-size: 28px; font-weight: bold; line-height: 1.4; margin-bottom: 15px; color: #222; }
+        .article-meta { font-size: 13px; color: #999; margin-bottom: 30px; border-bottom: 1px solid #eee; padding-bottom: 15px; }
+        .article-meta span { margin-right: 15px; }
+        
+        /* 电头颜色改为橙黄色 */
+        .reporter-info { color: #ff9900; font-weight: normal; }
+
+        .article-body p { margin-bottom: 20px; font-size: 17px; line-height: 1.8; text-align: justify; color: #333; }
+        .article-body strong { color: #222; }
+        .article-footer { margin-top: 40px; font-size: 13px; color: #999; text-align: right; font-style: normal; }
+
+        /* --- 右侧热门精选 --- */
+        .right-sidebar { width: 280px; background: #fff; border-radius: 6px; padding: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); flex-shrink: 0; }
+        .hot-header { font-size: 18px; font-weight: bold; margin-bottom: 20px; border-left: 4px solid #ff9900; padding-left: 10px; }
+        .hot-list li { margin-bottom: 15px; padding-bottom: 15px; border-bottom: 1px dashed #eee; }
+        .hot-list li:last-child { border-bottom: none; margin-bottom: 0; }
+        .hot-link { font-size: 15px; line-height: 1.5; color: #333; display: block; }
+        .hot-link:hover { color: #ff9900; }
+
+        /* --- 响应式适配 --- */
+        @media (max-width: 992px) {
+            .main-wrapper { flex-direction: column; }
+            .left-sidebar, .right-sidebar { width: 100%; }
+            .nav-links { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 顶部导航 -->
+    <header class="top-nav">
+        <div class="nav-container">
+            <div class="logo">韶光日报网</div>
+            <nav class="nav-links">
+                <a href="#">新闻</a>
+                <a href="#">社会</a>
+                <a href="#">教育</a>
+                <a href="#">民生</a>
+                <a href="#">更多 ▼</a>
+            </nav>
+            <div class="search-area">
+                <input type="text" class="search-input" placeholder="搜索新闻...">
+                <button class="search-btn" onclick="alert('正在搜索：' + this.previousElementSibling.value)">搜索</button>
+                <!-- 关闭按钮跳转至 search_shendanyun.html -->
+                <a href="search_shendanyun.html" class="close-btn" title="关闭页面">✕</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- 主体内容 -->
+    <div class="main-wrapper">
+        
+        <!-- 左侧边栏 -->
+        <aside class="left-sidebar">
+            <div class="media-avatar">韶</div>
+            <div class="media-name">韶光日报社会版</div>
+            <div class="media-desc">关注社会民生，传递真实声音</div>
+            <button class="subscribe-btn">+ 订阅</button>
+            <div class="stats-row">
+                <div class="stat-item"><span class="stat-num">3.5万</span><span class="stat-label">文章</span></div>
+                <div class="stat-item"><span class="stat-num">8亿</span><span class="stat-label">总阅读</span></div>
+            </div>
+        </aside>
+
+        <!-- 中间新闻正文 -->
+        <main class="news-article">
+            <!-- 无“独家”标签 -->
+            <h1 class="article-title">韶光大道突发两车相撞交通事故 致两人遇难一人受伤 涉事司机被控制</h1>
+            
+            <div class="article-meta">
+                <span class="reporter-info">本报讯（记者 苏辰）</span>
+                <time>2022-04-22 18:00</time>
+                <span>发布于：本市</span>
+            </div>
+
+            <div class="article-body">
+                <p>2022年4月21日晚间，韶光市新辰区韶光大道发生一起严重道路交通事故，两车相撞引发轿车侧翻撞击桥墩，事故造成两人当场不幸身亡、一人受伤送医。事发后，公安、应急、卫健多部门联动紧急处置现场，目前事故善后及后续调查工作已全面展开。</p>
+
+                <p>据韶光市公安局新辰区分局通报，本次事故发生于4月21日22时43分许。事发路段为韶光大道外环路段，当晚，48岁男子刘某某驾驶轻型厢式货车，沿外环路由北向南行驶途中，因驾驶员操作不当，突发交通事故。货车与路面正常行驶的小型轿车发生剧烈碰撞，巨大的撞击力致使小型轿车失控侧翻，随后径直撞上道路旁桥墩，车辆损毁严重，现场情况十分危急。</p>
+
+                <p>事故发生后，周边群众第一时间拨打报警及急救电话。辖区公安机关接到警情后，火速派遣警力赶赴事故现场，迅速封锁事故路段、设置警戒区域，疏导过往车辆及围观群众，避免二次事故发生。同时，公安部门联合应急救援、医疗卫生等多部门，同步开展伤员抢救、现场勘查、痕迹取证等一系列应急处置工作，全力推进事故处置。</p>
+
+                <p>经警方初步核查事故人员伤亡情况，本次事故损失惨重。小型轿车驾驶员李某某、乘车人沈某某因伤势过重，经现场医护人员确认，已当场不幸遇难。车内另一名乘车人宋某某身体多处受伤，现场救援人员第一时间将其送往就近医院救治，目前伤者已办理住院手续，正在接受专业治疗，生命体征平稳。</p>
+
+                <p>事故发生后，公安机关第一时间将涉事货车驾驶员刘某某依法控制，开展全面核查工作。经专业检测排查，已排除刘某某酒驾、毒驾等交通违法行为嫌疑。</p>
+
+                <p>截至目前，事故现场已清理完毕，涉事路段交通秩序已全面恢复正常。事故具体成因、车辆行驶状态、详细违规细节等相关情况，公安机关仍在进一步严谨调查取证中。同时，善后处理工作正依法有序进行。</p>
+
+                <p>交警部门借此提醒广大市民，夜间行车视线较差，驾驶人需严格遵守交通规则，集中注意力、谨慎驾驶，杜绝操作失误、超速、分心驾驶等危险行为，时刻绷紧交通安全防线，最大限度规避道路交通事故风险。</p>
+
+                <p>本报将持续跟进。</p>
+            </div>
+
+            <div class="article-footer">
+                （韶光日报）
+            </div>
+        </main>
+
+        <!-- 右侧热门精选 -->
+        <aside class="right-sidebar">
+            <div class="hot-header">热门精选</div>
+            <ul class="hot-list">
+                <li><a href="#" class="hot-link">本地突发：某小区凌晨火灾，消防员紧急疏散居民...</a></li>
+                <li><a href="#" class="hot-link">教育部新规：中小学课后服务时长将延长至18:00...</a></li>
+                <li><a href="#" class="hot-link">天气预警：未来三天本市将有强降雨，注意防范...</a></li>
+                <li><a href="#" class="hot-link">民生关注：老旧小区改造进度公示，涉及5个社区...</a></li>
+            </ul>
+        </aside>
+
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>风来搜索 - 晋山村</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Microsoft Yahei", "PingFang SC", sans-serif;
+        }
+
+        body {
+            background: url("images/bg.jpg") no-repeat center center fixed;
+            background-size: cover;
+            min-height: 100vh;
+            padding: 18px 3%;
+            color: #333;
+        }
+
+        /* 顶部搜索栏 */
+        .search-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            max-width: 1200px;
+            margin: 0 auto 24px;
+        }
+
+        .search-input {
+            flex: 1;
+            height: 46px;
+            padding: 0 18px;
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            border-radius: 8px;
+            font-size: 16px;
+            outline: none;
+            background: rgba(255, 255, 255, 0.95);
+            color: #222;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        .search-btn {
+            height: 46px;
+            padding: 0 20px;
+            border-radius: 8px;
+            border: none;
+            background-color: #d92f2f;
+            color: #fff;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            white-space: nowrap;
+        }
+
+        .search-btn:hover {
+            background-color: #b82424;
+        }
+
+        /* 搜索结果容器 */
+        .result-wrap {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.90);
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        /* 结果数量提示 */
+        .result-count {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 24px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid #eee;
+        }
+
+        /* 单条搜索结果 */
+        .result-item {
+            margin-bottom: 28px;
+            padding-bottom: 24px;
+            border-bottom: 1px solid #e8e8e8;
+        }
+
+        .result-item:last-child {
+            margin-bottom: 0;
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+
+        .result-title {
+            font-size: 20px;
+            margin-bottom: 8px;
+            line-height: 1.45;
+        }
+
+        .result-title a {
+            color: #2b579a;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .result-title a:hover {
+            text-decoration: underline;
+        }
+
+        .result-desc {
+            font-size: 15px;
+            color: #555;
+            line-height: 1.7;
+            margin-bottom: 6px;
+        }
+
+        .result-source {
+            font-size: 13px;
+            color: #777;
+        }
+
+        /* 广告标签 */
+        .tag-ad {
+            display: inline-block;
+            font-size: 12px;
+            color: #d92f2f;
+            border: 1px solid #d92f2f;
+            padding: 2px 7px;
+            border-radius: 4px;
+            margin-left: 10px;
+            font-weight: 500;
+            background: rgba(217, 47, 47, 0.06);
+        }
+
+        /* 广告词条底部强调 */
+        .ad-item {
+            background: rgba(217, 47, 47, 0.04);
+            border-radius: 8px;
+            padding: 18px;
+            margin-top: 8px;
+        }
+
+        /* 分页区域 */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            margin-top: 32px;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .page-btn {
+            padding: 8px 14px;
+            border-radius: 6px;
+            border: 1px solid #ddd;
+            background: #fff;
+            color: #555;
+            cursor: pointer;
+            font-size: 14px;
+            white-space: nowrap;
+        }
+
+        .page-btn:hover {
+            border-color: #d92f2f;
+            color: #d92f2f;
+        }
+
+        .page-btn.active {
+            background: #d92f2f;
+            color: #fff;
+            border-color: #d92f2f;
+        }
+
+        /* 手机适配 */
+        @media (max-width: 768px) {
+            body {
+                padding: 12px 4%;
+            }
+
+            .search-header {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .search-btn {
+                width: 100%;
+            }
+
+            .result-wrap {
+                padding: 18px;
+            }
+
+            .result-title {
+                font-size: 18px;
+            }
+
+            .result-desc {
+                font-size: 14px;
+            }
+
+            .pagination {
+                gap: 6px;
+            }
+
+            .page-btn {
+                padding: 6px 10px;
+                font-size: 13px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="search-header">
+        <input class="search-input" value="晋山村">
+        <button class="search-btn" onclick="location.href='browser.html'">回到搜索</button>
+    </div>
+
+    <div class="result-wrap">
+        <div class="result-count">找到约 18,300 条结果</div>
+
+        <!-- 结果1 -->
+        <div class="result-item">
+            <div class="result-title">
+                <a href="javascript:void(0);">晋山村-倚靠晋山森林公园的原生态传统村落概况</a>
+            </div>
+            <div class="result-desc">
+                晋山村坐落于晋山山麓深处，整体区位相对闭塞、对外往来较少，村落紧邻晋山森林公园原生未开发片区，境内青岚谷自然风光秀丽且至今保持原始样貌，村内留存多处旧式乡土建筑与百年古祠堂。
+            </div>
+            <div class="result-source">风来百科</div>
+        </div>
+
+        <!-- 结果2 -->
+        <div class="result-item">
+            <div class="result-title">
+                <a href="javascript:void(0);">走入晋山村，藏在晋山深处与世隔绝的山野古村</a>
+            </div>
+            <div class="result-desc">
+                顺着山间土路驶入晋山村，外界的喧嚣被群山尽数隔绝。村外青岚谷溪水潺潺、林木繁茂，整片山谷没有人工开发痕迹，老旧巷道与矗立的古建筑，保留着最原汁原味的山村烟火气息。
+            </div>
+            <div class="result-source">山野独行手记</div>
+        </div>
+
+        <!-- 结果3 (保留正常页面跳转) -->
+        <div class="result-item">
+            <div class="result-title">
+                <a href="news_jinshancun.html">晋山村突发山林火情 多部门连夜扑救 无人员伤亡</a>
+            </div>
+            <div class="result-desc">
+                2026年6月18日傍晚，韶光市晋岚区晋山村突发火情，局部林地起火蔓延。火情发生后，属地乡镇、应急、消防、林业、公安等多部门快速响应、联动处置，连夜开展灭火作业。
+            </div>
+            <div class="result-source">韶光日报社会版</div>
+        </div>
+
+        <!-- 结果4 -->
+        <div class="result-item">
+            <div class="result-title">
+                <a href="javascript:void(0);">晋山村出行指南｜探访原生态古村、徒步青岚谷野景注意事项</a>
+            </div>
+            <div class="result-desc">
+                晋山村交通较为闭塞，暂无商业化旅游配套。推荐路线可从村口进入村落游览古建筑群，沿小径进入晋山森林公园边缘、青岚谷原生态区域徒步观景，全程需注意山林行进安全。
+            </div>
+            <div class="result-source">乡土旅行攻略社</div>
+        </div>
+
+        <!-- 结果5 -->
+        <div class="result-item">
+            <div class="result-title">
+                <a href="javascript:void(0);">百年祠堂守望乡土，晋山村古祠堂承载世代村落宗族记忆</a>
+            </div>
+            <div class="result-desc">
+                晋山村中心的古祠堂修建于清代中期，木构建筑保存完好，长久以来作为村里祭祖、议事的公共空间。在相对封闭的村落环境里，古祠堂成为维系村民乡土归属感最重要的建筑载体。
+            </div>
+            <div class="result-source">乡土人文观察</div>
+        </div>
+
+        <!-- 结果6 -->
+        <div class="result-item">
+            <div class="result-title">
+                <a href="javascript:void(0);">群山环抱自成一隅，解读晋山村与世隔绝的地理成因</a>
+            </div>
+            <div class="result-desc">
+                晋山村被晋山山体合围，仅一条盘山道路连通乡镇主干道，村子西侧衔接晋山森林公园原生保护带，南侧紧邻原生态青岚谷，天然的地理环境造就了村落长久封闭、少受外界打扰的格局。
+            </div>
+            <div class="result-source">韶光地理科普号</div>
+        </div>
+
+        <!-- 结果7 -->
+        <div class="result-item">
+            <div class="result-title">
+                <a href="javascript:void(0);">晋山村可以自驾进入吗？青岚谷、古祠堂参观相关须知</a>
+            </div>
+            <div class="result-desc">
+                晋山村道路狭窄，大型车辆不易通行；青岚谷属于未开发野域，无栈道、安保设施，不建议独自深入；村内古祠堂为宗族私有建筑，参观需要征得本村村民许可。
+            </div>
+            <div class="result-source">韶光民生问答社</div>
+        </div>
+
+        <!-- 结果8 广告 (保留正常页面跳转) -->
+        <div class="result-item ad-item">
+            <div class="result-title">
+                <a href="search_ad_brzj.html">百日战纪游戏节特惠中</a>
+                <span class="tag-ad">广告</span>
+            </div>
+        </div>
+
+        <!-- 分页 -->
+        <div class="pagination">
+            <button class="page-btn">上一页</button>
+            <button class="page-btn active">1</button>
+            <button class="page-btn">2</button>
+            <button class="page-btn">3</button>
+            <button class="page-btn">4</button>
+            <button class="page-btn">5</button>
+            <button class="page-btn">下一页</button>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>明德私立学校一高中女生郊游途中失踪，母亲陈百惠急寻线索 - 韶光日报网</title>
+    <style>
+        /* --- 全局样式重置（与商战页面一致） --- */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: "Microsoft YaHei", "PingFang SC", Arial, sans-serif; line-height: 1.6; color: #333; background-color: #f4f4f4; }
+        a { text-decoration: none; color: #333; transition: color 0.2s; }
+        a:hover { color: #ff9900; }
+        ul { list-style: none; }
+
+        /* --- 顶部导航栏 --- */
+        .top-nav { background-color: #222; color: #fff; padding: 10px 0; position: sticky; top: 0; z-index: 1000; }
+        .nav-container { max-width: 1270px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; padding: 0 15px; }
+        .logo { font-size: 24px; font-weight: bold; color: #ff9900; letter-spacing: 1px; }
+        .nav-links { display: flex; gap: 25px; }
+        .nav-links a { color: #eee; font-size: 15px; font-weight: 500; }
+        .nav-links a:hover { color: #ff9900; }
+        
+        .search-area { display: flex; align-items: center; gap: 10px; }
+        .search-input { background: #333; border: 1px solid #555; color: #fff; padding: 6px 12px; border-radius: 4px; outline: none; width: 180px; transition: all 0.3s; }
+        .search-input:focus { border-color: #ff9900; background: #444; }
+        .search-btn { background: #ff9900; color: #fff; border: none; padding: 6px 15px; border-radius: 4px; cursor: pointer; font-size: 14px; transition: background 0.2s; }
+        .search-btn:hover { background: #e08800; }
+        .search-btn:active { transform: scale(0.98); }
+
+        /* --- 关闭按钮样式 --- */
+        .close-btn {
+            color: #eee;
+            font-size: 22px;
+            font-weight: 300;
+            line-height: 1;
+            margin-left: 5px;
+            cursor: pointer;
+            transition: color 0.2s, transform 0.2s;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 32px;
+            height: 32px;
+            text-decoration: none;
+            border-radius: 50%;
+        }
+        .close-btn:hover {
+            color: #ff9900;
+            transform: scale(1.1);
+            background-color: rgba(255, 255, 255, 0.08);
+        }
+
+        /* --- 主体布局 --- */
+        .main-wrapper { max-width: 1270px; margin: 20px auto; display: flex; gap: 20px; padding: 0 15px; align-items: flex-start; }
+
+        /* --- 左侧边栏 --- */
+        .left-sidebar { width: 220px; background: #fff; border-radius: 6px; padding: 20px; text-align: center; box-shadow: 0 2px 5px rgba(0,0,0,0.05); flex-shrink: 0; }
+        .media-avatar { width: 70px; height: 70px; background: #ff9900; border-radius: 50%; margin: 0 auto 10px; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 24px; font-weight: bold; }
+        .media-name { font-size: 18px; font-weight: bold; margin-bottom: 5px; color: #ff9900; }
+        .media-desc { font-size: 12px; color: #888; margin-bottom: 15px; }
+        .subscribe-btn { display: block; width: 100%; background: #ff9900; color: #fff; border: none; padding: 8px 0; border-radius: 20px; cursor: pointer; margin-bottom: 20px; font-weight: bold; transition: background 0.2s; }
+        .subscribe-btn:hover { background: #e08800; }
+        .stats-row { display: flex; justify-content: space-around; border-top: 1px solid #eee; padding-top: 15px; }
+        .stat-item span { display: block; }
+        .stat-num { font-weight: bold; font-size: 16px; }
+        .stat-label { font-size: 12px; color: #999; }
+
+        /* --- 中间新闻内容区 --- */
+        .news-article { 
+            flex: 1; 
+            background: #fff; 
+            padding: 40px; 
+            border-radius: 6px; 
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05); 
+            min-width: 0; 
+        }
+        .article-title { font-size: 28px; font-weight: bold; line-height: 1.4; margin-bottom: 15px; color: #222; }
+        .article-meta { font-size: 13px; color: #999; margin-bottom: 30px; border-bottom: 1px solid #eee; padding-bottom: 15px; }
+        .article-meta span { margin-right: 15px; }
+        
+        /* 电头颜色改为橙黄色 */
+        .reporter-info { color: #ff9900; font-weight: normal; }
+
+        .article-body p { margin-bottom: 20px; font-size: 17px; line-height: 1.8; text-align: justify; color: #333; }
+        .article-body strong { color: #222; }
+        .article-footer { margin-top: 40px; font-size: 13px; color: #999; text-align: right; font-style: normal; }
+
+        /* --- 右侧热门精选 --- */
+        .right-sidebar { width: 280px; background: #fff; border-radius: 6px; padding: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); flex-shrink: 0; }
+        .hot-header { font-size: 18px; font-weight: bold; margin-bottom: 20px; border-left: 4px solid #ff9900; padding-left: 10px; }
+        .hot-list li { margin-bottom: 15px; padding-bottom: 15px; border-bottom: 1px dashed #eee; }
+        .hot-list li:last-child { border-bottom: none; margin-bottom: 0; }
+        .hot-link { font-size: 15px; line-height: 1.5; color: #333; display: block; }
+        .hot-link:hover { color: #ff9900; }
+
+        /* --- 响应式适配 --- */
+        @media (max-width: 992px) {
+            .main-wrapper { flex-direction: column; }
+            .left-sidebar, .right-sidebar { width: 100%; }
+            .nav-links { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 顶部导航 -->
+    <header class="top-nav">
+        <div class="nav-container">
+            <div class="logo">韶光日报网</div>
+            <nav class="nav-links">
+                <a href="#">新闻</a>
+                <a href="#">社会</a>
+                <a href="#">教育</a>
+                <a href="#">民生</a>
+                <a href="#">更多 ▼</a>
+            </nav>
+            <div class="search-area">
+                <input type="text" class="search-input" placeholder="搜索新闻...">
+                <button class="search-btn" onclick="alert('正在搜索：' + this.previousElementSibling.value)">搜索</button>
+                <!-- 关闭按钮跳转至 search_jiaoyou.html -->
+                <a href="search_jiaoyou.html" class="close-btn" title="关闭页面">✕</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- 主体内容 -->
+    <div class="main-wrapper">
+        
+        <!-- 左侧边栏 -->
+        <aside class="left-sidebar">
+            <div class="media-avatar">韶</div>
+            <div class="media-name">韶光日报社会版</div>
+            <div class="media-desc">关注社会民生，传递真实声音</div>
+            <button class="subscribe-btn">+ 订阅</button>
+            <div class="stats-row">
+                <div class="stat-item"><span class="stat-num">3.5万</span><span class="stat-label">文章</span></div>
+                <div class="stat-item"><span class="stat-num">8亿</span><span class="stat-label">总阅读</span></div>
+            </div>
+        </aside>
+
+        <!-- 中间新闻正文 -->
+        <main class="news-article">
+            <!-- 已删除“独家”标签 -->
+            <h1 class="article-title">明德私立学校一高中女生郊游途中失踪，母亲陈百惠急寻线索</h1>
+            
+            <div class="article-meta">
+                <span class="reporter-info">本报讯（记者 赵涵）</span>
+                <time>2022-04-21 08:30</time>
+                <span>发布于：本市</span>
+            </div>
+
+            <div class="article-body">
+                <p>2022 年 4 月 20 日，本市明德私立学校组织高中部学生前往晋山国家森林公园开展春季社会实践。下午 2 时 30 分许，一名高三女生在分组活动期间脱离视线，至今未归。失踪学生母亲陈百惠已向辖区派出所报案，并在多个平台发布寻人信息，恳请市民留意。</p>
+
+                <p>据校方情况说明，当日上午 7 时 50 分，明德私立学校高三年级 214 名学生及 15 名随队教师乘大巴出发，目的地为晋山景区 "自然地理考察" 路线，属高中部每学期一次的实践课程。午饭后 13 时至 15 时为分组考察时段，每组 10 至 15 人配 1 名指导老师。失踪女生为高三（2）班的学生，所在小组当天的课题是 "晋山植被垂直分布"。同组同学回忆自己于14时40分看到的失踪女生的情况：“我看到她一开始在景区中段 ' 望叶亭 ' 附近的溪边，然后逐渐朝上游走去，以为她只是想去取水质更为干净的水样，一会就回来，所以没有在意。”该同学还表示，失踪同学性格独立要强，平时什么事情都喜欢自己做，一个人行动也非常正常。但那却是她最后一次被人目击到行踪。约 15 时 10 分，高三年级集合点名时确认缺人。</p>
+
+                <p>"她头天晚上还在家跟我吵，说我对她关心不够，不该天天逼她去学校，早上出门摔门走的 —— 我连句 ' 路上小心 ' 都没好好跟她说。" 陈百惠在派出所做笔录时几度失声，"校服外套她嫌麻烦没穿，里面就一件黑色上衣，牛仔裤，短头发，左腕上戴了块银色小手表，是她去年打工攒钱，给自己买的生日礼物。" 据陈百惠描述，女儿身高约 170cm，体型偏瘦，随身背了只藏青色帆布双肩包，包里除笔记本、水壶外，还有一本没读完的《局外人》——"她最近迷加缪，我说看这书丧，她还顶我嘴。" 接受采访时，陈百惠更是泣不成声，说不出完整的句子，只能笨拙地强调着女儿当天的衣着打扮。</p>
+
+                <p>晋山派出所接警后，联合景区安保、消防及民间救援队展开搜山，重点排查望叶亭至后山废弃采石场一线。截至 21日发稿，仍未发现确切踪迹。景区方面调出的闸机记录显示，当日该女生未见离园记录；但晋山后山与相邻青岚谷一带有多条非正规山路，灌木茂密，部分路段无监控覆盖，给排查增加难度。园区工作人员表示，虽然明德私立学校选择的 “自然地理考察” 是成熟的旅游路线，但晋山森林公园中仍存在大量未开发区域，荒僻、原始、与世隔绝：“如果进入了未开发路段，搜寻范围和搜寻难度都是很大的。”</p>
+
+                <p>明德私立学校当晚发布情况通报，称 "对此次事件深表痛心，将全面配合警方调查，并立即启动校内安全管理自查，开展面向全校学生的安全宣讲"，但未就 "分组活动中指导教师是否在场" 这一细节作正面回应。据同组一名女生私下透露，当天下午指导老师曾被另一组叫走处理扭伤事故，"前后也就三十分钟，回来人就不在了"。</p>
+
+                <p>陈百惠的寻人启事已贴满景区周边村镇，微博转发逾万次。她写："囡囡，妈妈不逼你上学了，你回来，咱们去看你一直想看的海。——138××××0720，任何有价值线索，必有酬谢。" 在末尾，她又哀求般补充道：“就是找到囡囡的随身物品，我也愿意重谢。”</p>
+
+                <p>本报将继续跟进。</p>
+            </div>
+
+            <div class="article-footer">
+                （韶光日报）
+            </div>
+        </main>
+
+        <!-- 右侧热门精选 -->
+        <aside class="right-sidebar">
+            <div class="hot-header">热门精选</div>
+            <ul class="hot-list">
+                <li><a href="#" class="hot-link">本地突发：某小区凌晨火灾，消防员紧急疏散居民...</a></li>
+                <li><a href="#" class="hot-link">教育部新规：中小学课后服务时长将延长至18:00...</a></li>
+                <li><a href="#" class="hot-link">天气预警：未来三天本市将有强降雨，注意防范...</a></li>
+                <li><a href="#" class="hot-link">民生关注：老旧小区改造进度公示，涉及5个社区...</a></li>
+            </ul>
+        </aside>
+
+    </div>
+
+</body>
+</html>

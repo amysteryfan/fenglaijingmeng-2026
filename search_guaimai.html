@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>风来搜索 - 拐卖</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Microsoft Yahei", "PingFang SC", sans-serif;
+        }
+
+        body {
+            background: url("images/bg.jpg") no-repeat center center fixed;
+            background-size: cover;
+            min-height: 100vh;
+            padding: 18px 3%;
+            color: #333;
+        }
+
+        /* 顶部搜索栏 */
+        .search-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            max-width: 1200px;
+            margin: 0 auto 24px;
+        }
+
+        .search-input {
+            flex: 1;
+            height: 46px;
+            padding: 0 18px;
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            border-radius: 8px;
+            font-size: 16px;
+            outline: none;
+            background: rgba(255, 255, 255, 0.95);
+            color: #222;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        .search-btn {
+            height: 46px;
+            padding: 0 20px;
+            border-radius: 8px;
+            border: none;
+            background-color: #d92f2f;
+            color: #fff;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            white-space: nowrap;
+        }
+
+        .search-btn:hover {
+            background-color: #b82424;
+        }
+
+        /* 搜索结果容器 */
+        .result-wrap {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.90);
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        /* 结果数量提示 */
+        .result-count {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 24px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid #eee;
+        }
+
+        /* 单条搜索结果 */
+        .result-item {
+            margin-bottom: 28px;
+            padding-bottom: 24px;
+            border-bottom: 1px solid #e8e8e8;
+        }
+
+        .result-item:last-child {
+            margin-bottom: 0;
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+
+        .result-title {
+            font-size: 20px;
+            margin-bottom: 8px;
+            line-height: 1.45;
+        }
+
+        .result-title a {
+            color: #2b579a;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .result-title a:hover {
+            text-decoration: underline;
+        }
+
+        .result-desc {
+            font-size: 15px;
+            color: #555;
+            line-height: 1.7;
+            margin-bottom: 6px;
+        }
+
+        .result-source {
+            font-size: 13px;
+            color: #777;
+        }
+
+        /* 广告标签 */
+        .tag-ad {
+            display: inline-block;
+            font-size: 12px;
+            color: #d92f2f;
+            border: 1px solid #d92f2f;
+            padding: 2px 7px;
+            border-radius: 4px;
+            margin-left: 10px;
+            font-weight: 500;
+            background: rgba(217, 47, 47, 0.06);
+        }
+
+        /* 广告词条底部强调 */
+        .ad-item {
+            background: rgba(217, 47, 47, 0.04);
+            border-radius: 8px;
+            padding: 18px;
+            margin-top: 8px;
+        }
+
+        /* 分页区域 */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            margin-top: 32px;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .page-btn {
+            padding: 8px 14px;
+            border-radius: 6px;
+            border: 1px solid #ddd;
+            background: #fff;
+            color: #555;
+            cursor: pointer;
+            font-size: 14px;
+            white-space: nowrap;
+        }
+
+        .page-btn:hover {
+            border-color: #d92f2f;
+            color: #d92f2f;
+        }
+
+        .page-btn.active {
+            background: #d92f2f;
+            color: #fff;
+            border-color: #d92f2f;
+        }
+
+        /* 手机适配 */
+        @media (max-width: 768px) {
+            body {
+                padding: 12px 4%;
+            }
+
+            .search-header {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .search-btn {
+                width: 100%;
+            }
+
+            .result-wrap {
+                padding: 18px;
+            }
+
+            .result-title {
+                font-size: 18px;
+            }
+
+            .result-desc {
+                font-size: 14px;
+            }
+
+            .pagination {
+                gap: 6px;
+            }
+
+            .page-btn {
+                padding: 6px 10px;
+                font-size: 13px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="search-header">
+        <input class="search-input" value="拐卖">
+        <button class="search-btn" onclick="location.href='browser.html'">回到搜索</button>
+    </div>
+
+    <div class="result-wrap">
+        <div class="result-count">找到约 15,700 条结果</div>
+
+        <!-- 结果1 -->
+        <div class="result-item">
+            <div class="result-title">
+                <a href="javascript:void(0);">拐卖的意思 - 词语百科</a>
+            </div>
+            <div class="result-desc">
+                拐卖一般指以获利为目的，拐骗、绑架、收买、贩卖、接送、中转妇女、未成年人的违法犯罪行为，严重侵害他人人身自由、人格尊严与身心健康，属于我国法律严厉打击的恶性犯罪行为。
+            </div>
+            <div class="result-source">风来百科</div>
+        </div>
+
+        <!-- 结果2 -->
+        <div class="result-item">
+            <div class="result-title">
+                <a href="javascript:void(0);">风来普法：刑法对拐卖罪的量刑</a>
+            </div>
+            <div class="result-desc">
+                依据现行刑法规定，拐卖妇女、儿童基准刑期为五年以上十年以下有期徒刑并处罚金；存在拐卖多人、造成被害人重伤死亡、组织跨国拐卖等加重情节，最高可判处死刑，同时配套财产刑罚处置。
+            </div>
+            <div class="result-source">风来普法栏目</div>
+        </div>
+
+        <!-- 结果3 -->
+        <div class="result-item">
+            <div class="result-title">
+                <a href="javascript:void(0);">谈法：对于拐卖犯罪集团要依法重判</a>
+            </div>
+            <div class="result-desc">
+                司法机关审理团伙式拐卖案件时，对组织领导者、骨干分子坚持从严惩处原则，深挖犯罪链条上下游收买、接应、窝藏人员，全链路打击拐卖黑色产业链，斩断犯罪生存空间。
+            </div>
+            <div class="result-source">法制观察专栏</div>
+        </div>
+
+        <!-- 结果4 -->
+        <div class="result-item">
+            <div class="result-title">
+                <a href="javascript:void(0);">韶光市十年来拐卖收案数逐年下降</a>
+            </div>
+            <div class="result-desc">
+                结合韶光市公安系统公开办案数据，近十年本地拐卖案件立案、收案数量逐年稳步走低，依托天网监控、全民反诈防拐宣传、快速寻亲机制，市域拐卖类治安环境持续向好。
+            </div>
+            <div class="result-source">韶光日报法治版</div>
+        </div>
+
+        <!-- 结果5 (保留正常页面跳转) -->
+        <div class="result-item">
+            <div class="result-title">
+                <a href="news_guaimai.html">韶光警方摧毁拐卖儿童犯罪团伙</a>
+            </div>
+            <div class="result-desc">
+                日前，韶光公安刑侦部门成功摧毁一拐卖儿童犯罪团伙，解救出三十名受害者，并抓获七十余名犯罪嫌疑人。
+            </div>
+            <div class="result-source">韶光日报社会版</div>
+        </div>
+
+        <!-- 结果6 -->
+        <div class="result-item">
+            <div class="result-title">
+                <a href="javascript:void(0);">日常生活防拐科普：家长看护孩童的基础防范要点</a>
+            </div>
+            <div class="result-desc">
+                外出游玩、集市、公共场所不要让孩童脱离视线，拒绝陌生人投喂零食、跟随他人离开；留存孩子近期照片、身份信息，一旦走失第一时间报警，无需等待二十四小时。
+            </div>
+            <div class="result-source">城市民生安全资讯</div>
+        </div>
+
+        <!-- 结果7 -->
+        <div class="result-item">
+            <div class="result-title">
+                <a href="javascript:void(0);">被拐人员解救后的心理干预与社会帮扶工作说明</a>
+            </div>
+            <div class="result-desc">
+                多数被拐受害者会伴随长期心理创伤，韶光市联动心理机构、民政部门，为获救人员免费提供心理疏导、户籍恢复、就业帮扶，帮助受害者重新回归正常社会生活。
+            </div>
+            <div class="result-source">韶光民生服务平台</div>
+        </div>
+
+        <!-- 结果8 广告 (保留正常页面跳转) -->
+        <div class="result-item ad-item">
+            <div class="result-title">
+                <a href="search_ad_nzcp.html">逆转裁判重制版发售</a>
+                <span class="tag-ad">广告</span>
+            </div>
+        </div>
+
+        <!-- 分页 -->
+        <div class="pagination">
+            <button class="page-btn">上一页</button>
+            <button class="page-btn active">1</button>
+            <button class="page-btn">2</button>
+            <button class="page-btn">3</button>
+            <button class="page-btn">4</button>
+            <button class="page-btn">5</button>
+            <button class="page-btn">下一页</button>
+        </div>
+    </div>
+</body>
+</html>

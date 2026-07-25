@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>首届“金玉奖”圆满落幕，六位学子斩获殊荣 - 明德私立学校</title>
+
+    <!-- 引入全局样式和脚本 -->
+    <link rel="stylesheet" href="css/style.css">
+    <script src="js/main.js" defer></script>
+
+    <style>
+        /* --- 局部页面专属样式 --- */
+        
+        html, body {
+            height: auto;       /* 允许高度随内容拉伸 */
+            overflow-y: auto;   /* 强制启用纵向滚动 */
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Microsoft YaHei", "PingFang SC", sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        a { text-decoration: none; color: inherit; }
+        ul, ol { list-style: none; }
+
+        /* --- 顶部通栏 --- */
+        .top-bar {
+            background-color: #fff;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 40px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            z-index: 100;
+            width: 100%;
+            box-sizing: border-box;
+            flex-shrink: 0;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: #8B0000; /* 校徽红 */
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo img {
+            height: 40px;
+            margin-right: 12px;
+        }
+
+        .logo span {
+            margin-left: 10px;
+            font-size: 14px;
+            color: #666;
+            font-weight: normal;
+            letter-spacing: 1px;
+        }
+
+        /* 返回首页按钮 */
+        .back-home-btn {
+            background-color: #8B0000;
+            color: #fff;
+            padding: 8px 18px;
+            border-radius: 20px;
+            font-size: 14px;
+            transition: background 0.3s, transform 0.2s;
+            font-weight: bold;
+            box-shadow: 0 2px 4px rgba(139, 0, 0, 0.3);
+        }
+
+        .back-home-btn:hover {
+            background-color: #6d0000;
+            transform: translateY(-1px);
+        }
+
+        /* --- 文章容器 --- */
+        .article-container {
+            flex: 1 0 auto;
+            max-width: 880px;
+            margin: 40px auto;
+            padding: 0 20px;
+            width: 100%;
+        }
+
+        .article-card {
+            background-color: #fff;
+            border-radius: 8px;
+            padding: 50px 55px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+            border-top: 4px solid #8B0000;
+        }
+
+        /* 文章头部 */
+        .article-header {
+            text-align: center;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 25px;
+            margin-bottom: 30px;
+        }
+
+        .article-header h1 {
+            font-size: 30px;
+            color: #8B0000; /* 主标题深红 */
+            font-weight: bold; /* 主标题加粗 */
+            margin-bottom: 15px;
+            letter-spacing: 2px;
+        }
+
+        .article-meta {
+            color: #999;
+            font-size: 14px;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        /* 文章正文 */
+        .article-content {
+            font-size: 16px;
+            line-height: 1.8;
+            color: #444;
+        }
+
+        .article-content p {
+            margin-bottom: 15px;
+            text-indent: 2em; /* 首行缩进 */
+            font-weight: normal; /* 确保正文不加粗 */
+        }
+
+        /* 深红色加粗的子标题（一、二、三...） */
+        .article-content p.sub-title-red {
+            color: #8B0000;
+            font-weight: bold;
+            text-indent: 0; /* 子标题不需要首行缩进 */
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+
+        /* --- 附录下载模块 --- */
+        .appendix-block {
+            background-color: #fcfcfc;
+            border: 1px solid #e0e0e0;
+            border-radius: 6px;
+            padding: 20px 25px;
+            margin-top: 40px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .appendix-block h3 {
+            color: #8B0000;
+            font-size: 17px;
+            margin: 0;
+        }
+
+        .download-btn {
+            background-color: #8B0000;
+            color: #fff;
+            padding: 10px 24px;
+            border-radius: 30px;
+            font-size: 14px;
+            font-weight: bold;
+            transition: background 0.3s, transform 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .download-btn:hover {
+            background-color: #6d0000;
+            transform: translateY(-2px);
+            color: #fff;
+            box-shadow: 0 4px 8px rgba(139, 0, 0, 0.2);
+        }
+
+        .article-footer {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+            text-align: right;
+            font-size: 15px;
+            color: #666;
+            line-height: 1.6;
+        }
+
+        /* --- 响应式设计 --- */
+        @media (max-width: 768px) {
+            .top-bar {
+                padding: 0 15px;
+                flex-wrap: wrap;
+                height: auto;
+                padding-top: 10px;
+                padding-bottom: 10px;
+            }
+            .logo img { height: 30px; }
+            .logo { font-size: 18px; }
+            .logo span { font-size: 12px; margin-left: 5px; }
+            .back-home-btn { padding: 6px 12px; font-size: 13px; }
+
+            .article-card {
+                padding: 30px 20px;
+            }
+            .article-header h1 {
+                font-size: 24px;
+            }
+            .article-content {
+                font-size: 15px;
+            }
+            .appendix-block {
+                flex-direction: column;
+                align-items: stretch;
+                text-align: center;
+            }
+            .download-btn {
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 顶部通栏 (与官网保持统一) -->
+    <header class="top-bar">
+        <div class="logo">
+            <!-- 确保 images 下有 school_logo.png -->
+            <img src="images/school_logo.png" alt="明德私立学校校徽">
+            明德私立学校 <span>MINGDE PRIVATE SCHOOL</span>
+        </div>
+        <!-- 返回官网首页的按钮 -->
+        <a href="school.html" class="back-home-btn">← 返回首页</a>
+    </header>
+
+    <!-- 正文容器 -->
+    <main class="article-container">
+        <div class="article-card">
+            
+            <!-- 文章头部信息 -->
+            <div class="article-header">
+                <h1>首届“金玉奖”圆满落幕，六位学子斩获殊荣——明德私立学校科技创新人才培养再添里程碑</h1>
+                <div class="article-meta">
+                    <span>发布部门：明德私立学校 科技创新中心</span>
+                    <span>发布日期：2021年9月12日</span>
+                </div>
+            </div>
+
+            <!-- 文章正文内容 -->
+            <div class="article-content">
+                <p>9月12日下午，明德私立学校首届校园科技创新奖“金玉奖”颁奖典礼在明德礼堂隆重举行。校长顾怀远、校科技创新中心负责人及合作高校代表出席活动，为六名获奖学生颁发荣誉证书与奖杯。至此，历时五个月的首届“金玉奖”评选圆满收官。</p>
+
+                <p class="sub-title-red">奖项设立：以“金玉”之名，育科创之才</p>
+                <p>“金玉奖”由明德私立学校于2021年3月正式发起设立，旨在鼓励学生在科技创新、创新创业及科研探索领域取得实质性成果。奖项名称取“金声玉振”之意，寄望明德学子在科学探索中发出金石之声、成就玉成之美。</p>
+                <p>该奖项面向全校初高中在校学生开放申报，参评成果涵盖自然科学实验、工程技术发明、计算机软件开发、社会科学调研及商业创新方案等多个方向。评选标准注重成果的创新性、完整性与实际应用价值，要求参评者提交详细的研究报告、作品实物或可验证的数据支撑。</p>
+
+                <p class="sub-title-red">评审过程：多轮遴选，优中选优</p>
+                <p>首届“金玉奖”自2021年3月底启动申报以来，共收到有效参评项目47项，覆盖全校六个年级。评审工作分为初审、复审和终审答辩三个阶段，评审委员会由校内骨干教师、校外科研院所专家及合作企业技术负责人共同组成。</p>
+                <p>经过初审材料筛选，24个项目进入复审环节；复审通过现场演示与问辩，产生12个入围终审的项目；终审答辩于9月5日举行，每位入围者进行15分钟的项目陈述并接受评审组质询。最终，经评审委员会综合评定，产生一等奖1名、二等奖2名、三等奖3名，共计6个奖项。</p>
+
+                <p class="sub-title-red">获奖学生采访</p>
+                <p>一等奖获得者宋令仪在接受采访时表示，这个项目的灵感其实来自一次偶然。“有一次我在网上看到同一个很有意思的评论，出现在两个不同平台的不同账号下，语气和用词习惯几乎一模一样。我就想，能不能用算法把这种‘看不见的联系’自动找出来。”</p>
+                <p>她进一步介绍了项目的实际用途：“这套系统可以用于网络舆情溯源，比如查找同一水军在不同社交平台上的多个马甲账号；也可以辅助反电信诈骗，帮助受害者识别诈骗分子的其它社交伪装；在学术诚信方面，还能用于检测论文代写或一稿多投的跨平台痕迹。”</p>
+                <p>宋令仪坦言，从立项到完成花了将近半年时间，最难的部分不是写代码，而是构建一套可靠的特征体系——“这个过程很辛苦，还好有唐老师一直在帮助我。”当被问及获奖感受，她笑道：“很意外，也很开心。奖金打算送给一位对我来说很重要的朋友，推荐信的话——希望菲克申大学能看得上我吧。”</p>
+
+                <p class="sub-title-red">奖励措施：奖金+海外推荐双通道</p>
+                <p>根据“金玉奖”实施办法，一等奖获得者除获得人民币5万元的科研奖励金外，还将获得由学校出具的校长实名推荐信，可优先申请与明德私立学校建立合作关系的海外名校——菲克申大学（Fiction University） 的本科留学项目。二等奖、三等奖获得者分别获得2万元和1万元奖金。</p>
+                <p>校长顾怀远在颁奖致辞中表示：“‘金玉奖’不仅是奖杯与奖金，更是一份对好奇心的尊重、对探索精神的致敬。我希望获奖的同学们以此为起点，在更广阔的学术舞台上发出明德人的声音。”</p>
+                <p>据悉，第二届“金玉奖”将于2022年3月启动申报，届时将增设“创新创业专项赛道”，进一步扩大奖项覆盖面，并将增加获奖人数。</p>
+            </div>
+
+            <!-- 附录：获奖名单 -->
+            <div class="appendix-block">
+                <h3>附录：第一届“金玉奖”获奖名单</h3>
+                <!-- 占位下载链接，您稍后只需在根目录新建 files 文件夹，将文件放入即可 -->
+                <a href="files/jinyu_award_2021.xlsx" download class="download-btn">
+     ↓ 下载获奖名单文件 (XLSX)
+                </a>
+                <!-- 如果以后要换成 pdf，将上面一行改成如下即可：
+                <a href="files/jinyu_award_2021.pdf" download class="download-btn">
+                     ↓ 下载获奖名单文件 (PDF)
+                </a>
+                -->
+            </div>
+
+            <!-- 文章尾部签名 -->
+            <div class="article-footer">
+                <p>明德私立学校 科技创新中心</p>
+                <p style="font-size: 13px; color: #999; margin-top: 5px;">2021年9月12日</p>
+            </div>
+
+        </div>
+    </main>
+
+</body>
+</html>

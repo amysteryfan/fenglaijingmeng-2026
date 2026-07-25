@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>风来搜索 - 郊游</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Microsoft Yahei", "PingFang SC", sans-serif;
+        }
+
+        body {
+            background: url("images/bg.jpg") no-repeat center center fixed;
+            background-size: cover;
+            min-height: 100vh;
+            padding: 18px 3%;
+            color: #333;
+        }
+
+        /* 顶部搜索栏 */
+        .search-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            max-width: 1200px;
+            margin: 0 auto 24px;
+        }
+
+        .search-input {
+            flex: 1;
+            height: 46px;
+            padding: 0 18px;
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            border-radius: 8px;
+            font-size: 16px;
+            outline: none;
+            background: rgba(255, 255, 255, 0.95);
+            color: #222;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        .search-btn {
+            height: 46px;
+            padding: 0 20px;
+            border-radius: 8px;
+            border: none;
+            background-color: #d92f2f;
+            color: #fff;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            white-space: nowrap;
+        }
+
+        .search-btn:hover {
+            background-color: #b82424;
+        }
+
+        /* 搜索结果容器 */
+        .result-wrap {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.90);
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        /* 结果数量提示 */
+        .result-count {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 24px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid #eee;
+        }
+
+        /* 单条搜索结果 */
+        .result-item {
+            margin-bottom: 28px;
+            padding-bottom: 24px;
+            border-bottom: 1px solid #e8e8e8;
+        }
+
+        .result-item:last-child {
+            margin-bottom: 0;
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+
+        .result-title {
+            font-size: 20px;
+            margin-bottom: 8px;
+            line-height: 1.45;
+        }
+
+        .result-title a {
+            color: #2b579a;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .result-title a:hover {
+            text-decoration: underline;
+        }
+
+        .result-desc {
+            font-size: 15px;
+            color: #555;
+            line-height: 1.7;
+            margin-bottom: 6px;
+        }
+
+        .result-source {
+            font-size: 13px;
+            color: #777;
+        }
+
+        /* 广告标签 */
+        .tag-ad {
+            display: inline-block;
+            font-size: 12px;
+            color: #d92f2f;
+            border: 1px solid #d92f2f;
+            padding: 2px 7px;
+            border-radius: 4px;
+            margin-left: 10px;
+            font-weight: 500;
+            background: rgba(217, 47, 47, 0.06);
+        }
+
+        /* 广告词条底部强调 */
+        .ad-item {
+            background: rgba(217, 47, 47, 0.04);
+            border-radius: 8px;
+            padding: 18px;
+            margin-top: 8px;
+        }
+
+        /* 分页区域 */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            margin-top: 32px;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .page-btn {
+            padding: 8px 14px;
+            border-radius: 6px;
+            border: 1px solid #ddd;
+            background: #fff;
+            color: #555;
+            cursor: pointer;
+            font-size: 14px;
+            white-space: nowrap;
+        }
+
+        .page-btn:hover {
+            border-color: #d92f2f;
+            color: #d92f2f;
+        }
+
+        .page-btn.active {
+            background: #d92f2f;
+            color: #fff;
+            border-color: #d92f2f;
+        }
+
+        /* 手机适配 */
+        @media (max-width: 768px) {
+            body {
+                padding: 12px 4%;
+            }
+
+            .search-header {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .search-btn {
+                width: 100%;
+            }
+
+            .result-wrap {
+                padding: 18px;
+            }
+
+            .result-title {
+                font-size: 18px;
+            }
+
+            .result-desc {
+                font-size: 14px;
+            }
+
+            .pagination {
+                gap: 6px;
+            }
+
+            .page-btn {
+                padding: 6px 10px;
+                font-size: 13px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="search-header">
+        <input class="search-input" value="郊游">
+        <button class="search-btn" onclick="location.href='browser.html'">回到搜索</button>
+    </div>
+
+    <div class="result-wrap">
+        <div class="result-count">找到约 18,900 条结果</div>
+
+        <!-- 结果1 -->
+        <div class="result-item">
+            <div class="result-title">
+                <a href="javascript:void(0);">郊游的意思 - 词语百科</a>
+            </div>
+            <div class="result-desc">
+                郊游指人们离开城区居所，去往郊外原野、公园、山林、湖畔等自然场地游玩休憩的户外活动，包含短途踏青、野餐、徒步、观景等形式，不受长途旅行的行程束缚，是大众日常放松身心的休闲方式。
+            </div>
+            <div class="result-source">风来百科</div>
+        </div>
+
+        <!-- 结果2 -->
+        <div class="result-item">
+            <div class="result-title">
+                <a href="javascript:void(0);">这些超出片的郊游胜地你知道吗？近郊小众拍照打卡点位</a>
+            </div>
+            <div class="result-desc">
+                避开热门人流扎堆景区，几处藏在城郊的溪流谷地、林间花海、临水浅滩十分适配郊游取景，自然原生布景无需过多修饰，随手就能拍摄氛围感郊游照片，适合自驾半日短途出行。
+            </div>
+            <div class="result-source">韶光生活</div>
+        </div>
+
+        <!-- 结果3 -->
+        <div class="result-item">
+            <div class="result-title">
+                <a href="javascript:void(0);">青阳公园郊游全攻略｜入园路线、野餐区域、停车点位一览</a>
+            </div>
+            <div class="result-desc">
+                整理青阳公园完整郊游游玩方案，划分专属野餐露营片区、环湖散步路线、花海打卡点位，标注园区开放时段、周边停车场位置、禁止明火区域规范，一站式解决出行规划问题。
+            </div>
+            <div class="result-source">本地游玩日记</div>
+        </div>
+
+        <!-- 结果4 -->
+        <div class="result-item">
+            <div class="result-title">
+                <a href="javascript:void(0);">旅行团专业承接郊游出行，企业团建、班级集体郊游包车服务</a>
+            </div>
+            <div class="result-desc">
+                本地文旅车队长期承接单位团建、学校班级集体郊游业务，提供往返大巴包车、路线规划、随行基础物资配套服务，可根据出行人数定制短途郊游路线，适配集体出行的安全管理需求。
+            </div>
+            <div class="result-source">韶光文旅资讯</div>
+        </div>
+
+        <!-- 结果5 (保留正常页面跳转) -->
+        <div class="result-item">
+            <div class="result-title">
+                <a href="news_jiaoyou.html">明德私立学校一高中女生郊游途中失踪，母亲陈百惠急寻线索</a>
+            </div>
+            <div class="result-desc">
+                2022 年 4 月 20 日，本市明德私立学校组织高中部学生前往晋山国家森林公园开展春季社会实践。下午 2 时 30 分许，一名高三女生在分组活动期间脱离视线，至今未归。
+            </div>
+            <div class="result-source">韶光日报社会版</div>
+        </div>
+
+        <!-- 结果6 -->
+        <div class="result-item">
+            <div class="result-title">
+                <a href="javascript:void(0);">郊外出行必备清单，个人郊游物资准备与穿搭建议</a>
+            </div>
+            <div class="result-desc">
+                日常自主郊游建议携带防晒用品、便携饮用水、简易餐食、驱蚊药剂、一次性垃圾袋；穿搭优先选择宽松耐磨的服饰与防滑鞋子，遵守郊外绿地无痕游玩准则，及时带走个人垃圾。
+            </div>
+            <div class="result-source">民生出行指南</div>
+        </div>
+
+        <!-- 结果7 -->
+        <div class="result-item">
+            <div class="result-title">
+                <a href="javascript:void(0);">轻量郊游玩法盘点：野餐、徒步、露天写生，解锁近郊休闲新模式</a>
+            </div>
+            <div class="result-desc">
+                短途郊游早已不局限单纯观景，野餐聚会、山野轻徒步、户外写生、林间放风筝等轻量化玩法广受年轻人喜爱，低门槛、耗时自由的特点，适配工作日闲暇、周末短时放松需求。
+            </div>
+            <div class="result-source">韶光日报民生版</div>
+        </div>
+
+        <!-- 结果8 广告 (保留正常页面跳转) -->
+        <div class="result-item ad-item">
+            <div class="result-title">
+                <a href="search_ad_dwlp.html">弹丸论破新作火热预售中</a>
+                <span class="tag-ad">广告</span>
+            </div>
+        </div>
+
+        <!-- 分页 -->
+        <div class="pagination">
+            <button class="page-btn">上一页</button>
+            <button class="page-btn active">1</button>
+            <button class="page-btn">2</button>
+            <button class="page-btn">3</button>
+            <button class="page-btn">4</button>
+            <button class="page-btn">5</button>
+            <button class="page-btn">下一页</button>
+        </div>
+    </div>
+</body>
+</html>

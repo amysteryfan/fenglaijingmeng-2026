@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>风来搜索 - 光与影</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Microsoft Yahei", "PingFang SC", sans-serif;
+        }
+
+        body {
+            background: url("images/bg.jpg") no-repeat center center fixed;
+            background-size: cover;
+            min-height: 100vh;
+            padding: 18px 3%;
+            color: #333;
+        }
+
+        /* 顶部搜索栏 */
+        .search-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            max-width: 1200px;
+            margin: 0 auto 24px;
+        }
+
+        .search-input {
+            flex: 1;
+            height: 46px;
+            padding: 0 18px;
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            border-radius: 8px;
+            font-size: 16px;
+            outline: none;
+            background: rgba(255, 255, 255, 0.95);
+            color: #222;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        .search-btn {
+            height: 46px;
+            padding: 0 20px;
+            border-radius: 8px;
+            border: none;
+            background-color: #d92f2f;
+            color: #fff;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            white-space: nowrap;
+        }
+
+        .search-btn:hover {
+            background-color: #b82424;
+        }
+
+        /* 搜索结果容器 */
+        .result-wrap {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.90);
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        /* 结果数量提示 */
+        .result-count {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 24px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid #eee;
+        }
+
+        /* 单条搜索结果 */
+        .result-item {
+            margin-bottom: 28px;
+            padding-bottom: 24px;
+            border-bottom: 1px solid #e8e8e8;
+        }
+
+        .result-item:last-child {
+            margin-bottom: 0;
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+
+        .result-title {
+            font-size: 20px;
+            margin-bottom: 8px;
+            line-height: 1.45;
+        }
+
+        .result-title a {
+            color: #2b579a;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .result-title a:hover {
+            text-decoration: underline;
+        }
+
+        .result-desc {
+            font-size: 15px;
+            color: #555;
+            line-height: 1.7;
+            margin-bottom: 6px;
+        }
+
+        .result-source {
+            font-size: 13px;
+            color: #777;
+        }
+
+        /* 广告标签 */
+        .tag-ad {
+            display: inline-block;
+            font-size: 12px;
+            color: #d92f2f;
+            border: 1px solid #d92f2f;
+            padding: 2px 7px;
+            border-radius: 4px;
+            margin-left: 10px;
+            font-weight: 500;
+            background: rgba(217, 47, 47, 0.06);
+        }
+
+        /* 广告词条底部强调 */
+        .ad-item {
+            background: rgba(217, 47, 47, 0.04);
+            border-radius: 8px;
+            padding: 18px;
+            margin-top: 8px;
+        }
+
+        /* 分页区域 */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            margin-top: 32px;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .page-btn {
+            padding: 8px 14px;
+            border-radius: 6px;
+            border: 1px solid #ddd;
+            background: #fff;
+            color: #555;
+            cursor: pointer;
+            font-size: 14px;
+            white-space: nowrap;
+        }
+
+        .page-btn:hover {
+            border-color: #d92f2f;
+            color: #d92f2f;
+        }
+
+        .page-btn.active {
+            background: #d92f2f;
+            color: #fff;
+            border-color: #d92f2f;
+        }
+
+        /* 手机适配 */
+        @media (max-width: 768px) {
+            body {
+                padding: 12px 4%;
+            }
+
+            .search-header {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .search-btn {
+                width: 100%;
+            }
+
+            .result-wrap {
+                padding: 18px;
+            }
+
+            .result-title {
+                font-size: 18px;
+            }
+
+            .result-desc {
+                font-size: 14px;
+            }
+
+            .pagination {
+                gap: 6px;
+            }
+
+            .page-btn {
+                padding: 6px 10px;
+                font-size: 13px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="search-header">
+        <input class="search-input" value="光与影">
+        <button class="search-btn" onclick="location.href='browser.html'">回到搜索</button>
+    </div>
+
+    <div class="result-wrap">
+        <div class="result-count">找到约 23,500 条结果</div>
+
+        <!-- 结果1 -->
+        <div class="result-item">
+            <div class="result-title">
+                <a href="javascript:void(0);">光影的魔法：快门捕手大师课教你摄影</a>
+            </div>
+            <div class="result-desc">
+                这套摄影课程系统讲解自然光、侧光、逆光、漫射光影的拍摄运用方式，教学员依靠光影塑造画面层次、勾勒主体轮廓，掌握人像、风景、静物拍摄里的光影构图技巧，提升照片氛围感与质感。
+            </div>
+            <div class="result-source">城市艺文学堂</div>
+        </div>
+
+        <!-- 结果2 -->
+        <div class="result-item">
+            <div class="result-title">
+                <a href="javascript:void(0);">那些光影绝美的电影盘点，镜头美学赏析</a>
+            </div>
+            <div class="result-desc">
+                收录多部依靠光影叙事封神的影片，影片运用明暗对比烘托人物情绪、划分故事氛围，借助光影变化推进剧情表达，解析导演利用光影塑造镜头语言的经典手法。
+            </div>
+            <div class="result-source">光影影视观察</div>
+        </div>
+
+        <!-- 结果3 -->
+        <div class="result-item">
+            <div class="result-title">
+                <a href="javascript:void(0);">光影如何为油画增彩，绘画明暗技法解析</a>
+            </div>
+            <div class="result-desc">
+                油画创作中依靠光影区分物体体积、拉开画面纵深，亮部提亮质感、暗部收拢层次，合理把控光影强弱对比，能够让平面画布拥有真实的空间立体感，强化画作的情绪表现力。
+            </div>
+            <div class="result-source">美术研习社</div>
+        </div>
+
+        <!-- 结果4 -->
+        <div class="result-item">
+            <div class="result-title">
+                <a href="javascript:void(0);">室内居家布置，巧用光影提升空间氛围感</a>
+            </div>
+            <div class="result-desc">
+                通过落地灯、纱帘、百叶窗、镜面搭配，调节室内光影分布，柔和漫光适合休憩区域，局部聚光适配阅读、陈列角落，低成本利用光影改造居家环境气质。
+            </div>
+            <div class="result-source">韶光生活美学</div>
+        </div>
+
+        <!-- 结果5 -->
+        <div class="result-item">
+            <div class="result-title">
+                <a href="javascript:void(0);">舞台表演设计：光影调度对于舞台剧氛围的塑造作用</a>
+            </div>
+            <div class="result-desc">
+                舞台灯光的明暗切换、色彩光影搭配，能够快速切换剧目场景基调，配合演员动作传递喜怒哀乐的情绪，是舞台剧、话剧表演里不可或缺的烘托手段。
+            </div>
+            <div class="result-source">韶光日报艺文版</div>
+        </div>
+
+        <!-- 结果6 (保留正常页面跳转) -->
+        <div class="result-item">
+            <div class="result-title">
+                <a href="blog.html">光与影 | 风来博客</a>
+            </div>
+            <div class="result-desc">
+                这个人很神秘，什么也没有留下。
+            </div>
+            <div class="result-source">风来博客</div>
+        </div>
+
+        <!-- 结果7 -->
+        <div class="result-item">
+            <div class="result-title">
+                <a href="javascript:void(0);">自然四时光影变化，日出、正午、黄昏、夜色光影特征科普</a>
+            </div>
+            <div class="result-desc">
+                一日之内太阳光角度持续改变，造就截然不同的山野、湖面、林间光影样貌，春日柔光、夏日烈影、秋日斜光、冬日薄影，构成大自然独有的四季光影景致。
+            </div>
+            <div class="result-source">自然视野科普</div>
+        </div>
+
+        <!-- 结果8 广告 (保留正常页面跳转) -->
+        <div class="result-item ad-item">
+            <div class="result-title">
+                <a href="search_ad_swbj.html">《death note》新谷预热</a>
+                <span class="tag-ad">广告</span>
+            </div>
+        </div>
+
+        <!-- 分页 -->
+        <div class="pagination">
+            <button class="page-btn">上一页</button>
+            <button class="page-btn active">1</button>
+            <button class="page-btn">2</button>
+            <button class="page-btn">3</button>
+            <button class="page-btn">4</button>
+            <button class="page-btn">5</button>
+            <button class="page-btn">下一页</button>
+        </div>
+    </div>
+</body>
+</html>

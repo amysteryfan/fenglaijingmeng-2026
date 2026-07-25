@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>许故的邮箱 - 风来惊梦</title>
+    
+    <link rel="stylesheet" href="css/style.css">
+    <script src="js/main.js"></script>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #f5f7fa;
+            font-family: 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            color: #333;
+        }
+
+        .mail-client {
+            width: 960px;
+            max-width: 98vw;
+            height: 90vh;
+            max-height: 700px;
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .mail-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 24px;
+            border-bottom: 1px solid #e0e4e8;
+            background: #fff;
+            flex-shrink: 0;
+        }
+        .mail-brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 20px;
+            font-weight: 600;
+            color: #1a1a1a;
+        }
+        .mail-brand .icon {
+            width: 34px;
+            height: 34px;
+            background: #1a73e8;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 18px;
+        }
+        .btn-exit {
+            padding: 8px 20px;
+            border: 1px solid #d0d5dd;
+            border-radius: 6px;
+            background: #fff;
+            font-size: 14px;
+            color: #555;
+            cursor: pointer;
+            transition: 0.2s;
+            font-family: inherit;
+            white-space: nowrap;
+        }
+        .btn-exit:hover {
+            background: #f0f2f5;
+            border-color: #999;
+        }
+
+        .mail-body {
+            display: flex;
+            flex: 1;
+            overflow: hidden;
+        }
+
+        .folder-list {
+            width: 200px;
+            background: #fafbfc;
+            border-right: 1px solid #e0e4e8;
+            padding: 12px 8px;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            flex-shrink: 0;
+        }
+        .folder-item {
+            padding: 10px 16px;
+            border-radius: 6px;
+            font-size: 15px;
+            cursor: pointer;
+            color: #333;
+            transition: background 0.15s, color 0.15s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 500;
+        }
+        .folder-item:hover {
+            background: #e8f0fe;
+        }
+        .folder-item.active {
+            background: #1a73e8;
+            color: #fff;
+        }
+
+        .content-panel {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px 24px;
+            background: #fff;
+        }
+
+        .email-list {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+        .email-item {
+            padding: 14px 16px;
+            border-bottom: 1px solid #f0f0f0;
+            cursor: pointer;
+            transition: background 0.15s;
+            border-radius: 4px;
+        }
+        .email-item:hover {
+            background: #f8faff;
+        }
+        .email-sender {
+            font-weight: 600;
+            font-size: 15px;
+            margin-bottom: 4px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        .group-tag {
+            background: #e8f5e9;
+            color: #2e7d32;
+            font-size: 12px;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-weight: 500;
+        }
+        .email-subject {
+            color: #555;
+            font-size: 14px;
+            margin-bottom: 4px;
+            font-weight: 500;
+        }
+        .email-preview {
+            color: #999;
+            font-size: 13px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .email-date {
+            font-size: 12px;
+            color: #aaa;
+            margin-left: auto;
+        }
+
+        .letter-view {
+            display: none;
+        }
+        .letter-view.show {
+            display: block;
+        }
+        .back-link {
+            color: #1a73e8;
+            cursor: pointer;
+            font-size: 14px;
+            margin-bottom: 20px;
+            display: inline-block;
+            font-weight: 500;
+            padding: 4px 0;
+        }
+        .back-link:hover {
+            text-decoration: underline;
+        }
+        .letter-header {
+            margin-bottom: 20px;
+        }
+        .letter-header .field {
+            margin-bottom: 8px;
+            font-size: 14px;
+            color: #555;
+        }
+        .letter-header .field strong {
+            display: inline-block;
+            width: 60px;
+            color: #333;
+        }
+        .letter-body {
+            font-size: 15px;
+            line-height: 1.8;
+            color: #333;
+            white-space: pre-wrap;
+            padding: 16px;
+            background: #fafbfc;
+            border-radius: 8px;
+            border: 1px solid #eee;
+        }
+
+        .draft-list .email-item {
+            cursor: default;
+        }
+        .draft-list .email-item:hover {
+            background: transparent;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px;
+            color: #aaa;
+            font-size: 15px;
+        }
+
+        .pwd-form {
+            max-width: 360px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            text-align: center;
+        }
+        .pwd-hint {
+            font-size: 48px;
+            margin-bottom: 24px;
+        }
+        .pwd-input {
+            width: 100%;
+            padding: 12px 14px;
+            border: 1px solid #d0d5dd;
+            border-radius: 8px;
+            font-size: 16px;
+            text-align: center;
+            letter-spacing: 2px;
+            outline: none;
+            font-family: inherit;
+            transition: border-color 0.2s;
+            margin-bottom: 16px;
+        }
+        .pwd-input:focus {
+            border-color: #1a73e8;
+            box-shadow: 0 0 0 3px rgba(26, 115, 232, 0.10);
+        }
+        .btn-confirm {
+            width: 100%;
+            padding: 12px;
+            background: #1a73e8;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .btn-confirm:hover {
+            background: #1557b0;
+        }
+        .pwd-error {
+            color: #b91c1c;
+            font-size: 13px;
+            margin-top: 8px;
+            display: none;
+        }
+        .pwd-error.show {
+            display: block;
+        }
+
+        @media (max-width: 640px) {
+            body {
+                align-items: stretch;
+            }
+            .mail-client {
+                width: 100vw;
+                height: 100vh;
+                max-height: 100vh;
+                border-radius: 0;
+                box-shadow: none;
+            }
+            .mail-header {
+                padding: 12px 16px;
+            }
+            .mail-brand {
+                font-size: 16px;
+            }
+            .btn-exit {
+                padding: 6px 14px;
+                font-size: 13px;
+            }
+            .folder-list {
+                width: 110px;
+                padding: 8px 4px;
+            }
+            .folder-item {
+                font-size: 13px;
+                padding: 8px 10px;
+                gap: 4px;
+            }
+            .content-panel {
+                padding: 12px 12px;
+            }
+            .email-item {
+                padding: 12px 10px;
+            }
+            .email-sender {
+                font-size: 14px;
+            }
+            .email-subject {
+                font-size: 13px;
+            }
+            .email-preview {
+                font-size: 12px;
+            }
+            .letter-header .field {
+                font-size: 13px;
+            }
+            .letter-body {
+                font-size: 14px;
+                padding: 12px;
+            }
+            .back-link {
+                font-size: 13px;
+                margin-bottom: 16px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="mail-client">
+        <div class="mail-header">
+            <div class="mail-brand">
+                <div class="icon">✉</div>
+                邮箱
+            </div>
+            <button class="btn-exit" id="btnExit">退出</button>
+        </div>
+
+        <div class="mail-body">
+            <div class="folder-list" id="folderList">
+                <div class="folder-item active" data-folder="inbox">收件箱</div>
+                <div class="folder-item" data-folder="sent">发信箱</div>
+                <div class="folder-item" data-folder="drafts">草稿箱</div>
+            </div>
+
+            <div class="content-panel" id="contentPanel"></div>
+        </div>
+    </div>
+
+    <script>
+        (function() {
+            const folderItems = document.querySelectorAll('.folder-item');
+            const contentPanel = document.getElementById('contentPanel');
+            const btnExit = document.getElementById('btnExit');
+
+            let sentUnlocked = false;
+
+            const letterBody = '侦探：\n\n你好。我是阅辉集团继承人，最近要和鼎峰集团的宋令仪联姻，但我不了解我的未婚妻，想请你帮我调查一下。委托的详细内容我们之后面谈。\n\n季清越';
+
+            // 发信箱邮件正文（已按最新要求更新）
+            const sentMailBody = `唐老师：
+许久不见，不知道你还记不记得我。
+只是我大概率是无法忘记的，无法忘记老师曾经的帮助。
+直到现在我依旧记得老师曾经教育我们的话——要做个不违心的人，只是很可惜，这世上多的是无奈的事，多的是无奈的人，多的是不公的事。还能有多少人沉浸在自己的英雄主义里呢。
+就像老师曾经的选择一样。
+只是我时常在想，那些人会不会在无数个夜晚辗转反侧，彻夜难眠。于是他们挥笔，他们绞尽脑汁，寻得一个又一个冠冕堂皇的理由，抽丝剥茧一个又一个相似的例子，然后用着这些大书特书自己的迫不得已，但是他们应该明白的，内里腐烂的泥土开不出漂亮的光洁的花。
+腐烂的躯壳已然融进泥土沿着根茎盘旋而上，在看不到的地方化成不生不灭的附骨之蛆。
+每每想到这里，都只能叹一口气，这对受害者来说会不会也算一种安慰呢？
+只是，那些尚未长成的花，要怎样面对曾被刻进根茎的美好呢？那双尚且稚嫩的眼睛，日后要如何直面光辉假面背后的罪恶呢？或许他们才会是无法面对、被无穷无尽的愧疚折磨的那个吧。
+真残忍啊。`;
+
+            const data = {
+                inbox: {
+                    type: 'emailList',
+                    emails: [
+                        {
+                            sender: 'jiqingyue@Email.com',
+                            subject: '委托调查',
+                            preview: '侦探：你好。我是阅辉集团继承人，最近要和鼎峰集团的宋令仪联谊...',
+                            date: '06-25',
+                            isGroup: false,
+                            fullContent: {
+                                from: 'jiqingyue@Email.com',
+                                to: '许故 <Xugu@Email.com>',
+                                date: '2026年6月25日 14:30',
+                                body: letterBody
+                            }
+                        },
+                        {
+                            sender: '（明德校友会）',
+                            subject: '校园论坛更换网址',
+                            preview: '校友们别忘了这个是新链接...',
+                            date: '06-20',
+                            isGroup: true,
+                            fullContent: {
+                                from: '明德校友会',
+                                to: '群发收件人',
+                                date: '2026年6月20日 09:15',
+                                body: '各位校友：\n\n校园论坛更换网址了，新链接是：\n<a href="forum.html" target="_blank">forum.html</a>\n\n欢迎大家常回来看看。'
+                            }
+                        }
+                    ]
+                },
+                sent: {
+                    type: 'sent',
+                    emails: [
+                        {
+                            sender: '许故 <Xugu@Email.com>',
+                            recipient: '唐老师 <tang@school.edu>',
+                            subject: '写给唐老师的信',
+                            date: '2025年7月24日',
+                            body: sentMailBody
+                        }
+                    ]
+                },
+                drafts: {
+                    type: 'draftList',
+                    emails: [
+                        {
+                            sender: 'xugu@Email.com',
+                            subject: '我现在的选择，有没有离你近一点。',
+                            date: '2025-12-27',
+                            recipient: '（无）'
+                        },
+                        {
+                            sender: 'xugu@Email.com',
+                            subject: '还是无法忘记你。',
+                            date: '2024-01-12',
+                            recipient: '（无）'
+                        },
+                        {
+                            sender: 'xugu@Email.com',
+                            subject: '你在我心里留下了深深的印记。',
+                            date: '2023-05-18',
+                            recipient: '（无）'
+                        },
+                        {
+                            sender: 'xugu@Email.com',
+                            subject: '可是恨的人没死成，爱的人没可能。',
+                            date: '2022-09-01',
+                            recipient: '（无）'
+                        }
+                    ]
+                }
+            };
+
+            function renderContent(folder) {
+                const folderData = data[folder];
+                if (!folderData) return;
+
+                let html = '';
+
+                if (folderData.type === 'emailList') {
+                    html = '<div class="email-list">';
+                    folderData.emails.forEach((email, idx) => {
+                        html += `
+                            <div class="email-item" data-email-index="${idx}">
+                                <div class="email-sender">
+                                    ${email.isGroup ? '<span class="group-tag">群发</span>' : ''}
+                                    ${email.sender}
+                                    <span class="email-date">${email.date}</span>
+                                </div>
+                                <div class="email-subject">${email.subject}</div>
+                                <div class="email-preview">${email.preview}</div>
+                            </div>
+                        `;
+                    });
+                    html += '</div>';
+                } else if (folderData.type === 'draftList') {
+                    html = '<div class="email-list draft-list">';
+                    folderData.emails.forEach((email) => {
+                        html += `
+                            <div class="email-item">
+                                <div class="email-sender">
+                                    ${email.sender}
+                                    <span class="email-date">${email.date}</span>
+                                </div>
+                                <div class="email-subject">${email.subject}</div>
+                                <div style="font-size:12px; color:#999;">收件人：${email.recipient}</div>
+                            </div>
+                        `;
+                    });
+                    html += '</div>';
+                } else if (folderData.type === 'sent') {
+                    if (!sentUnlocked) {
+                        html = `
+                            <div class="pwd-form">
+                                <div class="pwd-hint">🏆</div>
+                                <input type="password" class="pwd-input" id="pwdInput" placeholder="请输入密码" maxlength="4" inputmode="numeric">
+                                <div class="pwd-error" id="pwdError">请输入四位数字</div>
+                                <button class="btn-confirm" id="btnConfirm">确认</button>
+                            </div>
+                        `;
+                    } else {
+                        const email = folderData.emails[0];
+                        html = `
+                            <div class="letter-view show">
+                                <div class="letter-header">
+                                    <div class="field"><strong>发件人：</strong>${email.sender}</div>
+                                    <div class="field"><strong>收件人：</strong>${email.recipient}</div>
+                                    <div class="field"><strong>时间：</strong>${email.date}</div>
+                                </div>
+                                <div class="letter-body">
+                                    ${email.body.replace(/\n/g, '<br>')}
+                                    <div style="text-align:right; margin-top:16px;">来自一个深受你教育的学生</div>
+                                </div>
+                            </div>
+                        `;
+                    }
+                } else if (folderData.type === 'empty') {
+                    html = `<div class="empty-state">${folderData.message}</div>`;
+                }
+
+                contentPanel.innerHTML = html;
+
+                if (folderData.type === 'sent' && !sentUnlocked) {
+                    const pwdInput = document.getElementById('pwdInput');
+                    const pwdError = document.getElementById('pwdError');
+                    const btnConfirm = document.getElementById('btnConfirm');
+
+                    btnConfirm.addEventListener('click', () => {
+                        const pwd = pwdInput.value.trim();
+                        if (pwd === '0912') {
+                            sentUnlocked = true;
+                            renderContent('sent');
+                            setActiveFolder('sent');
+                        } else {
+                            pwdError.classList.add('show');
+                        }
+                    });
+                    pwdInput.addEventListener('keydown', (e) => {
+                        if (e.key === 'Enter') {
+                            btnConfirm.click();
+                        }
+                    });
+                }
+
+                if (folderData.type === 'emailList') {
+                    bindEmailClicks(folderData);
+                }
+            }
+
+            function bindEmailClicks(folderData) {
+                const emailItems = contentPanel.querySelectorAll('.email-item');
+                emailItems.forEach(item => {
+                    item.addEventListener('click', function() {
+                        const index = parseInt(this.getAttribute('data-email-index'));
+                        const email = folderData.emails[index];
+                        renderLetterDetail(email);
+                    });
+                });
+            }
+
+            function formatLetterBody(text) {
+                let formatted = text.replace(/阅辉|鼎峰|宋令仪|季清越/g, '<strong>$&</strong>');
+                return formatted.replace(/\n/g, '<br>');
+            }
+
+            function renderLetterDetail(email) {
+                const full = email.fullContent;
+                const bodyHtml = formatLetterBody(full.body);
+                let html = `
+                    <div class="letter-view show">
+                        <div class="back-link" id="backToInbox">← 返回收件箱</div>
+                        <div class="letter-header">
+                            <div class="field"><strong>发件人：</strong>${full.from}</div>
+                            <div class="field"><strong>收件人：</strong>${full.to}</div>
+                            <div class="field"><strong>时间：</strong>${full.date}</div>
+                        </div>
+                        <div class="letter-body">${bodyHtml}</div>
+                    </div>
+                `;
+                contentPanel.innerHTML = html;
+                document.getElementById('backToInbox').addEventListener('click', () => {
+                    renderContent('inbox');
+                    setActiveFolder('inbox');
+                });
+            }
+
+            function setActiveFolder(folder) {
+                folderItems.forEach(item => {
+                    const f = item.getAttribute('data-folder');
+                    if (f === folder) {
+                        item.classList.add('active');
+                    } else {
+                        item.classList.remove('active');
+                    }
+                });
+            }
+
+            folderItems.forEach(item => {
+                item.addEventListener('click', function() {
+                    const folder = this.getAttribute('data-folder');
+                    setActiveFolder(folder);
+                    renderContent(folder);
+                });
+            });
+
+            btnExit.addEventListener('click', () => {
+                window.location.href = 'mail_login.html';
+            });
+
+            renderContent('inbox');
+        })();
+    </script>
+</body>
+</html>

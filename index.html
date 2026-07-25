@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes" />
+    <title>风来惊梦 · 侦探解谜</title>
+    <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+    <!-- 底图背景层 -->
+    <div class="bg-layer"></div>
+
+    <!-- CRT 扫描线与暗角效果 -->
+    <div class="crt-overlay"></div>
+
+    <!-- 主内容容器 -->
+    <div class="container">
+        <div class="content-card" id="contentCard">
+            <!-- 游戏标题 -->
+            <h1 class="game-title">风来惊梦</h1>
+
+            <!-- 引导语（打字机效果） -->
+            <div class="story-wrapper">
+                <p class="story-text" id="storyText"></p>
+                <span class="cursor" id="cursor"></span>
+            </div>
+
+            <!-- 开始按钮（初始隐藏） -->
+            <button class="start-btn" id="startBtn">开始游戏</button>
+
+            <!-- 底部信息块（按钮出现后显示） -->
+            <div class="info-block" id="infoBlock">
+                <div class="info-section">
+                    <div class="info-title">【游戏预警】</div>
+                    <p>游戏为暗黑结局，可能不符合玩家心理预期，请酌情选择是否游玩。<br>游戏为推理解谜游戏，无恐怖元素。<br>游戏全部内容均为虚构，与现实无关。角色三观不代表作者三观。</p>
+                </div>
+                <div class="info-section">
+                    <div class="info-title">【玩法说明】</div>
+                    <p>游戏玩法是点击页面，搜索找到的关键词，进行解谜。没有需要查看源代码以推进游戏进度的玩法，也不建议查看源代码破坏游戏体验。<br>请注意：在浏览器搜索时，必须回到“风来浏览器”页面才能搜索，在搜索词条页面无法进行搜索。<br>游戏页面下方无页码标注。但有唯一通往结局的入口。在结局解谜时，可随时退出页面，去其他页面收集线索。从入口进入结局页面时，进度将被保留。（但在结局页面刷新的话，进度将被清零）<br>部分页面会保留您的游玩进度，但不会读取您其他本地信息及隐私。<br>游戏页面适应手机端和电脑端，但没有用手机和平板进行过实际的测试，因此推荐使用电脑游玩。</p>
+                </div>
+                <div class="info-section">
+                    <div class="info-title">【特别声明】</div>
+                    <p>游戏代码全部由AI生成，部分图片、文案也由AI生成。如果您介意游戏中的AI元素，请酌情选择是否游玩。<br>游戏为个人制作的免费OC游戏，不进行商用。<br>部分素材来自网络。如果游戏侵犯了您的版权，我们会对素材进行更换并致歉。</p>
+                </div>
+                <div class="info-section">
+                    <div class="info-title">【素材致谢】</div>
+                    <p>部分图片使用unsplash网站的图片，信息如下：<br>
+                    Photo by <a href="https://unsplash.com/@raymondo600?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Ray Harrington</a> on <a href="https://unsplash.com/photos/white-and-blue-boat-on-sea-under-blue-sky-during-daytime-Y2V0ph_3_qY?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Unsplash</a><br>
+                    Photo by <a href="https://unsplash.com/@blackspeaker93?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Fredrick F.</a> on <a href="https://unsplash.com/photos/white-cruise-ship-on-sea-under-blue-sky-during-daytime-GfYkioipsmE?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Unsplash</a><br>
+                    Photo by <a href="https://unsplash.com/@gautamkrishnan?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Gautam Krishnan</a> on <a href="https://unsplash.com/photos/close-up-photography-of-castle-47gcGwUUHb0?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Unsplash</a><br>
+                    Photo by <a href="https://unsplash.com/@augustinewong?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Augustine Wong</a> on <a href="https://unsplash.com/photos/shadow-of-palm-fronds-cast-on-light-wall-T0BYurbDK_M?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Unsplash</a><br>
+                    Photo by <a href="https://unsplash.com/@rzunikoff?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Robert Zunikoff</a> on <a href="https://unsplash.com/photos/macro-photography-of-water-and-stones-ko7Tp_LyAt4?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Unsplash</a><br>
+                    Photo by <a href="https://unsplash.com/@monstercritic?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Sergey Shmidt</a> on <a href="https://unsplash.com/photos/orange-petaled-flowers-koy6FlCCy5s?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Unsplash</a><br>
+                    Photo by <a href="https://unsplash.com/@chuttersnap?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">CHUTTERSNAP</a> on <a href="https://unsplash.com/photos/photography-of-burning-camp-fire-rLm4Wq96h_0?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Unsplash</a><br>
+                    Photo by <a href="https://unsplash.com/@oulashin?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Sean Oulashin</a> on <a href="https://unsplash.com/photos/seashore-during-golden-hour-KMn4VEeEPR8?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Unsplash</a><br>
+                    Photo by <a href="https://unsplash.com/@spacejoy?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Spacejoy</a> on <a href="https://unsplash.com/photos/white-bed-linen-with-white-pillow-vOa-PSimwg4?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Unsplash</a><br>
+                    Photo by <a href="https://unsplash.com/@spacejoy?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Spacejoy</a> on <a href="https://unsplash.com/photos/a-living-room-filled-with-furniture-and-a-fire-place-EVjqpcn79AM?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Unsplash</a><br>
+                    人物形象由捏咔制作而成，作者：离堂风</p>
+                </div>
+                <div class="info-section">
+                    <div class="info-title">【制作名单】</div>
+                    <p>游戏制作：中性人＆高岭之花<br>游戏测试：橙可泷</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 全局脚本 -->
+    <script src="js/main.js"></script>
+</body>
+</html>

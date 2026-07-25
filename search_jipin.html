@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>风来搜索 - 祭品</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Microsoft Yahei", "PingFang SC", sans-serif;
+        }
+
+        body {
+            background: url("images/bg.jpg") no-repeat center center fixed;
+            background-size: cover;
+            min-height: 100vh;
+            padding: 18px 3%;
+            color: #333;
+        }
+
+        /* 顶部搜索栏 */
+        .search-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            max-width: 1200px;
+            margin: 0 auto 24px;
+        }
+
+        .search-input {
+            flex: 1;
+            height: 46px;
+            padding: 0 18px;
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            border-radius: 8px;
+            font-size: 16px;
+            outline: none;
+            background: rgba(255, 255, 255, 0.95);
+            color: #222;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        .search-btn {
+            height: 46px;
+            padding: 0 20px;
+            border-radius: 8px;
+            border: none;
+            background-color: #d92f2f;
+            color: #fff;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            white-space: nowrap;
+        }
+
+        .search-btn:hover {
+            background-color: #b82424;
+        }
+
+        /* 搜索结果容器 */
+        .result-wrap {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.90);
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        /* 结果数量提示 */
+        .result-count {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 24px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid #eee;
+        }
+
+        /* 单条搜索结果 */
+        .result-item {
+            margin-bottom: 28px;
+            padding-bottom: 24px;
+            border-bottom: 1px solid #e8e8e8;
+        }
+
+        .result-item:last-child {
+            margin-bottom: 0;
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+
+        .result-title {
+            font-size: 20px;
+            margin-bottom: 8px;
+            line-height: 1.45;
+        }
+
+        .result-title a {
+            color: #2b579a;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .result-title a:hover {
+            text-decoration: underline;
+        }
+
+        .result-desc {
+            font-size: 15px;
+            color: #555;
+            line-height: 1.7;
+            margin-bottom: 6px;
+        }
+
+        .result-source {
+            font-size: 13px;
+            color: #777;
+        }
+
+        /* 广告标签 */
+        .tag-ad {
+            display: inline-block;
+            font-size: 12px;
+            color: #d92f2f;
+            border: 1px solid #d92f2f;
+            padding: 2px 7px;
+            border-radius: 4px;
+            margin-left: 10px;
+            font-weight: 500;
+            background: rgba(217, 47, 47, 0.06);
+        }
+
+        /* 广告词条底部强调 */
+        .ad-item {
+            background: rgba(217, 47, 47, 0.04);
+            border-radius: 8px;
+            padding: 18px;
+            margin-top: 8px;
+        }
+
+        /* 分页区域 */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            margin-top: 32px;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .page-btn {
+            padding: 8px 14px;
+            border-radius: 6px;
+            border: 1px solid #ddd;
+            background: #fff;
+            color: #555;
+            cursor: pointer;
+            font-size: 14px;
+            white-space: nowrap;
+        }
+
+        .page-btn:hover {
+            border-color: #d92f2f;
+            color: #d92f2f;
+        }
+
+        .page-btn.active {
+            background: #d92f2f;
+            color: #fff;
+            border-color: #d92f2f;
+        }
+
+        /* 手机适配 */
+        @media (max-width: 768px) {
+            body {
+                padding: 12px 4%;
+            }
+
+            .search-header {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .search-btn {
+                width: 100%;
+            }
+
+            .result-wrap {
+                padding: 18px;
+            }
+
+            .result-title {
+                font-size: 18px;
+            }
+
+            .result-desc {
+                font-size: 14px;
+            }
+
+            .pagination {
+                gap: 6px;
+            }
+
+            .page-btn {
+                padding: 6px 10px;
+                font-size: 13px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="search-header">
+        <input class="search-input" value="祭品">
+        <button class="search-btn" onclick="location.href='browser.html'">回到搜索</button>
+    </div>
+
+    <div class="result-wrap">
+        <div class="result-count">找到约 25,600 条结果</div>
+
+        <!-- 结果1 -->
+        <div class="result-item">
+            <div class="result-title">
+                <a href="javascript:void(0);">祭品的意思 - 词语百科</a>
+            </div>
+            <div class="result-desc">
+                祭品，指人们在祭祀、祭拜仪式里供奉给先祖、神明、逝者的物品，包含吃食、果品、香烛、帛纸等品类，是传统祭祀风俗里的核心载体，多用于宗祠祭拜、扫墓追思、民俗祈福等场合。
+            </div>
+            <div class="result-source">风来百科</div>
+        </div>
+
+        <!-- 结果2 -->
+        <div class="result-item">
+            <div class="result-title">
+                <a href="javascript:void(0);">祭品都有什么？传统祭祀常用物品分类一览</a>
+            </div>
+            <div class="result-desc">
+                民间常规祭品主要分为生鲜果品、熟食供品、香烛纸品三大类；果品多选用苹果、橙子、桂圆等寓意吉祥的鲜果，熟食常用糕点、清茶、荤素熟食，搭配纸钱、香、鲜花一同摆放供奉。
+            </div>
+            <div class="result-source">民俗知识科普站</div>
+        </div>
+
+        <!-- 结果3 -->
+        <div class="result-item">
+            <div class="result-title">
+                <a href="javascript:void(0);">祭祀需要哪些东西？全套祭拜物料清单整理</a>
+            </div>
+            <div class="result-desc">
+                一场完整的祭祀流程，除核心祭品之外，还需要准备焚香、蜡烛、烧纸、盛放供品的托盘、擦拭案台的抹布；户外扫墓祭祀还可携带纯净水、一次性手套等基础随身用品。
+            </div>
+            <div class="result-source">传统风俗研习社</div>
+        </div>
+
+        <!-- 结果4 -->
+        <div class="result-item">
+            <div class="result-title">
+                <a href="javascript:void(0);">宗祠祭祀祭品摆放规矩与方位讲究</a>
+            </div>
+            <div class="result-desc">
+                宗祠集体祭拜时，祭品依照「前果后食、居中主供」的规则摆放，果品摆放在案台前排，熟食主食靠后摆放，香烛分列祭品两侧，摆放过程讲究整齐肃穆，不可随意触碰翻动供品。
+            </div>
+            <div class="result-source">韶光民俗文化网</div>
+        </div>
+
+        <!-- 结果5 -->
+        <div class="result-item">
+            <div class="result-title">
+                <a href="javascript:void(0);">文明祭祀新风：鲜花逐步替代传统焚烧类祭品</a>
+            </div>
+            <div class="result-desc">
+                近些年多地倡导绿色祭拜，鲜花、绿植、手写寄语卡片这类新式祭品被广泛使用，减少纸钱、明火祭品的焚烧行为，在缅怀逝者的同时规避山林、场地消防安全隐患。
+            </div>
+            <div class="result-source">韶光日报民生版</div>
+        </div>
+
+        <!-- 结果6 -->
+        <div class="result-item">
+            <div class="result-title">
+                <a href="javascript:void(0);">不同时节祭祀祭品区别，清明、中元、重阳供品差异</a>
+            </div>
+            <div class="result-desc">
+                清明祭品偏重鲜果、青团、糕点等寒食类吃食；中元节会增加面食、酒水类祭品；重阳祭祖多以秋收杂粮、干果作为主要供品，依照时节物产匹配对应祭品是旧时流传的习惯。
+            </div>
+            <div class="result-source">传统生活风物志</div>
+        </div>
+
+        <!-- 结果7 (保留正常页面跳转) -->
+        <div class="result-item">
+            <div class="result-title">
+                <a href="gzh_huoji.html">盘点那些你不知道的端午民俗</a>
+            </div>
+            <div class="result-desc">
+                端午节又要到了，你是不是又要开始一年一度的：吃粽子、赛龙舟、挂艾草、戴彩绳、忆屈原......了？除了这些耳熟能详的民俗之外，还有小众的端午民俗，你知道吗？
+            </div>
+            <div class="result-source">风来科普</div>
+        </div>
+
+        <!-- 结果8 广告 (保留正常页面跳转) -->
+        <div class="result-item ad-item">
+            <div class="result-title">
+                <a href="search_ad_swbj.html">《death note》新谷预热</a>
+                <span class="tag-ad">广告</span>
+            </div>
+        </div>
+
+        <!-- 分页 -->
+        <div class="pagination">
+            <button class="page-btn">上一页</button>
+            <button class="page-btn active">1</button>
+            <button class="page-btn">2</button>
+            <button class="page-btn">3</button>
+            <button class="page-btn">4</button>
+            <button class="page-btn">5</button>
+            <button class="page-btn">下一页</button>
+        </div>
+    </div>
+</body>
+</html>

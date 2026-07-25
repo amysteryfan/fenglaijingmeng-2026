@@ -1,0 +1,798 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>微信 - 风来惊梦</title>
+    <style>
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body {
+            background: #dcdcdc;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+            padding: 0;
+        }
+        .wechat-desktop {
+            display: flex;
+            width: 900px;
+            max-width: 100vw;
+            height: 90vh;
+            min-height: 500px;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.2);
+            overflow: hidden;
+            flex-direction: row;
+            position: relative;
+        }
+        .sidebar {
+            width: 280px;
+            background: #f5f5f5;
+            display: flex;
+            flex-direction: column;
+            border-right: 1px solid #ddd;
+            flex-shrink: 0;
+        }
+        .sidebar-header {
+            padding: 20px 16px;
+            border-bottom: 1px solid #e0e0e0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .avatar-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+        }
+        .avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: #07c160;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            color: #fff;
+        }
+        .nickname { font-size: 16px; font-weight: 500; color: #000; }
+        .search-box {
+            margin: 12px 16px;
+            background: #e2e2e2;
+            border-radius: 4px;
+            padding: 8px 12px;
+            color: #999;
+            font-size: 13px;
+            cursor: default;
+            user-select: none;
+        }
+        .chat-list { flex: 1; overflow-y: auto; }
+        .chat-item {
+            display: flex;
+            align-items: center;
+            padding: 14px 16px;
+            cursor: pointer;
+            transition: background 0.15s;
+            border-bottom: 1px solid #eee;
+        }
+        .chat-item:hover, .chat-item.active { background: #e8e8e8; }
+        .chat-avatar {
+            width: 42px;
+            height: 42px;
+            border-radius: 6px;
+            background: #07c160;
+            margin-right: 12px;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            color: #fff;
+        }
+        .chat-info { flex: 1; overflow: hidden; }
+        .chat-name { font-size: 16px; font-weight: 500; color: #000; margin-bottom: 4px; }
+        .chat-preview { font-size: 13px; color: #888; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .chat-time { font-size: 12px; color: #aaa; margin-left: 8px; }
+        .sidebar-footer {
+            display: flex; justify-content: space-around; padding: 12px 0;
+            border-top: 1px solid #ddd; background: #f5f5f5;
+        }
+        .func-btn {
+            flex: 1; text-align: center; cursor: pointer; color: #666;
+            font-size: 13px; padding: 8px 0; transition: 0.2s;
+            display: flex; flex-direction: column; align-items: center;
+        }
+        .func-btn:hover { color: #07c160; }
+        .func-btn.disabled { color: #bbb; cursor: not-allowed; pointer-events: none; }
+        .func-btn .func-icon { font-size: 22px; margin-bottom: 4px; }
+        .chat-area {
+            flex: 1; display: flex; flex-direction: column;
+            background: #f3f3f3; position: relative;
+        }
+        .chat-titlebar {
+            padding: 14px 18px; background: #fff; border-bottom: 1px solid #ddd;
+            display: flex; justify-content: space-between; align-items: center;
+            font-size: 17px; font-weight: 500;
+        }
+        .chat-messages {
+            flex: 1; overflow-y: auto; padding: 16px 20px;
+        }
+        .message-row { display: flex; margin-bottom: 18px; }
+        .message-row.me { justify-content: flex-end; }
+        .message-bubble {
+            max-width: 65%; padding: 10px 14px; border-radius: 8px;
+            font-size: 15px; line-height: 1.5; word-break: break-word;
+            background: #fff; border: 1px solid #e4e4e4;
+        }
+        .message-row.me .message-bubble { background: #95ec69; border-color: #95ec69; }
+        .message-time { text-align: center; color: #aaa; font-size: 12px; margin: 12px 0; }
+        .chat-input-area {
+            display: flex; align-items: center; padding: 10px 16px;
+            background: #fff; border-top: 1px solid #ddd; gap: 8px;
+        }
+        .input-wrapper {
+            flex: 1; display: flex; align-items: center; flex-wrap: wrap; gap: 4px;
+        }
+        .fill-text { font-size: 15px; white-space: nowrap; }
+        .fill-blank {
+            width: 60px; border: none; border-bottom: 1px solid #07c160;
+            outline: none; font-size: 15px; padding: 2px 4px;
+            background: transparent; text-align: center;
+        }
+        .fill-blank.wide {
+            width: 260px;
+        }
+        .send-btn {
+            padding: 10px 18px; background: #07c160; color: #fff;
+            border: none; border-radius: 6px; font-size: 15px;
+            font-weight: 500; cursor: pointer; flex-shrink: 0;
+        }
+        .send-btn:disabled { background: #aaa; cursor: not-allowed; }
+        .global-close {
+            position: absolute; top: 12px; right: 16px; font-size: 22px;
+            cursor: pointer; color: #666; z-index: 10;
+            background: none; border: none; font-weight: bold;
+        }
+        .global-close:hover { color: #333; }
+        .profile-view {
+            flex: 1; display: flex; flex-direction: column;
+            align-items: center; justify-content: center; background: #fff;
+        }
+        .profile-avatar {
+            width: 80px; height: 80px; border-radius: 6px; background: #07c160;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 32px; color: #fff; margin-bottom: 16px;
+        }
+        .profile-name { font-size: 22px; font-weight: 500; }
+        .profile-id { font-size: 14px; color: #888; margin-top: 8px; }
+        .option-btn {
+            display: inline-block; padding: 10px 20px; background: #f2f2f2;
+            border: 1px solid #ccc; border-radius: 8px; cursor: pointer;
+            margin: 4px; font-size: 15px;
+        }
+        .option-btn:hover { background: #e0e0e0; }
+        .ending-btn {
+            display: inline-block; padding: 10px 24px; background: #07c160;
+            color: #fff; border: none; border-radius: 8px; cursor: pointer;
+            font-size: 16px; font-weight: 500;
+        }
+        .ending-btn:hover { background: #06b057; }
+
+        @media (max-width: 768px) {
+            .wechat-desktop { display: none; }
+            .wechat-mobile {
+                display: flex; width: 100vw; height: 100vh;
+                background: #fff; flex-direction: column;
+            }
+            .mobile-header {
+                background: #1a1a1a; color: #fff; padding: 12px 16px;
+                display: flex; justify-content: space-between; align-items: center;
+            }
+            .mobile-header .title { font-size: 18px; }
+            .mobile-main { flex: 1; overflow-y: auto; display: flex; flex-direction: column; }
+            .mobile-tabbar {
+                background: #f7f7f7; border-top: 1px solid #d9d9d9;
+                display: flex; justify-content: space-around; padding: 6px 0;
+            }
+            .mobile-tab-item {
+                display: flex; flex-direction: column; align-items: center;
+                font-size: 10px; color: #999; cursor: pointer; padding: 4px 12px;
+            }
+            .mobile-tab-item.active { color: #07c160; }
+            .mobile-tab-item .icon { font-size: 24px; margin-bottom: 2px; }
+            .fill-blank.wide {
+                width: 200px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="wechat-desktop" id="desktopApp">
+        <div class="global-close" id="desktopClose" title="退出微信">✕</div>
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <div class="avatar-wrapper" id="profileTrigger">
+                    <div class="avatar">♟️</div>
+                    <span class="nickname">chess player</span>
+                </div>
+            </div>
+            <div class="search-box">🔍 搜索</div>
+            <div class="chat-list" id="chatList">
+                <div class="chat-item active" id="lynneItem">
+                    <div class="chat-avatar">L</div>
+                    <div class="chat-info">
+                        <div class="chat-name">Lynne</div>
+                        <div class="chat-preview" id="desktopPreview">告诉你……又有什么用呢？</div>
+                    </div>
+                    <div class="chat-time">今天</div>
+                </div>
+            </div>
+            <div class="sidebar-footer">
+                <div class="func-btn" id="funcChats"><span class="func-icon">💬</span><span>聊天</span></div>
+                <div class="func-btn disabled"><span class="func-icon">👥</span><span>通讯录</span></div>
+                <div class="func-btn disabled"><span class="func-icon">🔍</span><span>发现</span></div>
+                <div class="func-btn" id="funcProfile"><span class="func-icon">👤</span><span>我</span></div>
+            </div>
+        </div>
+        <div class="chat-area" id="chatArea"></div>
+    </div>
+
+    <div class="wechat-mobile" id="mobileApp" style="display: none;"></div>
+
+    <script>
+        (function() {
+            // 基础消息
+            const baseMessages = [
+                { from: 'me', text: '7月9日的事，聊聊？', isCorrect: true },
+                { from: 'other', text: '你是……许故？', isCorrect: true },
+                { from: 'me', text: '嗯。我们还要先叙旧吗？', isCorrect: true },
+                { from: 'other', text: '……不了。过去的事情，也没什么再提起的必要了。', isCorrect: true },
+                { from: 'me', text: '现在可以进入正题了吧？', isCorrect: true },
+                { from: 'other', text: '你是问我，季清越的死？我没什么好说的。', isCorrect: true },
+                { from: 'me', text: '你确定？现在有很多人在怀疑你。', isCorrect: true },
+                { from: 'other', text: '我知道。你不也是其中之一吗？', isCorrect: true },
+                { from: 'me', text: '不，我只是在调查。', isCorrect: true },
+                { from: 'other', text: '我不知道你现在变得这么闲。', isCorrect: true },
+                { from: 'me', text: '我现在是侦探。', isCorrect: true },
+                { from: 'other', text: '那又怎么样？', isCorrect: true },
+                { from: 'me', text: '如果你说出实情，我可以帮你。', isCorrect: true },
+                { from: 'other', text: '帮我……真的有人肯帮我吗？', isCorrect: true },
+                { from: 'me', text: '以前不就是吗？', isCorrect: true },
+                { from: 'other', text: '以前……以前的事，我很多都忘了。', isCorrect: true },
+                { from: 'me', text: '你只用把一切都讲出来，然后交给我就可以了。', isCorrect: true },
+                { from: 'other', text: '告诉你……又有什么用呢？', isCorrect: true }
+            ];
+
+            // 各 step 的正确消息
+            const dynamicCorrect = {
+                step1Me: { from: 'me', text: '我知道你是谁。', isCorrect: true },
+                step1Other: { from: 'other', text: '你知道？呵呵，你说得真逗。我不就是宋令仪吗？', isCorrect: true },
+                step1Correct: { from: 'me', text: '你是宋令仪。并且，你在艾希皇后号杀了陈楚梦。', isCorrect: true },
+                step2Other: { from: 'other', text: '你，你在说什么？', isCorrect: true },
+                step2Correct: { from: 'me', text: '答案差点就要颠倒过来。但是你房间里的那个麻醉剂告诉我，某人的计划恐怕破产了。', isCorrect: true },
+                step3Other: { from: 'other', text: '你说得我都有点糊涂了。', isCorrect: true },
+                step3Correct: { from: 'me', text: '尸体已经被你扔到大海里了吧？连同凶器一起。至于凶器，恐怕就是你房间消失的红酒。', isCorrect: true },
+                step4Other1: { from: 'other', text: '……这你都查到了。还问我干什么？', isCorrect: true },
+                step4Me: { from: 'me', text: '我需要知道更多。', isCorrect: true },
+                step4Other2: { from: 'other', text: '我知道的不比你多！我甚至都不知道她为什么出现在我的房间里！不知道她为什么朝我冲过来！不知道事情为什么会变成现在这样！等我反应过来的时候，已经……已经！', isCorrect: true },
+                step5Correct: { from: 'me', text: '你真的不知道吗？你比谁都清楚那起事件背后的原因。看看这则报道：《明德私立学校一高中女生郊游途中失踪，母亲陈百惠急寻线索》。现在，想起什么了吧？', isCorrect: true },
+                step5Other1: { from: 'other', text: '那，那就是个意外！跟这次一样！那天也是，是她非说有话要悄悄说，让我跟她到深山里去的！是她说，为什么流着同样的血，我却能当人上人，她却只能过穷日子！还是她说，我已经过了十八年好生活，也该轮到她享福了，逼着我和她换！她实在是面目狰狞，咄咄逼人，我......我太害怕了！所以，我才......我不是故意要推她的！', isCorrect: true },
+                step5Me: { from: 'me', text: '告诉我，她那天具体和你说了什么。', isCorrect: true },
+                step5Other2: { from: 'other', text: '她说......我和她才是双胞胎姐妹，宋闻溪根本不是妈妈的孩子。她还说，她养母已经告诉她了，宋闻溪不过爸爸情妇的孩子，是妈妈当年把宋闻溪和她调换了一下。我知道，她羡慕我，她想回来。可是，如果她回来了，妈妈就多了一个孩子......', isCorrect: true },
+                step6Correct: { from: 'me', text: '你错了。宋闻溪和宋远山，根本没有血缘关系。', isCorrect: true },
+                step6Other1: { from: 'other', text: '是吗？那也不会跟现在有什么区别吧。你知道吗？宋闻溪小时候被<strong>拐卖</strong>过一次，在那之后，爸爸妈妈把他宝贝得像眼珠子一样，我就知道我永远争不过他......我现在还摊上这么大的事。爸爸一定觉得我给家里带来丑闻了......', isCorrect: true },
+                step6Me: { from: 'me', text: '未必。', isCorrect: true },
+                step6Other2: { from: 'other', text: '可季清越真的不是我杀的！他死的时候，我正在，正在......我在自己的房间！你明白我在做什么吧！', isCorrect: true },
+                step6Me2: { from: 'me', text: '嗯。', isCorrect: true },
+                step6Other3: { from: 'other', text: '许故......救救我，救救我吧！你会的吧？你会的，不是吗？一直以来，你不都是这么做的吗？！', isCorrect: true },
+                step7Me: { from: 'me', text: '当然。交给我吧，我会让这件事走向应有的结局的。', isCorrect: true }
+            };
+
+            function buildCorrectMessages(step) {
+                let msgs = [...baseMessages];
+                if (step >= 1) msgs.push(dynamicCorrect.step1Me, dynamicCorrect.step1Other);
+                if (step >= 2) msgs.push(dynamicCorrect.step1Correct, dynamicCorrect.step2Other);
+                if (step >= 3) msgs.push(dynamicCorrect.step2Correct, dynamicCorrect.step3Other);
+                if (step >= 4) msgs.push(dynamicCorrect.step3Correct, dynamicCorrect.step4Other1, dynamicCorrect.step4Me, dynamicCorrect.step4Other2);
+                if (step >= 5) msgs.push(dynamicCorrect.step5Correct, dynamicCorrect.step5Other1, dynamicCorrect.step5Me, dynamicCorrect.step5Other2);
+                if (step >= 6) msgs.push(dynamicCorrect.step6Correct, dynamicCorrect.step6Other1, dynamicCorrect.step6Me, dynamicCorrect.step6Other2, dynamicCorrect.step6Me2, dynamicCorrect.step6Other3);
+                if (step >= 7) msgs.push(dynamicCorrect.step7Me);
+                return msgs;
+            }
+
+            function saveProgress(step) {
+                const data = {
+                    step: step,
+                    messages: buildCorrectMessages(step).map(m => ({ from: m.from, text: m.text }))
+                };
+                localStorage.setItem('wechat_progress', JSON.stringify(data));
+            }
+
+            function loadProgress() {
+                const saved = localStorage.getItem('wechat_progress');
+                if (saved) {
+                    try {
+                        const data = JSON.parse(saved);
+                        return { step: data.step, messages: data.messages };
+                    } catch (e) {}
+                }
+                return null;
+            }
+
+            function clearProgress() {
+                localStorage.removeItem('wechat_progress');
+            }
+
+            function isReload() {
+                if (window.performance && window.performance.getEntriesByType) {
+                    const navEntries = window.performance.getEntriesByType('navigation');
+                    if (navEntries.length > 0) return navEntries[0].type === 'reload';
+                }
+                if (window.performance && window.performance.navigation) {
+                    return window.performance.navigation.type === 1;
+                }
+                return false;
+            }
+
+            const isMobile = () => window.innerWidth <= 768;
+            const errorReply = { from: 'other', text: '你到底在说什么？？？', isCorrect: false };
+
+            // ---------- 桌面端 ----------
+            function initDesktop() {
+                const chatArea = document.getElementById('chatArea');
+                const lynneItem = document.getElementById('lynneItem');
+                const profileTrigger = document.getElementById('profileTrigger');
+                const funcChats = document.getElementById('funcChats');
+                const funcProfile = document.getElementById('funcProfile');
+                const desktopClose = document.getElementById('desktopClose');
+                const desktopPreview = document.getElementById('desktopPreview');
+
+                let currentView = 'chat';
+                let messages = [];
+                let step = 0;
+                let animating = false;
+
+                if (isReload()) clearProgress();
+                const savedProgress = loadProgress();
+                if (savedProgress) {
+                    step = savedProgress.step;
+                    messages = savedProgress.messages.map(m => ({...m, isCorrect: true}));
+                } else {
+                    messages = [...baseMessages];
+                    step = 0;
+                }
+
+                function updatePreview() {
+                    const lastMsg = messages[messages.length - 1];
+                    if (desktopPreview && lastMsg) {
+                        desktopPreview.textContent = lastMsg.text.length > 20 ? lastMsg.text.substring(0, 20) + '...' : lastMsg.text;
+                    }
+                }
+
+                function renderMessages(scrollToBottom) {
+                    const html = '<div class="message-time">今天</div>' +
+                        messages.map(msg => {
+                            const cls = msg.from === 'me' ? 'me' : 'other';
+                            return `<div class="message-row ${cls}"><div class="message-bubble">${msg.text}</div></div>`;
+                        }).join('');
+                    const chatMessages = document.getElementById('chatMessages');
+                    if (chatMessages) {
+                        chatMessages.innerHTML = html;
+                        chatMessages.scrollTop = scrollToBottom ? chatMessages.scrollHeight : 0;
+                    }
+                }
+
+                function renderInputArea() {
+                    if (step === 0) {
+                        return `<div class="chat-input-area"><div class="input-wrapper"><input type="text" id="chatInput" value="我知道你是谁。" readonly disabled style="width:100%;"></div><button class="send-btn" id="sendBtn">发送</button></div>`;
+                    } else if (step === 1) {
+                        return `<div class="chat-input-area"><div class="input-wrapper"><span class="fill-text">你是</span><input class="fill-blank" id="blank1" maxlength="10"><span class="fill-text">，并且，你在艾希皇后号杀了</span><input class="fill-blank" id="blank2" maxlength="10"><span class="fill-text">。</span></div><button class="send-btn" id="sendBtn1">发送</button></div>`;
+                    } else if (step === 2) {
+                        return `<div class="chat-input-area"><div class="input-wrapper"><span class="fill-text">答案差点就要颠倒过来。但是你房间里的那个</span><input class="fill-blank" id="blank3" maxlength="10"><span class="fill-text">告诉我，某人的计划恐怕破产了。</span></div><button class="send-btn" id="sendBtn2">发送</button></div>`;
+                    } else if (step === 3) {
+                        return `<div class="chat-input-area"><div class="input-wrapper"><span class="fill-text">尸体已经被你扔到大海里了吧？连同凶器一起。至于凶器，恐怕就是你房间消失的</span><input class="fill-blank" id="blank4" maxlength="10"><span class="fill-text">。</span></div><button class="send-btn" id="sendBtn3">发送</button></div>`;
+                    } else if (step === 4) {
+                        return `<div class="chat-input-area"><div class="input-wrapper"><span class="fill-text">你真的不知道吗？你比谁都清楚那起事件背后的原因。看看这则报道：《</span><input class="fill-blank wide" id="blank5" maxlength="40"><span class="fill-text">》。现在，想起什么了吧？</span></div><button class="send-btn" id="sendBtn4">发送</button></div>`;
+                    } else if (step === 5) {
+                        return `<div class="chat-input-area"><div class="input-wrapper"><span class="fill-text">你错了。</span><input class="fill-blank" id="blank6a" maxlength="10"><span class="fill-text">和</span><input class="fill-blank" id="blank6b" maxlength="10"><span class="fill-text">，根本没有血缘关系。</span></div><button class="send-btn" id="sendBtn5">发送</button></div>`;
+                    } else if (step === 6) {
+                        return `<div class="chat-input-area"><div class="input-wrapper"><button class="option-btn" data-opt="A">当然</button><button class="option-btn" data-opt="B">当然</button><button class="option-btn" data-opt="C">当然</button></div></div>`;
+                    } else if (step === 7) {
+                        return `<div class="chat-input-area"><div class="input-wrapper" style="justify-content: center;"><button class="ending-btn" id="goToEnding">走向结局</button></div></div>`;
+                    } else {
+                        return `<div class="chat-input-area"><div class="input-wrapper"><input type="text" disabled placeholder=" " style="width:100%;"></div></div>`;
+                    }
+                }
+
+                function updateChatArea(scrollToBottom = false) {
+                    if (currentView === 'chat') {
+                        chatArea.innerHTML = `<div class="chat-titlebar"><span>Lynne</span></div><div class="chat-messages" id="chatMessages"></div>${renderInputArea()}`;
+                        lynneItem.classList.add('active');
+                        renderMessages(scrollToBottom);
+                        bindDesktopEvents();
+                        updatePreview();
+                    } else {
+                        chatArea.innerHTML = `<div class="profile-view"><div class="profile-avatar">♟️</div><div class="profile-name">chess player</div><div class="profile-id">微信号：chess_player</div></div>`;
+                        lynneItem.classList.remove('active');
+                    }
+                }
+
+                function setSendDisabled(disabled) {
+                    const btn = document.querySelector('.send-btn');
+                    if (btn) btn.disabled = disabled;
+                }
+
+                async function sendFirst() {
+                    if (animating) return;
+                    animating = true; setSendDisabled(true);
+                    messages.push({ ...dynamicCorrect.step1Me });
+                    updateChatArea(true);
+                    await new Promise(r => setTimeout(r, 1200));
+                    messages.push({ ...dynamicCorrect.step1Other });
+                    step = 1;
+                    updateChatArea(true);
+                    animating = false; setSendDisabled(false);
+                    saveProgress(step);
+                }
+
+                async function checkFill(level) {
+                    if (animating) return;
+                    let correct = false;
+                    let sentMsg = '';
+
+                    if (level === 1) {
+                        const a1 = document.getElementById('blank1').value.trim();
+                        const a2 = document.getElementById('blank2').value.trim();
+                        sentMsg = `你是${a1}，并且，你在艾希皇后号杀了${a2}。`;
+                        correct = (a1 === '宋令仪' && a2 === '陈楚梦');
+                    } else if (level === 2) {
+                        const a3 = document.getElementById('blank3').value.trim();
+                        sentMsg = `答案差点就要颠倒过来。但是你房间里的那个${a3}告诉我，某人的计划恐怕破产了。`;
+                        correct = (a3 === '麻醉剂');
+                    } else if (level === 3) {
+                        const a4 = document.getElementById('blank4').value.trim();
+                        sentMsg = `尸体已经被你扔到大海里了吧？连同凶器一起。至于凶器，恐怕就是你房间消失的${a4}。`;
+                        correct = (a4 === '红酒');
+                    } else if (level === 4) {
+                        const a5 = document.getElementById('blank5').value.trim();
+                        sentMsg = `你真的不知道吗？你比谁都清楚那起事件背后的原因。看看这则报道：《${a5}》。现在，想起什么了吧？`;
+                        correct = (a5 === '明德私立学校一高中女生郊游途中失踪，母亲陈百惠急寻线索');
+                    } else if (level === 5) {
+                        const a6a = document.getElementById('blank6a').value.trim();
+                        const a6b = document.getElementById('blank6b').value.trim();
+                        sentMsg = `你错了。${a6a}和${a6b}，根本没有血缘关系。`;
+                        correct = (a6a === '宋闻溪' && a6b === '宋远山') || (a6a === '宋远山' && a6b === '宋闻溪');
+                    }
+
+                    animating = true; setSendDisabled(true);
+                    messages.push({ from: 'me', text: sentMsg, isCorrect: correct });
+                    updateChatArea(true);
+                    await new Promise(r => setTimeout(r, 800));
+
+                    if (correct) {
+                        if (level === 1) {
+                            messages.push({ ...dynamicCorrect.step2Other }); step = 2;
+                        } else if (level === 2) {
+                            messages.push({ ...dynamicCorrect.step3Other }); step = 3;
+                        } else if (level === 3) {
+                            messages.push({ ...dynamicCorrect.step4Other1 }); updateChatArea(true);
+                            await new Promise(r => setTimeout(r, 1200));
+                            messages.push({ ...dynamicCorrect.step4Me }); updateChatArea(true);
+                            await new Promise(r => setTimeout(r, 1200));
+                            messages.push({ ...dynamicCorrect.step4Other2 }); step = 4;
+                        } else if (level === 4) {
+                            messages.push({ ...dynamicCorrect.step5Other1 }); updateChatArea(true);
+                            await new Promise(r => setTimeout(r, 1500));
+                            messages.push({ ...dynamicCorrect.step5Me }); updateChatArea(true);
+                            await new Promise(r => setTimeout(r, 1200));
+                            messages.push({ ...dynamicCorrect.step5Other2 }); step = 5;
+                        } else if (level === 5) {
+                            messages.push({ ...dynamicCorrect.step6Other1 }); updateChatArea(true);
+                            await new Promise(r => setTimeout(r, 1200));
+                            messages.push({ ...dynamicCorrect.step6Me }); updateChatArea(true);
+                            await new Promise(r => setTimeout(r, 1000));
+                            messages.push({ ...dynamicCorrect.step6Other2 }); updateChatArea(true);
+                            await new Promise(r => setTimeout(r, 1000));
+                            messages.push({ ...dynamicCorrect.step6Me2 }); updateChatArea(true);
+                            await new Promise(r => setTimeout(r, 800));
+                            messages.push({ ...dynamicCorrect.step6Other3 }); step = 6;
+                        }
+                        updateChatArea(true);
+                        saveProgress(step);
+                    } else {
+                        messages.push({ ...errorReply });
+                        updateChatArea(true);
+                    }
+                    animating = false;
+                }
+
+                function bindDesktopEvents() {
+                    if (step === 0) {
+                        document.getElementById('sendBtn').addEventListener('click', sendFirst);
+                    } else if (step >= 1 && step <= 5) {
+                        const btnId = `sendBtn${step}`;
+                        document.getElementById(btnId).addEventListener('click', () => checkFill(step));
+                    } else if (step === 6) {
+                        document.querySelectorAll('.option-btn').forEach(btn => {
+                            btn.addEventListener('click', async function() {
+                                if (animating) return;
+                                animating = true;
+                                messages.push({ ...dynamicCorrect.step7Me });
+                                step = 7;
+                                updateChatArea(true);
+                                saveProgress(step);
+                                animating = false;
+                            });
+                        });
+                    } else if (step === 7) {
+                        const endingBtn = document.getElementById('goToEnding');
+                        if (endingBtn) {
+                            endingBtn.addEventListener('click', function() {
+                                window.location.href = 'ending.html';  // ← 修改为 ending.html
+                            });
+                        }
+                    }
+                }
+
+                lynneItem.addEventListener('click', () => { currentView = 'chat'; updateChatArea(true); });
+                profileTrigger.addEventListener('click', () => { currentView = 'profile'; updateChatArea(false); });
+                funcChats.addEventListener('click', () => { currentView = 'chat'; updateChatArea(true); });
+                funcProfile.addEventListener('click', () => { currentView = 'profile'; updateChatArea(false); });
+
+                function exitAndSave() {
+                    saveProgress(step);
+                    window.location.href = 'desktop.html';
+                }
+                desktopClose.addEventListener('click', exitAndSave);
+
+                updateChatArea(savedProgress ? true : false);
+                if (savedProgress) updatePreview();
+            }
+
+            // ---------- 移动端 ----------
+            function initMobile() {
+                const mobileApp = document.getElementById('mobileApp');
+                mobileApp.style.display = 'flex';
+                mobileApp.innerHTML = `
+                    <div class="mobile-header"><span class="title" id="mobileTitle">微信</span><div class="global-close" id="mobileClose" style="position:static; color:#fff; cursor:pointer;">✕</div></div>
+                    <div class="mobile-main" id="mobileMain"></div>
+                    <div class="mobile-tabbar">
+                        <div class="mobile-tab-item active" data-tab="chats"><span class="icon">💬</span><span>聊天</span></div>
+                        <div class="mobile-tab-item disabled"><span class="icon">👥</span><span>通讯录</span></div>
+                        <div class="mobile-tab-item disabled"><span class="icon">🔍</span><span>发现</span></div>
+                        <div class="mobile-tab-item" data-tab="profile"><span class="icon">👤</span><span>我</span></div>
+                    </div>`;
+                const mobileMain = document.getElementById('mobileMain');
+                const mobileTitle = document.getElementById('mobileTitle');
+                const mobileClose = document.getElementById('mobileClose');
+                const tabs = document.querySelectorAll('.mobile-tab-item:not(.disabled)');
+                let mobileTab = 'chats';
+                let messages = [];
+                let step = 0;
+                let animating = false;
+
+                if (isReload()) clearProgress();
+                const savedProgress = loadProgress();
+                if (savedProgress) {
+                    step = savedProgress.step;
+                    messages = savedProgress.messages.map(m => ({...m, isCorrect: true}));
+                } else {
+                    messages = [...baseMessages];
+                    step = 0;
+                }
+
+                function renderMobileMessages(scroll) {
+                    const html = '<div class="message-time">今天</div>' + messages.map(msg => {
+                        const cls = msg.from === 'me' ? 'me' : 'other';
+                        return `<div class="message-row ${cls}" style="display:flex;justify-content:${msg.from==='me'?'flex-end':'flex-start'};margin-bottom:14px;"><div class="message-bubble" style="max-width:80%;">${msg.text}</div></div>`;
+                    }).join('');
+                    const div = document.getElementById('mobileChatMessages');
+                    if (div) { div.innerHTML = html; div.scrollTop = scroll ? div.scrollHeight : 0; }
+                }
+
+                function renderMobileInput() {
+                    if (step === 0) {
+                        return `<div class="chat-input-area"><div class="input-wrapper"><input type="text" value="我知道你是谁。" readonly disabled style="width:100%;"></div><button class="send-btn" id="mSendBtn">发送</button></div>`;
+                    } else if (step === 1) {
+                        return `<div class="chat-input-area"><div class="input-wrapper"><span class="fill-text">你是</span><input class="fill-blank" id="mBlank1"><span class="fill-text">，并且，你在艾希皇后号杀了</span><input class="fill-blank" id="mBlank2"><span class="fill-text">。</span></div><button class="send-btn" id="mSendBtn1">发送</button></div>`;
+                    } else if (step === 2) {
+                        return `<div class="chat-input-area"><div class="input-wrapper"><span class="fill-text">答案差点就要颠倒过来。但是你房间里的那个</span><input class="fill-blank" id="mBlank3"><span class="fill-text">告诉我，某人的计划恐怕破产了。</span></div><button class="send-btn" id="mSendBtn2">发送</button></div>`;
+                    } else if (step === 3) {
+                        return `<div class="chat-input-area"><div class="input-wrapper"><span class="fill-text">尸体已经被你扔到大海里了吧？连同凶器一起。至于凶器，恐怕就是你房间消失的</span><input class="fill-blank" id="mBlank4"><span class="fill-text">。</span></div><button class="send-btn" id="mSendBtn3">发送</button></div>`;
+                    } else if (step === 4) {
+                        return `<div class="chat-input-area"><div class="input-wrapper"><span class="fill-text">你真的不知道吗？你比谁都清楚那起事件背后的原因。看看这则报道：《</span><input class="fill-blank wide" id="mBlank5" maxlength="40"><span class="fill-text">》。现在，想起什么了吧？</span></div><button class="send-btn" id="mSendBtn4">发送</button></div>`;
+                    } else if (step === 5) {
+                        return `<div class="chat-input-area"><div class="input-wrapper"><span class="fill-text">你错了。</span><input class="fill-blank" id="mBlank6a"><span class="fill-text">和</span><input class="fill-blank" id="mBlank6b"><span class="fill-text">，根本没有血缘关系。</span></div><button class="send-btn" id="mSendBtn5">发送</button></div>`;
+                    } else if (step === 6) {
+                        return `<div class="chat-input-area"><div class="input-wrapper"><button class="option-btn" data-opt="A">当然</button><button class="option-btn" data-opt="B">当然</button><button class="option-btn" data-opt="C">当然</button></div></div>`;
+                    } else if (step === 7) {
+                        return `<div class="chat-input-area"><div class="input-wrapper" style="justify-content: center;"><button class="ending-btn" id="mGoToEnding">走向结局</button></div></div>`;
+                    } else {
+                        return `<div class="chat-input-area"><div class="input-wrapper"><input type="text" disabled placeholder=" " style="width:100%;"></div></div>`;
+                    }
+                }
+
+                function updateMobileView(scroll = false) {
+                    if (mobileTab === 'chats') {
+                        mobileTitle.textContent = '微信';
+                        mobileMain.innerHTML = `
+                            <div class="chat-item" id="mobileLynne" style="display:flex;align-items:center;padding:14px 16px;border-bottom:1px solid #eee;cursor:pointer;">
+                                <div class="chat-avatar" style="background:#07c160;width:42px;height:42px;border-radius:6px;display:flex;align-items:center;justify-content:center;color:white;font-size:20px;">L</div>
+                                <div class="chat-info" style="flex:1;margin-left:12px;">
+                                    <div class="chat-name">Lynne</div>
+                                    <div class="chat-preview" style="color:#888;font-size:13px;">${messages[messages.length-1]?.text || ''}</div>
+                                </div>
+                                <div class="chat-time">今天</div>
+                            </div>`;
+                        document.getElementById('mobileLynne').addEventListener('click', () => {
+                            mobileTitle.innerHTML = '<span class="back-btn" id="mobileBack" style="margin-right:10px;cursor:pointer;">←</span> Lynne';
+                            mobileMain.innerHTML = `<div class="chat-messages" id="mobileChatMessages" style="flex:1;overflow-y:auto;padding:12px;"></div>${renderMobileInput()}`;
+                            document.getElementById('mobileBack').addEventListener('click', () => { mobileTab = 'chats'; updateMobileView(false); setActiveMobileTab('chats'); });
+                            renderMobileMessages(true);
+                            bindMobileEvents();
+                        });
+                    } else if (mobileTab === 'profile') {
+                        mobileTitle.textContent = '我';
+                        mobileMain.innerHTML = `<div class="profile-view" style="height:100%;"><div class="profile-avatar">♟️</div><div class="profile-name">chess player</div><div class="profile-id">微信号：chess_player</div></div>`;
+                    }
+                }
+
+                function setMobileSendDisabled(disabled) {
+                    const btn = document.querySelector('.send-btn');
+                    if (btn) btn.disabled = disabled;
+                }
+
+                async function mobileSendFirst() {
+                    if (animating) return;
+                    animating = true; setMobileSendDisabled(true);
+                    messages.push({ ...dynamicCorrect.step1Me });
+                    updateMobileView(true);
+                    await new Promise(r => setTimeout(r, 1200));
+                    messages.push({ ...dynamicCorrect.step1Other });
+                    step = 1;
+                    updateMobileView(true);
+                    animating = false; setMobileSendDisabled(false);
+                    saveProgress(step);
+                }
+
+                async function mobileCheckFill(level) {
+                    if (animating) return;
+                    let correct = false;
+                    let sentMsg = '';
+                    if (level === 1) {
+                        const a1 = document.getElementById('mBlank1').value.trim();
+                        const a2 = document.getElementById('mBlank2').value.trim();
+                        sentMsg = `你是${a1}，并且，你在艾希皇后号杀了${a2}。`;
+                        correct = (a1 === '宋令仪' && a2 === '陈楚梦');
+                    } else if (level === 2) {
+                        const a3 = document.getElementById('mBlank3').value.trim();
+                        sentMsg = `答案差点就要颠倒过来。但是你房间里的那个${a3}告诉我，某人的计划恐怕破产了。`;
+                        correct = (a3 === '麻醉剂');
+                    } else if (level === 3) {
+                        const a4 = document.getElementById('mBlank4').value.trim();
+                        sentMsg = `尸体已经被你扔到大海里了吧？连同凶器一起。至于凶器，恐怕就是你房间消失的${a4}。`;
+                        correct = (a4 === '红酒');
+                    } else if (level === 4) {
+                        const a5 = document.getElementById('mBlank5').value.trim();
+                        sentMsg = `你真的不知道吗？你比谁都清楚那起事件背后的原因。看看这则报道：《${a5}》。现在，想起什么了吧？`;
+                        correct = (a5 === '明德私立学校一高中女生郊游途中失踪，母亲陈百惠急寻线索');
+                    } else if (level === 5) {
+                        const a6a = document.getElementById('mBlank6a').value.trim();
+                        const a6b = document.getElementById('mBlank6b').value.trim();
+                        sentMsg = `你错了。${a6a}和${a6b}，根本没有血缘关系。`;
+                        correct = (a6a === '宋闻溪' && a6b === '宋远山') || (a6a === '宋远山' && a6b === '宋闻溪');
+                    }
+
+                    animating = true; setMobileSendDisabled(true);
+                    messages.push({ from: 'me', text: sentMsg, isCorrect: correct });
+                    updateMobileView(true);
+                    await new Promise(r => setTimeout(r, 800));
+
+                    if (correct) {
+                        if (level === 1) {
+                            messages.push({ ...dynamicCorrect.step2Other }); step = 2;
+                        } else if (level === 2) {
+                            messages.push({ ...dynamicCorrect.step3Other }); step = 3;
+                        } else if (level === 3) {
+                            messages.push({ ...dynamicCorrect.step4Other1 }); updateMobileView(true);
+                            await new Promise(r => setTimeout(r, 1200));
+                            messages.push({ ...dynamicCorrect.step4Me }); updateMobileView(true);
+                            await new Promise(r => setTimeout(r, 1200));
+                            messages.push({ ...dynamicCorrect.step4Other2 }); step = 4;
+                        } else if (level === 4) {
+                            messages.push({ ...dynamicCorrect.step5Other1 }); updateMobileView(true);
+                            await new Promise(r => setTimeout(r, 1500));
+                            messages.push({ ...dynamicCorrect.step5Me }); updateMobileView(true);
+                            await new Promise(r => setTimeout(r, 1200));
+                            messages.push({ ...dynamicCorrect.step5Other2 }); step = 5;
+                        } else if (level === 5) {
+                            messages.push({ ...dynamicCorrect.step6Other1 }); updateMobileView(true);
+                            await new Promise(r => setTimeout(r, 1200));
+                            messages.push({ ...dynamicCorrect.step6Me }); updateMobileView(true);
+                            await new Promise(r => setTimeout(r, 1000));
+                            messages.push({ ...dynamicCorrect.step6Other2 }); updateMobileView(true);
+                            await new Promise(r => setTimeout(r, 1000));
+                            messages.push({ ...dynamicCorrect.step6Me2 }); updateMobileView(true);
+                            await new Promise(r => setTimeout(r, 800));
+                            messages.push({ ...dynamicCorrect.step6Other3 }); step = 6;
+                        }
+                        updateMobileView(true);
+                        saveProgress(step);
+                    } else {
+                        messages.push({ ...errorReply });
+                        updateMobileView(true);
+                    }
+                    animating = false;
+                }
+
+                function bindMobileEvents() {
+                    if (step === 0) document.getElementById('mSendBtn').addEventListener('click', mobileSendFirst);
+                    else if (step >= 1 && step <= 5) {
+                        document.getElementById(`mSendBtn${step}`).addEventListener('click', () => mobileCheckFill(step));
+                    } else if (step === 6) {
+                        document.querySelectorAll('.option-btn').forEach(btn => {
+                            btn.addEventListener('click', async function() {
+                                if (animating) return;
+                                animating = true;
+                                messages.push({ ...dynamicCorrect.step7Me });
+                                step = 7;
+                                updateMobileView(true);
+                                saveProgress(step);
+                                animating = false;
+                            });
+                        });
+                    } else if (step === 7) {
+                        const endingBtn = document.getElementById('mGoToEnding');
+                        if (endingBtn) {
+                            endingBtn.addEventListener('click', function() {
+                                window.location.href = 'ending.html';  // ← 修改为 ending.html
+                            });
+                        }
+                    }
+                }
+
+                function setActiveMobileTab(tab) {
+                    tabs.forEach(t => t.classList.toggle('active', t.dataset.tab === tab));
+                }
+
+                tabs.forEach(tab => {
+                    tab.addEventListener('click', function() {
+                        mobileTab = this.dataset.tab;
+                        updateMobileView(false);
+                        setActiveMobileTab(mobileTab);
+                    });
+                });
+
+                mobileClose.addEventListener('click', () => {
+                    saveProgress(step);
+                    window.location.href = 'desktop.html';
+                });
+
+                updateMobileView(savedProgress ? true : false);
+            }
+
+            if (!isMobile()) {
+                initDesktop();
+            } else {
+                initMobile();
+            }
+
+            window.addEventListener('resize', function() {
+                if (isMobile() && document.getElementById('mobileApp').style.display === 'none') {
+                    document.getElementById('desktopApp').style.display = 'none';
+                    initMobile();
+                } else if (!isMobile() && document.getElementById('desktopApp').style.display === 'none') {
+                    document.getElementById('mobileApp').style.display = 'none';
+                    document.getElementById('desktopApp').style.display = 'flex';
+                    initDesktop();
+                }
+            });
+        })();
+    </script>
+</body>
+</html>

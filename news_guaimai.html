@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>韶光警方摧毁拐卖儿童犯罪团伙 - 韶光日报网</title>
+    <style>
+        /* --- 全局样式重置（与商战页面一致） --- */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: "Microsoft YaHei", "PingFang SC", Arial, sans-serif; line-height: 1.6; color: #333; background-color: #f4f4f4; }
+        a { text-decoration: none; color: #333; transition: color 0.2s; }
+        a:hover { color: #ff9900; }
+        ul { list-style: none; }
+
+        /* --- 顶部导航栏 --- */
+        .top-nav { background-color: #222; color: #fff; padding: 10px 0; position: sticky; top: 0; z-index: 1000; }
+        .nav-container { max-width: 1270px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; padding: 0 15px; }
+        .logo { font-size: 24px; font-weight: bold; color: #ff9900; letter-spacing: 1px; }
+        .nav-links { display: flex; gap: 25px; }
+        .nav-links a { color: #eee; font-size: 15px; font-weight: 500; }
+        .nav-links a:hover { color: #ff9900; }
+        
+        .search-area { display: flex; align-items: center; gap: 10px; }
+        .search-input { background: #333; border: 1px solid #555; color: #fff; padding: 6px 12px; border-radius: 4px; outline: none; width: 180px; transition: all 0.3s; }
+        .search-input:focus { border-color: #ff9900; background: #444; }
+        .search-btn { background: #ff9900; color: #fff; border: none; padding: 6px 15px; border-radius: 4px; cursor: pointer; font-size: 14px; transition: background 0.2s; }
+        .search-btn:hover { background: #e08800; }
+        .search-btn:active { transform: scale(0.98); }
+
+        /* --- 关闭按钮样式 --- */
+        .close-btn {
+            color: #eee;
+            font-size: 22px;
+            font-weight: 300;
+            line-height: 1;
+            margin-left: 15px;
+            cursor: pointer;
+            transition: color 0.2s, transform 0.2s;
+            display: inline-block;
+            padding: 0 4px;
+            border-radius: 50%;
+            width: 32px;
+            height: 32px;
+            text-align: center;
+            line-height: 32px;
+            background: transparent;
+            text-decoration: none;
+        }
+        .close-btn:hover {
+            color: #ff9900;
+            transform: scale(1.1);
+        }
+
+        /* --- 主体布局 --- */
+        .main-wrapper { max-width: 1270px; margin: 20px auto; display: flex; gap: 20px; padding: 0 15px; align-items: flex-start; }
+
+        /* --- 左侧边栏 --- */
+        .left-sidebar { width: 220px; background: #fff; border-radius: 6px; padding: 20px; text-align: center; box-shadow: 0 2px 5px rgba(0,0,0,0.05); flex-shrink: 0; }
+        .media-avatar { width: 70px; height: 70px; background: #ff9900; border-radius: 50%; margin: 0 auto 10px; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 24px; font-weight: bold; }
+        .media-name { font-size: 18px; font-weight: bold; margin-bottom: 5px; color: #ff9900; }
+        .media-desc { font-size: 12px; color: #888; margin-bottom: 15px; }
+        .subscribe-btn { display: block; width: 100%; background: #ff9900; color: #fff; border: none; padding: 8px 0; border-radius: 20px; cursor: pointer; margin-bottom: 20px; font-weight: bold; transition: background 0.2s; }
+        .subscribe-btn:hover { background: #e08800; }
+        .stats-row { display: flex; justify-content: space-around; border-top: 1px solid #eee; padding-top: 15px; }
+        .stat-item span { display: block; }
+        .stat-num { font-weight: bold; font-size: 16px; }
+        .stat-label { font-size: 12px; color: #999; }
+
+        /* --- 中间新闻内容区 --- */
+        .news-article { 
+            flex: 1; 
+            background: #fff; 
+            padding: 40px; 
+            border-radius: 6px; 
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05); 
+            min-width: 0; 
+        }
+        .article-title { font-size: 28px; font-weight: bold; line-height: 1.4; margin-bottom: 15px; color: #222; }
+        .article-meta { font-size: 13px; color: #999; margin-bottom: 30px; border-bottom: 1px solid #eee; padding-bottom: 15px; }
+        .article-meta span { margin-right: 15px; }
+        
+        /* 电头颜色改为橙黄色 */
+        .reporter-info { color: #ff9900; font-weight: normal; }
+
+        .article-body p { margin-bottom: 20px; font-size: 17px; line-height: 1.8; text-align: justify; color: #333; }
+        .article-body strong { color: #222; }
+        .article-footer { margin-top: 40px; font-size: 13px; color: #999; text-align: right; font-style: normal; }
+
+        /* --- 右侧热门精选 --- */
+        .right-sidebar { width: 280px; background: #fff; border-radius: 6px; padding: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); flex-shrink: 0; }
+        .hot-header { font-size: 18px; font-weight: bold; margin-bottom: 20px; border-left: 4px solid #ff9900; padding-left: 10px; }
+        .hot-list li { margin-bottom: 15px; padding-bottom: 15px; border-bottom: 1px dashed #eee; }
+        .hot-list li:last-child { border-bottom: none; margin-bottom: 0; }
+        .hot-link { font-size: 15px; line-height: 1.5; color: #333; display: block; }
+        .hot-link:hover { color: #ff9900; }
+
+        /* --- 响应式适配 --- */
+        @media (max-width: 992px) {
+            .main-wrapper { flex-direction: column; }
+            .left-sidebar, .right-sidebar { width: 100%; }
+            .nav-links { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 顶部导航 -->
+    <header class="top-nav">
+        <div class="nav-container">
+            <div class="logo">韶光日报网</div>
+            <nav class="nav-links">
+                <a href="#">新闻</a>
+                <a href="#">社会</a>
+                <a href="#">教育</a>
+                <a href="#">民生</a>
+                <a href="#">更多 ▼</a>
+            </nav>
+            <div class="search-area">
+                <input type="text" class="search-input" placeholder="搜索新闻...">
+                <button class="search-btn" onclick="alert('正在搜索：' + this.previousElementSibling.value)">搜索</button>
+                <!-- 关闭按钮跳转至 search_guaimai.html -->
+                <a href="search_guaimai.html" class="close-btn" title="关闭页面">✕</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- 主体内容 -->
+    <div class="main-wrapper">
+        
+        <!-- 左侧边栏 -->
+        <aside class="left-sidebar">
+            <div class="media-avatar">韶</div>
+            <div class="media-name">韶光日报社会版</div>
+            <div class="media-desc">关注社会民生，传递真实声音</div>
+            <button class="subscribe-btn">+ 订阅</button>
+            <div class="stats-row">
+                <div class="stat-item"><span class="stat-num">3.5万</span><span class="stat-label">文章</span></div>
+                <div class="stat-item"><span class="stat-num">8亿</span><span class="stat-label">总阅读</span></div>
+            </div>
+        </aside>
+
+        <!-- 中间新闻正文 -->
+        <main class="news-article">
+            <!-- 无“独家”标签 -->
+            <h1 class="article-title">韶光警方摧毁拐卖儿童犯罪团伙</h1>
+            
+            <div class="article-meta">
+                <span class="reporter-info">本报讯（记者 何钟）</span>
+                <time>2011-08-12 12:00</time>
+                <span>发布于：本市</span>
+            </div>
+
+            <div class="article-body">
+                <p>日前，韶光公安刑侦部门成功摧毁一拐卖儿童犯罪团伙，解救出三十名受害者，并抓获七十余名犯罪嫌疑人。</p>
+
+                <p>今年七月，青阳区度假庄园一名七岁男童小西（化名）失踪。韶光市公安局和刑侦大队接到报警后高度重视，成立专案组全力开展调查。调查中，专案组获悉，这是一伙儿流窜至本地的拐卖儿童团伙。7月29日上午11时许，专案组在该犯罪团伙窝点一举捣毁了这个拐卖儿童犯罪集团。</p>
+
+                <p>即便已经被解救出来了，十五岁的小明（化名）仍然心有余悸，不敢相信自己安全了。他告诉我们，自己是被这伙人以打工的名义骗来的：“（犯罪头领）跟我说有报酬比较多的工作，我就来了。结果是让我讨饭。我本来不是这个地方的人，这些年被他们带着，都去了好几个地方了。”据小明说，该犯罪团伙流窜作案，在一个地方久了，见势不对就会转移阵地，用面包车和三轮车把他们这些孩子拉走，拉到新地方后，他们会划分点位，分派给不同的孩子去乞讨。乞讨时，专门有人巡视，晚上还有三四个打手看管他们。“跑是跑不掉的，他们会牢牢看着你，而且万一你逃走又被抓回来，那下场可就惨了。”说话间，小明仍因害怕而颤抖。</p>
+
+                <p>十二岁的小勇一提起那段噩梦般的经历，就止不住流泪：“过得太苦了！他（指犯罪头领）强迫我们讨钱，如果到晚上他们检查发现你没讨够数目，就会暴打你，说是‘惩罚’。我们每个人都被他们打过。”据小勇说，一开始打人只是对讨钱不多的孩子进行的惩罚，但犯罪团伙很快发现，身上带伤的孩子因为激起了路人的同情怜悯，反而获得了更多的施舍。于是，犯罪团伙动起了歪心思，用毒打、残害儿童的方式，试图获得更多的钱财。“他们下手可毒了！我们这种大一点的孩子，他们怕我们跑掉，就给我们喂药，让我们昏昏沉沉的，然后他们带着我们去讨钱，就说我们是他们的孩子嘛，得了重病没钱治病。那种小一点的，（犯罪团伙）就直接在他们身上拉这么一道口子，让他们伤口发炎。小孩子哭的哦......”小勇告诉我们，犯罪团伙本来想打伤一个新来的小孩双腿，还好警方行动迅速，来得及时。</p>
+
+                <p>“这些孩子已经失去了健康，失去了自由，也失去了安全。”专案组组长邵警官说，“我们不能再让他们失去信心，失去希望。”</p>
+
+                <p>经审，犯罪嫌疑人对拐卖儿童的犯罪事实供认不讳。目前，该案已转交法院审理。被解救儿童已送当地民政部门妥善安置。</p>
+
+                <p>本报将继续跟进。</p>
+            </div>
+
+            <div class="article-footer">
+                （韶光日报）
+            </div>
+        </main>
+
+        <!-- 右侧热门精选 -->
+        <aside class="right-sidebar">
+            <div class="hot-header">热门精选</div>
+            <ul class="hot-list">
+                <li><a href="#" class="hot-link">本地突发：某小区凌晨火灾，消防员紧急疏散居民...</a></li>
+                <li><a href="#" class="hot-link">教育部新规：中小学课后服务时长将延长至18:00...</a></li>
+                <li><a href="#" class="hot-link">天气预警：未来三天本市将有强降雨，注意防范...</a></li>
+                <li><a href="#" class="hot-link">民生关注：老旧小区改造进度公示，涉及5个社区...</a></li>
+            </ul>
+        </aside>
+
+    </div>
+
+</body>
+</html>

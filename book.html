@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>查看图片 - 风来惊梦</title>
+    <style>
+        /* 确保页面充满屏幕 */
+        html, body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #202124; /* 暗色背景更突出图片 */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            font-family: "PingFang SC", "Microsoft YaHei", sans-serif;
+        }
+
+        .image-container {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        /* 图片限制尺寸 */
+        .image-container img {
+            max-width: 100%;
+            max-height: 90vh;
+            object-fit: contain;
+            border-radius: 6px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+        }
+
+        /* 返回栏 */
+        .back-bar {
+            width: 100%;
+            padding: 15px 20px;
+            text-align: center;
+            background: #2d2d30;
+            box-sizing: border-box;
+        }
+
+        .back-btn {
+            display: inline-block;
+            padding: 8px 24px;
+            background: #3d3d42;
+            color: #e0e0e0;
+            text-decoration: none;
+            border-radius: 4px;
+            font-size: 15px;
+            transition: background 0.2s;
+        }
+
+        .back-btn:hover {
+            background: #505056;
+        }
+        
+        /* 移动端适配 */
+        @media (max-width: 640px) {
+            .back-bar {
+                padding: 12px 15px;
+            }
+            .back-btn {
+                font-size: 14px;
+                padding: 6px 18px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="image-container">
+        <!-- 跨文件夹引用同一个图片 -->
+        <img src="images/book.png" alt="《罗杰疑案》书籍扉页放大图" />
+    </div>
+
+    <div class="back-bar">
+        <!-- 已修改为直接跳转到 forum_post_9.html -->
+        <a href="forum_post_9.html" class="back-btn">← 返回上一页</a>
+    </div>
+
+</body>
+</html>

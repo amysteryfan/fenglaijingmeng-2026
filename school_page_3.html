@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>警校联动筑防线，安全宣讲入人心 - 明德私立学校</title>
+
+    <!-- 引入全局样式和脚本 -->
+    <link rel="stylesheet" href="css/style.css">
+    <script src="js/main.js" defer></script>
+
+    <style>
+        /* --- 局部页面专属样式 (基于学校官网风格扩展) --- */
+        
+        html, body {
+            height: auto;       /* 允许高度随内容拉伸 */
+            overflow-y: auto;   /* 强制启用纵向滚动 */
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Microsoft YaHei", "PingFang SC", sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        a { text-decoration: none; color: inherit; }
+        ul, ol { list-style: none; }
+
+        /* --- 顶部通栏 --- */
+        .top-bar {
+            background-color: #fff;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 40px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            z-index: 100;
+            width: 100%;
+            box-sizing: border-box;
+            flex-shrink: 0;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: #8B0000; /* 校徽红 */
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo img {
+            height: 40px;
+            margin-right: 12px;
+        }
+
+        .logo span {
+            margin-left: 10px;
+            font-size: 14px;
+            color: #666;
+            font-weight: normal;
+            letter-spacing: 1px;
+        }
+
+        /* 返回首页按钮 */
+        .back-home-btn {
+            background-color: #8B0000;
+            color: #fff;
+            padding: 8px 18px;
+            border-radius: 20px;
+            font-size: 14px;
+            transition: background 0.3s, transform 0.2s;
+            font-weight: bold;
+            box-shadow: 0 2px 4px rgba(139, 0, 0, 0.3);
+        }
+
+        .back-home-btn:hover {
+            background-color: #6d0000;
+            transform: translateY(-1px);
+        }
+
+        /* --- 文章容器 --- */
+        .article-container {
+            flex: 1 0 auto;
+            max-width: 880px;
+            margin: 40px auto;
+            padding: 0 20px;
+            width: 100%;
+        }
+
+        .article-card {
+            background-color: #fff;
+            border-radius: 8px;
+            padding: 50px 55px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+            border-top: 4px solid #8B0000;
+        }
+
+        /* 文章头部 */
+        .article-header {
+            text-align: center;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 25px;
+            margin-bottom: 30px;
+        }
+
+        .article-header h1 {
+            font-size: 30px;
+            color: #8B0000;
+            margin-bottom: 15px;
+            letter-spacing: 2px;
+        }
+
+        .article-meta {
+            color: #999;
+            font-size: 14px;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        /* 文章正文 */
+        .article-content {
+            font-size: 16px;
+            line-height: 1.8;
+            color: #444;
+        }
+
+        .article-content p {
+            margin-bottom: 15px;
+            text-indent: 2em; /* 首行缩进 */
+        }
+
+        /* 默认 strong 标签为红色 */
+        .article-content p strong {
+            color: #8B0000;
+        }
+
+        /* 追加黑色加粗的专用类 */
+        .article-content p strong.text-black {
+            color: #333333; /* 变回黑色 */
+        }
+
+        /* 自定义列表样式 */
+        .article-content ol, .article-content ul {
+            margin: 15px 0 15px 40px;
+        }
+
+        .article-content ol li {
+            list-style-type: decimal;
+            margin-bottom: 8px;
+        }
+
+        .article-content .highlight-box {
+            background-color: #FFF8E1;
+            border-left: 4px solid #C9A84A;
+            padding: 15px 20px;
+            margin: 20px 0;
+            text-indent: 0;
+            border-radius: 2px;
+        }
+
+        .article-footer {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+            text-align: right;
+            font-size: 15px;
+            color: #666;
+            line-height: 1.6;
+        }
+
+        /* --- 响应式设计 (适配手机端) --- */
+        @media (max-width: 768px) {
+            .top-bar {
+                padding: 0 15px;
+                flex-wrap: wrap;
+                height: auto;
+                padding-top: 10px;
+                padding-bottom: 10px;
+            }
+            .logo img { height: 30px; }
+            .logo { font-size: 18px; }
+            .logo span { font-size: 12px; margin-left: 5px; }
+            .back-home-btn { padding: 6px 12px; font-size: 13px; }
+
+            .article-card {
+                padding: 30px 20px;
+            }
+            .article-header h1 {
+                font-size: 24px;
+            }
+            .article-content {
+                font-size: 15px;
+            }
+            .article-content ol, .article-content ul {
+                margin-left: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 顶部通栏 (与官网保持统一) -->
+    <header class="top-bar">
+        <div class="logo">
+            <!-- 确保 images 下有 school_logo.png -->
+            <img src="images/school_logo.png" alt="明德私立学校校徽">
+            明德私立学校 <span>MINGDE PRIVATE SCHOOL</span>
+        </div>
+        <!-- 返回官网首页的按钮 -->
+        <a href="school.html" class="back-home-btn">← 返回首页</a>
+    </header>
+
+    <!-- 正文容器 -->
+    <main class="article-container">
+        <div class="article-card">
+            
+            <!-- 文章头部信息 -->
+            <div class="article-header">
+                <h1>警校联动筑防线，安全宣讲入人心——我校联合市公安局开展春季安全主题教育活动</h1>
+                <div class="article-meta">
+                    <span>发布部门：明德私立学校 保卫处</span>
+                    <span>发布日期：2022年4月25日</span>
+                </div>
+            </div>
+
+            <!-- 文章正文内容 -->
+            <div class="article-content">
+                <p>4月25日下午，明德私立学校联合市公安局特警支队、辖区派出所，在明德大礼堂举办“安全同行·守护青春”专题安全宣传讲座。本次活动旨在进一步增强学生安全防范意识，提升应对突发情况的自我保护能力，全校初一至高三年级共计800余名师生到场参与。</p>
+                
+                <p>市公安局特警支队副支队长刘振宇担任主讲。讲座围绕户外出行安全、应急自救技巧及日常安全习惯养成三个板块展开，结合近年来本市及周边地区发生的真实案例，以图文和短视频形式进行剖析。其中，刘副支队长特别强调了<strong>未经开发的山区、林区、废弃矿坑和水域周边</strong>的危险性，提醒学生无论在校内集体活动还是校外自主出行中，务必严格遵守安全规范，不进入封闭或警示区域，不擅自脱离集体行动。</p>
+
+                <!-- 使用黄色警示框包装极其重要的安全提醒 -->
+                <div class="highlight-box">
+                    <p>“很多看似‘小众’或‘神秘’的野外路线，实际上缺乏通讯覆盖和救援保障，一旦发生意外，搜救难度极大。”刘振宇在讲座中举例说明，部分偏远地带在雨季容易出现滑坡、迷路和失温等突发状况，即使是经验丰富的户外爱好者也需充分报备和准备，未成年人更不应以“探险”或“猎奇”为由擅自前往。</p>
+                </div>
+
+                <p>辖区派出所副所长李敏华强调学生应主动向家长告知出行计划，保持通讯畅通，在遇到可疑情况或紧急危险时第一时间拨打110或向周围成年人求助。</p>
+
+                <p>互动环节中，特警队员现场演示了简易绳结打法和野外求救信号发出方式，并邀请多位学生上台实操。高三（五）班学生张彦博表示：“以前觉得走小路、抄近道很有意思，今天听完才发现很多危险是看不见的。以后出去爬山一定会提前查好路线，绝不一个人往没信号的地方走。”</p>
+
+                <p>副校长吴启明在总结发言中表示：“安全是教育的前提，也是底线。我们希望通过常态化的警校合作，把安全意识变成学生的肌肉记忆，而不是事后教训。”</p>
+
+                <p>讲座结束后，市公安局干警向学生发放了《户外安全出行手册》和紧急联系卡，各班班主任将利用下周班会时间进一步深化讨论和自查。</p>
+
+                <p>安全无小事，警钟须长鸣。明德私立学校将持续与公安部门保持密切协作，为全体师生营造更安全、更安心的学习与成长环境。</p>
+            </div>
+
+            <!-- 文章尾部签名 -->
+            <div class="article-footer">
+                <p>明德私立学校 保卫处</p>
+                <p style="font-size: 13px; color: #999; margin-top: 5px;">2022年4月25日</p>
+            </div>
+
+        </div>
+    </main>
+
+</body>
+</html>

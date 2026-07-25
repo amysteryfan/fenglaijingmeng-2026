@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>宋令仪的邮箱 - 风来惊梦</title>
+    
+    <link rel="stylesheet" href="css/style.css">
+    <script src="js/main.js"></script>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #f5f7fa;
+            font-family: 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            color: #333;
+        }
+
+        .mail-client {
+            width: 960px;
+            max-width: 98vw;
+            height: 90vh;
+            max-height: 700px;
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .mail-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 24px;
+            border-bottom: 1px solid #e0e4e8;
+            background: #fff;
+            flex-shrink: 0;
+        }
+        .mail-brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 20px;
+            font-weight: 600;
+            color: #1a1a1a;
+        }
+        .mail-brand .icon {
+            width: 34px;
+            height: 34px;
+            background: #1a73e8;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 18px;
+        }
+        .btn-exit {
+            padding: 8px 20px;
+            border: 1px solid #d0d5dd;
+            border-radius: 6px;
+            background: #fff;
+            font-size: 14px;
+            color: #555;
+            cursor: pointer;
+            transition: 0.2s;
+            font-family: inherit;
+            white-space: nowrap;
+        }
+        .btn-exit:hover {
+            background: #f0f2f5;
+            border-color: #999;
+        }
+
+        .mail-body {
+            display: flex;
+            flex: 1;
+            overflow: hidden;
+        }
+
+        .folder-list {
+            width: 200px;
+            background: #fafbfc;
+            border-right: 1px solid #e0e4e8;
+            padding: 12px 8px;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            flex-shrink: 0;
+        }
+        .folder-item {
+            padding: 10px 16px;
+            border-radius: 6px;
+            font-size: 15px;
+            cursor: pointer;
+            color: #333;
+            transition: background 0.15s, color 0.15s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 500;
+        }
+        .folder-item:hover {
+            background: #e8f0fe;
+        }
+        .folder-item.active {
+            background: #1a73e8;
+            color: #fff;
+        }
+
+        .content-panel {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px 24px;
+            background: #fff;
+        }
+
+        .email-list {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+        .email-item {
+            padding: 14px 16px;
+            border-bottom: 1px solid #f0f0f0;
+            cursor: pointer;
+            transition: background 0.15s;
+            border-radius: 4px;
+        }
+        .email-item:hover {
+            background: #f8faff;
+        }
+        .email-sender {
+            font-weight: 600;
+            font-size: 15px;
+            margin-bottom: 4px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        .expired-tag {
+            background: #fef3c7;
+            color: #b45309;
+            font-size: 12px;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-weight: 500;
+        }
+        .draft-tag {
+            background: #e8f0fe;
+            color: #1a56b8;
+            font-size: 12px;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-weight: 500;
+        }
+        .email-subject {
+            color: #555;
+            font-size: 14px;
+            margin-bottom: 4px;
+            font-weight: 500;
+        }
+        .email-preview {
+            color: #999;
+            font-size: 13px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .email-date {
+            font-size: 12px;
+            color: #aaa;
+            margin-left: auto;
+        }
+
+        .letter-view {
+            display: none;
+        }
+        .letter-view.show {
+            display: block;
+        }
+        .back-link {
+            color: #1a73e8;
+            cursor: pointer;
+            font-size: 14px;
+            margin-bottom: 20px;
+            display: inline-block;
+            font-weight: 500;
+            padding: 4px 0;
+        }
+        .back-link:hover {
+            text-decoration: underline;
+        }
+        .letter-header {
+            margin-bottom: 20px;
+        }
+        .letter-header .field {
+            margin-bottom: 8px;
+            font-size: 14px;
+            color: #555;
+        }
+        .letter-header .field strong {
+            display: inline-block;
+            width: 60px;
+            color: #333;
+        }
+        .letter-body {
+            font-size: 15px;
+            line-height: 1.8;
+            color: #333;
+            white-space: pre-wrap;
+            padding: 16px;
+            background: #fafbfc;
+            border-radius: 8px;
+            border: 1px solid #eee;
+        }
+        .original-mail {
+            margin-top: 20px;
+            padding-top: 16px;
+            border-top: 1px dashed #ddd;
+        }
+        .original-mail .original-label {
+            font-size: 13px;
+            color: #888;
+            margin-bottom: 10px;
+            font-weight: 500;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px;
+            color: #aaa;
+            font-size: 15px;
+        }
+
+        @media (max-width: 640px) {
+            body {
+                align-items: stretch;
+            }
+            .mail-client {
+                width: 100vw;
+                height: 100vh;
+                max-height: 100vh;
+                border-radius: 0;
+                box-shadow: none;
+            }
+            .mail-header {
+                padding: 12px 16px;
+            }
+            .mail-brand {
+                font-size: 16px;
+            }
+            .btn-exit {
+                padding: 6px 14px;
+                font-size: 13px;
+            }
+            .folder-list {
+                width: 110px;
+                padding: 8px 4px;
+            }
+            .folder-item {
+                font-size: 13px;
+                padding: 8px 10px;
+                gap: 4px;
+            }
+            .content-panel {
+                padding: 12px 12px;
+            }
+            .email-item {
+                padding: 12px 10px;
+            }
+            .email-sender {
+                font-size: 14px;
+            }
+            .email-subject {
+                font-size: 13px;
+            }
+            .email-preview {
+                font-size: 12px;
+            }
+            .letter-header .field {
+                font-size: 13px;
+            }
+            .letter-body {
+                font-size: 14px;
+                padding: 12px;
+            }
+            .back-link {
+                font-size: 13px;
+                margin-bottom: 16px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="mail-client">
+        <div class="mail-header">
+            <div class="mail-brand">
+                <div class="icon">✉</div>
+                邮箱
+            </div>
+            <button class="btn-exit" id="btnExit">退出</button>
+        </div>
+
+        <div class="mail-body">
+            <div class="folder-list" id="folderList">
+                <div class="folder-item active" data-folder="inbox">收件箱</div>
+                <div class="folder-item" data-folder="sent">发信箱</div>
+                <div class="folder-item" data-folder="drafts">草稿箱</div>
+            </div>
+
+            <div class="content-panel" id="contentPanel"></div>
+        </div>
+    </div>
+
+    <script>
+        (function() {
+            const folderItems = document.querySelectorAll('.folder-item');
+            const contentPanel = document.getElementById('contentPanel');
+            const btnExit = document.getElementById('btnExit');
+
+            const propertyBody = '尊敬的业主您好，您家的2026年上半年物业费还未缴纳，请您尽快到<strong>水云庭</strong>物业服务中心结算相关费用，感谢您的支持与配合。\n\n水云庭物业公司\n2026年6月30日';
+            const inviteBody = '尊敬的宋令仪女士：\n\n向您致以最诚挚的问候！您已成功入选第三届学术交流研讨会参会名单，会议时间、会议地址、参会要求、住宿预定等信息将另行通知，请您耐心等待。\n\n为确保会议筹备工作有序进行，请您协助完成参会确认事宜：请您于2022年12月15日24:00之前，通过邮件反馈是否前来参会，逾期未回复将视为自动放弃参会资格。\n\n如有问题，欢迎在工作时间致电或发邮件询问组委会。\n\n学术交流研讨组委会\n2022年11月30日';
+
+            const draftBody = `妈妈：
+你已经是这个世界上最爱我的人，尽管你没有给予我全部的爱。
+但我总忍不住在想——
+如果，那年......真的消失了。
+你会多爱我一点吗？妈妈。`;
+
+            const data = {
+                inbox: {
+                    type: 'emailList',
+                    emails: [
+                        {
+                            sender: '水云庭物业公司',
+                            subject: '缴费提醒',
+                            preview: '尊敬的业主您好，您家的2026年上半年物业费还未缴纳...',
+                            date: '2026-06-30',
+                            isExpired: false,
+                            fullContent: {
+                                from: '水云庭物业公司 <wuyegs@shuiyunting.com>',
+                                to: '宋令仪 <songlingyi@Email.com>',
+                                date: '2026年6月30日',
+                                body: propertyBody
+                            }
+                        },
+                        {
+                            sender: '学术交流研讨组委会',
+                            subject: '参会邀请',
+                            preview: '尊敬的宋令仪女士，您已成功入选第三届学术交流研讨会...',
+                            date: '2022-11-30',
+                            isExpired: true,
+                            fullContent: {
+                                from: '学术交流研讨组委会 <committee@xueshu.com>',
+                                to: '宋令仪 <songlingyi@Email.com>',
+                                date: '2022年11月30日',
+                                body: inviteBody
+                            }
+                        }
+                    ]
+                },
+                sent: {
+                    type: 'sentList',
+                    emails: [
+                        {
+                            sender: '宋令仪',
+                            recipient: '宋远山',
+                            subject: '爸，我会把这句话铭记在心中的。',
+                            preview: '爸，我会把这句话铭记在心中的。',
+                            date: '2025-07-14',
+                            replyContent: '爸，我会把这句话铭记在心中的。',
+                            nested1: {
+                                from: '宋远山 <songyuanshan@dingfeng.com>',
+                                to: '宋令仪 <songlingyi@Email.com>',
+                                date: '2025-07-13',
+                                body: '不用。年轻人就是应该打拼。你有出息，好好干吧。以后假期有事也不用回来。'
+                            },
+                            nested2: {
+                                from: '宋令仪 <songlingyi@Email.com>',
+                                to: '宋远山 <songyuanshan@dingfeng.com>',
+                                date: '2025-07-12',
+                                body: '爸，今年有个项目要做，实在走不开。您需要我现在回来吗？'
+                            },
+                            original: {
+                                from: '宋远山 <songyuanshan@dingfeng.com>',
+                                to: '宋令仪 <songlingyi@Email.com>',
+                                date: '2025-07-11',
+                                body: '令仪，以后还是不回来？'
+                            }
+                        },
+                        {
+                            sender: '宋令仪',
+                            recipient: '宋远山',
+                            subject: '爸，最近有个比赛正在关键的阶段，今年还是不回去。',
+                            preview: '爸，最近有个比赛正在关键的阶段，今年还是不回去。',
+                            date: '2024-07-20',
+                            replyContent: '爸，最近有个比赛正在关键的阶段，今年还是不回去。',
+                            original: {
+                                from: '宋远山 <songyuanshan@dingfeng.com>',
+                                to: '宋令仪 <songlingyi@Email.com>',
+                                date: '2024-7-19',
+                                body: '令仪，还回来吗？'
+                            }
+                        },
+                        {
+                            sender: '宋令仪',
+                            recipient: '宋远山',
+                            subject: '爸，这边学业比较忙，假期还是不回去。',
+                            preview: '爸，这边学业比较忙，假期还是不回去。',
+                            date: '2023-12-24',
+                            replyContent: '爸，这边学业比较忙，假期还是不回去。',
+                            original: {
+                                from: '宋远山 <songyuanshan@dingfeng.com>',
+                                to: '宋令仪 <songlingyi@Email.com>',
+                                date: '2023-12-23',
+                                body: '令仪，今年还回来吗？'
+                            }
+                        },
+                        {
+                            sender: '宋令仪',
+                            recipient: '宋远山',
+                            subject: '爸，我不会让您失望的。',
+                            preview: '爸，我不会让您失望的。',
+                            date: '2023-07-15',
+                            replyContent: '爸，我不会让您失望的。',
+                            nested1: {
+                                from: '宋远山 <songyuanshan@dingfeng.com>',
+                                to: '宋令仪 <songlingyi@Email.com>',
+                                date: '2023-7-15',
+                                body: '知道了，好好干。'
+                            },
+                            nested2: {
+                                from: '宋令仪 <songlingyi@Email.com>',
+                                to: '宋远山 <songyuanshan@dingfeng.com>',
+                                date: '2023-7-14',
+                                body: '爸，我在这边准备比赛，假期就不回去了。'
+                            },
+                            original: {
+                                from: '宋远山 <songyuanshan@dingfeng.com>',
+                                to: '宋令仪 <songlingyi@Email.com>',
+                                date: '2023-7-14',
+                                body: '令仪，打算什么时候回来？'
+                            }
+                        },
+                        {
+                            sender: '宋令仪',
+                            recipient: '宋远山',
+                            subject: '嗯。爸，您记得保重身体。',
+                            preview: '嗯。爸，您记得保重身体。',
+                            date: '2022-12-26',
+                            replyContent: '嗯。爸，您记得保重身体。',
+                            nested1: {
+                                from: '宋远山 <songyuanshan@dingfeng.com>',
+                                to: '宋令仪 <songlingyi@Email.com>',
+                                date: '2022-12-26',
+                                body: '知道了。钱不够花就说。'
+                            },
+                            nested2: {
+                                from: '宋令仪 <songlingyi@Email.com>',
+                                to: '宋远山 <songyuanshan@dingfeng.com>',
+                                date: '2022-12-25',
+                                body: '不是的，不是的！爸.....我得留在这边参加学术会议，假期就不回去了。'
+                            },
+                            nested3: {
+                                from: '宋远山 <songyuanshan@dingfeng.com>',
+                                to: '宋令仪 <songlingyi@Email.com>',
+                                date: '2022-12-25',
+                                body: '怎么？你还没有痊愈？'
+                            },
+                            nested4: {
+                                from: '宋令仪 <songlingyi@Email.com>',
+                                to: '宋远山 <songyuanshan@dingfeng.com>',
+                                date: '2022-12-24',
+                                body: '爸......我今年，想先不回来。'
+                            },
+                            original: {
+                                from: '宋远山 <songyuanshan@dingfeng.com>',
+                                to: '宋令仪 <songlingyi@Email.com>',
+                                date: '2022-12-23',
+                                body: '令仪，买了什么时候的票回来？'
+                            }
+                        }
+                    ]
+                },
+                drafts: {
+                    type: 'draftList',
+                    emails: [
+                        {
+                            sender: '宋令仪',
+                            recipient: '（无）',
+                            subject: '写给妈妈的信',
+                            date: '2021-06-06',
+                            body: draftBody
+                        }
+                    ]
+                }
+            };
+
+            function renderContent(folder) {
+                const folderData = data[folder];
+                if (!folderData) return;
+
+                let html = '';
+
+                if (folderData.type === 'emailList') {
+                    html = '<div class="email-list">';
+                    folderData.emails.forEach((email, idx) => {
+                        html += `
+                            <div class="email-item" data-email-index="${idx}">
+                                <div class="email-sender">
+                                    ${email.isExpired ? '<span class="expired-tag">已过期</span>' : ''}
+                                    ${email.sender}
+                                    <span class="email-date">${email.date}</span>
+                                </div>
+                                <div class="email-subject">${email.subject}</div>
+                                <div class="email-preview">${email.preview}</div>
+                            </div>
+                        `;
+                    });
+                    html += '</div>';
+                } else if (folderData.type === 'sentList') {
+                    html = '<div class="email-list">';
+                    folderData.emails.forEach((email, idx) => {
+                        html += `
+                            <div class="email-item" data-email-index="${idx}">
+                                <div class="email-sender">
+                                    ${email.sender}
+                                    <span class="email-date">${email.date}</span>
+                                </div>
+                                <div class="email-subject">${email.subject}</div>
+                                <div style="font-size:12px; color:#999;">收件人：${email.recipient}</div>
+                            </div>
+                        `;
+                    });
+                    html += '</div>';
+                } else if (folderData.type === 'draftList') {
+                    html = '<div class="email-list">';
+                    folderData.emails.forEach((email, idx) => {
+                        html += `
+                            <div class="email-item" data-email-index="${idx}">
+                                <div class="email-sender">
+                                    <span class="draft-tag">未发送</span>
+                                    ${email.sender}
+                                    <span class="email-date">${email.date}</span>
+                                </div>
+                                <div class="email-subject">${email.subject}</div>
+                                <div style="font-size:12px; color:#999;">收件人：${email.recipient}</div>
+                            </div>
+                        `;
+                    });
+                    html += '</div>';
+                } else if (folderData.type === 'empty') {
+                    html = `<div class="empty-state">${folderData.message}</div>`;
+                }
+
+                contentPanel.innerHTML = html;
+                if (folderData.type === 'emailList' || folderData.type === 'sentList' || folderData.type === 'draftList') {
+                    bindEmailClicks(folderData);
+                }
+            }
+
+            function bindEmailClicks(folderData) {
+                const emailItems = contentPanel.querySelectorAll('.email-item');
+                emailItems.forEach(item => {
+                    item.addEventListener('click', function() {
+                        const index = parseInt(this.getAttribute('data-email-index'));
+                        const email = folderData.emails[index];
+                        renderLetterDetail(email, folderData.type);
+                    });
+                });
+            }
+
+            function renderNestedReply(data) {
+                if (!data) return '';
+                return `
+                    <div class="original-mail">
+                        <div class="original-label">——原始邮件——</div>
+                        <div class="letter-header" style="margin-bottom:10px;">
+                            <div class="field"><strong>发件人：</strong>${data.from}</div>
+                            <div class="field"><strong>收件人：</strong>${data.to}</div>
+                            <div class="field"><strong>时间：</strong>${data.date}</div>
+                        </div>
+                        <div class="letter-body" style="background:#f0f0f0;">${data.body.replace(/\n/g, '<br>')}</div>
+                    </div>
+                `;
+            }
+
+            function renderLetterDetail(email, type) {
+                let html = '';
+                let backFolder = 'inbox';
+                let backText = '← 返回收件箱';
+
+                if (type === 'sentList') {
+                    backFolder = 'sent';
+                    backText = '← 返回发信箱';
+                } else if (type === 'draftList') {
+                    backFolder = 'drafts';
+                    backText = '← 返回草稿箱';
+                }
+
+                if (type === 'emailList') {
+                    html = `
+                        <div class="letter-view show">
+                            <div class="back-link" id="backBtn">${backText}</div>
+                            <div class="letter-header">
+                                <div class="field"><strong>发件人：</strong>${email.fullContent.from}</div>
+                                <div class="field"><strong>收件人：</strong>${email.fullContent.to}</div>
+                                <div class="field"><strong>时间：</strong>${email.fullContent.date}</div>
+                            </div>
+                            <div class="letter-body">${email.fullContent.body}</div>
+                        </div>
+                    `;
+                } else if (type === 'sentList') {
+                    html = `
+                        <div class="letter-view show">
+                            <div class="back-link" id="backBtn">${backText}</div>
+                            <div class="letter-header">
+                                <div class="field"><strong>发件人：</strong>${email.sender} <songlingyi@Email.com></div>
+                                <div class="field"><strong>收件人：</strong>${email.recipient} <songyuanshan@dingfeng.com></div>
+                                <div class="field"><strong>时间：</strong>${email.date}</div>
+                            </div>
+                            <div class="letter-body">${email.replyContent.replace(/\n/g, '<br>')}</div>
+                    `;
+
+                    if (email.nested1) {
+                        html += renderNestedReply(email.nested1);
+                    }
+                    if (email.nested2) {
+                        html += renderNestedReply(email.nested2);
+                    }
+                    if (email.nested3) {
+                        html += renderNestedReply(email.nested3);
+                    }
+                    if (email.nested4) {
+                        html += renderNestedReply(email.nested4);
+                    }
+                    if (email.original) {
+                        html += renderNestedReply(email.original);
+                    }
+
+                    html += `</div>`;
+                } else if (type === 'draftList') {
+                    html = `
+                        <div class="letter-view show">
+                            <div class="back-link" id="backBtn">${backText}</div>
+                            <div class="letter-header">
+                                <div class="field"><strong>发件人：</strong>${email.sender} <songlingyi@Email.com></div>
+                                <div class="field"><strong>收件人：</strong>${email.recipient}</div>
+                                <div class="field"><strong>时间：</strong>${email.date}</div>
+                                <div style="margin-top: 8px; color: #888; font-size: 13px;">状态：未发送</div>
+                            </div>
+                            <div class="letter-body">${email.body.replace(/\n/g, '<br>')}</div>
+                        </div>
+                    `;
+                }
+
+                contentPanel.innerHTML = html;
+                document.getElementById('backBtn').addEventListener('click', () => {
+                    renderContent(backFolder);
+                    setActiveFolder(backFolder);
+                });
+            }
+
+            function setActiveFolder(folder) {
+                folderItems.forEach(item => {
+                    const f = item.getAttribute('data-folder');
+                    if (f === folder) {
+                        item.classList.add('active');
+                    } else {
+                        item.classList.remove('active');
+                    }
+                });
+            }
+
+            folderItems.forEach(item => {
+                item.addEventListener('click', function() {
+                    const folder = this.getAttribute('data-folder');
+                    setActiveFolder(folder);
+                    renderContent(folder);
+                });
+            });
+
+            btnExit.addEventListener('click', () => {
+                window.location.href = 'mail_login.html';
+            });
+
+            renderContent('inbox');
+        })();
+    </script>
+</body>
+</html>

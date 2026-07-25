@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>明德私立学校论坛 - 首页</title>
+    <style>
+        /* --- 全局变量与重置 --- */
+        :root {
+            --primary-red: #b71c1c; /* 提取自校徽的深红色 */
+            --light-blue-bg: #e6f0fa; /* 天涯风格的浅蓝背景 */
+            --border-color: #dcebf5;
+            --text-main: #333;
+            --text-sub: #666;
+            --link-blue: #005aa0;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: "Microsoft YaHei", Arial, sans-serif; background-color: #f5f8fc; color: var(--text-main); font-size: 14px; }
+        a { text-decoration: none; color: inherit; transition: 0.2s; }
+        ul { list-style: none; }
+
+        /* --- 顶部 Header --- */
+        .header {
+            background-color: #fff;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 5%;
+            border-bottom: 1px solid #ddd;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo-area { display: flex; align-items: center; gap: 10px; }
+        .logo-img {
+            height: 45px;
+            width: auto;
+            object-fit: contain;
+        }
+        .site-name { font-size: 20px; font-weight: bold; color: var(--primary-red); letter-spacing: 1px; }
+
+        /* ===== 搜索区域及下拉菜单容器 ===== */
+        .search-area { 
+            display: flex; 
+            align-items: center; 
+            gap: 8px; 
+            position: relative; /* 为下拉菜单提供绝对定位基点 */
+        }
+        .search-input {
+            padding: 6px 12px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            width: 200px;
+            outline: none;
+        }
+        .search-input:focus { border-color: var(--primary-red); }
+        .search-btn {
+            background-color: var(--primary-red);
+            color: #fff;
+            border: none;
+            padding: 6px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            white-space: nowrap;
+        }
+        .search-btn:hover { background-color: #8a1414; }
+
+        /* 搜索下拉菜单样式 */
+        .search-dropdown {
+            display: none; /* 默认隐藏 */
+            position: absolute;
+            top: 100%; /* 紧贴搜索框下方 */
+            left: 0;
+            width: 200px; /* 与搜索输入框宽度严格保持一致 */
+            background-color: #fff;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            margin-top: 4px;
+            z-index: 999;
+            overflow: hidden;
+        }
+        .search-dropdown.show { display: block; }
+
+        .search-dropdown-item {
+            display: block;
+            padding: 8px 12px;
+            font-size: 13px;
+            color: #333;
+            cursor: pointer;
+            transition: background 0.2s;
+            /* 严格限制宽度和文本截断 */
+            max-width: 100%;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .search-dropdown-item:hover {
+            background-color: #f0f4f8;
+            color: var(--link-blue);
+        }
+        .search-dropdown-item:not(:last-child) {
+            border-bottom: 1px solid #f0f0f0;
+        }
+        /* 当没有搜索结果时的提示样式 */
+        .search-dropdown-empty {
+            padding: 10px 12px;
+            color: #999;
+            font-size: 13px;
+            text-align: center;
+        }
+
+        /* --- 主体容器 --- */
+        .container {
+            max-width: 960px;
+            margin: 20px auto;
+            background-color: #fff;
+            min-height: 80vh;
+            border-top: 3px solid var(--primary-red);
+            box-shadow: 0 0 10px rgba(0,0,0,0.05);
+        }
+
+        /* --- 板块导航栏 --- */
+        .sub-nav {
+            background-color: var(--light-blue-bg);
+            padding: 10px 20px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            gap: 20px;
+            font-size: 15px;
+        }
+        .sub-nav a { color: var(--link-blue); font-weight: bold; }
+        .sub-nav a:hover { color: var(--primary-red); }
+        .sub-nav .active { color: var(--primary-red); border-bottom: 2px solid var(--primary-red); padding-bottom: 2px; }
+
+        /* --- 帖子列表 --- */
+        .thread-list { padding: 0; }
+        
+        .thread-item {
+            display: flex;
+            align-items: center;
+            padding: 15px 20px;
+            border-bottom: 1px dashed #eee;
+            transition: background 0.2s;
+        }
+        .thread-item:hover { background-color: #fafafa; }
+        .thread-item:last-child { border-bottom: none; }
+
+        .reply-box {
+            width: 50px;
+            text-align: center;
+            margin-right: 15px;
+            flex-shrink: 0;
+        }
+        .reply-num {
+            display: block;
+            font-size: 16px;
+            font-weight: bold;
+            color: #666;
+            line-height: 1.2;
+        }
+        .reply-label { font-size: 12px; color: #999; }
+
+        .content-box { flex-grow: 1; overflow: hidden; }
+        .thread-title {
+            font-size: 16px;
+            color: var(--link-blue);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            margin-bottom: 5px;
+            display: block;
+        }
+        .thread-title:hover { color: var(--primary-red); text-decoration: underline; }
+        .thread-info { font-size: 12px; color: #999; }
+        .author-name { color: #666; margin-right: 10px; }
+
+        /* ===== 分页按钮模块 ===== */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            padding: 20px 20px 40px 20px;
+            flex-wrap: wrap;
+            border-top: 1px dashed #e8ecf1;
+            margin-top: 5px; 
+        }
+        .pagination .page-btn {
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            min-width: 36px;
+            height: 36px;
+            padding: 0 8px;
+            border: 1px solid #ddd;
+            background-color: #fff;
+            color: #666;
+            border-radius: 4px;
+            font-size: 14px;
+            cursor: default;
+            box-sizing: border-box;
+            transition: all 0.2s;
+        }
+        .pagination .page-btn.active {
+            background-color: var(--primary-red);
+            border-color: var(--primary-red);
+            color: #fff;
+            font-weight: bold;
+        }
+        .pagination .page-btn.dots {
+            border: none;
+            background: transparent;
+            min-width: 20px;
+            color: #999;
+            padding: 0 4px;
+        }
+        .pagination .page-btn:not(.active):not(.dots):hover {
+            border-color: var(--primary-red);
+            color: var(--primary-red);
+        }
+
+        /* --- 页脚 --- */
+        .footer {
+            text-align: center;
+            padding: 30px 0;
+            color: #999;
+            font-size: 12px;
+            border-top: 1px solid #eee;
+            margin-top: 0px;
+        }
+
+        /* --- 响应式适配 --- */
+        @media (max-width: 768px) {
+            .header { padding: 0 15px; height: 50px; }
+            .logo-img { height: 35px; }
+            .site-name { font-size: 16px; }
+            .search-input { width: 120px; }
+            .search-dropdown { width: 120px; } /* 严格对齐移动端输入框宽度 */
+            .container { margin: 0; width: 100%; box-shadow: none; }
+            .thread-item { padding: 12px 15px; }
+            .reply-box { width: 40px; margin-right: 10px; }
+            .reply-num { font-size: 14px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 顶部导航 -->
+    <header class="header">
+        <div class="logo-area">
+            <img src="images/forum_logo.png" alt="明德校徽" class="logo-img">
+            <span class="site-name">明德私立学校论坛</span>
+        </div>
+        <!-- ===== 搜索区域修改 ===== -->
+        <div class="search-area">
+            <input type="text" class="search-input" id="searchInput" placeholder="输入关键词搜索...">
+            <button class="search-btn" id="searchBtn">搜索</button>
+            
+            <!-- 下拉菜单容器 -->
+            <div class="search-dropdown" id="searchDropdown"></div>
+        </div>
+    </header>
+
+    <!-- 主体内容 -->
+    <div class="container">
+        <!-- 简易子导航 -->
+        <nav class="sub-nav">
+            <a href="#" class="active">综合讨论区</a>
+            <a href="#">社团分享</a>
+            <a href="#">失物招领</a>
+            <a href="#">二手交易</a>
+            <a href="#">校友交流</a>
+        </nav>
+
+        <!-- 帖子列表 -->
+        <ul class="thread-list">
+            <!-- 置顶帖 -->
+            <li class="thread-item" style="background-color: #fffbfb;">
+                <div class="reply-box">
+                    <span class="reply-num" style="color:#b71c1c">置顶</span>
+                </div>
+                <div class="content-box">
+                    <a href="school.html" class="thread-title">【直达】明德私立学校官网链接</a>
+                    <div class="thread-info"><span class="author-name">论坛管理员</span></div>
+                </div>
+            </li>
+
+            <!-- 普通帖子 (虚构数据) -->
+            <li class="thread-item">
+                <div class="reply-box">
+                    <span class="reply-num">128</span>
+                    <span class="reply-label">回复</span>
+                </div>
+                <div class="content-box">
+                    <!-- 修改：href="#" 改为 javascript:void(0); 避免跳转顶端 -->
+                    <a href="javascript:void(0);" class="thread-title">保卫科的人在追跑出校门的天鹅？</a>
+                    <div class="thread-info"><span class="author-name">学长还回来吗学长</span></div>
+                </div>
+            </li>
+
+            <li class="thread-item">
+                <div class="reply-box">
+                    <span class="reply-num">145</span>
+                    <span class="reply-label">回复</span>
+                </div>
+                <div class="content-box">
+                    <!-- 修改：href="#" 改为 javascript:void(0); 避免跳转顶端 -->
+                    <a href="javascript:void(0);" class="thread-title">捞捞图书馆这个女生，我一眼就心动了，附图她踩过的地板</a>
+                    <div class="thread-info"><span class="author-name">干嘛啊我的图片不是很精准吗</span></div>
+                </div>
+            </li>
+
+            <li class="thread-item">
+                <div class="reply-box">
+                    <span class="reply-num">203</span>
+                    <span class="reply-label">回复</span>
+                </div>
+                <div class="content-box">
+                    <!-- 修改：href="#" 改为 javascript:void(0); 避免跳转顶端 -->
+                    <a href="javascript:void(0);" class="thread-title">正走着路，有个人在我面前缓缓倒下</a>
+                    <div class="thread-info"><span class="author-name">我也快吓犯病了</span></div>
+                </div>
+            </li>
+
+            <li class="thread-item">
+                <div class="reply-box">
+                    <span class="reply-num">12</span>
+                    <span class="reply-label">回复</span>
+                </div>
+                <div class="content-box">
+                    <!-- 修改：href="#" 改为 javascript:void(0); 避免跳转顶端 -->
+                    <a href="javascript:void(0);" class="thread-title">出闲置：99新英语词典，带电子发音功能，毕业带不走低价出。</a>
+                    <div class="thread-info"><span class="author-name">毕业季是清仓季</span></div>
+                </div>
+            </li>
+
+            <li class="thread-item">
+                <div class="reply-box">
+                    <span class="reply-num">89</span>
+                    <span class="reply-label">回复</span>
+                </div>
+                <div class="content-box">
+                    <a href="forum_post_10.html" class="thread-title">有3班的吗？</a>
+                    <div class="thread-info"><span class="author-name">每天一八卦</span></div>
+                </div>
+            </li>
+
+            <li class="thread-item">
+                <div class="reply-box">
+                    <span class="reply-num">25</span>
+                    <span class="reply-label">回复</span>
+                </div>
+                <div class="content-box">
+                    <!-- 修改：href="#" 改为 javascript:void(0); 避免跳转顶端 -->
+                    <a href="javascript:void(0);" class="thread-title">今天的晚霞真好看</a>
+                    <div class="thread-info"><span class="author-name">我们抬头望天空</span></div>
+                </div>
+            </li>
+
+            <li class="thread-item">
+                <div class="reply-box">
+                    <span class="reply-num">167</span>
+                    <span class="reply-label">回复</span>
+                </div>
+                <div class="content-box">
+                    <!-- 修改：href="#" 改为 javascript:void(0); 避免跳转顶端 -->
+                    <a href="javascript:void(0);" class="thread-title">避雷食堂二楼这个窗口</a>
+                    <div class="thread-info"><span class="author-name">你看看这是给人吃的吗</span></div>
+                </div>
+            </li>
+
+            <li class="thread-item">
+                <div class="reply-box">
+                    <span class="reply-num">200</span>
+                    <span class="reply-label">回复</span>
+                </div>
+                <div class="content-box">
+                    <!-- 修改：href="#" 改为 javascript:void(0); 避免跳转顶端 -->
+                    <a href="javascript:void(0);" class="thread-title">大家的社团考核都是什么内容？</a>
+                    <div class="thread-info"><span class="author-name">难死我算了</span></div>
+                </div>
+            </li>
+
+            <!-- 链接已修改为 forum_post_9.html -->
+            <li class="thread-item">
+                <div class="reply-box">
+                    <span class="reply-num">0</span>
+                    <span class="reply-label">回复</span>
+                </div>
+                <div class="content-box">
+                    <a href="forum_post_9.html" class="thread-title">这本《罗杰疑案》是谁的啊？</a>
+                    <div class="thread-info"><span class="author-name">爱种西葫芦</span></div>
+                </div>
+            </li>
+        </ul>
+
+        <!-- 分页按钮 -->
+        <div class="pagination">
+            <span class="page-btn active">1</span>
+            <span class="page-btn">2</span>
+            <span class="page-btn">3</span>
+            <span class="page-btn">4</span>
+            <span class="page-btn">5</span>
+            <span class="page-btn dots">...</span>
+        </div>
+
+    </div>
+
+    <!-- 页脚 -->
+    <footer class="footer">
+        <p>Copyright © 2026 明德私立学校论坛 All Rights Reserved.</p>
+        <p>本站内容纯属虚构，仅供演示使用</p>
+    </footer>
+
+    <!-- ===== 新增搜索下拉菜单交互脚本 ===== -->
+    <script>
+        (function() {
+            'use strict';
+
+            // 1. 定义搜索数据映射表
+            const searchData = {
+                "宋令仪": [
+                    { text: "差不多得了吧？一个生日会炫耀半个月了。宋某仪你是没有别的事情能显摆了是吗？", url: "forum_post_1.html" },
+                    { text: "宋某仪不在，感觉世界都变清静了", url: "forum_post_8.html" }
+                ],
+                "唐镜玄": [ { text: "有人见过唐老师吗？", url: "forum_post_2.html" } ],
+                "金玉奖": [ { text: "搞笑吧？宋xx凭什么得金玉奖啊？", url: "forum_post_3.html" } ],
+                "特招生": [ { text: "大家对特招生这事儿怎么看？", url: "forum_post_4.html" } ],
+                "宋闻溪": [ { text: "宋闻溪怎么不更新摄影作品了？", url: "forum_post_5.html" } ],
+                "许故": [ { text: "那个许故是怎么回事？", url: "forum_post_6.html" } ],
+                "陈楚梦": [ { text: "陈xx那事儿都听说了吗？？", url: "forum_post_7.html" } ]
+            };
+
+            // 2. 获取DOM元素
+            const searchInput = document.getElementById('searchInput');
+            const searchBtn = document.getElementById('searchBtn');
+            const dropdown = document.getElementById('searchDropdown');
+
+            // 3. 渲染下拉菜单函数
+            function renderDropdown(keyword) {
+                // 清空下拉框
+                dropdown.innerHTML = '';
+                
+                // 去除前后空格并匹配
+                const trimmedKeyword = keyword.trim();
+                
+                // 如果没有任何输入，直接隐藏下拉框
+                if (!trimmedKeyword) {
+                    dropdown.classList.remove('show');
+                    return;
+                }
+
+                // 匹配数据
+                const results = searchData[trimmedKeyword];
+
+                // 如果匹配不到结果
+                if (!results || results.length === 0) {
+                    const emptyMsg = document.createElement('div');
+                    emptyMsg.className = 'search-dropdown-empty';
+                    emptyMsg.textContent = '未找到相关帖子';
+                    dropdown.appendChild(emptyMsg);
+                    dropdown.classList.add('show');
+                    return;
+                }
+
+                // 循环生成下拉选项 (文字截断已由 CSS 的 text-overflow: ellipsis 自动控制)
+                results.forEach(item => {
+                    const itemDiv = document.createElement('div');
+                    itemDiv.className = 'search-dropdown-item';
+                    itemDiv.textContent = item.text;
+                    // 绑定跳转事件
+                    itemDiv.addEventListener('click', function() {
+                        window.location.href = item.url;
+                    });
+                    dropdown.appendChild(itemDiv);
+                });
+
+                // 显示下拉菜单
+                dropdown.classList.add('show');
+            }
+
+            // 4. 绑定搜索按钮点击事件
+            searchBtn.addEventListener('click', function() {
+                renderDropdown(searchInput.value);
+            });
+
+            // 5. 输入框按回车键也触发搜索
+            searchInput.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter') {
+                    searchBtn.click();
+                }
+            });
+
+            // 6. 点击页面空白处，关闭下拉菜单（提升交互体验）
+            document.addEventListener('click', function(e) {
+                // 如果点击的区域不在搜索框区域内，则隐藏下拉框
+                if (!searchInput.contains(e.target) && !searchBtn.contains(e.target) && !dropdown.contains(e.target)) {
+                    dropdown.classList.remove('show');
+                }
+            });
+
+            console.log('搜索下拉菜单功能已启动！');
+        })();
+    </script>
+
+</body>
+</html>

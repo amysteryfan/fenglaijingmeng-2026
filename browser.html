@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>风来惊梦 - 浏览器</title>
+    <!-- 引用全局样式 -->
+    <link rel="stylesheet" href="css/style.css">
+    
+    <style>
+        /* ================= browser.html 专用样式 ================= */
+        html, body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #0d0d0f; 
+            overflow: hidden;
+            font-family: 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+        }
+
+        /* 浏览器主窗口 - 全屏、无圆角，模拟最大化状态 */
+        .browser-window {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(20, 20, 25, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-radius: 0;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.05);
+        }
+
+        /* 1. 顶部标签页栏 - 包含窗口控制按钮 */
+        .browser-tab-bar {
+            display: flex;
+            align-items: flex-end;
+            padding: 10px 0 0 16px; /* 右侧 padding 交给按钮控制 */
+            background: rgba(15, 15, 20, 0.95);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.5);
+        }
+        .browser-tab {
+            padding: 8px 24px;
+            background: rgba(40, 40, 45, 0.4);
+            color: #aaa;
+            font-size: 13px;
+            border-top-left-radius: 8px;
+            border-top-right-radius: 8px;
+            margin-right: 4px;
+            cursor: default;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-bottom: none;
+            transition: background 0.2s;
+        }
+        .browser-tab.active {
+            background: rgba(30, 30, 35, 0.95);
+            color: #fff;
+            position: relative;
+            text-shadow: 0 0 10px rgba(164, 92, 92, 0.3);
+        }
+        .browser-tab-add {
+            color: #888;
+            padding: 0 12px;
+            font-size: 16px;
+            line-height: 32px;
+            cursor: default;
+            transition: color 0.2s;
+        }
+        .browser-tab-add:hover {
+            color: #fff;
+        }
+
+        /* 窗口控制按钮组 (贴合真实浏览器 UI) */
+        .window-controls {
+            display: flex;
+            align-items: center;
+            margin-left: auto; /* 推至最右侧 */
+            height: 32px;
+            padding-right: 12px;
+        }
+        .window-controls span {
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            width: 36px;
+            height: 28px;
+            font-size: 12px;
+            color: #bbb;
+            cursor: pointer;
+            transition: background 0.2s, color 0.2s;
+            border-radius: 4px;
+            user-select: none;
+        }
+        .window-controls .min-btn:hover,
+        .window-controls .max-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+        }
+        .window-controls .close-btn:hover {
+            background: #a45c5c; /* 暗红色呼应悬疑主题 */
+            color: #fff;
+        }
+
+        /* 2. 地址栏与控制栏 */
+        .browser-toolbar {
+            display: flex;
+            align-items: center;
+            padding: 8px 16px;
+            background: rgba(25, 25, 30, 0.95);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            gap: 12px;
+        }
+        .nav-controls {
+            display: flex;
+            gap: 12px;
+            color: #777;
+            font-size: 18px;
+            user-select: none;
+        }
+        .nav-controls span {
+            cursor: default;
+            transition: color 0.2s;
+        }
+        .nav-controls span:hover:not(.disabled) {
+            color: #fff;
+        }
+        .nav-controls .disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+
+        /* 地址栏输入框组合 */
+        .address-bar-container {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            background: #1a1a1e;
+            border-radius: 24px;
+            padding: 0 16px;
+            border: 1px solid #3a3a3e;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.5);
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+        .address-bar-container:focus-within {
+            border-color: #a45c5c;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.5), 0 0 8px rgba(164, 92, 92, 0.2);
+        }
+        .address-bar-icon {
+            color: #777;
+            font-size: 14px;
+            margin-right: 8px;
+        }
+        .address-bar-input {
+            flex: 1;
+            background: transparent;
+            border: none;
+            outline: none;
+            color: #eee;
+            padding: 8px 0;
+            font-size: 14px;
+            font-family: inherit;
+        }
+        .address-bar-input::placeholder {
+            color: #666;
+        }
+        .address-bar-btn {
+            background: transparent;
+            border: none;
+            color: #aaa;
+            cursor: pointer;
+            font-size: 13px;
+            padding: 4px 12px;
+            border-radius: 16px;
+            transition: all 0.2s;
+        }
+        .address-bar-btn:hover {
+            color: #fff;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        /* 3. 浏览器内容区域 - 显示用户底图 */
+        .browser-content {
+            flex: 1;
+            position: relative;
+            background-image: url('images/browser_bg.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            overflow: hidden;
+        }
+
+        /* 半透明遮罩层：加深背景以突出搜索框 */
+        .browser-content::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1;
+        }
+
+        /* 4. 页面中央搜索框 */
+        .center-search-area {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 85%;
+            max-width: 680px;
+            z-index: 2;
+            text-align: center;
+        }
+        .center-search-area .logo-text {
+            color: #fff;
+            font-size: 32px;
+            font-weight: 300;
+            letter-spacing: 6px;
+            margin-bottom: 28px;
+            text-shadow: 0 4px 15px rgba(0,0,0,0.9);
+            font-family: 'Courier New', monospace;
+        }
+        .center-search-form {
+            display: flex;
+            background: rgba(20, 20, 25, 0.75);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border-radius: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 6px 6px 6px 24px;
+            box-shadow: 0 12px 30px rgba(0,0,0,0.6);
+            transition: all 0.3s ease;
+        }
+        .center-search-form:focus-within {
+            border-color: rgba(164, 92, 92, 0.6);
+            box-shadow: 0 12px 40px rgba(0,0,0,0.8);
+        }
+        .center-search-input {
+            flex: 1;
+            background: transparent;
+            border: none;
+            outline: none;
+            color: #eee;
+            font-size: 16px;
+            padding: 12px 0;
+            font-family: inherit;
+        }
+        .center-search-input::placeholder {
+            color: #999;
+        }
+        .center-search-btn {
+            background: #a45c5c;
+            border: none;
+            color: #fff;
+            padding: 10px 28px;
+            border-radius: 24px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background 0.3s, transform 0.1s;
+            box-shadow: 0 4px 12px rgba(164, 92, 92, 0.3);
+        }
+        .center-search-btn:hover {
+            background: #c47a7a;
+            transform: translateY(-1px);
+        }
+        .center-search-btn:active {
+            transform: scale(0.95);
+        }
+
+        /* ================= 响应式设计 ================= */
+        @media (max-width: 768px) {
+            .browser-window {
+                border-radius: 0;
+            }
+            .browser-tab-bar {
+                padding: 6px 0 0 8px;
+            }
+            .browser-tab {
+                padding: 6px 12px;
+                font-size: 12px;
+            }
+            .browser-tab-add {
+                padding: 0 4px;
+            }
+            .window-controls {
+                padding-right: 6px;
+            }
+            .window-controls span {
+                width: 28px;
+                height: 24px;
+                font-size: 11px;
+            }
+            .browser-toolbar {
+                padding: 6px 8px;
+                gap: 6px;
+            }
+            .nav-controls {
+                gap: 4px;
+                font-size: 14px;
+            }
+            .address-bar-input {
+                font-size: 12px;
+                padding: 6px 0;
+            }
+            .address-bar-btn {
+                font-size: 11px;
+                padding: 2px 6px;
+            }
+            .center-search-area {
+                width: 90%;
+            }
+            .center-search-area .logo-text {
+                font-size: 22px;
+                letter-spacing: 4px;
+                margin-bottom: 20px;
+            }
+            .center-search-input {
+                font-size: 14px;
+                padding: 8px 0;
+            }
+            .center-search-btn {
+                padding: 8px 16px;
+                font-size: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 浏览器主窗口（全屏） -->
+    <div class="browser-window">
+        
+        <!-- 顶部标签页 -->
+        <div class="browser-tab-bar">
+            <div class="browser-tab active">风来浏览器 - 主页</div>
+            <div class="browser-tab">新标签页</div>
+            <div class="browser-tab-add">+</div>
+            
+            <!-- 窗口控制按钮组 -->
+            <div class="window-controls">
+                <span class="min-btn">—</span>
+                <span class="max-btn">□</span>
+                <span class="close-btn" id="window-close-btn">✕</span>
+            </div>
+        </div>
+
+        <!-- 地址栏与工具栏 -->
+        <div class="browser-toolbar">
+            <div class="nav-controls">
+                <span class="disabled">◀</span>
+                <span class="disabled">▶</span>
+                <span>↻</span>
+            </div>
+
+            <form class="address-bar-container" id="top-search-form">
+                <span class="address-bar-icon">🔒</span>
+                <input type="text" class="address-bar-input" id="top-search-input" placeholder="搜索或输入网址" autocomplete="off">
+                <button type="submit" class="address-bar-btn">前往</button>
+            </form>
+        </div>
+
+        <!-- 主体内容区域 -->
+        <div class="browser-content">
+            <div class="center-search-area">
+                <div class="logo-text">风来浏览器</div>
+                <form class="center-search-form" id="center-search-form">
+                    <input type="text" class="center-search-input" id="center-search-input" placeholder="输入关键词搜索..." autocomplete="off">
+                    <button type="submit" class="center-search-btn">搜索</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- 全局脚本 -->
+    <script src="js/main.js"></script>
+
+    <script>
+        /**
+         * browser.html 专用交互逻辑
+         */
+        document.addEventListener('DOMContentLoaded', function() {
+            // 1. 搜索跳转逻辑
+            const topForm = document.getElementById('top-search-form');
+            const centerForm = document.getElementById('center-search-form');
+            const topInput = document.getElementById('top-search-input');
+            const centerInput = document.getElementById('center-search-input');
+
+            function performSearch(queryText) {
+                const q = queryText.trim();
+                if (q) {
+                    // 定义精确关键词映射字典
+                    const searchMap = {
+                        '鼎峰': 'search_dingfeng.html',
+                        '风来水榭': 'search_fenglaishuixie.html',
+                        '拐卖': 'search_guaimai.html',
+                        '光与影': 'search_guangyuying.html',
+                        '郊游': 'search_jiaoyou.html',
+                        '晋山村': 'search_jinshancun.html',
+                        '祭品': 'search_jipin.html',
+                        '季清越': 'search_jiqingyue.html',
+                        '济心医院': 'search_jixinyiyuan.html',
+                        '沈淡云': 'search_shendanyun.html',
+                        '水云庭': 'search_shuiyunting.html',
+                        '宋令仪': 'search_songlingyi.html',
+                        '阅辉': 'search_yuehui.html'
+                    };
+
+                    // 仅当关键词在映射中时，才跳转到指定页面；否则无任何动作
+                    if (searchMap.hasOwnProperty(q)) {
+                        window.location.href = searchMap[q];
+                    }
+                }
+            }
+
+            topForm.addEventListener('submit', function(e) {
+                e.preventDefault(); 
+                performSearch(topInput.value);
+            });
+
+            centerForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                performSearch(centerInput.value);
+            });
+
+            // 2. 窗口关闭按钮逻辑（返回桌面）
+            const closeBtn = document.getElementById('window-close-btn');
+            closeBtn.addEventListener('click', function() {
+                window.location.href = 'desktop.html';
+            });
+        });
+    </script>
+</body>
+</html>

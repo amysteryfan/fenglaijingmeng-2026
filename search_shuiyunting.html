@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>风来搜索 - 水云庭</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Microsoft Yahei", "PingFang SC", sans-serif;
+        }
+
+        body {
+            background: url("images/bg.jpg") no-repeat center center fixed;
+            background-size: cover;
+            min-height: 100vh;
+            padding: 18px 3%;
+            color: #333;
+        }
+
+        /* 顶部搜索栏 */
+        .search-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            max-width: 1200px;
+            margin: 0 auto 24px;
+        }
+
+        .search-input {
+            flex: 1;
+            height: 46px;
+            padding: 0 18px;
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            border-radius: 8px;
+            font-size: 16px;
+            outline: none;
+            background: rgba(255, 255, 255, 0.95);
+            color: #222;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        .search-btn {
+            height: 46px;
+            padding: 0 20px;
+            border-radius: 8px;
+            border: none;
+            background-color: #d92f2f;
+            color: #fff;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            white-space: nowrap;
+        }
+
+        .search-btn:hover {
+            background-color: #b82424;
+        }
+
+        /* 搜索结果容器 */
+        .result-wrap {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.90);
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        /* 结果数量提示 */
+        .result-count {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 24px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid #eee;
+        }
+
+        /* 单条搜索结果 */
+        .result-item {
+            margin-bottom: 28px;
+            padding-bottom: 24px;
+            border-bottom: 1px solid #e8e8e8;
+        }
+
+        .result-item:last-child {
+            margin-bottom: 0;
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+
+        .result-title {
+            font-size: 20px;
+            margin-bottom: 8px;
+            line-height: 1.45;
+        }
+
+        .result-title a {
+            color: #2b579a;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .result-title a:hover {
+            text-decoration: underline;
+        }
+
+        .result-desc {
+            font-size: 15px;
+            color: #555;
+            line-height: 1.7;
+            margin-bottom: 6px;
+        }
+
+        .result-source {
+            font-size: 13px;
+            color: #777;
+        }
+
+        /* 广告标签 */
+        .tag-ad {
+            display: inline-block;
+            font-size: 12px;
+            color: #d92f2f;
+            border: 1px solid #d92f2f;
+            padding: 2px 7px;
+            border-radius: 4px;
+            margin-left: 10px;
+            font-weight: 500;
+            background: rgba(217, 47, 47, 0.06);
+        }
+
+        /* 广告词条底部强调 */
+        .ad-item {
+            background: rgba(217, 47, 47, 0.04);
+            border-radius: 8px;
+            padding: 18px;
+            margin-top: 8px;
+        }
+
+        /* 分页区域 */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            margin-top: 32px;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .page-btn {
+            padding: 8px 14px;
+            border-radius: 6px;
+            border: 1px solid #ddd;
+            background: #fff;
+            color: #555;
+            cursor: pointer;
+            font-size: 14px;
+            white-space: nowrap;
+        }
+
+        .page-btn:hover {
+            border-color: #d92f2f;
+            color: #d92f2f;
+        }
+
+        .page-btn.active {
+            background: #d92f2f;
+            color: #fff;
+            border-color: #d92f2f;
+        }
+
+        /* 手机适配 */
+        @media (max-width: 768px) {
+            body {
+                padding: 12px 4%;
+            }
+
+            .search-header {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .search-btn {
+                width: 100%;
+            }
+
+            .result-wrap {
+                padding: 18px;
+            }
+
+            .result-title {
+                font-size: 18px;
+            }
+
+            .result-desc {
+                font-size: 14px;
+            }
+
+            .pagination {
+                gap: 6px;
+            }
+
+            .page-btn {
+                padding: 6px 10px;
+                font-size: 13px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="search-header">
+        <input class="search-input" value="水云庭">
+        <button class="search-btn" onclick="location.href='browser.html'">回到搜索</button>
+    </div>
+
+    <div class="result-wrap">
+        <div class="result-count">找到约 52,800 条结果</div>
+
+        <!-- 结果1 (保留正常页面跳转) -->
+        <div class="result-item">
+            <div class="result-title">
+                <a href="living_room.html">水云庭高端居住区｜封闭式低密社区，严苛安保守护居住隐私</a>
+            </div>
+            <div class="result-desc">
+                水云庭定位城市高端住宅社区，实行全封闭管理，配备 24 小时安保巡逻、访客准入核验、梯控权限管理体系，多重措施保障业主居住私密性与居住安全。
+            </div>
+            <div class="result-source">水云庭项目官方公告</div>
+        </div>
+
+        <!-- 结果2 -->
+        <div class="result-item">
+            <div class="result-title">
+                <a href="javascript:void(0);">水云庭-主打私密安全的高端纯住宅小区介绍</a>
+            </div>
+            <div class="result-desc">
+                水云庭为低密高端居住区，采用人车分流规划，无沿街底商，依托智能安防系统与精细化物业管控，打造私密性极强的纯居住圈层，面向高净值自住人群。
+            </div>
+            <div class="result-source">风来百科</div>
+        </div>
+
+        <!-- 结果3 -->
+        <div class="result-item">
+            <div class="result-title">
+                <a href="javascript:void(0);">水云庭可以随意进园区参观吗？小区出入管理规则说明</a>
+            </div>
+            <div class="result-desc">
+                不少购房者咨询水云庭入园要求。该社区不接受无预约散客看房，中介看房、外来访客均需要业主确认，无授权人员无法进入园区。
+            </div>
+            <div class="result-source">韶光民生问答社</div>
+        </div>
+
+        <!-- 结果4 -->
+        <div class="result-item">
+            <div class="result-title">
+                <a href="javascript:void(0);">静谧私域居所，水云庭低密社区打造远离喧嚣的居住环境</a>
+            </div>
+            <div class="result-desc">
+                社区采用疏朗楼栋布局，搭配多层次景观绿植，隔绝外部视线干扰；社区内部极少对外公开活动，最大程度避免业主私人生活曝光。
+            </div>
+            <div class="result-source">韶光奢居视野</div>
+        </div>
+
+        <!-- 结果5 -->
+        <div class="result-item">
+            <div class="result-title">
+                <a href="javascript:void(0);">水云庭物业团队开展安保培训，强化访客管理与隐私保护规范</a>
+            </div>
+            <div class="result-desc">
+                物业组织安保人员专项培训，规范门禁核验、园区巡逻流程，要求工作人员恪守保密准则，保护业主个人信息与居家生活隐私。
+            </div>
+            <div class="result-source">韶光生活资讯</div>
+        </div>
+
+        <!-- 结果6 -->
+        <div class="result-item">
+            <div class="result-title">
+                <a href="javascript:void(0);">水云庭入住指南｜访客通行、停车管理、社区管理规则汇总</a>
+            </div>
+            <div class="result-desc">
+                整理水云庭居住相关须知，园区不对外开放参观，外来车辆禁止随意驶入，所有访客需业主线上确认授权，全方位维护业主私人生活不受打扰。
+            </div>
+            <div class="result-source">韶光置业日记</div>
+        </div>
+
+        <!-- 结果7 -->
+        <div class="result-item">
+            <div class="result-title">
+                <a href="javascript:void(0);">看重居住隐私如何选房？水云庭安防体系与社区规划解析</a>
+            </div>
+            <div class="result-desc">
+                相较于普通小区，水云庭限制外来人员随意进出，访客必须经业主授权方可入园；多层次绿化形成视觉屏障，减少楼栋之间视线干扰，兼顾安全与隐私需求。
+            </div>
+            <div class="result-source">韶光房产观察</div>
+        </div>
+
+        <!-- 结果8 广告 (保留正常页面跳转) -->
+        <div class="result-item ad-item">
+            <div class="result-title">
+                <a href="search_ad_nzcp.html">逆转裁判重制版发售</a>
+                <span class="tag-ad">广告</span>
+            </div>
+        </div>
+
+        <!-- 分页 -->
+        <div class="pagination">
+            <button class="page-btn">上一页</button>
+            <button class="page-btn active">1</button>
+            <button class="page-btn">2</button>
+            <button class="page-btn">3</button>
+            <button class="page-btn">4</button>
+            <button class="page-btn">5</button>
+            <button class="page-btn">下一页</button>
+        </div>
+    </div>
+</body>
+</html>

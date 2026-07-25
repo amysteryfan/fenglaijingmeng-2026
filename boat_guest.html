@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>风来水榭 - 客户服务平台</title>
+    <!-- 引用全局样式 -->
+    <link rel="stylesheet" href="css/style.css">
+    
+    <style>
+        /* 页面重置与背景设定 */
+        body.boat-guest-page {
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            width: 100vw;
+            overflow: hidden;
+            font-family: "PingFang SC", "Microsoft YaHei", "Helvetica Neue", sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            background-color: #174e5c; /* 备用底色 */
+        }
+
+        /* 全屏背景图：图三 */
+        .bg-image {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('images/boat_bg.jpg');
+            background-size: cover;
+            background-position: center bottom;
+            background-repeat: no-repeat;
+            z-index: 1;
+            filter: brightness(0.85); /* 微微压暗以突出前景卡片 */
+        }
+
+        /* 左上角 Logo：图一（透明底） */
+        .top-logo {
+            position: absolute;
+            top: 30px;
+            left: 30px;
+            z-index: 20;
+            width: 120px;
+            height: auto;
+            transition: transform 0.3s ease;
+        }
+        .top-logo:hover {
+            transform: scale(1.05);
+        }
+
+        /* 右上角 退出/返回 按钮 */
+        .exit-btn {
+            position: absolute;
+            top: 30px;
+            right: 30px;
+            z-index: 20;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.12);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            font-size: 22px;
+            font-weight: 300;
+        }
+        .exit-btn:hover {
+            background: rgba(255, 255, 255, 0.25);
+            transform: rotate(90deg);
+            color: #ffffff;
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
+        }
+
+        /* 主功能卡片容器 */
+        .grid-container {
+            position: relative;
+            z-index: 10;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            max-width: 620px;
+            width: 90%;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
+            border-radius: 32px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        /* 单个卡片设计 */
+        .card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 30px 15px;
+            border-radius: 20px;
+            color: #ffffff;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+            position: relative;
+            aspect-ratio: 1 / 1; /* 保持正方形比例 */
+            min-height: 140px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 12px 35px rgba(0, 0, 0, 0.3);
+            border-color: rgba(255, 255, 255, 0.25);
+        }
+
+        .card:active {
+            transform: scale(0.95);
+        }
+
+        /* 卡片内部图标 */
+        .card svg {
+            width: 48px;
+            height: 48px;
+            margin-bottom: 16px;
+            stroke: currentColor;
+            fill: none;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
+        }
+
+        /* 卡片文字 */
+        .card h3 {
+            margin: 0;
+            font-size: 18px;
+            font-weight: 500;
+            letter-spacing: 2px;
+            font-family: "PingFang SC", "Microsoft YaHei", sans-serif;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+        }
+
+        /* 四种从蓝色到绿色的渐变色板 */
+        .card-color-1 { background: rgba(26, 75, 115, 0.90); } /* 深蓝 */
+        .card-color-2 { background: rgba(46, 134, 193, 0.90); } /* 中蓝 */
+        .card-color-3 { background: rgba(26, 188, 156, 0.90); } /* 青绿 */
+        .card-color-4 { background: rgba(39, 174, 96, 0.90); }  /* 翠绿 */
+
+        /* 移动端适配 */
+        @media (max-width: 600px) {
+            .top-logo {
+                top: 20px;
+                left: 20px;
+                width: 80px;
+            }
+            .exit-btn {
+                top: 20px;
+                right: 20px;
+                width: 38px;
+                height: 38px;
+                font-size: 18px;
+            }
+            .grid-container {
+                gap: 16px;
+                width: 92%;
+                padding: 15px;
+                border-radius: 24px;
+            }
+            .card {
+                padding: 20px 10px;
+                min-height: 100px;
+            }
+            .card svg {
+                width: 36px;
+                height: 36px;
+                margin-bottom: 10px;
+            }
+            .card h3 {
+                font-size: 15px;
+                letter-spacing: 1px;
+            }
+        }
+
+        @media (max-width: 400px) {
+            .card h3 {
+                font-size: 13px;
+            }
+            .card svg {
+                width: 30px;
+                height: 30px;
+            }
+        }
+    </style>
+</head>
+<body class="boat-guest-page">
+
+    <!-- 图三：背景图 -->
+    <div class="bg-image"></div>
+
+    <!-- 左上角：图四（新上传的透明通道 Logo） -->
+    <img src="images/boat_logo_white.png" alt="风来水榭" class="top-logo" onerror="this.style.display='none';">
+
+    <!-- 右上角：退出/返回（点击回到登录页面） -->
+    <div class="exit-btn" onclick="window.location.href='boat_login.html'" title="返回登录">✕</div>
+
+    <!-- 四个功能卡片（网格布局） -->
+    <div class="grid-container">
+        
+        <!-- 卡片1：呼叫服务 -->
+        <a href="javascript:void(0)" class="card card-color-1" onclick="alert('呼叫服务已受理，管家将为您接通。')">
+            <svg viewBox="0 0 24 24">
+                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+            </svg>
+            <h3>呼叫服务</h3>
+        </a>
+
+        <!-- 卡片2：活动预定 【修改：跳转至 boat_Reserve.html】 -->
+        <a href="javascript:void(0)" class="card card-color-2" onclick="window.location.href='boat_Reserve.html'">
+            <svg viewBox="0 0 24 24">
+                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+                <line x1="16" y1="2" x2="16" y2="6"/>
+                <line x1="8" y1="2" x2="8" y2="6"/>
+                <line x1="3" y1="10" x2="21" y2="10"/>
+                <circle cx="12" cy="15" r="1"/>
+                <circle cx="16" cy="15" r="1"/>
+                <circle cx="8" cy="15" r="1"/>
+            </svg>
+            <h3>活动预定</h3>
+        </a>
+
+        <!-- 卡片3：医疗预约 -->
+        <a href="javascript:void(0)" class="card card-color-3" onclick="alert('正在加载游轮医疗中心排班信息...')">
+            <svg viewBox="0 0 24 24">
+                <path d="M12 2v20M2 12h20"/>
+                <circle cx="12" cy="12" r="10"/>
+            </svg>
+            <h3>医疗预约</h3>
+        </a>
+
+        <!-- 卡片4：您的意见 【修改：跳转至 boat_message_board.html】 -->
+        <a href="javascript:void(0)" class="card card-color-4" onclick="window.location.href='boat_message_board.html'">
+            <svg viewBox="0 0 24 24">
+                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+                <line x1="8" y1="10" x2="16" y2="10"/>
+                <line x1="8" y1="13" x2="14" y2="13"/>
+            </svg>
+            <h3>您的意见</h3>
+        </a>
+
+    </div>
+
+    <!-- 引用全局脚本 -->
+    <script src="js/main.js"></script>
+</body>
+</html>

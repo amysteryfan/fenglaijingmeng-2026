@@ -1,0 +1,782 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>风来博客 - 光与影</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        /* 基础重置 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+        }
+        body {
+            background-color: #f2f2f2;
+            color: #333;
+        }
+
+        /* 顶部导航栏 */
+        .header {
+            background-color: #fff;
+            height: 60px;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 20px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        .header-logo {
+            font-size: 20px;
+            font-weight: bold;
+            color: #e6162d;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .header-logo i { font-size: 24px; }
+        .search-bar {
+            background-color: #f2f2f2;
+            border-radius: 20px;
+            padding: 8px 15px;
+            display: flex;
+            align-items: center;
+            color: #999;
+            width: 200px;
+            font-size: 14px;
+        }
+        .search-bar i { margin-right: 8px; }
+        
+        .header-center {
+            display: flex;
+            gap: 30px;
+            font-size: 18px;
+            color: #666;
+        }
+        .header-center .active {
+            color: #ff8200;
+            position: relative;
+        }
+        .header-center .active::after {
+            content: '';
+            position: absolute;
+            bottom: -22px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-color: #ff8200;
+        }
+
+        .header-right {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+        .btn-login {
+            color: #ff8200;
+            border: 1px solid #ff8200;
+            background: transparent;
+            padding: 5px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+        }
+        .btn-register {
+            color: #fff;
+            background: #ff8200;
+            border: none;
+            padding: 5px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+        }
+
+        /* 页面主体布局 */
+        .container {
+            display: flex;
+            max-width: 1200px;
+            margin: 20px auto;
+            gap: 20px;
+        }
+
+        /* 左侧导航 */
+        .left-sidebar {
+            width: 180px;
+            flex-shrink: 0;
+        }
+        .left-sidebar ul {
+            list-style: none;
+        }
+        .left-sidebar li {
+            padding: 12px 0;
+            font-size: 15px;
+            color: #555;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+        }
+        .left-sidebar li i {
+            width: 24px;
+            margin-right: 10px;
+            color: #ff8200;
+        }
+        .left-sidebar li:hover {
+            color: #ff8200;
+        }
+        .category-title {
+            margin-top: 20px;
+            font-size: 14px;
+            color: #999;
+            padding: 10px 0;
+            border-top: 1px solid #e8e8e8;
+        }
+
+        /* 右侧主内容 */
+        .main-content {
+            flex: 1;
+            background-color: #fff;
+            border-radius: 4px;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+            overflow: hidden;
+            padding-bottom: 40px;
+        }
+
+        /* 个人主页头部 */
+        .profile-header {
+            position: relative;
+        }
+        .banner {
+            height: 180px;
+            background: linear-gradient(90deg, #3875f6, #5aa3f8);
+            width: 100%;
+            display: flex;
+            align-items: flex-start;
+            padding: 15px 20px;
+        }
+        .back-link {
+            color: #fff !important;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        .back-link i { margin-right: 5px; }
+
+        .profile-info-area {
+            display: flex;
+            padding: 0 20px;
+            margin-top: -45px;
+            position: relative;
+            margin-bottom: 20px;
+        }
+        .avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            border: 4px solid #fff;
+            background-color: #eee;
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+        .avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .info-details {
+            margin-left: 20px;
+            padding-top: 45px;
+            flex: 1;
+        }
+        .info-top {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .info-name {
+            font-size: 22px;
+            font-weight: bold;
+            color: #333;
+        }
+        .info-stats {
+            margin-top: 8px;
+            font-size: 14px;
+            color: #999;
+        }
+        .info-stats span {
+            color: #333;
+            font-weight: 600;
+            margin: 0 5px 0 0;
+        }
+
+        .action-buttons {
+            margin-top: 15px;
+            display: flex;
+            gap: 10px;
+        }
+        .btn-follow {
+            background-color: #ff8200;
+            color: #fff;
+            border: none;
+            padding: 5px 20px;
+            border-radius: 20px;
+            font-size: 14px;
+            cursor: pointer;
+        }
+        .btn-message {
+            background-color: #fff;
+            color: #333;
+            border: 1px solid #ccc;
+            padding: 5px 20px;
+            border-radius: 20px;
+            font-size: 14px;
+            cursor: pointer;
+        }
+        .btn-more {
+            background-color: #fff;
+            color: #333;
+            border: 1px solid #ccc;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        /* 数据统计条 */
+        .stats-bar {
+            background-color: #fafafa;
+            padding: 15px 20px;
+            display: flex;
+            gap: 30px;
+            font-size: 13px;
+            color: #666;
+            border-top: 1px solid #f2f2f2;
+            border-bottom: 1px solid #f2f2f2;
+        }
+
+        /* 内容导航 Tabs */
+        .nav-tabs {
+            display: flex;
+            border-bottom: 1px solid #f2f2f2;
+            margin: 0 20px;
+        }
+        .nav-tab {
+            padding: 15px 20px;
+            font-size: 16px;
+            color: #666;
+            cursor: pointer;
+            position: relative;
+        }
+        .nav-tab.active {
+            font-weight: bold;
+            color: #333;
+        }
+        .nav-tab.active::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 20px;
+            right: 20px;
+            height: 2px;
+            background-color: #ff8200;
+        }
+        .nav-tab:hover {
+            color: #ff8200;
+        }
+
+        /* 空状态内容区（用于博客、视频） */
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 80px 0;
+        }
+        .empty-icon {
+            color: #3a8ee6;
+            font-size: 40px;
+            margin-bottom: 20px;
+        }
+        .empty-text {
+            color: #999;
+            font-size: 16px;
+        }
+
+        /* 相册内容区（4列瀑布流） */
+        .album-content {
+            display: none;
+        }
+        .album-content.active {
+            display: block;
+            padding: 20px;
+        }
+        .album-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            color: #333;
+        }
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+        }
+        .gallery-card {
+            background: #fff;
+            border-radius: 6px;
+            overflow: hidden;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+            border: 1px solid #f2f2f2;
+        }
+        .gallery-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            display: block;
+        }
+        .gallery-card .caption {
+            padding: 12px 15px;
+            background: #fafafa;
+        }
+        .gallery-card .caption .time {
+            display: block;
+            font-size: 14px;
+            font-weight: 500;
+            color: #333;
+            margin-bottom: 4px;
+        }
+        .gallery-card .caption .location {
+            display: block;
+            font-size: 12px;
+            color: #888;
+        }
+
+        /* ================= 文章密码保护 ================= */
+        .article-content {
+            display: none;
+            padding: 40px 30px;
+            width: 100%;
+            flex-direction: column;
+        }
+        .article-content.active {
+            display: flex;
+        }
+        
+        /* 锁定状态 */
+        .locked-container {
+            text-align: center;
+            padding: 60px 0;
+            width: 100%;
+        }
+        .lock-icon {
+            color: #999;
+            font-size: 48px;
+            margin-bottom: 15px;
+        }
+        .lock-prompt {
+            font-size: 16px;
+            color: #555;
+            margin-bottom: 20px;
+        }
+        .input-group {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        .input-group input {
+            padding: 10px 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            outline: none;
+            width: 200px;
+            font-size: 14px;
+            transition: border-color 0.3s;
+        }
+        .input-group input:focus {
+            border-color: #ff8200;
+        }
+        .input-group button {
+            padding: 10px 20px;
+            background-color: #ff8200;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        .input-group button:hover {
+            background-color: #e67500;
+        }
+        .error-msg {
+            color: #e74c3c;
+            font-size: 13px;
+            margin-top: 5px;
+            display: none;
+        }
+
+        /* ================= 已解锁状态：增大版面的帖文 ================= */
+        .post-list {
+            width: 100%;
+            max-width: 1000px; /* 放宽最大宽度 */
+            margin: 0 auto;
+        }
+        .post-item {
+            background: #fff;
+            border-radius: 8px;
+            padding: 28px 30px; /* 增大内边距，避免拥挤 */
+            margin-bottom: 28px; /* 增加间距 */
+            border: 1px solid #e8e8e8;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.03);
+        }
+        /* 头部：头像 + 账号名 + 时间 */
+        .post-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        .post-avatar {
+            width: 52px; /* 增大头像 */
+            height: 52px;
+            border-radius: 50%;
+            margin-right: 16px;
+            background-color: #f2f2f2;
+            overflow: hidden;
+            border: 1px solid #f2f2f2;
+            flex-shrink: 0;
+        }
+        .post-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .post-user-info {
+            display: flex;
+            flex-direction: column;
+        }
+        .post-author {
+            font-size: 17px;
+            font-weight: bold;
+            color: #333;
+            line-height: 1.2;
+        }
+        .post-date {
+            font-size: 14px;
+            color: #999;
+            margin-top: 4px;
+        }
+        /* 正文：字号放大，行距舒适 */
+        .post-body {
+            font-size: 17px;
+            line-height: 1.8; /* 让文字更透气 */
+            color: #333;
+            word-wrap: break-word;
+            margin-top: 8px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 顶部导航 -->
+    <header class="header">
+        <div class="header-left">
+            <div class="header-logo">
+                <i class="fab fa-blogger-b"></i> 风来博客
+            </div>
+            <div class="search-bar">
+                <i class="fas fa-search"></i> 搜索博客
+            </div>
+        </div>
+        <div class="header-center">
+            <div><i class="fas fa-home"></i></div>
+            <div class="active"><i class="fas fa-fire"></i></div>
+            <div><i class="fas fa-video"></i></div>
+            <div><i class="far fa-envelope"></i></div>
+            <div><i class="far fa-user"></i></div>
+        </div>
+        <div class="header-right">
+            <button class="btn-login">登录</button>
+            <button class="btn-register">注册</button>
+        </div>
+    </header>
+
+    <div class="container">
+        <!-- 左侧导航 -->
+        <aside class="left-sidebar">
+            <ul>
+                <li><i class="fas fa-fire"></i> 热门推荐</li>
+                <li><i class="fas fa-list"></i> 热门榜单</li>
+                <li><i class="fas fa-search"></i> 博客热搜</li>
+                <li class="category-title">我的</li>
+                <li><i class="fas fa-circle" style="color:#999; font-size: 8px;"></i> 热搜</li>
+                <li><i class="fas fa-circle" style="color:#999; font-size: 8px;"></i> 文娱</li>
+                <li><i class="fas fa-circle" style="color:#999; font-size: 8px;"></i> 社会</li>
+                <li><i class="fas fa-circle" style="color:#999; font-size: 8px;"></i> 科技</li>
+                <li><i class="fas fa-circle" style="color:#999; font-size: 8px;"></i> 生活</li>
+                <li><i class="fas fa-circle" style="color:#999; font-size: 8px;"></i> 体育</li>
+                <li><i class="fas fa-circle" style="color:#999; font-size: 8px;"></i> ACG</li>
+            </ul>
+        </aside>
+
+        <!-- 主内容区 -->
+        <main class="main-content">
+            <!-- 个人中心头部 -->
+            <div class="profile-header">
+                <div class="banner">
+                    <!-- 已修改为跳转到 search_guangyuying.html -->
+                    <a href="search_guangyuying.html" class="back-link">
+                        <i class="fas fa-chevron-left"></i> 返回
+                    </a>
+                </div>
+                
+                <div class="profile-info-area">
+                    <div class="avatar">
+                        <img src="images/blog_id.jpg" alt="光与影头像">
+                    </div>
+                    <div class="info-details">
+                        <div class="info-top">
+                            <span class="info-name">光与影</span>
+                        </div>
+                        <div class="info-stats">
+                            粉丝 <span>0</span> &nbsp;&nbsp; 关注 <span>0</span> &nbsp;&nbsp; 获赞与收藏 <span>0</span>
+                        </div>
+                        <div class="action-buttons">
+                            <button class="btn-follow">+ 关注</button>
+                            <button class="btn-message">私信</button>
+                            <button class="btn-more"><i class="fas fa-ellipsis-h"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 数据统计栏 -->
+            <div class="stats-bar">
+                <span>昨日发文0篇
+            </div>
+
+            <!-- 导航 Tabs -->
+            <div class="nav-tabs">
+                <div class="nav-tab active" onclick="switchTab('blog')">博客</div>
+                <div class="nav-tab" onclick="switchTab('video')">视频</div>
+                <div class="nav-tab" onclick="switchTab('album')">相册</div>
+                <div class="nav-tab" onclick="switchTab('article')">文章</div>
+            </div>
+
+            <!-- 1. 博客内容区 -->
+            <div id="blog" class="tab-content active">
+                <div class="empty-icon"><i class="fas fa-info-circle"></i></div>
+                <div class="empty-text">暂无内容</div>
+            </div>
+
+            <!-- 2. 视频内容区 -->
+            <div id="video" class="tab-content">
+                <div class="empty-icon"><i class="fas fa-info-circle"></i></div>
+                <div class="empty-text">暂无内容</div>
+            </div>
+
+            <!-- 3. 相册内容区 -->
+            <div id="album" class="album-content">
+                <div class="album-title">全部图片</div>
+                <div class="gallery-grid">
+                    <!-- 图一 -->
+                    <div class="gallery-card">
+                        <img src="images/img1.jpg" alt="海边日落">
+                        <div class="caption">
+                            <span class="time">2026年6月30日</span>
+                            <span class="location">📍 韶光市风起区近海</span>
+                        </div>
+                    </div>
+                    <!-- 图二 -->
+                    <div class="gallery-card">
+                        <img src="images/img2.jpg" alt="篝火">
+                        <div class="caption">
+                            <span class="time">2026年6月18日</span>
+                            <span class="location">📍 韶光市晋岚区<strong>晋山村</strong></span>
+                        </div>
+                    </div>
+                    <!-- 图三 -->
+                    <div class="gallery-card">
+                        <img src="images/img3.jpg" alt="花朵">
+                        <div class="caption">
+                            <span class="time">2026年3月24日</span>
+                            <span class="location">📍 韶光市青阳区青阳公园</span>
+                        </div>
+                    </div>
+                    <!-- 图四 -->
+                    <div class="gallery-card">
+                        <img src="images/img4.jpg" alt="溪水与卵石">
+                        <div class="caption">
+                            <span class="time">2026年2月28日</span>
+                            <span class="location">📍 韶光市新辰区芳华河</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 4. 文章内容区（密码保护） -->
+            <div id="article" class="article-content">
+                
+                <!-- 状态1：锁定 / 密码框 -->
+                <div id="article-locked" class="locked-container">
+                    <div class="lock-icon"><i class="fas fa-lock"></i></div>
+                    <div class="lock-prompt">我一直提醒自己小心什么？</div>
+                    <div class="input-group">
+                        <input type="password" id="article-password" placeholder="请输入密码" onkeydown="if(event.key==='Enter') checkArticlePassword()">
+                        <button onclick="checkArticlePassword()">解锁</button>
+                    </div>
+                    <div id="error-message" class="error-msg">四字母，不区分大小写</div>
+                </div>
+
+                <!-- 状态2：已解锁 / 排版优化的帖文列表 -->
+                <div id="article-unlocked" class="post-list" style="display: none;">
+                    <!-- 帖子 1 -->
+                    <div class="post-item">
+                        <div class="post-header">
+                            <div class="post-avatar">
+                                <img src="images/blog_id.jpg" alt="光与影">
+                            </div>
+                            <div class="post-user-info">
+                                <span class="post-author">光与影</span>
+                                <span class="post-date">2026-07-09 15:28</span>
+                            </div>
+                        </div>
+                        <div class="post-body">
+                            既然当初选择了调换，那就该永远闭嘴。
+                        </div>
+                    </div>
+
+                    <!-- 帖子 2 -->
+                    <div class="post-item">
+                        <div class="post-header">
+                            <div class="post-avatar">
+                                <img src="images/blog_id.jpg" alt="光与影">
+                            </div>
+                            <div class="post-user-info">
+                                <span class="post-author">光与影</span>
+                                <span class="post-date">2026-07-09 13:44</span>
+                            </div>
+                        </div>
+                        <div class="post-body">
+                            既然那么喜欢，就喜欢到死好了，别来碍事。
+                        </div>
+                    </div>
+
+                    <!-- 帖子 3 -->
+                    <div class="post-item">
+                        <div class="post-header">
+                            <div class="post-avatar">
+                                <img src="images/blog_id.jpg" alt="光与影">
+                            </div>
+                            <div class="post-user-info">
+                                <span class="post-author">光与影</span>
+                                <span class="post-date">2026-06-30 18:30</span>
+                            </div>
+                        </div>
+                        <div class="post-body">
+                            现在，你看到了。
+                        </div>
+                    </div>
+
+                    <!-- 帖子 4 -->
+                    <div class="post-item">
+                        <div class="post-header">
+                            <div class="post-avatar">
+                                <img src="images/blog_id.jpg" alt="光与影">
+                            </div>
+                            <div class="post-user-info">
+                                <span class="post-author">光与影</span>
+                                <span class="post-date">2026-06-18 19:00</span>
+                            </div>
+                        </div>
+                        <div class="post-body">
+                            你看，失去地位，下场就是这么可怕。
+                        </div>
+                    </div>
+
+                    <!-- 帖子 5 -->
+                    <div class="post-item">
+                        <div class="post-header">
+                            <div class="post-avatar">
+                                <img src="images/blog_id.jpg" alt="光与影">
+                            </div>
+                            <div class="post-user-info">
+                                <span class="post-author">光与影</span>
+                                <span class="post-date">2026-06-09 14:00</span>
+                            </div>
+                        </div>
+                        <div class="post-body">
+                            我一直都很讨厌不护食的狗。
+                        </div>
+                    </div>
+
+                    <!-- 帖子 6 -->
+                    <div class="post-item">
+                        <div class="post-header">
+                            <div class="post-avatar">
+                                <img src="images/blog_id.jpg" alt="光与影">
+                            </div>
+                            <div class="post-user-info">
+                                <span class="post-author">光与影</span>
+                                <span class="post-date">2026-03-25 09:00</span>
+                            </div>
+                        </div>
+                        <div class="post-body">
+                            自从母亲离世，家里已经四年没有体检了。
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+        </main>
+    </div>
+
+    <!-- JavaScript Tab 切换逻辑 & 密码验证 -->
+    <script>
+        // Tab 切换
+        function switchTab(tabId) {
+            const tabs = document.querySelectorAll('.nav-tab');
+            tabs.forEach(tab => tab.classList.remove('active'));
+
+            const contents = document.querySelectorAll('.tab-content, .album-content, .article-content');
+            contents.forEach(content => content.classList.remove('active'));
+
+            event.target.classList.add('active');
+            const target = document.getElementById(tabId);
+            if(target) {
+                target.classList.add('active');
+            }
+        }
+
+        // 文章密码检查
+        function checkArticlePassword() {
+            const input = document.getElementById('article-password');
+            const errorMsg = document.getElementById('error-message');
+            const password = input.value.trim();
+
+            if (password.toLowerCase() === 'lost') {
+                // 密码正确
+                document.getElementById('article-locked').style.display = 'none';
+                document.getElementById('article-unlocked').style.display = 'block';
+                errorMsg.style.display = 'none';
+                input.value = '';
+            } else {
+                // 密码错误（空字符串时也显示错误提示，符合要求）
+                errorMsg.style.display = 'block';
+                errorMsg.innerText = '四字母，不区分大小写';
+            }
+        }
+    </script>
+</body>
+</html>

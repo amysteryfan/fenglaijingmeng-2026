@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>回忆深处 · 日记</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body, html {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background-color: #121212;
+            font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif;
+        }
+
+        #app {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        /* 底层背景 */
+        #bg-layer {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('images/bg.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            filter: brightness(0.35) contrast(1.1);
+            z-index: 0;
+        }
+
+        #bg-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at center, rgba(0,0,0,0.4) 10%, rgba(0,0,0,0.9) 100%);
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        /* 入场乱码报错遮罩，初始全屏显示，慢慢消失 */
+        .init-error-screen {
+            position: fixed;
+            inset: 0;
+            z-index: 999;
+            background-image: url("images/luanma.jpg");
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            opacity: 1;
+            pointer-events: all;
+            transition: opacity 3s ease-out;
+        }
+        .init-error-screen.fade-off {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        /* 日记容器 */
+        #diary-wrapper {
+            position: relative;
+            width: 85vw;
+            max-width: 650px;
+            height: 75vh;
+            max-height: 800px;
+            z-index: 5;
+            perspective: 1200px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .page-wrapper {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: all 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+            transform-origin: left center;
+            backface-visibility: hidden;
+            filter: drop-shadow(0 10px 30px rgba(0, 0, 0, 0.7));
+        }
+
+        .page-wrapper img {
+            max-width: 100%;
+            max-height: 100%;
+            width: auto;
+            height: auto;
+            object-fit: contain;
+            border-radius: 8px;
+            background-color: #cbe0f2;
+            box-shadow: 0 0 15px rgba(0,0,0,0.5);
+            user-select: none;
+            -webkit-user-drag: none;
+            transition: opacity 1.5s ease, filter 1s ease;
+        }
+
+        .page-wrapper.state-active {
+            transform: rotateY(0deg) translateX(0);
+            opacity: 1;
+            pointer-events: auto;
+            z-index: 10;
+        }
+
+        .page-wrapper.state-hide-left {
+            transform: rotateY(-110deg) translateX(-40px);
+            opacity: 0;
+            pointer-events: none;
+            z-index: 5;
+        }
+
+        .page-wrapper.state-hide-right {
+            transform: rotateY(110deg) translateX(40px);
+            opacity: 0;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        /* 日记被火烧的两个阶段：烘烤变色 → 烧毁消失 */
+        .page-wrapper.burning img {
+            filter: brightness(0.5) sepia(0.4) saturate(1.6);
+        }
+        .page-wrapper.burned img {
+            opacity: 0;
+            filter: brightness(0.2) sepia(0.6);
+            transform: scale(0.93) translateY(-6px);
+        }
+
+        /* 火焰三层状态：燃烧 → 衰减 → 完全熄灭 */
+        .fire-container {
+            position: fixed;
+            inset: 0;
+            z-index: 20;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.8s ease-out;
+        }
+        .fire-container.play-fire {
+            opacity: 0.55;
+        }
+        .fire-container.fire-fading {
+            opacity: 0.12;
+        }
+        .fire-container.fire-gone {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .fire-container img {
+            position: absolute;
+            width: 100vw;
+            height: 100vh;
+            object-fit: cover;
+            left: 0;
+            top: 0;
+            opacity: 0;
+            transition: opacity 0.25s ease;
+        }
+
+        /* 点击区域 */
+        #hint-area {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 45%;
+            z-index: 3;
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
+            cursor: pointer;
+            padding-bottom: 40px;
+            pointer-events: auto;
+        }
+
+        #hint-icon {
+            font-size: 20px;
+            color: rgba(255, 255, 255, 0.4);
+            animation: floatHint 1.8s ease-in-out infinite;
+            transition: opacity 0.5s;
+        }
+
+        @keyframes floatHint {
+            0% { opacity: 0.2; transform: translateY(0); }
+            50% { opacity: 0.9; transform: translateY(8px); }
+            100% { opacity: 0.2; transform: translateY(0); }
+        }
+
+        .hint-hidden {
+            opacity: 0 !important;
+            pointer-events: none !important;
+        }
+
+        /* 结束文案 */
+        #end-text {
+            position: absolute;
+            z-index: 30;
+            text-align: center;
+            color: rgba(235, 235, 235, 0.55);
+            font-size: clamp(1.4rem, 4vw, 2.6rem);
+            letter-spacing: 0.2em;
+            text-shadow: 0 0 40px rgba(0,0,0,0.9);
+            opacity: 0;
+            transition: opacity 3s ease-in;
+            padding: 0 20px;
+            line-height: 1.6;
+            font-weight: 300;
+            pointer-events: none;
+        }
+
+        .text-fade-in {
+            opacity: 1 !important;
+        }
+
+        @media (max-width: 768px) {
+            #diary-wrapper {
+                width: 92vw;
+                max-width: 550px;
+                height: 60vh;
+                max-height: 600px;
+            }
+            .page-wrapper.state-hide-left {
+                transform: rotateY(-110deg) translateX(-20px);
+            }
+            .page-wrapper.state-hide-right {
+                transform: rotateY(110deg) translateX(20px);
+            }
+            #hint-area {
+                height: 40%;
+                padding-bottom: 25px;
+            }
+        }
+
+        @media (min-height: 900px) {
+            #diary-wrapper {
+                max-height: 65vh;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 页面入场乱码报错图 -->
+    <div class="init-error-screen"></div>
+
+    <div id="app">
+        <div id="bg-layer"></div>
+        <div id="bg-overlay"></div>
+
+        <!-- 火焰层 -->
+        <div class="fire-container">
+            <img src="images/fire1.png" class="fire-img" alt="fire">
+            <img src="images/fire2.png" class="fire-img" alt="fire" style="opacity:0">
+            <img src="images/fire3.png" class="fire-img" alt="fire" style="opacity:0">
+        </div>
+
+        <div id="diary-wrapper" onclick="handlePageClick()">
+            <div id="page1" class="page-wrapper state-active">
+                <img src="images/riji1.jpg" alt="2011年8月日记" draggable="false">
+            </div>
+            <div id="page2" class="page-wrapper state-hide-right">
+                <img src="images/riji2.jpg" alt="2011年8月日记" draggable="false">
+            </div>
+        </div>
+
+        <div id="hint-area" onclick="handlePageClick()">
+            <div id="hint-icon">▼</div>
+        </div>
+
+        <div id="end-text">游戏到此结束，感谢您的游玩。</div>
+    </div>
+
+    <script>
+        let state = 0;
+        const page1 = document.getElementById('page1');
+        const page2 = document.getElementById('page2');
+        const hintIcon = document.getElementById('hint-area');
+        const endText = document.getElementById('end-text');
+        const errorScreen = document.querySelector('.init-error-screen');
+        const fireBox = document.querySelector('.fire-container');
+        const fireImgs = document.querySelectorAll('.fire-img');
+        let fireAnimationTimer = null;
+
+        // 页面载入，乱码图片缓缓消散露出日记
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                errorScreen.classList.add('fade-off');
+            }, 300);
+        })
+
+        // 燃烧时序：日记烧毁 → 火焰衰减 → 火焰完全熄灭 → 短暂停顿 → 文字淡入
+        function runFireEffect() {
+            fireBox.classList.add('play-fire');
+            let index = 0;
+            fireAnimationTimer = setInterval(() => {
+                fireImgs.forEach(img => img.style.opacity = 0);
+                fireImgs[index].style.opacity = 1;
+                index = (index + 1) % fireImgs.length;
+            }, 220);
+
+            // 日记烘烤变色
+            setTimeout(() => page2.classList.add('burning'), 500);
+            // 日记开始烧毁消失
+            setTimeout(() => page2.classList.add('burned'), 1000);
+            // 火焰开始慢慢衰减变暗
+            setTimeout(() => fireBox.classList.add('fire-fading'), 2400);
+            // 火焰彻底熄灭，停止图片轮播
+            setTimeout(() => {
+                clearInterval(fireAnimationTimer);
+                fireBox.classList.remove('play-fire', 'fire-fading');
+                fireBox.classList.add('fire-gone');
+            }, 3200);
+            // 火焰熄灭后停顿400ms，再弹出结束文字
+            setTimeout(() => endText.classList.add('text-fade-in'), 3600);
+        }
+
+        function handlePageClick() {
+            if (state === 0) {
+                state = 1;
+                page1.className = 'page-wrapper state-hide-left';
+                setTimeout(() => page2.className = 'page-wrapper state-active', 50);
+            } else if (state === 1) {
+                state = 2;
+                hintIcon.classList.add('hint-hidden');
+                runFireEffect();
+            } else {
+                return;
+            }
+        }
+    </script>
+</body>
+</html>

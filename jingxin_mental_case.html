@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>济心医院精神科分院 门诊病历</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: "SimSun", "Microsoft YaHei", serif;
+        }
+        body {
+            background: #eef2f7;
+            padding: 30px 15px;
+            display: flex;
+            justify-content: center;
+        }
+        /* ===== 右上角退出按钮 ===== */
+        .exit-btn {
+            position: fixed;
+            right: 20px;
+            top: 20px;
+            font-size: 28px;
+            font-weight: bold;
+            color: #666;
+            text-decoration: none;
+            background: rgba(255, 255, 255, 0.95);
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.15);
+            transition: all 0.2s;
+            z-index: 9999;
+            cursor: pointer;
+        }
+        .exit-btn:hover {
+            background: #f0f0f0;
+            color: #333;
+        }
+        /* ================================== */
+
+        .report-wrap {
+            width: 100%;
+            max-width: 880px;
+            background: #ffffff;
+            padding: 38px 46px;
+            box-shadow: 0 0 16px #c8d0db;
+            border-radius: 4px;
+        }
+        .header-title {
+            text-align: center;
+            border-bottom: 2px solid #005a9e;
+            padding-bottom: 12px;
+            margin-bottom: 20px;
+        }
+        .header-title h1 {
+            font-size: 26px;
+            color: #003366;
+            letter-spacing: 4px;
+            font-weight: 700;
+        }
+        .header-title p {
+            font-size: 14px;
+            margin-top: 6px;
+            color: #555555;
+            letter-spacing: 0.5px;
+        }
+        .info-block {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px 20px;
+            font-size: 15px;
+            margin-bottom: 28px;
+            line-height: 2;
+            padding: 12px 16px;
+            background: #f7faff;
+            border: 1px solid #dde6f0;
+            border-radius: 2px;
+        }
+        .info-block .full-width {
+            grid-column: 1 / -1;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 28px;
+        }
+        table caption {
+            font-size: 16px;
+            font-weight: bold;
+            text-align: left;
+            margin-bottom: 8px;
+            color: #003366;
+            padding-left: 2px;
+            letter-spacing: 0.5px;
+        }
+        table th,
+        table td {
+            border: 1px solid #bbbbbb;
+            padding: 8px 12px;
+            font-size: 14px;
+            vertical-align: top;
+        }
+        table th {
+            background-color: #f0f6fc;
+            text-align: center;
+            font-weight: 600;
+            color: #1f2e3f;
+        }
+        .conclusion-box {
+            border: 1px solid #005a9e;
+            padding: 18px 22px;
+            margin-bottom: 28px;
+            background: #f8fbff;
+            border-radius: 2px;
+        }
+        .conclusion-box h3 {
+            color: #003366;
+            margin-bottom: 10px;
+            font-size: 16px;
+            border-left: 4px solid #005a9e;
+            padding-left: 10px;
+        }
+        .conclusion-box p {
+            line-height: 1.8;
+            font-size: 14px;
+            margin: 8px 0;
+        }
+        .sign-area {
+            font-size: 16px;
+            margin: 28px 0 12px;
+            line-height: 2.2;
+            border-top: 1px solid #dde6f0;
+            padding-top: 18px;
+        }
+        .footer-note {
+            font-size: 13px;
+            color: #555555;
+            line-height: 1.9;
+            border-top: 1px solid #e8edf4;
+            padding-top: 14px;
+            margin-top: 8px;
+            text-align: center;
+            letter-spacing: 0.3px;
+        }
+        /* 响应式适配 */
+        @media (max-width: 640px) {
+            .report-wrap {
+                padding: 20px 16px;
+            }
+            .info-block {
+                grid-template-columns: 1fr;
+                gap: 4px 0;
+            }
+            .info-block .full-width {
+                grid-column: 1;
+            }
+            table th,
+            table td {
+                padding: 6px 8px;
+                font-size: 13px;
+            }
+            .header-title h1 {
+                font-size: 20px;
+            }
+        }
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+            }
+            .report-wrap {
+                box-shadow: none;
+                border: 1px solid #ccc;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 右上角退出按钮，点击跳转 hospital_jingxin.html -->
+    <a href="hospital_jingxin.html" class="exit-btn">×</a>
+
+    <div class="report-wrap">
+
+        <!-- 页眉 -->
+        <div class="header-title">
+            <h1>静心医院 · 精神科门诊病历</h1>
+            <p>地址：韶光市青阳区仁济大道 217 号 &nbsp;|&nbsp; 咨询热线：XXXX-XX932789</p>
+        </div>
+
+        <!-- 患者基础信息 -->
+        <div class="info-block">
+            <div><strong>患者姓名：</strong>宋令仪</div>
+            <div><strong>性别：</strong>女</div>
+            <div><strong>年龄：</strong>17岁</div>
+            <div><strong>就诊日期：</strong>2022年5月18日</div>
+            <div><strong>就诊科室：</strong>精神科普通门诊（心理干预方向）</div>
+            <div><strong>接诊医师：</strong>林知远</div>
+            <div><strong>病历复核：</strong>温书尧</div>
+            <div class="full-width"><strong>本次就诊类型：</strong>首诊 □复诊 □心理咨询与评估</div>
+        </div>
+
+        <!-- 一、躯体基础查体 -->
+        <table>
+            <caption>一、躯体基础查体信息</caption>
+            <tr>
+                <th style="width:15%;">项目</th>
+                <th style="width:20%;">测量数值</th>
+                <th style="width:15%;">项目</th>
+                <th style="width:50%;">记录内容</th>
+            </tr>
+            <tr>
+                <td>身高</td>
+                <td>170 cm</td>
+                <td>体重</td>
+                <td>52 kg</td>
+            </tr>
+            <tr>
+                <td>血压</td>
+                <td>116 / 74 mmHg</td>
+                <td>静息脉搏</td>
+                <td>92 次/分钟（轻度偏快）</td>
+            </tr>
+            <!-- ===== 修改点：添加了血型和体温以组成完整的基础体征模块 ===== -->
+            <tr>
+                <td>血型</td>
+                <td>O型</td>
+                <td>体温</td>
+                <td>36.5 ℃</td>
+            </tr>
+            <!-- ========================================================= -->
+            <tr>
+                <td>既往躯体疾病</td>
+                <td colspan="3">□无慢性病 □高血压 □甲状腺疾病 □心血管疾病 □其他：无</td>
+            </tr>
+            <tr>
+                <td>药物过敏史</td>
+                <td colspan="3">□无过敏 &nbsp; 致敏药物名称：无</td>
+            </tr>
+        </table>
+
+        <!-- 二、主诉与现病史 -->
+        <table>
+            <caption>二、主诉与现病史记录</caption>
+            <tr>
+                <th style="width:18%;">主诉</th>
+                <td>患者自述近1个月持续情绪低落、紧张焦虑，伴睡眠紊乱、社交回避及躯体不适，主动来院就诊。</td>
+            </tr>
+            <tr>
+                <th>现病史详情</th>
+                <td>
+                    <p><strong>起病诱因：</strong>家庭变故（母亲意外离世）。<br />
+                    <strong>睡眠状况：</strong>入睡困难，多梦易醒，夜间惊悸，伴有盗汗，醒后难以再次入睡。<br />
+                    <strong>情绪表现：</strong>持续性情绪低落，兴趣减退，伴有明显的紧张焦虑感和恐惧感。<br />
+                    <strong>躯体伴随症状：</strong>食欲减退，心慌胸闷，偶有头晕乏力。<br />
+                    <strong>社交行为：</strong>既害怕独处，又对他人目光极度敏感，与他人同处时感到极其不自在，回避社交活动，人际交往能力显著下降。<br />
+                    <strong>既往干预：</strong>□未接受心理/药物治疗 □外院短期服药 □曾做心理咨询 █ 此次为首次系统就诊。</p>
+                </td>
+            </tr>
+        </table>
+
+        <!-- 三、精神状态专科评估 -->
+        <table>
+            <caption>三、精神状态专科评估</caption>
+            <tr>
+                <th style="width:18%;">评估维度</th>
+                <th>临床评估结果</th>
+            </tr>
+            <tr>
+                <td>意识、定向能力</td>
+                <td>意识清晰，时间、地点、人物定向完整，主动配合问诊。</td>
+            </tr>
+            <tr>
+                <td>感知觉功能</td>
+                <td>未查及幻听、幻视或躯体异常体感，感知觉基本正常。</td>
+            </tr>
+            <tr>
+                <td>思维逻辑活动</td>
+                <td>思维连贯，语速适中。但存在自罪妄想，患者反复、坚信“母亲车祸离世是本人过错”，虽经检查者客观解释该事故为意外，仍难以动摇其自责归因，且缺乏现实依据，该妄想内容与童年期存在的“自己犯过大错”的原始观念相互强化。</td>
+            </tr>
+            <tr>
+                <td>情感心境状态</td>
+                <td>情感反应协调，心境明显偏低，伴有持久的焦虑、紧张情绪，无情感淡漠或持续激惹。</td>
+            </tr>
+            <tr>
+                <td>意志与行为表现</td>
+                <td>举止规整，但存在明显的社交回避和被动应对倾向，自主活动减少，自知力部分存在（承认情绪困扰，但对妄想的检验能力不足）。</td>
+            </tr>
+            <tr>
+                <td>记忆、认知功能</td>
+                <td>远近记忆完整，计算、理解、判断力无明显缺损，注意力和集中力略有下降。</td>
+            </tr>
+        </table>
+
+        <!-- 四、心理测评辅助检查 -->
+        <table>
+            <caption>四、心理量表测评结果</caption>
+            <tr>
+                <th style="width:30%;">测评量表名称</th>
+                <th style="width:20%;">测评总分</th>
+                <th>临床分级提示</th>
+            </tr>
+            <tr>
+                <td>SDS抑郁自评量表</td>
+                <td>68 分</td>
+                <td>□无抑郁倾向 □轻度抑郁 □中度抑郁 █ 重度抑郁</td>
+            </tr>
+            <tr>
+                <td>SAS焦虑自评量表</td>
+                <td>55 分</td>
+                <td>□无焦虑倾向 □轻度焦虑 █ 中度焦虑 □重度焦虑</td>
+            </tr>
+            <tr>
+                <td>匹兹堡睡眠指数PSQI</td>
+                <td>16 分</td>
+                <td>□睡眠正常 □轻度睡眠障碍 █ 中重度睡眠障碍</td>
+            </tr>
+        </table>
+
+        <!-- 五、诊断与治疗方案 -->
+        <div class="conclusion-box">
+            <h3>【初步诊断、治疗方案与诊疗医嘱】</h3>
+            <p><strong>初步临床诊断：</strong>抑郁状态伴焦虑症状；自罪妄想；创伤后应激反应。</p>
+            <p><strong>心理背景分析：</strong>患者早年成长过程中长期感到未被重视，渴望关注却反复受挫，自幼即存在“自己犯下天大错事”的虚无自责倾向。母亲意外离世作为急性应激源，加重了其原有内疚认知，形成系统化的自罪妄想，现实检验能力受损。</p>
+            <p><strong>综合治疗方案：</strong></p>
+            <p>1. <strong>心理干预（核心）</strong>：每周一次认知行为心理疏导，重点围绕“自罪观念”进行现实检验，帮助患者区分“事实”与“想象”，逐步打破错误的认知循环。同时建立安全感，改善社交回避行为。建议连续干预8~12次。</p>
+            <p>2. <strong>药物干预</strong>：暂予抗焦虑、抗抑郁基础药物（选择性5-羟色胺再摄取抑制剂类），规律口服，严禁自行增减剂量或停药。药物相关不良反应请于复诊时反馈。</p>
+            <p>3. <strong>生活建议</strong>：固定作息时间，每日进行20分钟户外散步或轻度运动；鼓励记录情绪日记，客观罗列“母亲意外事件”的相关事实，以矫正非理性自责。</p>
+            <p><strong>复诊与紧急提示：</strong>7日后返院复查，评估药物反应及情绪状态。若出现严重消极念头、自伤倾向或惊恐发作，请立即前往急诊就诊。</p>
+        </div>
+
+        <!-- 签字区 -->
+        <div class="sign-area">
+            接诊医师：林知远 &nbsp;&nbsp;&nbsp;&nbsp; 病历复核医师：温书尧<br />
+            病历生成时间：2022年5月18日
+        </div>
+
+        <!-- 底部备注 -->
+        <div class="footer-note">
+            备注：本次病历仅记录首诊评估内容，精神心理障碍需长期动态随访。患者信息严格保密，仅限院内医疗使用。<br />
+            济心医院精神科分院 · 静心医院
+        </div>
+
+    </div>
+
+</body>
+</html>

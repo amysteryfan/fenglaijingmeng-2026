@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>晋山村突发山林火情 多部门连夜扑救 无人员伤亡 - 韶光日报网</title>
+    <style>
+        /* --- 全局样式重置（与商战页面一致） --- */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: "Microsoft YaHei", "PingFang SC", Arial, sans-serif; line-height: 1.6; color: #333; background-color: #f4f4f4; }
+        a { text-decoration: none; color: #333; transition: color 0.2s; }
+        a:hover { color: #ff9900; }
+        ul { list-style: none; }
+
+        /* --- 顶部导航栏 --- */
+        .top-nav { background-color: #222; color: #fff; padding: 10px 0; position: sticky; top: 0; z-index: 1000; }
+        .nav-container { max-width: 1270px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; padding: 0 15px; }
+        .logo { font-size: 24px; font-weight: bold; color: #ff9900; letter-spacing: 1px; }
+        .nav-links { display: flex; gap: 25px; }
+        .nav-links a { color: #eee; font-size: 15px; font-weight: 500; }
+        .nav-links a:hover { color: #ff9900; }
+        
+        .search-area { display: flex; align-items: center; gap: 10px; }
+        .search-input { background: #333; border: 1px solid #555; color: #fff; padding: 6px 12px; border-radius: 4px; outline: none; width: 180px; transition: all 0.3s; }
+        .search-input:focus { border-color: #ff9900; background: #444; }
+        .search-btn { background: #ff9900; color: #fff; border: none; padding: 6px 15px; border-radius: 4px; cursor: pointer; font-size: 14px; transition: background 0.2s; }
+        .search-btn:hover { background: #e08800; }
+        .search-btn:active { transform: scale(0.98); }
+
+        /* --- 关闭按钮样式 --- */
+        .close-btn {
+            color: #eee;
+            font-size: 22px;
+            font-weight: 300;
+            line-height: 1;
+            margin-left: 5px;
+            cursor: pointer;
+            transition: color 0.2s, transform 0.2s;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 32px;
+            height: 32px;
+            text-decoration: none;
+            border-radius: 50%;
+        }
+        .close-btn:hover {
+            color: #ff9900;
+            transform: scale(1.1);
+            background-color: rgba(255, 255, 255, 0.08);
+        }
+
+        /* --- 主体布局 --- */
+        .main-wrapper { max-width: 1270px; margin: 20px auto; display: flex; gap: 20px; padding: 0 15px; align-items: flex-start; }
+
+        /* --- 左侧边栏 --- */
+        .left-sidebar { width: 220px; background: #fff; border-radius: 6px; padding: 20px; text-align: center; box-shadow: 0 2px 5px rgba(0,0,0,0.05); flex-shrink: 0; }
+        .media-avatar { width: 70px; height: 70px; background: #ff9900; border-radius: 50%; margin: 0 auto 10px; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 24px; font-weight: bold; }
+        .media-name { font-size: 18px; font-weight: bold; margin-bottom: 5px; color: #ff9900; }
+        .media-desc { font-size: 12px; color: #888; margin-bottom: 15px; }
+        .subscribe-btn { display: block; width: 100%; background: #ff9900; color: #fff; border: none; padding: 8px 0; border-radius: 20px; cursor: pointer; margin-bottom: 20px; font-weight: bold; transition: background 0.2s; }
+        .subscribe-btn:hover { background: #e08800; }
+        .stats-row { display: flex; justify-content: space-around; border-top: 1px solid #eee; padding-top: 15px; }
+        .stat-item span { display: block; }
+        .stat-num { font-weight: bold; font-size: 16px; }
+        .stat-label { font-size: 12px; color: #999; }
+
+        /* --- 中间新闻内容区 --- */
+        .news-article { 
+            flex: 1; 
+            background: #fff; 
+            padding: 40px; 
+            border-radius: 6px; 
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05); 
+            min-width: 0; 
+        }
+        .article-title { font-size: 28px; font-weight: bold; line-height: 1.4; margin-bottom: 15px; color: #222; }
+        .article-meta { font-size: 13px; color: #999; margin-bottom: 30px; border-bottom: 1px solid #eee; padding-bottom: 15px; }
+        .article-meta span { margin-right: 15px; }
+        
+        /* 电头颜色改为橙黄色 */
+        .reporter-info { color: #ff9900; font-weight: normal; }
+
+        .article-body p { margin-bottom: 20px; font-size: 17px; line-height: 1.8; text-align: justify; color: #333; }
+        .article-body strong { color: #222; }
+        .article-footer { margin-top: 40px; font-size: 13px; color: #999; text-align: right; font-style: normal; }
+
+        /* --- 右侧热门精选 --- */
+        .right-sidebar { width: 280px; background: #fff; border-radius: 6px; padding: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); flex-shrink: 0; }
+        .hot-header { font-size: 18px; font-weight: bold; margin-bottom: 20px; border-left: 4px solid #ff9900; padding-left: 10px; }
+        .hot-list li { margin-bottom: 15px; padding-bottom: 15px; border-bottom: 1px dashed #eee; }
+        .hot-list li:last-child { border-bottom: none; margin-bottom: 0; }
+        .hot-link { font-size: 15px; line-height: 1.5; color: #333; display: block; }
+        .hot-link:hover { color: #ff9900; }
+
+        /* --- 响应式适配 --- */
+        @media (max-width: 992px) {
+            .main-wrapper { flex-direction: column; }
+            .left-sidebar, .right-sidebar { width: 100%; }
+            .nav-links { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 顶部导航 -->
+    <header class="top-nav">
+        <div class="nav-container">
+            <div class="logo">韶光日报网</div>
+            <nav class="nav-links">
+                <a href="#">新闻</a>
+                <a href="#">社会</a>
+                <a href="#">教育</a>
+                <a href="#">民生</a>
+                <a href="#">更多 ▼</a>
+            </nav>
+            <div class="search-area">
+                <input type="text" class="search-input" placeholder="搜索新闻...">
+                <button class="search-btn" onclick="alert('正在搜索：' + this.previousElementSibling.value)">搜索</button>
+                <!-- 关闭按钮跳转至 search_jinshancun.html -->
+                <a href="search_jinshancun.html" class="close-btn" title="关闭页面">✕</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- 主体内容 -->
+    <div class="main-wrapper">
+        
+        <!-- 左侧边栏 -->
+        <aside class="left-sidebar">
+            <div class="media-avatar">韶</div>
+            <div class="media-name">韶光日报社会版</div>
+            <div class="media-desc">关注社会民生，传递真实声音</div>
+            <button class="subscribe-btn">+ 订阅</button>
+            <div class="stats-row">
+                <div class="stat-item"><span class="stat-num">3.5万</span><span class="stat-label">文章</span></div>
+                <div class="stat-item"><span class="stat-num">8亿</span><span class="stat-label">总阅读</span></div>
+            </div>
+        </aside>
+
+        <!-- 中间新闻正文 -->
+        <main class="news-article">
+            <!-- 无“独家”标签 -->
+            <h1 class="article-title">晋山村突发山林火情 多部门连夜扑救 无人员伤亡</h1>
+            
+            <div class="article-meta">
+                <span class="reporter-info">本报讯（记者 苏辰）</span>
+                <time>2026-06-19 14:00</time>
+                <span>发布于：本市</span>
+            </div>
+
+            <div class="article-body">
+                <p>2026年6月18日傍晚，韶光市晋岚区晋山村突发火情，局部林地起火蔓延。火情发生后，属地乡镇、应急、消防、林业、公安等多部门快速响应、联动处置，连夜开展灭火作业。截至次日凌晨，现场明火已全部扑灭，本次火情未造成人员伤亡，善后清查与起火原因调查工作同步推进。</p>
+
+                <p>据晋山村村民李山说，6月18日晚21时许，他正在进行节前惯常的巡视工作，突然发现村西侧浓烟滚滚：“西侧是我们村祠堂所在地，位置较为偏僻，挨着村后侧的山林，而且祠堂附近有很多木制古建筑，都非常易燃。”李山立刻赶到村西，确认失火后，与村民们共同展开救火工作，可惜火势太大无法控制，仅凭晋山村村民无法灭火。随后，村民们拨打了火警电话。</p>
+
+                <p>接警后，韶光市消防救援支队、辖区应急救援队第一时间赶赴现场，迅速划定警戒区域，疏散附近围观村民，杜绝无关人员进入危险火场，严防次生安全事故。现场救援团队结合山林地形复杂、植被茂密、风力多变的实际情况，科学制定扑救方案，采取地面扑打、开设防火隔离带、分段清剿余火的方式，多点位同步开展灭火作业，精准压制火势蔓延。</p>
+
+                <p>晋山村村委同步组织工作人员、村级应急志愿队伍配合救援工作，协助搬运灭火物资、巡查周边隐患、安抚村民情绪，全方位配合专业救援力量开展处置工作。经过彻夜连续奋战，6月19日凌晨2时许，山林区域所有明火被完全扑灭，火情得到全面控制。</p>
+
+                <p>应急管理部门的王主任告诉我们，受近期持续晴热干燥天气影响，林间枯枝、杂草等易燃物堆积较多，火情初期蔓延速度较快，局部山坡火势连片燃烧，对周边林地及近山村民民居极易形成安全隐患。他补充道：“端午节是晋山村的传统祭祀日，村中更是堆积了很多易燃物。”</p>
+
+                <p>这场大火虽然没有危及村民的生命，却造成了数十万的财产损失，更烧毁了有数百年历史的古建筑群。面对这场几十年不遇的大火，村民们纷纷感到无比心痛，更有人在接受采访时已经精神恍惚，无法说出完整的句子：“神罚…...我就知道…...肯定…...神明发怒了……明明提醒过了...…<strong>祭品</strong>...…没有祭品......”</p>
+
+                <p>目前，公安机关、林业部门已介入开展事故溯源调查，对起火具体原因、过火林地面积、植被受损情况进行细致勘查取证，后续将根据调查结果依法依规界定责任、落实后续村落重建和林地修复工作。相关善后、生态恢复及安全排查工作正有序开展。</p>
+
+                <p>针对本次火情，相关部门再次发出森林防火安全提醒：夏季高温干燥，山林火险等级居高不下，辖区全域严禁野外用火、焚烧杂草、野外明火祭祀等危险行为。广大市民及村民需提高防火安全意识，自觉遵守森林防火规定，发现火情第一时间报警，共同守护山林生态安全。</p>
+
+                <p>本报将持续跟进。</p>
+            </div>
+
+            <div class="article-footer">
+                （韶光日报）
+            </div>
+        </main>
+
+        <!-- 右侧热门精选 -->
+        <aside class="right-sidebar">
+            <div class="hot-header">热门精选</div>
+            <ul class="hot-list">
+                <li><a href="#" class="hot-link">本地突发：某小区凌晨火灾，消防员紧急疏散居民...</a></li>
+                <li><a href="#" class="hot-link">教育部新规：中小学课后服务时长将延长至18:00...</a></li>
+                <li><a href="#" class="hot-link">天气预警：未来三天本市将有强降雨，注意防范...</a></li>
+                <li><a href="#" class="hot-link">民生关注：老旧小区改造进度公示，涉及5个社区...</a></li>
+            </ul>
+        </aside>
+
+    </div>
+
+</body>
+</html>

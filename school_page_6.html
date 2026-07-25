@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>唐镜玄：相信每一粒种子都值得被看见，被等待 - 明德私立学校</title>
+
+    <!-- 引入全局样式和脚本 -->
+    <link rel="stylesheet" href="css/style.css">
+    <script src="js/main.js" defer></script>
+
+    <style>
+        /* --- 局部页面专属样式 --- */
+        
+        html, body {
+            height: auto;       /* 允许高度随内容拉伸 */
+            overflow-y: auto;   /* 强制启用纵向滚动 */
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Microsoft YaHei", "PingFang SC", sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        a { text-decoration: none; color: inherit; }
+        ul, ol { list-style: none; }
+
+        /* --- 顶部通栏 --- */
+        .top-bar {
+            background-color: #fff;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 40px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            z-index: 100;
+            width: 100%;
+            box-sizing: border-box;
+            flex-shrink: 0;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: #8B0000; /* 校徽红 */
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo img {
+            height: 40px;
+            margin-right: 12px;
+        }
+
+        .logo span {
+            margin-left: 10px;
+            font-size: 14px;
+            color: #666;
+            font-weight: normal;
+            letter-spacing: 1px;
+        }
+
+        /* 返回首页按钮 */
+        .back-home-btn {
+            background-color: #8B0000;
+            color: #fff;
+            padding: 8px 18px;
+            border-radius: 20px;
+            font-size: 14px;
+            transition: background 0.3s, transform 0.2s;
+            font-weight: bold;
+            box-shadow: 0 2px 4px rgba(139, 0, 0, 0.3);
+        }
+
+        .back-home-btn:hover {
+            background-color: #6d0000;
+            transform: translateY(-1px);
+        }
+
+        /* --- 文章容器 --- */
+        .article-container {
+            flex: 1 0 auto;
+            max-width: 880px;
+            margin: 40px auto;
+            padding: 0 20px;
+            width: 100%;
+        }
+
+        .article-card {
+            background-color: #fff;
+            border-radius: 8px;
+            padding: 50px 55px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+            border-top: 4px solid #8B0000;
+        }
+
+        /* 文章头部 */
+        .article-header {
+            text-align: center;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 25px;
+            margin-bottom: 30px;
+        }
+
+        .article-header h1 {
+            font-size: 30px;
+            color: #8B0000; /* 主标题深红 */
+            font-weight: bold; /* 主标题加粗 */
+            margin-bottom: 15px;
+            letter-spacing: 2px;
+        }
+
+        .article-meta {
+            color: #999;
+            font-size: 14px;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        /* 文章正文 */
+        .article-content {
+            font-size: 16px;
+            line-height: 1.8;
+            color: #444;
+        }
+
+        .article-content p {
+            margin-bottom: 15px;
+            text-indent: 2em; /* 首行缩进 */
+            font-weight: normal; /* 确保正文不加粗 */
+        }
+
+        /* 深红色加粗的子标题 */
+        .article-content p.sub-title-red {
+            color: #8B0000;
+            font-weight: bold;
+            text-indent: 0; /* 子标题不需要首行缩进 */
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+
+        /* --- 新增：图片样式 --- */
+        .teacher-photo-wrapper {
+            text-align: center;
+            margin: 20px 0;
+        }
+        .teacher-photo-wrapper img {
+            height: auto;
+            border-radius: 4px;
+        }
+        /* 电脑端：缩小为原图的50% */
+        @media (min-width: 769px) {
+            .teacher-photo-wrapper img { 
+                width: 50%; 
+                max-width: 500px; /* 避免过大 */
+            }
+        }
+        /* 手机端：缩小为原图的80% */
+        @media (max-width: 768px) {
+            .teacher-photo-wrapper img { 
+                width: 80%; 
+                max-width: 500px;
+            }
+        }
+        .teacher-photo-caption {
+            display: block;
+            color: #999;
+            font-size: 14px;
+            margin-top: 8px;
+        }
+
+        .article-footer {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+            text-align: right;
+            font-size: 15px;
+            color: #666;
+            line-height: 1.6;
+        }
+
+        /* --- 响应式设计 --- */
+        @media (max-width: 768px) {
+            .top-bar {
+                padding: 0 15px;
+                flex-wrap: wrap;
+                height: auto;
+                padding-top: 10px;
+                padding-bottom: 10px;
+            }
+            .logo img { height: 30px; }
+            .logo { font-size: 18px; }
+            .logo span { font-size: 12px; margin-left: 5px; }
+            .back-home-btn { padding: 6px 12px; font-size: 13px; }
+
+            .article-card {
+                padding: 30px 20px;
+            }
+            .article-header h1 {
+                font-size: 24px;
+            }
+            .article-content {
+                font-size: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 顶部通栏 (与官网保持统一) -->
+    <header class="top-bar">
+        <div class="logo">
+            <!-- 确保 images 下有 school_logo.png -->
+            <img src="images/school_logo.png" alt="明德私立学校校徽">
+            明德私立学校 <span>MINGDE PRIVATE SCHOOL</span>
+        </div>
+        <!-- 返回官网首页的按钮 -->
+        <a href="school.html" class="back-home-btn">← 返回首页</a>
+    </header>
+
+    <!-- 正文容器 -->
+    <main class="article-container">
+        <div class="article-card">
+            
+            <!-- 文章头部信息 -->
+            <div class="article-header">
+                <h1>唐镜玄：相信每一粒种子都值得被看见，被等待</h1>
+                <div class="article-meta">
+                    <span>发布部门：明德私立学校 德育处</span>
+                    <span>发布日期：2020年1月10日</span>
+                </div>
+            </div>
+
+            <!-- 文章正文内容 (已按您的要求：标题和子标题红粗，正文不加粗) -->
+            <div class="article-content">
+                <p>在明德私立学校的计算机教室里，<strong>唐镜玄</strong>老师的办公桌可能是全校最“乱”的一张——堆满了学生留下的U盘、几本翻到卷边的Python教材，以及一沓用回形针别好的“问题追踪卡”，每张卡片上工整地记录着某个学生某个下午来问过的bug和解决方案。</p>
+                
+                <p>这份近乎偏执的条理，是唐镜玄作为计算机教师的底色。他的课堂从不追求热闹，程序运行的成功率却常年位居年级前列。高二（4）班的同学回忆：“有一次我的算法死活跑不出结果，唐老师没有直接帮我改，而是跟我一起检查，还一边检查，一边问我代码逻辑。刚开始我根本不理解老师，觉得这太慢了，但是检查到第三遍，我自己发现了错误，也明白为什么会有错。那时我终于明白老师的苦心了。”</p>
+
+                <p class="sub-title-red">从代码到人心：独特的教学之道</p>
+                <p>比代码更复杂的，是十六七岁的人心。唐镜玄的“亲和”在年级里是出了名的——午休时常能看见他端着食堂的杯子，蹲在走廊边和学生聊游戏、聊番剧、聊最近哪道数学题出得像脑筋急转弯。但真正让同事服气的是他对待“最难搞”学生的方式。</p>
+                
+                <p>即使是学生对他恶言相向、甚至朝他摔过键盘、提前离开，他也不会批评，不会皱眉，不会说一句重话。他只是安静地在放学后把同学叫到办公室，贴心地递上一瓶汽水，温和地开导他们。</p>
+                
+                <p>这种耐心并非天赋，更多是一种选择。唐镜玄在教研组分享时说过一段话：“高中生正处在从孩子到成人的过渡期，很多时候他们表现出的对抗不是在针对我，而是在和某种更巨大的东西搏斗——可能是自我怀疑，可能是家庭压力，也可能只是前一天没睡好。如果我在这时候还回以重话，就等于告诉他们：你在最难的时候，大人们不会理解。这不是我的教育观。”</p>
+
+                <!-- 此处插入图片 -->
+                <div class="teacher-photo-wrapper">
+                    <img src="images/picturetang.jpg" alt="唐镜玄老师工作照">
+                    <span class="teacher-photo-caption">（图为唐镜玄老师工作照）</span>
+                </div>
+
+                <p class="sub-title-red">润物无声：陪伴特招生成长</p>
+                <p>2019年秋季，明德私立学校启动首届“特招生计划”，为每位特招生配备“成长导师”，唐镜玄主动申请担任，负责带领高一（1）班和高一（2）班的特招生群体。不同于普通班主任的职责，成长导师更侧重心理陪伴与学业适应——对于这群从不同学校汇聚而来、家境与其他学生迥异且初入新环境的学生而言，这份陪伴并不轻松。</p>
+                
+                <p>开学第一周，唐镜玄给每位特招生发了一张空白表格，让学生们填写“任何你想让老师知道的事”：喜欢吃什么、害怕什么、最近在烦恼什么、有没有不想回答的问题。高一（2）班一位学生写道：“不太敢在课堂上举手，怕问题太简单，别人会觉得我不该坐在这里。”唐镜玄看到后没有特意找她谈话，而是在随后的两周里，每次上机练习时都“恰好”经过她的座位，用极轻的声音询问她有没有什么需要帮助的，在女生提出问题后鼓励她：“你的问题角度很好，下次可以在班上直接提，让大家也思考一下。”</p>
+
+                <p>到了学期末提交《成长发展白皮书》的阶段，唐镜玄更是逐份审阅，每份报告书背面都附上手写的批注，有些是学业建议，有些只是一句关怀的话：“这篇写得比上个月清晰多了，你是不是最近睡得好了一些？”</p>
+
+                <p class="sub-title-red">尊重与等待：他的教育哲学</p>
+                <p>在首届特招生学期总结会上，唐镜玄有一段话被德育处记录下来作为案例：“他们来到明德，不是来被改造的，是被看见的。我不需要他们迅速变得‘像这里的学生一样’，我只需要他们知道，在这里有一个大人不会因为他们的出身、口音或第一次考试的成绩而判定他们的价值。”</p>
+                
+                <p>有人问过他，带特招生是不是额外花了很多时间。他说：“我并没有觉得是‘额外’。每份报告书、每次谈话，都是种子在土壤底下的动静。你看不见种子，但你知道，它就在下面，静静生长着。”</p>
+
+                <p>“学生们就像栽下的种子一样，我总是愿意相信，他们有无数可能。”唐镜玄笑着补充道：“我这个人没有其他的优点，就是愿意等。我自己也有孩子，在教育自己孩子的过程中，我更加知道学生们想要的是什么。很多时候他们不用你催促也不用你逼迫，只要耐心，他们就会自己发芽。”</p>
+
+                <p>发芽需要时间，而时间需要等待。唐镜玄大概就是那个愿意等待每一粒种子生长的人。</p>
+            </div>
+
+            <!-- 文章尾部签名 -->
+            <div class="article-footer">
+                <p>明德私立学校 德育处</p>
+                <p style="font-size: 13px; color: #999; margin-top: 5px;">2020年1月10日</p>
+            </div>
+
+        </div>
+    </main>
+
+</body>
+</html>

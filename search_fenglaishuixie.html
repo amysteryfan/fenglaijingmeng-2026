@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>风来搜索 - 风来水榭</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Microsoft Yahei", "PingFang SC", sans-serif;
+        }
+
+        body {
+            background: url("images/bg.jpg") no-repeat center center fixed;
+            background-size: cover;
+            min-height: 100vh;
+            padding: 18px 3%;
+            color: #333;
+        }
+
+        /* 顶部搜索栏 */
+        .search-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            max-width: 1200px;
+            margin: 0 auto 24px;
+        }
+
+        .search-input {
+            flex: 1;
+            height: 46px;
+            padding: 0 18px;
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            border-radius: 8px;
+            font-size: 16px;
+            outline: none;
+            background: rgba(255, 255, 255, 0.95);
+            color: #222;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        .search-btn {
+            height: 46px;
+            padding: 0 20px;
+            border-radius: 8px;
+            border: none;
+            background-color: #d92f2f;
+            color: #fff;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            white-space: nowrap;
+        }
+
+        .search-btn:hover {
+            background-color: #b82424;
+        }
+
+        /* 搜索结果容器 */
+        .result-wrap {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.90);
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        /* 结果数量提示 */
+        .result-count {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 24px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid #eee;
+        }
+
+        /* 单条搜索结果 */
+        .result-item {
+            margin-bottom: 28px;
+            padding-bottom: 24px;
+            border-bottom: 1px solid #e8e8e8;
+        }
+
+        .result-item:last-child {
+            margin-bottom: 0;
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+
+        .result-title {
+            font-size: 20px;
+            margin-bottom: 8px;
+            line-height: 1.45;
+        }
+
+        .result-title a {
+            color: #2b579a;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .result-title a:hover {
+            text-decoration: underline;
+        }
+
+        .result-desc {
+            font-size: 15px;
+            color: #555;
+            line-height: 1.7;
+            margin-bottom: 6px;
+        }
+
+        .result-source {
+            font-size: 13px;
+            color: #777;
+        }
+
+        /* 广告标签 */
+        .tag-ad {
+            display: inline-block;
+            font-size: 12px;
+            color: #d92f2f;
+            border: 1px solid #d92f2f;
+            padding: 2px 7px;
+            border-radius: 4px;
+            margin-left: 10px;
+            font-weight: 500;
+            background: rgba(217, 47, 47, 0.06);
+        }
+
+        /* 广告词条底部强调 */
+        .ad-item {
+            background: rgba(217, 47, 47, 0.04);
+            border-radius: 8px;
+            padding: 18px;
+            margin-top: 8px;
+        }
+
+        /* 分页区域 */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            margin-top: 32px;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .page-btn {
+            padding: 8px 14px;
+            border-radius: 6px;
+            border: 1px solid #ddd;
+            background: #fff;
+            color: #555;
+            cursor: pointer;
+            font-size: 14px;
+            white-space: nowrap;
+        }
+
+        .page-btn:hover {
+            border-color: #d92f2f;
+            color: #d92f2f;
+        }
+
+        .page-btn.active {
+            background: #d92f2f;
+            color: #fff;
+            border-color: #d92f2f;
+        }
+
+        /* 手机适配 */
+        @media (max-width: 768px) {
+            body {
+                padding: 12px 4%;
+            }
+
+            .search-header {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .search-btn {
+                width: 100%;
+            }
+
+            .result-wrap {
+                padding: 18px;
+            }
+
+            .result-title {
+                font-size: 18px;
+            }
+
+            .result-desc {
+                font-size: 14px;
+            }
+
+            .pagination {
+                gap: 6px;
+            }
+
+            .page-btn {
+                padding: 6px 10px;
+                font-size: 13px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="search-header">
+        <input class="search-input" value="风来水榭">
+        <button class="search-btn" onclick="location.href='browser.html'">回到搜索</button>
+    </div>
+
+    <div class="result-wrap">
+        <div class="result-count">找到约 45,200 条结果</div>
+
+        <!-- 结果1 -->
+        <div class="result-item">
+            <div class="result-title">
+                <a href="javascript:void(0);">风来水榭官网｜高端游轮度假航线、海上旅居服务全面介绍</a>
+            </div>
+            <div class="result-desc">
+                风来水榭深耕海上游轮度假领域，运营多条近海与跨境游轮航线，提供私人定制航行、海上度假旅居、团体邮轮出行等多元化文旅服务。
+            </div>
+            <div class="result-source">风来水榭官网</div>
+        </div>
+
+        <!-- 结果2 (保留正常页面跳转) -->
+        <div class="result-item">
+            <div class="result-title">
+                <a href="boat_login.html">风来水榭｜客人专属服务登录</a>
+            </div>
+            <div class="result-desc">
+                为旅客提供一站式服务
+            </div>
+            <div class="result-source">风来水榭客人服务平台</div>
+        </div>
+
+        <!-- 结果3 -->
+        <div class="result-item">
+            <div class="result-title">
+                <a href="javascript:void(0);">风来水榭-专注高端游轮度假服务的文旅企业档案</a>
+            </div>
+            <div class="result-desc">
+                风来水榭主营豪华游轮运营、海上旅行方案定制，打造休闲旅居、海上宴会、短途航海度假等产品线，面向高端客群提供一站式游轮出行服务。
+            </div>
+            <div class="result-source">风来百科</div>
+        </div>
+
+        <!-- 结果4 (保留正常页面跳转) -->
+        <div class="result-item">
+            <div class="result-title">
+                <a href="gzh_fenglaishuixie.html">意外？谋杀？熊探带你起底风来水榭死亡事件！</a>
+            </div>
+            <div class="result-desc">
+                最近这两天，“小季总死亡事件”已经在网上传得沸沸扬扬。官方尚未发布调查结果，而网络舆论更是众说纷纭。
+            </div>
+            <div class="result-source">熊探长熊探</div>
+        </div>
+
+        <!-- 结果5 -->
+        <div class="result-item">
+            <div class="result-title">
+                <a href="javascript:void(0);">风来水榭拓展合作渠道，面向机构开放团体游轮定制服务</a>
+            </div>
+            <div class="result-desc">
+                企业面向企业团建、私人庆典、小型沙龙开放游轮包船业务，可根据需求定制航行路线、船上活动布置与配套餐饮方案。
+            </div>
+            <div class="result-source">韶光文旅资讯</div>
+        </div>
+
+        <!-- 结果6 -->
+        <div class="result-item">
+            <div class="result-title">
+                <a href="javascript:void(0);">布局海上文旅赛道，风来水榭持续扩充游轮运力与精品航线</a>
+            </div>
+            <div class="result-desc">
+                根据公开经营信息，风来水榭稳步推进船队更新计划，持续开发特色航海线路，拓展商务海上会务、长线休闲度假等细分文旅市场。
+            </div>
+            <div class="result-source">韶光财经</div>
+        </div>
+
+        <!-- 结果7 -->
+        <div class="result-item">
+            <div class="result-title">
+                <a href="javascript:void(0);">风来水榭优化港口配套服务，完善游轮出行全流程接待体系</a>
+            </div>
+            <div class="result-desc">
+                风来水榭持续升级母港旅客接待设施，打通线上预订、登船核验、岸上接驳全链条服务，提升游客游轮出行整体体验。
+            </div>
+            <div class="result-source">韶光日报商业版</div>
+        </div>
+
+        <!-- 结果8 广告 (保留正常页面跳转) -->
+        <div class="result-item ad-item">
+            <div class="result-title">
+                <a href="search_ad_brzj.html">百日战纪游戏节特惠中</a>
+                <span class="tag-ad">广告</span>
+            </div>
+        </div>
+
+        <!-- 分页 -->
+        <div class="pagination">
+            <button class="page-btn">上一页</button>
+            <button class="page-btn active">1</button>
+            <button class="page-btn">2</button>
+            <button class="page-btn">3</button>
+            <button class="page-btn">4</button>
+            <button class="page-btn">5</button>
+            <button class="page-btn">下一页</button>
+        </div>
+    </div>
+</body>
+</html>

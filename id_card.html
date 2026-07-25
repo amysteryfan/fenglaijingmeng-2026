@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>季清越 · 名片</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #f0f2f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            font-family: 'Times New Roman', 'PingFang SC', 'Microsoft YaHei', serif;
+        }
+
+        /* ----- 页面右上角 X 按钮 (移出名片外，固定在屏幕右上角) ----- */
+        #btn-close {
+            position: fixed;      /* 相对于浏览器窗口固定 */
+            top: 20px;
+            right: 20px;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            /* 毛玻璃风格，适配浅色背景 */
+            background-color: rgba(255, 255, 255, 0.4); 
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            color: #444444;
+            font-size: 22px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            z-index: 999;         /* 确保位于名片最上层 */
+        }
+
+        #btn-close:active {
+            transform: scale(0.9);
+            background-color: rgba(255, 255, 255, 0.8);
+        }
+
+        .card {
+            width: 720px;                  
+            max-width: 97vw;
+            background: #0d0d0d;
+            border-radius: 22px;
+            box-shadow: 0 28px 56px rgba(0,0,0,0.4), 0 0 0 1px rgba(255,255,255,0.12);
+            padding: 56px 60px;            
+            position: relative;            
+            overflow: hidden;
+            color: #d4d4d4;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: -30%;
+            right: -20%;
+            width: 420px;
+            height: 420px;
+            background: radial-gradient(circle, rgba(180,180,180,0.06) 0%, transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+
+        /* 顶部摩斯密码 */
+        .morse-top {
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            letter-spacing: 6px;
+            color: rgba(250,250,250,0.8);
+            margin-bottom: 34px;
+            text-align: left;
+            word-spacing: 12px;
+            user-select: none;
+        }
+
+        .card-body {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 36px;
+        }
+
+        .info {
+            flex: 1;
+        }
+
+        .name {
+            font-size: 44px;
+            font-weight: 700;
+            color: #e8e6e3;
+            letter-spacing: 5px;
+            margin-bottom: 10px;
+            text-shadow: 0 0 16px rgba(220,220,220,0.35);
+        }
+
+        .title {
+            font-size: 16px;
+            color: #b8a386;
+            letter-spacing: 3px;
+            margin-bottom: 32px;
+            font-weight: 500;
+            text-transform: uppercase;
+        }
+
+        .detail {
+            font-size: 16px;
+            color: #ccc;
+            line-height: 2.5;
+        }
+
+        .detail span {
+            display: inline-block;
+            width: 52px;
+            color: #aaa;
+            font-size: 13px;
+            letter-spacing: 1px;
+        }
+
+        /* 月亮区域 */
+        .moon-area {
+            flex-shrink: 0;
+            width: 150px;
+            height: 150px;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .moon {
+            width: 130px;
+            height: 130px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #eaeaea 0%, #c0c0c0 40%, #9a9a9a 100%);
+            position: relative;
+            box-shadow: 0 0 32px rgba(200,200,200,0.4), 0 0 0 1px rgba(255,255,255,0.25);
+        }
+
+        .moon::after {
+            content: '';
+            position: absolute;
+            width: 112px;
+            height: 112px;
+            border-radius: 50%;
+            background: #0d0d0d;
+            top: 9px;
+            right: -24px;
+            box-shadow: inset 0 0 14px rgba(0,0,0,0.7);
+        }
+
+        .moon-glow {
+            position: absolute;
+            width: 170px;
+            height: 170px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(220,220,220,0.25) 0%, transparent 70%);
+            top: -10px;
+            left: -10px;
+            pointer-events: none;
+        }
+
+        /* 底部摩斯密码 */
+        .morse-bottom {
+            margin-top: 36px;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            letter-spacing: 6px;
+            color: rgba(250,250,250,0.8);
+            text-align: right;
+            word-spacing: 12px;
+            user-select: none;
+        }
+
+        /* 手机端适配 */
+        @media (max-width: 700px) {
+            .card {
+                width: 94vw;
+                padding: 32px 24px;
+                border-radius: 16px;
+            }
+            .card-body {
+                flex-direction: column;
+                text-align: center;
+                gap: 20px;
+            }
+            .name {
+                font-size: 32px;
+                letter-spacing: 3px;
+            }
+            .title {
+                font-size: 13px;
+                margin-bottom: 20px;
+            }
+            .detail {
+                font-size: 14px;
+                line-height: 2.2;
+            }
+            .detail span {
+                width: auto;
+                margin-right: 4px;
+            }
+            .moon-area {
+                width: 100px;
+                height: 100px;
+            }
+            .moon {
+                width: 90px;
+                height: 90px;
+            }
+            .moon::after {
+                width: 78px;
+                height: 78px;
+                top: 6px;
+                right: -16px;
+            }
+            .moon-glow {
+                width: 120px;
+                height: 120px;
+                top: -10px;
+                left: -10px;
+            }
+            .morse-top, .morse-bottom {
+                font-size: 12px;
+                letter-spacing: 4px;
+                word-spacing: 8px;
+            }
+            .morse-top {
+                margin-bottom: 24px;
+            }
+            .morse-bottom {
+                margin-top: 24px;
+            }
+            /* 手机端调整关闭按钮位置和大小 */
+            #btn-close {
+                top: 12px;
+                right: 12px;
+                width: 38px;
+                height: 38px;
+                font-size: 18px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 右上角离开/X按钮 (已移到名片外部) -->
+    <div id="btn-close" title="关闭">✕</div>
+
+    <div class="card">
+        <div class="morse-top">.... . .-. -- . ...</div>
+
+        <div class="card-body">
+            <div class="info">
+                <div class="name">季清越</div>
+                <div class="title">阅辉集团 · 执行董事</div>
+                <div class="detail">
+                    <div><span>Tel</span>175246</div>
+                    <div><span>Mail</span>jiqingyue@Email.com</div>
+                </div>
+            </div>
+
+            <div class="moon-area">
+                <div class="moon-glow"></div>
+                <div class="moon"></div>
+            </div>
+        </div>
+
+        <div class="morse-bottom">.... . .-. -- . ...</div>
+    </div>
+
+    <script>
+        // 获取页面右上角 X 按钮元素
+        const btnClose = document.getElementById('btn-close');
+
+        // 点击后跳转到 search_jiqingyue.html
+        if (btnClose) {
+            btnClose.addEventListener('click', function() {
+                window.location.href = 'search_jiqingyue.html';
+            });
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>邮箱登录 - 风来惊梦</title>
+    
+    <link rel="stylesheet" href="css/style.css">
+    <script src="js/main.js"></script>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #f0f2f5;
+            font-family: 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            color: #333;
+        }
+
+        .login-wrapper {
+            width: 420px;
+            max-width: 90vw;
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.10);
+            padding: 48px 40px 40px;
+            position: relative;
+        }
+
+        /* 退出/关闭按钮 */
+        .btn-close {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            width: 32px;
+            height: 32px;
+            border: none;
+            background: #f0f2f5;
+            border-radius: 6px;
+            font-size: 18px;
+            line-height: 1;
+            cursor: pointer;
+            color: #777;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.2s, color 0.2s;
+            font-family: inherit;
+        }
+        .btn-close:hover {
+            background: #e0e0e0;
+            color: #333;
+        }
+
+        .brand {
+            text-align: center;
+            margin-bottom: 36px;
+        }
+        .brand-icon {
+            width: 56px;
+            height: 56px;
+            margin: 0 auto 14px;
+            background: linear-gradient(135deg, #1a73e8, #0d5bbd);
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            color: #fff;
+            box-shadow: 0 4px 12px rgba(26, 115, 232, 0.3);
+        }
+        .brand-name {
+            font-size: 22px;
+            font-weight: 600;
+            color: #1a1a1a;
+            letter-spacing: 2px;
+        }
+        .brand-sub {
+            font-size: 13px;
+            color: #888;
+            margin-top: 4px;
+        }
+
+        .form-group {
+            margin-bottom: 18px;
+            position: relative;
+        }
+        .form-group label {
+            display: block;
+            font-size: 13px;
+            font-weight: 500;
+            color: #555;
+            margin-bottom: 6px;
+        }
+        .form-group input {
+            width: 100%;
+            padding: 12px 14px;
+            border: 1px solid #d0d5dd;
+            border-radius: 8px;
+            font-size: 15px;
+            font-family: inherit;
+            transition: border-color 0.2s, box-shadow 0.2s;
+            outline: none;
+            background: #fafbfc;
+        }
+        .form-group input:focus {
+            border-color: #1a73e8;
+            box-shadow: 0 0 0 3px rgba(26, 115, 232, 0.10);
+            background: #fff;
+        }
+
+        .suggestion-dropdown {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            width: 100%;
+            background: #fff;
+            border: 1px solid #d0d5dd;
+            border-radius: 8px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+            z-index: 20;
+            margin-top: 2px;
+            overflow: hidden;
+        }
+        .suggestion-dropdown.show {
+            display: block;
+        }
+        .suggestion-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 14px;
+            cursor: pointer;
+            transition: background 0.15s;
+            font-size: 14px;
+        }
+        .suggestion-item:hover {
+            background: #e8f0fe;
+        }
+        .suggestion-item .avatar-circle {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: #1a73e8;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: 600;
+            flex-shrink: 0;
+        }
+        .suggestion-item .account-info .name {
+            font-weight: 500;
+            color: #222;
+        }
+        .suggestion-item .account-info .email {
+            font-size: 12px;
+            color: #777;
+        }
+
+        .btn-login {
+            width: 100%;
+            padding: 13px;
+            background: #1a73e8;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            letter-spacing: 1px;
+            transition: background 0.2s, box-shadow 0.2s;
+            margin-top: 8px;
+        }
+        .btn-login:hover {
+            background: #1557b0;
+            box-shadow: 0 4px 14px rgba(26, 115, 232, 0.35);
+        }
+        .btn-login:active {
+            background: #0e4a9a;
+        }
+
+        .bottom-links {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 20px;
+            font-size: 13px;
+        }
+        .link-forgot {
+            color: #1a73e8;
+            cursor: pointer;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+        .link-forgot:hover {
+            color: #1557b0;
+            text-decoration: underline;
+        }
+        .link-create {
+            color: #555;
+            cursor: default;
+            font-size: 13px;
+        }
+
+        .error-msg {
+            display: none;
+            background: #fef2f2;
+            border: 1px solid #fecaca;
+            color: #b91c1c;
+            padding: 10px 14px;
+            border-radius: 6px;
+            font-size: 13px;
+            margin-bottom: 16px;
+            text-align: center;
+        }
+        .error-msg.show {
+            display: block;
+        }
+
+        /* 忘记密码弹窗 */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.45);
+            z-index: 100;
+            justify-content: center;
+            align-items: center;
+        }
+        .modal-overlay.show {
+            display: flex;
+        }
+
+        .modal-box {
+            background: #fff;
+            border-radius: 12px;
+            width: 400px;
+            max-width: 90vw;
+            padding: 32px 28px;
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.25);
+            text-align: center;
+        }
+        .modal-box h3 {
+            font-size: 18px;
+            margin-bottom: 8px;
+            color: #1a1a1a;
+        }
+        .modal-box .modal-sub {
+            font-size: 13px;
+            color: #777;
+            margin-bottom: 20px;
+        }
+        .modal-box input {
+            width: 100%;
+            padding: 11px 14px;
+            border: 1px solid #d0d5dd;
+            border-radius: 8px;
+            font-size: 14px;
+            text-align: center;
+            outline: none;
+            font-family: inherit;
+            margin-bottom: 12px;
+        }
+        .modal-box input:focus {
+            border-color: #1a73e8;
+            box-shadow: 0 0 0 3px rgba(26, 115, 232, 0.08);
+        }
+        .btn-blue {
+            padding: 10px 28px;
+            background: #1a73e8;
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: background 0.2s;
+        }
+        .btn-blue:hover {
+            background: #1557b0;
+        }
+        .btn-cancel {
+            padding: 10px 28px;
+            background: #fff;
+            color: #555;
+            border: 1px solid #d0d5dd;
+            border-radius: 6px;
+            font-size: 14px;
+            cursor: pointer;
+            margin-left: 8px;
+            transition: background 0.2s;
+        }
+        .btn-cancel:hover {
+            background: #f5f5f5;
+        }
+
+        .security-questions {
+            display: none;
+            margin-top: 10px;
+            text-align: left;
+        }
+        .security-questions.show {
+            display: block;
+        }
+        .security-questions .q-item {
+            margin-bottom: 16px;
+        }
+        .security-questions .q-item label {
+            font-weight: 600;
+            font-size: 14px;
+            display: block;
+            margin-bottom: 6px;
+            color: #333;
+        }
+        .security-questions .q-item input {
+            text-align: left;
+        }
+        .security-questions .q-hint {
+            font-size: 12px;
+            color: #999;
+            margin-top: 2px;
+        }
+        .modal-success {
+            display: none;
+            background: #f0fdf4;
+            border: 1px solid #bbf7d0;
+            color: #166534;
+            padding: 12px;
+            border-radius: 6px;
+            font-size: 14px;
+            margin-top: 10px;
+            font-weight: 500;
+        }
+        .modal-success.show {
+            display: block;
+        }
+        .modal-error {
+            display: none;
+            color: #b91c1c;
+            font-size: 13px;
+            margin-top: 6px;
+        }
+        .modal-error.show {
+            display: block;
+        }
+
+        @media (max-width: 480px) {
+            .login-wrapper {
+                padding: 32px 20px 28px;
+            }
+            .brand-name {
+                font-size: 18px;
+            }
+            .modal-box {
+                padding: 24px 18px;
+            }
+            .btn-close {
+                top: 12px;
+                right: 12px;
+                width: 28px;
+                height: 28px;
+                font-size: 16px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- 登录卡片 -->
+    <div class="login-wrapper">
+        <!-- 关闭按钮 -->
+        <button class="btn-close" id="btnClose" title="退出">✕</button>
+
+        <div class="brand">
+            <div class="brand-icon">✉</div>
+            <div class="brand-name">邮箱</div>
+            <div class="brand-sub">安全、快速、可靠</div>
+        </div>
+
+        <div class="error-msg" id="loginError">账号或密码错误，请重试。</div>
+
+        <div class="form-group" id="accountGroup">
+            <label for="accountInput">账号</label>
+            <input type="text" id="accountInput" placeholder="请输入邮箱账号" autocomplete="off">
+            <div class="suggestion-dropdown" id="suggestionDropdown">
+                <div class="suggestion-item" id="suggestionXu">
+                    <div class="avatar-circle">许</div>
+                    <div class="account-info">
+                        <div class="name">许故</div>
+                        <div class="email">Xugu@Email.com</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="passwordInput">密码</label>
+            <input type="password" id="passwordInput" placeholder="请输入密码">
+        </div>
+
+        <button class="btn-login" id="btnLogin">登 录</button>
+
+        <div class="bottom-links">
+            <span class="link-forgot" id="linkForgot">忘记密码</span>
+            <span class="link-create">还没有账号？注册暂未开放</span>
+        </div>
+    </div>
+
+    <!-- 忘记密码弹窗 -->
+    <div class="modal-overlay" id="forgotModal">
+        <div class="modal-box">
+            <h3>找回密码</h3>
+            <p class="modal-sub">请输入您要找回密码的邮箱账号</p>
+            
+            <div id="stepAccount">
+                <input type="text" id="forgotAccountInput" placeholder="请输入邮箱账号">
+                <div class="modal-error" id="forgotAccountError">未找到该账号，请确认后重试。</div>
+                <div style="margin-top: 14px;">
+                    <button class="btn-blue" id="btnCheckAccount">查看密保</button>
+                    <button class="btn-cancel" id="btnCancelModal">取消</button>
+                </div>
+            </div>
+
+            <div class="security-questions" id="stepQuestions">
+                <div class="q-item">
+                    <label>第一个问题：我是谁？</label>
+                    <input type="text" id="answer1" placeholder="请输入回答">
+                </div>
+                <div class="q-item">
+                    <label>第二个问题：我的生日是？</label>
+                    <input type="text" id="answer2" placeholder="请输入四位数字" maxlength="4">
+                    <div class="q-hint">提示：输入四位数字。</div>
+                </div>
+                <div class="modal-error" id="forgotAnswerError">回答错误，请重试。</div>
+                <div class="modal-success" id="forgotSuccess">密码就在上面的回答中。</div>
+                <div style="margin-top: 14px;">
+                    <button class="btn-blue" id="btnVerifyAnswers">验证回答</button>
+                    <button class="btn-cancel" id="btnCancelQuestions">取消</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+
+            // 关闭按钮跳转桌面
+            document.getElementById('btnClose').addEventListener('click', () => {
+                window.location.href = 'desktop.html';
+            });
+
+            const accountInput = document.getElementById('accountInput');
+            const passwordInput = document.getElementById('passwordInput');
+            const btnLogin = document.getElementById('btnLogin');
+            const loginError = document.getElementById('loginError');
+            const suggestionDropdown = document.getElementById('suggestionDropdown');
+            const suggestionXu = document.getElementById('suggestionXu');
+            const linkForgot = document.getElementById('linkForgot');
+
+            const forgotModal = document.getElementById('forgotModal');
+            const forgotAccountInput = document.getElementById('forgotAccountInput');
+            const btnCheckAccount = document.getElementById('btnCheckAccount');
+            const btnCancelModal = document.getElementById('btnCancelModal');
+            const stepAccount = document.getElementById('stepAccount');
+            const stepQuestions = document.getElementById('stepQuestions');
+            const answer1 = document.getElementById('answer1');
+            const answer2 = document.getElementById('answer2');
+            const btnVerifyAnswers = document.getElementById('btnVerifyAnswers');
+            const btnCancelQuestions = document.getElementById('btnCancelQuestions');
+            const forgotAccountError = document.getElementById('forgotAccountError');
+            const forgotAnswerError = document.getElementById('forgotAnswerError');
+            const forgotSuccess = document.getElementById('forgotSuccess');
+
+            const ACCOUNTS = {
+                'Xugu@Email.com': {
+                    password: 'detective0217',
+                    redirect: 'mail_xu.html'
+                },
+                'songlingyi@Email.com': {
+                    password: 'songlingyi0605',
+                    redirect: 'mail_song.html'
+                }
+            };
+
+            accountInput.addEventListener('focus', () => {
+                if (accountInput.value.trim() === '') {
+                    suggestionDropdown.classList.add('show');
+                }
+            });
+            accountInput.addEventListener('input', () => {
+                const val = accountInput.value.trim();
+                if (val === '') {
+                    suggestionDropdown.classList.add('show');
+                } else {
+                    suggestionDropdown.classList.remove('show');
+                }
+            });
+
+            document.addEventListener('click', (e) => {
+                if (!e.target.closest('#accountGroup')) {
+                    suggestionDropdown.classList.remove('show');
+                }
+            });
+
+            suggestionXu.addEventListener('click', () => {
+                accountInput.value = 'Xugu@Email.com';
+                passwordInput.value = 'detective0217';
+                suggestionDropdown.classList.remove('show');
+                loginError.classList.remove('show');
+            });
+
+            btnLogin.addEventListener('click', () => {
+                const acc = accountInput.value.trim();
+                const pwd = passwordInput.value.trim();
+
+                if (ACCOUNTS[acc] && ACCOUNTS[acc].password === pwd) {
+                    loginError.classList.remove('show');
+                    window.location.href = ACCOUNTS[acc].redirect;
+                } else {
+                    loginError.classList.add('show');
+                }
+            });
+
+            passwordInput.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter') {
+                    btnLogin.click();
+                }
+            });
+            accountInput.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter') {
+                    btnLogin.click();
+                }
+            });
+
+            linkForgot.addEventListener('click', () => {
+                forgotModal.classList.add('show');
+                stepAccount.style.display = 'block';
+                stepQuestions.classList.remove('show');
+                forgotAccountInput.value = '';
+                forgotAccountError.classList.remove('show');
+                forgotAnswerError.classList.remove('show');
+                forgotSuccess.classList.remove('show');
+                answer1.value = '';
+                answer2.value = '';
+            });
+
+            btnCancelModal.addEventListener('click', () => {
+                forgotModal.classList.remove('show');
+            });
+            btnCancelQuestions.addEventListener('click', () => {
+                forgotModal.classList.remove('show');
+            });
+            forgotModal.addEventListener('click', (e) => {
+                if (e.target === forgotModal) {
+                    forgotModal.classList.remove('show');
+                }
+            });
+
+            btnCheckAccount.addEventListener('click', () => {
+                const acc = forgotAccountInput.value.trim();
+                if (acc === 'songlingyi@Email.com') {
+                    forgotAccountError.classList.remove('show');
+                    stepAccount.style.display = 'none';
+                    stepQuestions.classList.add('show');
+                } else {
+                    forgotAccountError.classList.add('show');
+                }
+            });
+
+            btnVerifyAnswers.addEventListener('click', () => {
+                const a1 = answer1.value.trim();
+                const a2 = answer2.value.trim();
+                if (a1 === '宋令仪' && a2 === '0605') {
+                    forgotAnswerError.classList.remove('show');
+                    forgotSuccess.classList.add('show');
+                } else {
+                    forgotAnswerError.classList.add('show');
+                    forgotSuccess.classList.remove('show');
+                }
+            });
+
+        });
+    </script>
+</body>
+</html>

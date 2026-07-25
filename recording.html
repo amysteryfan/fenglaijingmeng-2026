@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>录音文件 - 风来惊梦</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            background: #008080;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            font-family: 'Microsoft YaHei', 'SimSun', sans-serif;
+            padding: 20px;
+            overflow: hidden; /* 禁止整个页面滚动 */
+        }
+        .window {
+            width: 680px;
+            max-width: 100%;
+            max-height: 90vh; /* 限制最大高度，避免溢出 */
+            background: #c0c0c0;
+            border: 2px solid #000;
+            box-shadow: 4px 4px 0 #000;
+            display: flex;
+            flex-direction: column;
+        }
+        .titlebar {
+            background: #000080;
+            color: #fff;
+            padding: 4px 6px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 14px;
+            font-weight: bold;
+            flex-shrink: 0; /* 保证标题栏不被压缩 */
+        }
+        .titlebar .close-btn {
+            background: #c0c0c0;
+            border: 2px solid #fff;
+            border-right-color: #000;
+            border-bottom-color: #000;
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: bold;
+            color: #000;
+            line-height: 1;
+        }
+        .content {
+            display: flex;
+            flex: 1;
+            gap: 8px;
+            padding: 8px;
+            background: #c0c0c0;
+            overflow: hidden; /* 防止内容溢出到窗口外 */
+        }
+        .player {
+            width: 200px;
+            background: #fff;
+            border: 2px inset #ddd;
+            padding: 12px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            font-size: 13px;
+            color: #000;
+            flex-shrink: 0;
+        }
+        .player-title {
+            font-weight: bold;
+            margin-bottom: 4px;
+        }
+        .player-icon {
+            font-size: 32px;
+        }
+        .progress-bar {
+            width: 100%;
+            height: 12px;
+            background: #e0e0e0;
+            border: 1px solid #999;
+            position: relative;
+            margin: 8px 0;
+        }
+        .progress-fill {
+            width: 35%;
+            height: 100%;
+            background: #000080;
+        }
+        .controls {
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+            margin-top: 4px;
+        }
+        .win-btn {
+            padding: 2px 8px;
+            background: #c0c0c0;
+            border: 2px solid #fff;
+            border-right-color: #000;
+            border-bottom-color: #000;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: bold;
+            color: #000;
+        }
+        .win-btn:active {
+            border: 2px solid #000;
+            border-right-color: #fff;
+            border-bottom-color: #fff;
+        }
+        .time-label {
+            font-size: 11px;
+            color: #666;
+            margin-top: 2px;
+        }
+        .notepad {
+            flex: 1;
+            background: #fff;
+            border: 2px inset #ddd;
+            padding: 12px;
+            font-family: 'SimSun', 'Microsoft YaHei', serif;
+            font-size: 14px;
+            line-height: 1.7;
+            color: #000;
+            white-space: pre-wrap;
+            overflow-y: auto; /* 只有这里可以滚动 */
+            min-height: 0; /* 允许flex子元素缩小 */
+        }
+        .notepad-header {
+            font-weight: bold;
+            border-bottom: 1px solid #ccc;
+            padding-bottom: 6px;
+            margin-bottom: 10px;
+            color: #000080;
+            font-size: 15px;
+        }
+        @media (max-width: 600px) {
+            .window {
+                width: 100%;
+            }
+            .content {
+                flex-direction: column;
+            }
+            .player {
+                width: 100%;
+                flex-direction: row;
+                flex-wrap: wrap;
+                gap: 6px;
+                justify-content: center;
+            }
+            .player-icon { font-size: 28px; }
+            .progress-bar { width: 80px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="window">
+        <div class="titlebar">
+            <span>📁 录音文件.wav - 语音识别播放器</span>
+            <div class="close-btn" id="closeBtn">✖</div>
+        </div>
+        <div class="content">
+            <!-- 左侧播放器（无实际功能） -->
+            <div class="player">
+                <div class="player-title">录音文件.wav</div>
+                <div class="player-icon">🎵</div>
+                <div class="progress-bar">
+                    <div class="progress-fill"></div>
+                </div>
+                <div class="time-label">00:31 / 03:05</div>
+                <div class="controls">
+                    <button class="win-btn">⏮</button>
+                    <button class="win-btn">▶</button>
+                    <button class="win-btn">⏭</button>
+                    <button class="win-btn">■</button>
+                </div>
+            </div>
+
+            <!-- 右侧语音识别结果 -->
+            <div class="notepad">
+                <div class="notepad-header">📄 语音识别文字内容</div>
+                <div class="text-content">
+声音A：喂，我们再捋一遍计划吧？
+声音B：你突然提起这个干什么？
+声音A：瞧你，我们都是一条绳上的蚂蚱了，还这么有戒心干什么？我只想有备无患罢了。
+声音A：总之，那天你先带我上船，我会潜伏在你预先留意过的空房间。
+声音A：等到了晚上，你确保那时候她已经回了房间，而我走那条没人的路，进入她的房间——你会提前给我她的房卡备份。
+声音A：呵……看到我这张脸，她一定会吓得魂飞魄散吧。真想快点看看那张脸因为恐惧扭曲起来的样子。
+声音B：我只是答应你，给你一个机会，让你和她好好聊聊而已。
+声音A：你放心……我保证，她会乖乖地，一动不动地，听我好好和她聊聊的。聊完，她一定会洗心革面，痛改前非，焕然一新的，呵呵......
+声音B：那天之前，你不要惹出乱子来。
+声音A：哦？我会不会呢？呵呵，你那是什么眼神？我开玩笑的。我最不缺的就是耐心了。毕竟，我可是曾经在地狱里煎熬了四年啊……
+声音B：你很在意时间？一直在看我的表。
+声音A：我只是想到自己曾经也有一块银色的手表……早就坏了。哪里比得上你这块百达翡丽？
+声音B：这种表，更容易被注意到呢。
+声音A：在那所学校里，没有奢牌才更引人注意吧。
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 关闭按钮跳转到卧室页面
+        document.getElementById('closeBtn').addEventListener('click', function() {
+            window.location.href = 'bed_room.html';
+        });
+
+        // 播放控制按钮保持无反应
+        document.querySelectorAll('.player .win-btn').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                e.preventDefault();
+            });
+        });
+    </script>
+</body>
+</html>

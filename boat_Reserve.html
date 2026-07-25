@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>风来水榭 - 游轮活动预定平台</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Microsoft YaHei", SimSun, sans-serif;
+        }
+        :root {
+            --main-teal: #28b8a8;
+            --dark-teal: #007c70;
+            --light-teal: #e6f7f5;
+            --text-dark: #222;
+            --text-gray: #666;
+            --border-color: #e5e7eb;
+            --red-btn: #d93025;
+            --red-btn-hover: #b8261d;
+        }
+        body {
+            background-color: #f5f7fa;
+        }
+        /* 顶部导航栏（和后台页面统一风格） */
+        .navbar {
+            background-color: var(--main-teal);
+            padding: 16px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.12);
+        }
+        .nav-left h1 {
+            color: #fff;
+            font-size: 24px;
+            font-weight: 600;
+        }
+        .nav-left p {
+            color: #e0f7f4;
+            font-size: 14px;
+            margin-top: 4px;
+        }
+        .back-home-btn {
+            background: #fff;
+            color: var(--dark-teal);
+            border: none;
+            padding: 9px 20px;
+            border-radius: 4px;
+            font-size: 15px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-weight: 500;
+        }
+        .back-home-btn:hover {
+            background: var(--light-teal);
+        }
+        /* 筛选栏 */
+        .filter-wrap {
+            max-width: 1200px;
+            margin: 24px auto;
+            padding: 0 16px;
+        }
+        .filter-box {
+            background: #fff;
+            padding: 16px 20px;
+            border-radius: 8px;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 24px;
+        }
+        .filter-item label {
+            font-size: 14px;
+            color: var(--text-gray);
+            margin-right: 8px;
+        }
+        .filter-item input, .filter-item select {
+            padding: 7px 10px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        .date-tag {
+            padding: 7px 14px;
+            background: var(--light-teal);
+            color: var(--dark-teal);
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 500;
+        }
+        /* 主容器 */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto 40px;
+            padding: 0 16px;
+        }
+        .page-title {
+            font-size: 20px;
+            color: var(--text-dark);
+            margin-bottom: 18px;
+            padding-left: 8px;
+            border-left: 4px solid var(--main-teal);
+        }
+        /* 活动列表布局（写实平台网格布局，区别留言板单卡片） */
+        .activity-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+            gap: 20px;
+        }
+        .activity-card {
+            background: #fff;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            transition: transform 0.2s ease;
+        }
+        .activity-card:hover {
+            transform: translateY(-4px);
+        }
+        .card-top {
+            padding: 16px 20px;
+            background: var(--light-teal);
+        }
+        .activity-time {
+            font-size: 13px;
+            color: var(--dark-teal);
+            font-weight: 500;
+        }
+        .activity-name {
+            font-size: 17px;
+            margin-top: 6px;
+            color: var(--text-dark);
+            font-weight: 600;
+        }
+        .card-body {
+            padding: 18px 20px;
+        }
+        .desc-text {
+            font-size: 14px;
+            line-height: 1.65;
+            color: var(--text-gray);
+            margin-bottom: 14px;
+        }
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 13px;
+            color: #444;
+            padding: 6px 0;
+            border-bottom: 1px dashed #eee;
+        }
+        .info-row:last-child {
+            border-bottom: none;
+        }
+        .card-bottom {
+            padding: 14px 20px;
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .surplus-num {
+            font-size: 13px;
+            color: #e64340;
+        }
+        .book-btn {
+            padding: 8px 22px;
+            background: var(--main-teal);
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .book-btn:hover {
+            background: var(--dark-teal);
+        }
+        /* 已预约按钮红色样式 */
+        .book-btn.ordered {
+            background: var(--red-btn);
+            cursor: default;
+        }
+        .book-btn.ordered:hover {
+            background: var(--red-btn-hover);
+        }
+        /* 底部备注 */
+        .notice-block {
+            max-width: 1200px;
+            margin: 30px auto 0;
+            padding: 0 16px;
+        }
+        .notice-card {
+            background: #fff;
+            padding: 16px 20px;
+            border-radius: 8px;
+            border-left: 4px solid #ffb340;
+        }
+        .notice-card h4 {
+            font-size: 15px;
+            color: #333;
+            margin-bottom: 10px;
+        }
+        .notice-card p {
+            font-size: 13px;
+            line-height: 1.7;
+            color: var(--text-gray);
+        }
+        .footer-copyright {
+            text-align: center;
+            padding: 24px 0;
+            font-size: 13px;
+            color: var(--text-gray);
+            background: #fff;
+            margin-top: 40px;
+        }
+        /* 移动端适配 */
+        @media (max-width:768px) {
+            .navbar {
+                flex-direction: column;
+                gap: 14px;
+                text-align: center;
+            }
+            .activity-list {
+                grid-template-columns: 1fr;
+            }
+            .filter-box {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 顶部导航 -->
+    <div class="navbar">
+        <div class="nav-left">
+            <h1>风来水榭 · 客户服务平台</h1>
+            <p>艾希皇后号 活动在线预定系统</p>
+        </div>
+        <button class="back-home-btn" onclick="location.href='boat_guest.html'">返回首页</button>
+    </div>
+
+    <!-- 筛选区域 -->
+    <div class="filter-wrap">
+        <div class="filter-box">
+            <div class="filter-item">
+                <label>活动日期：</label>
+                <span class="date-tag">2026-07-09</span>
+            </div>
+            <div class="filter-item">
+                <label>所属船舶：</label>
+                <input value="艾希皇后号" readonly>
+            </div>
+            <div class="filter-item">
+                <label>活动分类：</label>
+                <select>
+                    <option value="all">全部活动</option>
+                    <option value="photo">休闲摄影</option>
+                    <option value="food">美食体验</option>
+                    <option value="wine">酒水品鉴</option>
+                    <option value="entertain">夜间演艺</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <!-- 活动主列表 -->
+    <div class="container">
+        <h2 class="page-title">当日可预约活动列表</h2>
+        <div class="activity-list">
+            <!-- 活动1 晨间摄影 -->
+            <div class="activity-card">
+                <div class="card-top">
+                    <div class="activity-time">07:30 - 09:00 | 顶层露天甲板</div>
+                    <div class="activity-name">晨间海景摄影打卡活动</div>
+                </div>
+                <div class="card-body">
+                    <p class="desc-text">配备专业旅拍摄影师，爱心花艺、海景打卡布景免费使用，适合情侣、家庭拍摄海上日出人像，道具包含头纱、气球、复古摆件。</p>
+                    <div class="info-row">
+                        <span>参与费用</span>
+                        <span>免费</span>
+                    </div>
+                    <div class="info-row">
+                        <span>参与上限</span>
+                        <span>不限人数</span>
+                    </div>
+                    <div class="info-row">
+                        <span>入场凭证</span>
+                        <span>客房房卡</span>
+                    </div>
+                </div>
+                <div class="card-bottom">
+                    <span class="surplus-num">剩余名额：充足</span>
+                    <button class="book-btn" onclick="alert('活动已过期，无法预约。')">立即预约</button>
+                </div>
+            </div>
+
+            <!-- 活动2 海鲜DIY -->
+            <div class="activity-card">
+                <div class="card-top">
+                    <div class="activity-time">10:30 - 11:30 | 一层美食体验厅</div>
+                    <div class="activity-name">海上新鲜海鲜DIY烹饪课堂</div>
+                </div>
+                <div class="card-body">
+                    <p class="desc-text">船上主厨现场教学海鲜简餐制作，食材为当日近海捕捞生鲜，全套厨具、调料免费提供，制作完成可现场食用。</p>
+                    <div class="info-row">
+                        <span>参与费用</span>
+                        <span>免费</span>
+                    </div>
+                    <div class="info-row">
+                        <span>参与上限</span>
+                        <span>单场20人</span>
+                    </div>
+                    <div class="info-row">
+                        <span>入场凭证</span>
+                        <span>预约凭证+房卡</span>
+                    </div>
+                </div>
+                <div class="card-bottom">
+                    <span class="surplus-num">剩余名额：8</span>
+                    <button class="book-btn" onclick="alert('活动已过期，无法预约。')">立即预约</button>
+                </div>
+            </div>
+
+            <!-- 活动3 午后桌游棋牌 -->
+            <div class="activity-card">
+                <div class="card-top">
+                    <div class="activity-time">14:00 - 20:00 | 一层休闲沙龙厅</div>
+                    <div class="activity-name">午后休闲桌游棋牌专场</div>
+                </div>
+                <div class="card-body">
+                    <p class="desc-text">提供麻将、扑克、狼人杀、飞行棋等多款桌游，全程免费供应茶水、时令果盘，适合亲友结伴休闲放松。</p>
+                    <div class="info-row">
+                        <span>参与费用</span>
+                        <span>免费</span>
+                    </div>
+                    <div class="info-row">
+                        <span>参与上限</span>
+                        <span>不限人数</span>
+                    </div>
+                    <div class="info-row">
+                        <span>入场凭证</span>
+                        <span>客房房卡</span>
+                    </div>
+                </div>
+                <div class="card-bottom">
+                    <span class="surplus-num">剩余名额：充足</span>
+                    <button class="book-btn" onclick="alert('活动已过期，无法预约。')">立即预约</button>
+                </div>
+            </div>
+
+            <!-- 核心活动：20:00红酒品鉴会（已预约红色按钮） -->
+            <div class="activity-card">
+                <div class="card-top">
+                    <div class="activity-time">20:00 - 21:30 | 二层宴会厅</div>
+                    <div class="activity-name">高端进口红酒品鉴会</div>
+                </div>
+                <div class="card-body">
+                    <p class="desc-text">本次包场专属酒会，配备多款干红、起泡葡萄酒，搭配芝士、冷盘小食；专业侍酒师讲解品酒、储酒知识，宾客自由社交交谈。</p>
+                    <div class="info-row">
+                        <span>参与费用</span>
+                        <span>免费</span>
+                    </div>
+                    <div class="info-row">
+                        <span>参与上限</span>
+                        <span>单场30人</span>
+                    </div>
+                    <div class="info-row">
+                        <span>入场凭证</span>
+                        <span>预约凭证+房卡</span>
+                    </div>
+                </div>
+                <div class="card-bottom">
+                    <span class="surplus-num">剩余名额：6</span>
+                    <button class="book-btn ordered" onclick="alert('您已成功预定，无需重复申请。')">已经预约</button>
+                </div>
+            </div>
+
+            <!-- 活动4 星空民谣驻唱 -->
+            <div class="activity-card">
+                <div class="card-top">
+                    <div class="activity-time">21:40 - 22:30 | 三层星空观景露台</div>
+                    <div class="activity-name">海上星空民谣驻唱晚会</div>
+                </div>
+                <div class="card-body">
+                    <p class="desc-text">休闲活动，露天海景舞台民谣弹唱，免费提供低度果酒、气泡水，可观赏海面夜景与远处岸灯。</p>
+                    <div class="info-row">
+                        <span>参与费用</span>
+                        <span>免费</span>
+                    </div>
+                    <div class="info-row">
+                        <span>参与上限</span>
+                        <span>不限人数</span>
+                    </div>
+                    <div class="info-row">
+                        <span>入场凭证</span>
+                        <span>客房房卡</span>
+                    </div>
+                </div>
+                <div class="card-bottom">
+                    <span class="surplus-num">剩余名额：充足</span>
+                    <button class="book-btn" onclick="alert('活动已过期，无法预约。')">立即预约</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 预定须知 -->
+    <div class="notice-block">
+        <div class="notice-card">
+            <h4>预定须知</h4>
+            <p>1. 所有活动仅对艾希皇后号宾客开放，凭客房房卡入场；<br>
+            2. 人数限制类活动预约成功后，请提前15分钟到场签到，超时未签到名额自动释放；<br>
+            3. 如需取消预约，可返回首页进入留言板提交需求，工作人员将同步释放名额。<br>
+            4. 红酒品鉴会仅限二十周岁以上的订婚宴宾客参加。
+</p>
+        </div>
+    </div>
+
+    <!-- 底部版权 -->
+    <div class="footer-copyright">
+        风来水榭游轮综合服务系统 ©2026 版权所有 | 服务船舶：艾希皇后号
+    </div>
+</body>
+</html>

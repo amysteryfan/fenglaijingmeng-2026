@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <title>意外？谋杀？熊探带你起底风来水榭死亡事件！</title>
+    <style>
+        /* 基础重置 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Helvetica Neue", Arial, sans-serif;
+            background-color: #f7f7f7;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        /* 模拟微信公众号容器 */
+        .app-container {
+            max-width: 680px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            min-height: 100vh;
+            position: relative;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.03);
+        }
+
+        @media (min-width: 769px) {
+            .app-container {
+                margin: 30px auto;
+                border-radius: 12px;
+                min-height: auto;
+                border: 1px solid #e6e6e6;
+            }
+        }
+
+        /* 顶部操作栏 (移除状态栏) */
+        .top-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 20px;
+            background-color: #fff;
+        }
+
+        .top-nav svg {
+            width: 24px;
+            height: 24px;
+            fill: #333;
+            cursor: pointer;
+        }
+
+        /* 文章主体 */
+        .article-body {
+            padding: 8px 24px 30px;
+        }
+
+        .article-title {
+            font-size: 26px;
+            font-weight: 700;
+            color: #222;
+            line-height: 1.4;
+            margin-bottom: 16px;
+        }
+
+        .meta-info {
+            display: flex;
+            align-items: center;
+            color: #999;
+            font-size: 14px;
+            margin-bottom: 24px;
+            gap: 8px;
+        }
+
+        .meta-info .divider {
+            color: #e6e6e6;
+        }
+
+        .article-content p {
+            font-size: 18px;
+            line-height: 1.8;
+            color: #333;
+            margin-bottom: 18px;
+            text-align: justify;
+            word-break: break-word;
+        }
+
+        .article-content p:last-child {
+            margin-bottom: 0;
+        }
+
+        /* 底部用户信息与互动栏 */
+        .footer-actions {
+            padding: 20px 24px 30px;
+            background-color: #fff;
+        }
+
+        .user-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #f0f0f0;
+            margin-bottom: 20px;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: #d8d8d8;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23bbbbbb"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>');
+            background-size: cover;
+            flex-shrink: 0;
+        }
+
+        .user-name {
+            font-size: 16px;
+            font-weight: 500;
+            color: #333;
+        }
+
+        .btn-follow {
+            background-color: #00c373;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            padding: 6px 14px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            margin-left: auto; /* 推到最右侧 */
+            transition: opacity 0.2s;
+        }
+
+        .btn-follow:active {
+            opacity: 0.8;
+        }
+
+        .action-row {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            padding: 0 10px;
+        }
+
+        .action-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            color: #666;
+            font-size: 13px;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+
+        .action-item:active {
+            color: #333;
+        }
+
+        .action-item svg {
+            width: 22px;
+            height: 22px;
+            fill: none;
+            stroke: #666;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        /* 第一张图片适配样式（电脑端50%，手机端80%） */
+        .responsive-img {
+            max-width: 80%;
+            height: auto;
+            border-radius: 4px;
+            display: block;
+            margin: 0 auto;
+        }
+
+        @media (min-width: 769px) {
+            .responsive-img {
+                max-width: 50%;
+            }
+        }
+
+        /* 第二张图片适配样式（电脑端80%，手机端95%） */
+        .fangjian-img {
+            max-width: 95%;
+            height: auto;
+            border-radius: 4px;
+            display: block;
+            margin: 0 auto;
+        }
+
+        @media (min-width: 769px) {
+            .fangjian-img {
+                max-width: 80%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="app-container">
+    <!-- 顶部导航 (无状态栏) -->
+    <div class="top-nav">
+        <!-- 修改处：将 X 图标包裹在 a 标签中，点击跳转到 search_fenglaishuixie.html -->
+        <a href="search_fenglaishuixie.html" style="display: flex; align-items: center; justify-content: center; width: 24px; height: 24px; text-decoration: none;">
+            <svg viewBox="0 0 24 24">
+                <path d="M18 6L6 18M6 6l12 12" stroke="#333" stroke-width="2" fill="none" stroke-linecap="round"/>
+            </svg>
+        </a>
+        
+        <!-- 更多按钮 ... -->
+        <svg viewBox="0 0 24 24">
+            <circle cx="12" cy="12" r="1.5" fill="#333"/>
+            <circle cx="12" cy="5" r="1.5" fill="#333"/>
+            <circle cx="12" cy="19" r="1.5" fill="#333"/>
+        </svg>
+    </div>
+
+    <!-- 文章内容区 -->
+    <div class="article-body">
+        <h1 class="article-title">意外？谋杀？熊探带你起底风来水榭死亡事件！</h1>
+        <div class="meta-info">
+            <span>熊探长熊探</span>
+            <span class="divider">|</span>
+            <span>2026年7月11日12:00</span>
+            <span class="divider">|</span>
+            <span>风来</span>
+        </div>
+
+        <div class="article-content">
+            <p>最近这两天，“小季总死亡事件”已经在网上传得沸沸扬扬。官方尚未发布调查结果，而网络舆论更是众说纷纭。目前，“谋杀致死”虽然在声量上远大于“意外死亡”派，但到底没有站得住脚的证据。那么真相到底如何呢？难道“谋杀”只是看客们的臆测吗？</p>
+            <p>了解熊探的朋友都知道，熊探已经联系上了现场的朋友，掌握了第一手资料，而且已经围绕相关信息做出了推理。我们不卖关子直入正题，熊探的结论是——</p>
+            <p>季清越是被人谋杀的。凶手就是他的未婚妻宋令仪。</p>
+            <p>看官朋友们可能在想：真的吗？你为什么这么说？至于熊探是不是胡说八道，相信看了下面的推理过程，真假自会见分晓。</p>
+            <p>首先要介绍一下“小季总死亡事件”或者“风来水榭死亡事件”的事件经过。众所周知，小季总季清越是阅辉掌门人季振邦的独子，最近因为搞网络直播而声名鹊起，关注者无数。7月9日，因阅辉集团、鼎峰集团联姻，两家在“艾希皇后号”上包场举行订婚宴。登船者都是接到邀请的宾客，本身就缩小了嫌疑人的范围。季清越在中午的订婚宴散场后，一直在一楼休闲大厅消遣，直到19:25分起身离开，去二楼宴会厅参加当晚20:00开始的红酒品鉴会。20:05，季清越的尸体在宴会厅被另一位来参加红酒品鉴会的宾客发现，死亡时间为半小时以内。</p>
+
+            <!-- 插入图片及说明，应用新样式 -->
+            <div style="text-align: center; margin: 20px 0;">
+                <img src="images/picture2ji.jpg" alt="季清越直播截图" class="responsive-img">
+                <span style="display: block; color: #999; font-size: 14px; margin-top: 8px;">（图为季清越直播截图）</span>
+            </div>
+
+            <p>季清越当天直到从休闲大厅起身、去参加红酒品鉴会前，都有人目击，结合现场堪检初步推断死亡时间在半小时到一小时之间，可以判断，死亡事件必然发生在19:30到20:05之间。</p>
+            <p>宴会厅在中午订婚宴结束后，就被封闭起来用于打扫收拾，直到酒会前四十分钟才开放。而季清越嗜好红酒，对于酒会，有提前到场半小时的习惯。可以确定，季清越到达酒会时，宴会厅才刚刚开放。19:30后，船只经过礁石带，发生颠簸，旅客大多留在原地没有移动。宴会厅附近的一位工作人员作证，去往宴会厅，必须经过一条长廊，而在季清越和第一发现者之间，无人通过长廊。那么凶手只能是在季清越来到宴会厅前就提前躲藏在里面——否则，凶手只能是隐形人。</p>
+            <p>该工作人员还作证，季清越经过前，她看到一位女性经过长廊。从面容和衣着上判断，那人正是订婚宴的女主角——宋令仪。宋令仪19:00时从美食厅离开，她声称自己回房休息，之后一直没出过门，但因为无法证明，等于她没有不在场证明。而且，普通宾客无法进入被封锁的宴会厅，而宋令仪曾因为准备订婚宴，在7月9日之前，多次出入过宴会厅。她完全可以提前准备好钥匙，在保洁员离场并锁好门后，用自己的钥匙打开无人的宴会厅并潜伏其中，等工作人员为大门开锁、季清越提前来到无闲杂人员的宴会厅后，趁其不备杀死季清越，然后通过连接客房处楼梯的后门，快速回到自己房间。</p>
+            <p>当日上午，季清越曾运送一柜红酒上船。案发时，季清越就倒在倒塌的红酒柜旁，凶器正是一瓶定制红酒，瓶身上带有此次订婚宴的装饰。定制红酒共有两瓶，分别放在这对未婚夫妻的房间。宋令仪房间的定制红酒却不翼而飞。问及这个问题，她只说自己不慎打碎了酒瓶。但详细追问，她却支支吾吾，说不清楚。可见，她正是将自己房中的定制红酒用作打死季清越的凶器，才会无法说明。</p>
+
+            <!-- 插入新图片 fangjian.png （电脑端80%，手机端95%） -->
+            <div style="text-align: center; margin: 20px 0;">
+                <img src="images/fangjian.png" alt="宋令仪房间" class="fangjian-img">
+                <span style="display: block; color: #999; font-size: 14px; margin-top: 8px;">（图为宋令仪房间）</span>
+            </div>
+
+            <p>宋令仪房间中，还发现一支尚未使用的麻醉剂。宋令仪对此解释是害怕自己晚上失眠。但如果是为了助眠，一般人会选择吃安眠药，而不是使用针剂。熊探在此怀疑，这是宋令仪的planB。如果在宴会厅的谋杀没有起效，她会伺机药倒季清越后再行谋杀。</p>
+            <p>熊探可以断言：此案已破。接下来，只需等待宋令仪被抓捕归案的消息，就能证明熊探的正确。</p>
+            <p>好了，世间奇案多，真假熊探说。各位看官，我们下次再见。</p>
+        </div>
+    </div>
+
+    <!-- 底部互动区 -->
+    <div class="footer-actions">
+        <div class="user-bar">
+            <div class="user-info">
+                <div class="user-avatar"></div>
+                <span class="user-name">熊探长熊探</span>
+            </div>
+            <button class="btn-follow">+关注</button>
+        </div>
+
+        <div class="action-row">
+            <!-- 赞 -->
+            <div class="action-item">
+                <svg viewBox="0 0 24 24">
+                    <path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3H14zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"/>
+                </svg>
+                <span>2122</span>
+            </div>
+            <!-- 转发 -->
+            <div class="action-item">
+                <svg viewBox="0 0 24 24">
+                    <path d="M10 21v-7a2 2 0 0 1 2-2h4v-4l4 4-4 4v-4h-4v9"/>
+                    <path d="M4 10v-3a3 3 0 0 1 3-3h11"/>
+                </svg>
+                <span>1000</span>
+            </div>
+            <!-- 收藏/心形 -->
+            <div class="action-item">
+                <svg viewBox="0 0 24 24">
+                    <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+                </svg>
+                <span>989</span>
+            </div>
+            <!-- 评论 -->
+            <div class="action-item">
+                <svg viewBox="0 0 24 24">
+                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+                </svg>
+                <span>124</span>
+            </div>
+        </div>
+
+        <!-- 修正位置后的免责声明 -->
+        <div style="text-align: center; color: #999; font-size: 12px; margin-top: 20px;">
+            本页面纯属虚构，仅为游戏页面
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>风来惊梦 - 电脑桌面</title>
+    
+    <link rel="stylesheet" href="css/style.css">
+    <script src="js/main.js"></script>
+
+    <style>
+        /* ================================
+           【核心修复】取消所有页面边距并锁定滚动
+           ================================ */
+        html, body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;       /* 彻底隐藏滚动条 */
+            background-color: #000; /* 防止图片加载时出现白边 */
+        }
+
+        /* ================================
+           桌面容器与壁纸
+           ================================ */
+        #desktop {
+            position: fixed;       /* 固定定位，绝对贴合视口 */
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background-image: url('images/desktop_bg.jpg');
+            background-size: cover;
+            background-position: center bottom;
+            background-repeat: no-repeat;
+            background-color: #000;
+            font-family: 'Courier New', Courier, monospace;
+        }
+
+        /* 左侧软件图标区域 */
+        .desktop-icons {
+            position: absolute;
+            top: 50px;
+            left: 30px;
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+            z-index: 5;
+        }
+
+        .desktop-icon {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 80px;
+            padding: 8px 5px;
+            border: 2px solid transparent;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.15s ease-in-out;
+            text-align: center;
+        }
+
+        .desktop-icon:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: #a45c5c;
+            box-shadow: 0 0 15px rgba(164, 92, 92, 0.4);
+            transform: scale(1.06);
+        }
+        .desktop-icon:active {
+            transform: scale(0.95);
+            background: rgba(164, 92, 92, 0.3);
+            border-color: #a45c5c;
+        }
+
+        .desktop-icon .icon-img {
+            width: 56px;
+            height: 56px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 2px; 
+        }
+
+        .desktop-icon .icon-img svg {
+            width: 48px;
+            height: 48px;
+            shape-rendering: crispEdges;
+            display: block;
+        }
+
+        .desktop-icon .icon-label {
+            color: #fff;
+            font-size: 13px;
+            text-shadow: 0 0 4px #000, 0 0 8px #000, 1px 1px 2px #000;
+            background: none;
+            padding: 0;
+            border-radius: 0;
+        }
+
+        /* ================================
+           文件夹窗口 (模拟Windows)
+           ================================ */
+        .window-overlay {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 400px;
+            max-width: 90vw;
+            background: #c0c0c0;
+            border: 2px solid #000;
+            box-shadow: 4px 4px 0 #000;
+            z-index: 20;
+            display: none;
+            flex-direction: column;
+            font-family: 'Microsoft YaHei', 'SimSun', sans-serif;
+            color: #000;
+        }
+        .window-overlay.active {
+            display: flex;
+        }
+
+        .window-titlebar {
+            background: #000080;
+            color: #fff;
+            padding: 4px 6px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 14px;
+            font-weight: bold;
+        }
+        .window-titlebar .close-btn {
+            background: #c0c0c0;
+            border: 2px solid #fff;
+            border-right-color: #000;
+            border-bottom-color: #000;
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: bold;
+            color: #000;
+            line-height: 1;
+        }
+
+        .window-content {
+            padding: 16px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+            background: #fff;
+            min-height: 160px;
+        }
+
+        /* 文件夹内的图标样式 */
+        .file-icon {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 70px;
+            cursor: pointer;
+            padding: 6px;
+            border: 2px solid transparent;
+            border-radius: 2px;
+            transition: background 0.1s;
+        }
+        .file-icon:hover {
+            background: #e0e0ff;
+            border-color: #000080;
+        }
+        .file-icon .icon-img {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 4px;
+        }
+        .file-icon .icon-label {
+            font-size: 12px;
+            color: #000;
+            text-align: center;
+            word-break: break-word;
+            text-shadow: none;
+        }
+
+        /* 密码弹窗（通用） */
+        .pwd-dialog {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: #c0c0c0;
+            border: 2px solid #000;
+            box-shadow: 4px 4px 0 #000;
+            z-index: 30;
+            padding: 16px;
+            display: none;
+            flex-direction: column;
+            gap: 12px;
+            min-width: 300px;
+            max-width: 90vw;
+        }
+        .pwd-dialog.active {
+            display: flex;
+        }
+        .pwd-dialog label {
+            font-size: 14px;
+            font-weight: bold;
+            color: #000;
+            font-family: 'Microsoft YaHei', sans-serif;
+            line-height: 1.5;
+        }
+        .pwd-dialog input {
+            padding: 6px;
+            border: 2px inset #ddd;
+            font-size: 14px;
+            font-family: 'Microsoft YaHei', sans-serif;
+        }
+        .pwd-dialog .btn-row {
+            display: flex;
+            justify-content: flex-end;
+            gap: 8px;
+        }
+        .win-btn {
+            padding: 4px 12px;
+            background: #c0c0c0;
+            border: 2px solid #fff;
+            border-right-color: #000;
+            border-bottom-color: #000;
+            cursor: pointer;
+            font-size: 13px;
+            font-family: 'Microsoft YaHei', sans-serif;
+        }
+        .win-btn:active {
+            border: 2px solid #000;
+            border-right-color: #fff;
+            border-bottom-color: #fff;
+        }
+        .win-btn.primary {
+            background: #000080;
+            color: #fff;
+            border-color: #fff #000 #000 #fff;
+        }
+
+        .error-msg {
+            color: red;
+            font-size: 12px;
+            display: none;
+        }
+        .error-msg.show {
+            display: block;
+        }
+
+        /* 移动端适配 */
+        @media (max-width: 768px) {
+            .desktop-icons { top: 20px; left: 10px; gap: 18px; }
+            .desktop-icon { width: 65px; padding: 5px; }
+            .desktop-icon .icon-img { width: 44px; height: 44px; margin-bottom: 2px; }
+            .desktop-icon .icon-img svg { width: 36px; height: 36px; }
+            .desktop-icon .icon-label { font-size: 11px; }
+            #taskbar { height: 40px; padding: 0 10px; }
+            .taskbar-start { font-size: 12px; padding: 2px 8px; }
+            .taskbar-status { font-size: 11px; }
+            .window-overlay { width: 90vw; }
+        }
+
+        /* 任务栏 */
+        #taskbar {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 48px;
+            background: rgba(0, 0, 0, 0.75);
+            backdrop-filter: blur(4px);
+            border-top: 1px solid rgba(164, 92, 92, 0.6);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+            box-sizing: border-box;
+            z-index: 10;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.9);
+        }
+        .taskbar-start {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: #333;
+            padding: 4px 12px;
+            border-radius: 4px;
+            color: #fff;
+            font-size: 14px;
+            border: 1px solid #555;
+            cursor: default;
+            box-shadow: inset 0 1px 0 #555;
+        }
+        .taskbar-start span { color: #a45c5c; font-weight: bold; }
+        .taskbar-status {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            color: #ccc;
+            font-size: 13px;
+        }
+        .taskbar-status .divider {
+            width: 1px;
+            height: 20px;
+            background: #444;
+        }
+        #clock { color: #fff; letter-spacing: 1px; }
+    </style>
+</head>
+<body>
+    <div id="desktop">
+        
+        <!-- 左侧图标区域 -->
+        <div class="desktop-icons">
+            <div class="desktop-icon" id="folderIcon">
+                <div class="icon-img">
+                    <svg viewBox="0 0 32 32">
+                        <path d="M4,8 L14,6 L16,8 L28,8 L28,24 L4,24 Z" fill="#c0c0c0" stroke="#000" stroke-width="2"/>
+                    </svg>
+                </div>
+                <div class="icon-label">文件夹</div>
+            </div>
+            
+            <div class="desktop-icon" data-href="mail_login.html">
+                <div class="icon-img">
+                    <svg viewBox="0 0 32 32">
+                        <rect x="4" y="8" width="24" height="16" fill="#c0c0c0" stroke="#000" stroke-width="2"/>
+                        <polyline points="4,8 16,20 28,8" fill="none" stroke="#000" stroke-width="2"/>
+                    </svg>
+                </div>
+                <div class="icon-label">邮箱</div>
+            </div>
+            
+            <div class="desktop-icon" data-href="browser.html">
+                <div class="icon-img">
+                    <svg viewBox="0 0 32 32">
+                        <circle cx="16" cy="16" r="12" fill="#c0c0c0" stroke="#000" stroke-width="2"/>
+                        <ellipse cx="16" cy="16" rx="5" ry="12" fill="none" stroke="#000" stroke-width="2"/>
+                        <line x1="4" y1="16" x2="28" y2="16" stroke="#000" stroke-width="2"/>
+                    </svg>
+                </div>
+                <div class="icon-label">浏览器</div>
+            </div>
+
+            <div class="desktop-icon">
+                <div class="icon-img">
+                    <svg viewBox="0 0 32 32">
+                        <path d="M12,8 L14,6 L18,6 L20,8 L22,8 L24,24 L8,24 L10,8 Z" fill="#c0c0c0" stroke="#000" stroke-width="2"/>
+                        <line x1="12" y1="8" x2="12" y2="20" stroke="#000" stroke-width="2"/>
+                        <line x1="16" y1="8" x2="16" y2="20" stroke="#000" stroke-width="2"/>
+                        <line x1="20" y1="8" x2="20" y2="20" stroke="#000" stroke-width="2"/>
+                    </svg>
+                </div>
+                <div class="icon-label">回收站</div>
+            </div>
+
+            <!-- 微信图标（点击弹出密码框） -->
+            <div class="desktop-icon" id="wechatIcon">
+                <div class="icon-img">
+                    <svg viewBox="0 0 32 32">
+                        <path d="M4,12 C4,8 8,6 16,6 C24,6 28,8 28,12 L28,18 C28,22 24,24 16,24 L12,28 L12,24 C8,24 4,22 4,18 Z" fill="#c0c0c0" stroke="#000" stroke-width="2"/>
+                    </svg>
+                </div>
+                <div class="icon-label">微信</div>
+            </div>
+        </div>
+
+        <!-- 底部任务栏 -->
+        <div id="taskbar">
+            <div class="taskbar-start">
+                <span>★</span> 开始
+            </div>
+            <div class="taskbar-status">
+                <span class="divider"></span>
+                <span id="clock">--:--:--</span>
+            </div>
+        </div>
+
+        <!-- 文件夹窗口 -->
+        <div class="window-overlay" id="folderWindow">
+            <div class="window-titlebar">
+                <span>📁 文件夹</span>
+                <div class="close-btn" id="closeWindow">✖</div>
+            </div>
+            <div class="window-content" id="windowContent">
+            </div>
+        </div>
+
+        <!-- 文件夹密码弹窗 -->
+        <div class="pwd-dialog" id="pwdDialog">
+            <label for="pwdInput">我的委托人叫什么名字？</label>
+            <input type="text" id="pwdInput" placeholder="请输入名字">
+            <div class="error-msg" id="pwdError">密码错误</div>
+            <div class="btn-row">
+                <button class="win-btn" id="cancelPwd">取消</button>
+                <button class="win-btn primary" id="confirmPwd">确定</button>
+            </div>
+        </div>
+
+        <!-- 微信密码弹窗 -->
+        <div class="pwd-dialog" id="wechatPwdDialog">
+            <label for="wechatPwdInput">Is my watchword. Method, _____, and the little grey cells.</label>
+            <input type="text" id="wechatPwdInput" placeholder="请输入密码">
+            <div class="error-msg" id="wechatPwdError">密码错误</div>
+            <div class="btn-row">
+                <button class="win-btn" id="cancelWechatPwd">取消</button>
+                <button class="win-btn primary" id="confirmWechatPwd">确定</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 时钟
+        function updateClock() {
+            const now = new Date();
+            document.getElementById('clock').textContent = now.toLocaleTimeString('zh-CN', { hour12: false });
+        }
+        setInterval(updateClock, 1000);
+        updateClock();
+
+        // 桌面图标跳转（仅处理带有 data-href 的图标）
+        document.querySelectorAll('.desktop-icon[data-href]').forEach(icon => {
+            icon.addEventListener('click', function(e) {
+                window.location.href = this.getAttribute('data-href');
+            });
+        });
+
+        // ========== 文件夹相关 ==========
+        const folderIcon = document.getElementById('folderIcon');
+        const folderWindow = document.getElementById('folderWindow');
+        const closeWindowBtn = document.getElementById('closeWindow');
+        const windowContent = document.getElementById('windowContent');
+        const pwdDialog = document.getElementById('pwdDialog');
+        const pwdInput = document.getElementById('pwdInput');
+        const pwdError = document.getElementById('pwdError');
+        const confirmPwdBtn = document.getElementById('confirmPwd');
+        const cancelPwdBtn = document.getElementById('cancelPwd');
+
+        let folderState = 0;
+
+        function renderFolderContents() {
+            if (folderState === 0) {
+                windowContent.innerHTML = `
+                    <div class="file-icon" id="subFolder">
+                        <div class="icon-img">
+                            <svg viewBox="0 0 32 32" width="40" height="40">
+                                <path d="M4,8 L14,6 L16,8 L28,8 L28,24 L4,24 Z" fill="#c0c0c0" stroke="#000" stroke-width="2"/>
+                            </svg>
+                        </div>
+                        <div class="icon-label">0625委托</div>
+                    </div>
+                `;
+                document.getElementById('subFolder').addEventListener('click', function() {
+                    pwdDialog.classList.add('active');
+                    pwdInput.value = '';
+                    pwdError.classList.remove('show');
+                    pwdInput.focus();
+                });
+            } else if (folderState === 1) {
+                windowContent.innerHTML = `
+                    <div class="file-icon" id="txtFile">
+                        <div class="icon-img">
+                            <svg viewBox="0 0 32 32" width="40" height="40">
+                                <rect x="4" y="4" width="24" height="24" fill="#fff" stroke="#000" stroke-width="2"/>
+                                <line x1="8" y1="10" x2="24" y2="10" stroke="#000" stroke-width="2"/>
+                                <line x1="8" y1="14" x2="24" y2="14" stroke="#000" stroke-width="2"/>
+                                <line x1="8" y1="18" x2="20" y2="18" stroke="#000" stroke-width="2"/>
+                            </svg>
+                        </div>
+                        <div class="icon-label">调查报告.txt</div>
+                    </div>
+                    <div class="file-icon" id="mp3File">
+                        <div class="icon-img">
+                            <svg viewBox="0 0 32 32" width="40" height="40">
+                                <rect x="6" y="4" width="20" height="24" fill="#fff" stroke="#000" stroke-width="2"/>
+                                <circle cx="12" cy="16" r="4" fill="#000"/>
+                                <line x1="16" y1="16" x2="24" y2="12" stroke="#000" stroke-width="2"/>
+                            </svg>
+                        </div>
+                        <div class="icon-label">0702录音.mp3</div>
+                    </div>
+                `;
+                document.getElementById('mp3File').addEventListener('click', function() {
+                    window.location.href = 'recording_0702.html';
+                });
+            }
+        }
+
+        folderIcon.addEventListener('click', function() {
+            folderState = 0;
+            renderFolderContents();
+            folderWindow.classList.add('active');
+        });
+
+        closeWindowBtn.addEventListener('click', function() {
+            folderWindow.classList.remove('active');
+            pwdDialog.classList.remove('active');
+        });
+
+        cancelPwdBtn.addEventListener('click', function() {
+            pwdDialog.classList.remove('active');
+        });
+
+        confirmPwdBtn.addEventListener('click', function() {
+            const answer = pwdInput.value.trim();
+            if (answer === '季清越') {
+                pwdDialog.classList.remove('active');
+                folderState = 1;
+                renderFolderContents();
+            } else {
+                pwdError.classList.add('show');
+            }
+        });
+
+        pwdInput.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+                confirmPwdBtn.click();
+            }
+        });
+
+        // ========== 微信密码弹窗 ==========
+        const wechatIcon = document.getElementById('wechatIcon');
+        const wechatPwdDialog = document.getElementById('wechatPwdDialog');
+        const wechatPwdInput = document.getElementById('wechatPwdInput');
+        const wechatPwdError = document.getElementById('wechatPwdError');
+        const confirmWechatPwd = document.getElementById('confirmWechatPwd');
+        const cancelWechatPwd = document.getElementById('cancelWechatPwd');
+
+        wechatIcon.addEventListener('click', function() {
+            wechatPwdDialog.classList.add('active');
+            wechatPwdInput.value = '';
+            wechatPwdError.classList.remove('show');
+            wechatPwdInput.focus();
+        });
+
+        cancelWechatPwd.addEventListener('click', function() {
+            wechatPwdDialog.classList.remove('active');
+        });
+
+        confirmWechatPwd.addEventListener('click', function() {
+            const answer = wechatPwdInput.value.trim();
+            if (answer.toLowerCase() === 'order') {
+                wechatPwdDialog.classList.remove('active');
+                window.location.href = 'wechat.html';
+            } else {
+                wechatPwdError.classList.add('show');
+            }
+        });
+
+        wechatPwdInput.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+                confirmWechatPwd.click();
+            }
+        });
+    </script>
+</body>
+</html>

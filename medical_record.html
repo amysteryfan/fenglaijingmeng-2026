@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>就诊记录 - 艾希皇后号游轮医务室</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Microsoft YaHei", SimSun, serif;
+        }
+        body {
+            background-color: #f3f6f9;
+            padding: 20px 15px;
+        }
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #ffffff;
+            padding: 14px 22px;
+            border-radius: 6px;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+            margin-bottom: 20px;
+        }
+        .title-text {
+            font-size: 22px;
+            color: #1a1a1a;
+            font-weight: 600;
+        }
+        .ship-info {
+            font-size: 14px;
+            color: #0058b8;
+            margin-top: 4px;
+        }
+        .exit-btn {
+            background: #d93025;
+            color: #fff;
+            border: none;
+            padding: 9px 20px;
+            border-radius: 4px;
+            font-size: 15px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .exit-btn:hover {
+            background: #b8261d;
+        }
+        .record-card {
+            background: #fff;
+            border-radius: 6px;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+            padding: 25px;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+        .record-header {
+            text-align: center;
+            border-bottom: 1px solid #d0d7e0;
+            padding-bottom: 16px;
+            margin-bottom: 20px;
+        }
+        .record-header h2 {
+            font-size: 20px;
+            color: #222;
+            margin-bottom: 8px;
+        }
+        .record-header p {
+            font-size: 14px;
+            color: #555;
+        }
+        .info-block {
+            margin-bottom: 22px;
+        }
+        .info-block h3 {
+            font-size: 16px;
+            color: #204080;
+            border-left: 4px solid #0058b8;
+            padding-left: 10px;
+            margin-bottom: 12px;
+        }
+        .info-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .info-table td {
+            border: 1px solid #e2e8f0;
+            padding: 11px 14px;
+            font-size: 15px;
+        }
+        .info-table td:first-child {
+            background: #f7f9fc;
+            width: 140px;
+            font-weight: 500;
+            color: #333;
+        }
+        .text-content {
+            line-height: 1.75;
+            font-size: 15px;
+            color: #222;
+            text-indent: 2em;
+        }
+        .sign-row {
+            margin-top: 30px;
+            display: flex;
+            justify-content: flex-end;
+            gap: 60px;
+            font-size: 15px;
+        }
+        .footer-note {
+            margin-top: 25px;
+            font-size: 13px;
+            color: #666;
+            border-top: 1px solid #e2e8f0;
+            padding-top: 12px;
+        }
+        /* 移动端适配 */
+        @media (max-width:768px) {
+            .top-bar {
+                flex-direction: column;
+                gap: 12px;
+                text-align: center;
+            }
+            .title-text {
+                font-size: 19px;
+            }
+            .record-card {
+                padding: 16px;
+            }
+            .info-table td:first-child {
+                width: 110px;
+            }
+            .sign-row {
+                flex-direction: column;
+                gap: 8px;
+                align-items: flex-end;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="top-bar">
+        <div>
+            <div class="title-text">就诊记录</div>
+            <div class="ship-info">所属船舶：艾希皇后号 游轮医务室档案</div>
+        </div>
+        <button class="exit-btn" onclick="location.href='boat_admin.html'">退出</button>
+    </div>
+
+    <div class="record-card">
+        <div class="record-header">
+            <h2>船员急诊抢救及死亡记录单</h2>
+            <p>档案编号：MY2026070901 | 记录开具时间：2026-07-09 17:42</p>
+        </div>
+
+        <div class="info-block">
+            <h3>一、患者基础信息</h3>
+            <table class="info-table">
+                <tr>
+                    <td>姓名</td>
+                    <td>陈百惠</td>
+                </tr>
+                <tr>
+                    <td>性别</td>
+                    <td>女</td>
+                </tr>
+                <tr>
+                    <td>年龄</td>
+                    <td>45岁</td>
+                </tr>
+                <tr>
+                    <td>血型</td>
+                    <td>A型</td>
+                </tr>
+                <tr>
+                    <td>既往病史</td>
+                    <td>无</td>
+                </tr>
+                <tr>
+                    <td>岗位</td>
+                    <td>客房服务员</td>
+                </tr>
+                <tr>
+                    <td>发病时间</td>
+                    <td>2026-07-09 15:18</td>
+                </tr>
+                <tr>
+                    <td>送达医务室时间</td>
+                    <td>2026-07-09 15:41</td>
+                </tr>
+                <tr>
+                    <td>临床死亡时间</td>
+                    <td>2026-07-09 16:32</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="info-block">
+            <h3>二、发病经过与主诉</h3>
+            <p class="text-content">
+                同班组同事于15时18分在四层客房工作间发现患者倒地，自述半小时前无明显诱因出现头晕、全身乏力、胸口压榨性闷痛，伴随恶心呕吐少量清水，自觉喘不上气。查体可见口唇、甲床明显青紫，四肢出冷汗，行走不稳，意识逐渐模糊，同事立即拨打医务室急救电话。
+            </p>
+            <p class="text-content" style="margin-top:10px;">
+                医护抵达现场时患者已无法自主站立，脉搏节律紊乱，血压明显偏低，立即转运至医务室开展抢救。同事均表示患者近期工作强度较大，日常休息不足，既往未报备明确心肺相关病史。
+            </p>
+        </div>
+
+        <div class="info-block">
+            <h3>三、查体与辅助检查</h3>
+            <p class="text-content">
+                体格检查：体温36.2℃，脉搏快慢不均，血压70/42mmHg，呼吸浅促，口唇及四肢末梢紫绀，全身皮肤湿冷，烦躁嗜睡，偶发肢体轻微抽搐。简易心电图检查提示心肌缺血改变、频发室性早搏，未见其他器质性异常指征。
+            </p>
+        </div>
+
+        <div class="info-block">
+            <h3>四、抢救处置内容</h3>
+            <p class="text-content">
+                入院后立即给予高流量吸氧，建立静脉通路补液，予以扩血管、强心、抗心律失常对症急救药物持续输注，持续心电监护，胸外按压辅助循环支持。经近50分钟持续抢救，患者循环、呼吸无改善，心电监护呈直线，双侧瞳孔散大固定，所有反射消失。
+            </p>
+        </div>
+
+        <div class="info-block">
+            <h3>五、初步临床诊断及死亡结论</h3>
+            <p class="text-content">
+                初步诊断：急性心肌梗死，心源性休克。
+            </p>
+            <p class="text-content" style="margin-top:10px;">
+                死亡原因：急性心肌梗死诱发心源性休克，多脏器缺氧衰竭，抢救无效临床死亡。考虑长期劳累诱发急性心血管急症，已做好遗体临时冷藏安置，待船舶靠岸移交岸上相关部门处理。本记录仅为船上医务室初步诊疗判断，最终结论以岸上专业机构检测为准。
+            </p>
+        </div>
+
+        <div class="sign-row">
+            <div>接诊医师签字：张景明</div>
+            <div>记录护士签字：刘思瑶</div>
+        </div>
+
+        <div class="footer-note">
+            备注：本档案仅用于艾希皇后号游轮内部人事、医疗台账留存，船上无毒物检测设备，未开展毒物相关筛查；一式两份，医务室、船舶人事部各存档一份。
+        </div>
+    </div>
+</body>
+</html>

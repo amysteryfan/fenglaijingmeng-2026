@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>查看图片</title>
+    <style>
+        /* 清除默认边距 */
+        body, html {
+            margin: 0;
+            padding: 0;
+            /* 允许页面滚动 */
+            overflow-x: auto; 
+            overflow-y: auto;
+            background-color: #f2f2f2; /* 设置浅色背景，避免图片边缘有黑边 */
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+        }
+
+        /* 图片容器 */
+        .image-wrapper {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            padding: 20px 0; /* 上下留白 */
+            box-sizing: border-box;
+        }
+
+        /* 
+           底图设置：关键修改 
+           取消了强制宽高和裁切，改为自适应宽度，高度自动。
+           这样长图就会自然撑开高度，从而触发滚动条。
+        */
+        .image-wrapper img {
+            max-width: 100%;    /* 在手机端自适应宽度 */
+            height: auto;       /* 高度跟随比例自动伸缩 */
+            display: block;
+            object-fit: scale-down; /* 确保图片不被拉伸变形 */
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); /* 给图片加一点阴影，更好看 */
+        }
+
+        /* 右上角关闭按钮（固定在屏幕上方，随滚动浮动） */
+        .close-btn {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            width: 48px;
+            height: 48px;
+            background-color: rgba(0, 0, 0, 0.6);
+            color: #ffffff;
+            border: 2px solid rgba(255, 255, 255, 0.9);
+            border-radius: 50%;
+            font-size: 24px;
+            font-weight: bold;
+            line-height: 1;
+            text-align: center;
+            cursor: pointer;
+            z-index: 1000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            transition: background-color 0.3s, transform 0.2s;
+        }
+
+        .close-btn:hover, .close-btn:active {
+            background-color: rgba(0, 0, 0, 0.9);
+            transform: scale(1.05);
+        }
+        
+        /* 适配极小屏幕，确保按钮依然好点击 */
+        @media (max-width: 480px) {
+            .close-btn {
+                width: 40px;
+                height: 40px;
+                font-size: 20px;
+                top: 15px;
+                right: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="image-wrapper">
+        <!-- 图片路径 -->
+        <img src="images/ad_brzj.jpg" alt="宣传图">
+        
+        <!-- 关闭按钮，点击触发跳转 -->
+        <div class="close-btn" onclick="redirectToBrowser()">✕</div>
+    </div>
+
+    <script>
+        function redirectToBrowser() {
+            // 点击右上角X后跳转到 browser.html
+            window.location.href = 'browser.html';
+        }
+    </script>
+
+</body>
+</html>

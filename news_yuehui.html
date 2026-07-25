@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>鼎峰、阅辉“继承人”角力升级 - 韶光日报网</title>
+    <style>
+        /* --- 全局样式重置 --- */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: "Microsoft YaHei", "PingFang SC", Arial, sans-serif; line-height: 1.6; color: #333; background-color: #f4f4f4; }
+        a { text-decoration: none; color: #333; transition: color 0.2s; }
+        a:hover { color: #0066cc; }
+        ul { list-style: none; }
+
+        /* --- 顶部导航栏 (仿搜狐风格) --- */
+        .top-nav { background-color: #222; color: #fff; padding: 10px 0; position: sticky; top: 0; z-index: 1000; }
+        .nav-container { max-width: 1270px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; padding: 0 15px; }
+        .logo { font-size: 24px; font-weight: bold; color: #0066cc; letter-spacing: 1px; }
+        .nav-links { display: flex; gap: 25px; }
+        .nav-links a { color: #eee; font-size: 15px; font-weight: 500; }
+        .nav-links a:hover { color: #0066cc; }
+        
+        .search-area { display: flex; align-items: center; gap: 10px; }
+        .search-input { background: #333; border: 1px solid #555; color: #fff; padding: 6px 12px; border-radius: 4px; outline: none; width: 180px; transition: all 0.3s; }
+        .search-input:focus { border-color: #0066cc; background: #444; }
+        .search-btn { background: #0066cc; color: #fff; border: none; padding: 6px 15px; border-radius: 4px; cursor: pointer; font-size: 14px; transition: background 0.2s; }
+        .search-btn:hover { background: #0055aa; }
+        .search-btn:active { transform: scale(0.98); }
+
+        /* --- 关闭按钮样式 --- */
+        .close-btn {
+            color: #eee;
+            font-size: 22px;
+            font-weight: 300;
+            line-height: 1;
+            margin-left: 5px;
+            cursor: pointer;
+            transition: color 0.2s, transform 0.2s;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 32px;
+            height: 32px;
+            text-decoration: none;
+            border-radius: 50%;
+        }
+        .close-btn:hover {
+            color: #0066cc;
+            transform: scale(1.1);
+            background-color: rgba(255, 255, 255, 0.08);
+        }
+
+        /* --- 主体布局 --- */
+        .main-wrapper { max-width: 1270px; margin: 20px auto; display: flex; gap: 20px; padding: 0 15px; align-items: flex-start; }
+
+        /* --- 左侧边栏 (媒体号信息) --- */
+        .left-sidebar { width: 220px; background: #fff; border-radius: 6px; padding: 20px; text-align: center; box-shadow: 0 2px 5px rgba(0,0,0,0.05); flex-shrink: 0; }
+        .media-avatar { width: 70px; height: 70px; background: #0066cc; border-radius: 50%; margin: 0 auto 10px; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 24px; font-weight: bold; }
+        .media-name { font-size: 18px; font-weight: bold; margin-bottom: 5px; color: #0066cc; }
+        .media-desc { font-size: 12px; color: #888; margin-bottom: 15px; }
+        .subscribe-btn { display: block; width: 100%; background: #0066cc; color: #fff; border: none; padding: 8px 0; border-radius: 20px; cursor: pointer; margin-bottom: 20px; font-weight: bold; transition: background 0.2s; }
+        .subscribe-btn:hover { background: #0055aa; }
+        .stats-row { display: flex; justify-content: space-around; border-top: 1px solid #eee; padding-top: 15px; }
+        .stat-item span { display: block; }
+        .stat-num { font-weight: bold; font-size: 16px; }
+        .stat-label { font-size: 12px; color: #999; }
+
+        /* --- 中间新闻内容区 --- */
+        .news-article { flex: 1; background: #fff; padding: 40px; border-radius: 6px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); min-width: 0; }
+        .article-title { font-size: 28px; font-weight: bold; line-height: 1.4; margin-bottom: 15px; color: #222; }
+        .article-meta { font-size: 13px; color: #999; margin-bottom: 30px; border-bottom: 1px solid #eee; padding-bottom: 15px; }
+        .article-meta span { margin-right: 15px; }
+        .reporter-info { color: #0066cc; font-weight: normal; } 
+
+        .article-body p { margin-bottom: 20px; font-size: 17px; line-height: 1.8; text-align: justify; color: #333; }
+        .article-body strong { color: #222; }
+        .article-footer { margin-top: 40px; font-size: 13px; color: #999; text-align: right; font-style: normal; }
+
+        /* --- 右侧热门精选 --- */
+        .right-sidebar { width: 280px; background: #fff; border-radius: 6px; padding: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); flex-shrink: 0; }
+        .hot-header { font-size: 18px; font-weight: bold; margin-bottom: 20px; border-left: 4px solid #0066cc; padding-left: 10px; }
+        .hot-list li { margin-bottom: 15px; padding-bottom: 15px; border-bottom: 1px dashed #eee; }
+        .hot-list li:last-child { border-bottom: none; margin-bottom: 0; }
+        .hot-link { font-size: 15px; line-height: 1.5; color: #333; display: block; }
+        .hot-link:hover { color: #0066cc; }
+
+        /* --- 图片响应式控制 (新增) --- */
+        .article-image-wrapper {
+            text-align: center;
+            margin: 20px 0;
+        }
+        .article-image-wrapper img {
+            width: 50%;       /* 电脑端：原图的 50% */
+            height: auto;
+            border-radius: 4px;
+        }
+        @media (max-width: 768px) {
+            .article-image-wrapper img {
+                width: 80%;   /* 手机端：原图的 80% */
+            }
+        }
+
+        /* --- 响应式适配 --- */
+        @media (max-width: 992px) {
+            .main-wrapper { flex-direction: column; }
+            .left-sidebar, .right-sidebar { width: 100%; }
+            .nav-links { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 顶部导航 -->
+    <header class="top-nav">
+        <div class="nav-container">
+            <div class="logo">韶光日报网</div>
+            <nav class="nav-links">
+                <a href="#">首页</a>
+                <a href="#">商业</a>
+                <a href="#">科技</a>
+                <a href="#">地产</a>
+                <a href="#">汽车</a>
+                <a href="#">更多 ▼</a>
+            </nav>
+            <div class="search-area">
+                <input type="text" class="search-input" placeholder="搜索新闻...">
+                <button class="search-btn" onclick="alert('正在搜索：' + this.previousElementSibling.value)">搜索</button>
+                <!-- 关闭按钮跳转至 search_yuehui.html -->
+                <a href="search_yuehui.html" class="close-btn" title="关闭页面">✕</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- 主体内容 -->
+    <div class="main-wrapper">
+        
+        <!-- 左侧边栏 -->
+        <aside class="left-sidebar">
+            <div class="media-avatar">韶</div>
+            <div class="media-name">韶光日报·商业版</div>
+            <div class="media-desc">专注深度商业报道</div>
+            <button class="subscribe-btn">+ 订阅</button>
+            <div class="stats-row">
+                <div class="stat-item"><span class="stat-num">3.5万</span><span class="stat-label">文章</span></div>
+                <div class="stat-item"><span class="stat-num">8亿</span><span class="stat-label">总阅读</span></div>
+            </div>
+        </aside>
+
+        <!-- 中间新闻正文 -->
+        <main class="news-article">
+            <!-- 已删除原创标签 -->
+            <h1 class="article-title">鼎峰、阅辉“继承人”角力升级：低调转型VS高调拓新</h1>
+            
+            <div class="article-meta">
+                <span class="reporter-info">本报讯（记者林商）</span>
+                <time>2026-06-11 09:15</time>
+                <span>发布于：本市</span>
+            </div>
+
+            <div class="article-body">
+                <p>2026年春夏之交，商业圈里的明争暗斗又添新剧情。一边是主打制造业和房地产的老牌企业鼎峰集团，另一边是靠互联网流量快速崛起的阅辉集团——两家公司从2024年起就摩擦不断，进入今年3月后，随着各自22岁的继承人正式走到台前，这场商战更添了几分年轻气盛的味道。</p>
+
+                <p><strong>积怨不浅，互不相让</strong><br>说起来，鼎峰和阅辉的“过节”始于两年前。当时阅辉突然杀入智慧家居赛道，直接抢了鼎峰在智能家电制造上的生意；鼎峰也不甘示弱，随后在自己开发的多个楼盘里，优先选用别家方案，摆明了不给阅辉面子。今年春天矛盾继续升级——3月的一场行业论坛上，阅辉高管公开嘲讽传统企业“只会盖房子不懂科技”；4月初，鼎峰立刻被曝出从阅辉挖走了好几名中层骨干。你来我往，火药味十足。</p>
+
+                <p><strong>宋闻溪：稳扎稳打的“厂三代”</strong><br>作为鼎峰集团CEO宋远山的长子，22岁的宋闻溪自去年实习后，逐渐接手公司事务。他和阅辉的继承人季清越是同届校友，但两人在学校时就不太对付。宋闻溪性格内敛，很少在媒体上露面，上任后把精力都放在了改造鼎峰的老工厂和楼盘项目上——比如给生产线加装自动检测设备、在小区里试点智能停车系统，据说已经帮集团省下了不少成本。内部员工说，宋闻溪不爱说大话，也不爱画大饼、赶潮流，开会时他也重视实际，强调做好眼前事。</p>
+                
+                <!-- 插入图一（已应用自适应尺寸） -->
+                <div class="article-image-wrapper">
+                    <img src="images/picturexi.jpg" alt="宋闻溪画像">
+                </div>
+
+                <p><strong>季清越：爱出风头的“网二代”</strong><br>相比之下，阅辉集团创始人季振邦的儿子季清越完全是另一个画风。同样22岁的他，从大学起就是校园里的风云人物，现在更是在社交平台上拥有几十万粉丝，三天两头晒工作照和商业见解。季清越接手阅辉后，主抓直播带货和社区团购等新业务，今年4月他还亲自上阵做了一场带货直播，当晚销售额破千万，赚足了眼球。相较于“商业继承人”的头衔，“红酒、爵士、搞直播”和时常挂在嘴边的“高雅人士”的自称，成了季清越身上更惹人注意的标签。这位年轻的“小季总”，通过对流量的敏锐把控，已经采取了和上一辈“老江湖”完全不同的玩法。</p>
+                
+                <!-- 插入图二（已应用自适应尺寸） -->
+                <div class="article-image-wrapper">
+                    <img src="images/picture1ji.jpg" alt="季清越画像">
+                </div>
+
+                <p><strong>“隔空喊话”成家常便饭</strong><br>两位年轻继承人的不同做派，也让两家企业的“隔空互怼”变得更有意思。4月中旬，季清越在一次公开活动上笑着说：“有些老企业连App都做不好，还谈什么转型？”大家都听出他在挤兑鼎峰。没过几天，宋闻溪在公司内部讲话时淡淡回了一句：“赚快钱不难，难的是做几十年不垮的生意。”明眼人都知道，这话是说给阅辉听的。两人虽然从未当面交锋，但一来一回的“暗战”已经成了圈内茶余饭后的热门谈资。</p>
+
+                <p><strong>最近风向有点变</strong><br>不过，到了5月中旬，事情似乎有了转机。有小道消息说，宋远山和季振邦上个月在一次晚宴碰面，相谈甚欢，两家公司的中层最近也开始有了私下接触。宋闻溪和季清越更是在上星期的毕业典礼被拍到交谈，虽然当时没聊几句，但比起两人平时在学校的状态来说已经是巨大改善。据知情人士透露，鼎峰手里有大把工厂和楼盘，阅辉有成熟的线上渠道和用户数据，双方如果能在“社区智能化”这类项目上联手，说不定能双赢。截至目前，两家企业都没有正式回应，但不少商业观察人士都在猜测：这两家企业，会不会从此化干戈为玉帛？</p>
+
+                <p>22岁，正是不怕输的年纪。一个求稳，一个求快，鼎峰和阅辉接下来的棋怎么走，我们拭目以待。</p>
+            </div>
+
+            <div class="article-footer">
+                （韶光日报）
+            </div>
+        </main>
+
+        <!-- 右侧热门推荐 -->
+        <aside class="right-sidebar">
+            <div class="hot-header">热门精选</div>
+            <ul class="hot-list">
+                <li><a href="#" class="hot-link">央行最新发声：下半年货币政策将保持适度宽松</a></li>
+                <li><a href="#" class="hot-link">新能源汽车价格战再起，多家车企宣布限时优惠</a></li>
+                <li><a href="#" class="hot-link">AI赋能实体经济：本市首批智能制造示范工厂揭牌</a></li>
+                <li><a href="#" class="hot-link">楼市观察：二手房挂牌量激增，刚需购房者观望情绪浓厚</a></li>
+                <li><a href="#" class="hot-link">跨境电商新规落地，中小卖家面临合规新挑战</a></li>
+            </ul>
+        </aside>
+
+    </div>
+
+</body>
+</html>
