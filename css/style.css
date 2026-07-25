@@ -1,0 +1,249 @@
+/* css/style.css */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: #0d1117;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Courier New', Courier, monospace;
+    color: #d1d5db;
+    -webkit-tap-highlight-color: transparent;
+    padding: 20px 0;
+}
+
+/* 1. 底图背景层 */
+.bg-layer {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('../images/bg.jpg');
+    background-size: cover;
+    background-position: center;
+    filter: brightness(0.45) contrast(1.1) saturate(0.8);
+    z-index: -2;
+}
+
+/* 2. CRT 扫描线与暗角 */
+.crt-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: -1;
+    background: 
+        radial-gradient(ellipse at center, transparent 60%, rgba(0,0,0,0.7) 100%),
+        repeating-linear-gradient(
+            0deg,
+            rgba(0, 0, 0, 0.15),
+            rgba(0, 0, 0, 0.15) 1px,
+            transparent 1px,
+            transparent 2px
+        );
+}
+
+/* 3. 内容卡片（核心布局容器） */
+.container {
+    width: 90%;
+    max-width: 820px;
+    display: flex;
+    justify-content: center;
+}
+
+.content-card {
+    width: 100%;
+    padding: 40px 50px;
+    background: rgba(10, 15, 20, 0.65);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    border: 1px solid rgba(150, 100, 80, 0.25);
+    box-shadow: 0 20px 50px rgba(0,0,0,0.8);
+    border-radius: 4px;
+    
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center; /* 初始：内容垂直居中 */
+    min-height: 60vh; /* 保证卡片视觉高度充足 */
+    transition: min-height 0.5s ease, justify-content 0.5s ease;
+}
+
+/* 标题 */
+.game-title {
+    font-size: 3rem;
+    letter-spacing: 0.3em;
+    color: #a45c5c;
+    text-shadow: 0 0 10px rgba(180, 60, 60, 0.4);
+    margin-bottom: 30px;
+    font-weight: 300;
+    flex-shrink: 0;
+}
+
+/* 引导语与打字机效果 */
+.story-wrapper {
+    width: 100%;
+    min-height: 100px;
+    text-align: left;
+    line-height: 1.8;
+    flex-shrink: 0;
+}
+
+/* 调大打字机文字字号 */
+.story-text {
+    font-size: 1.25rem; /* 从 1.1rem 提升到 1.25rem */
+    word-break: break-all;
+    white-space: pre-line;
+}
+
+.cursor {
+    display: inline-block;
+    width: 10px;
+    height: 1.2rem;
+    background-color: #a45c5c;
+    vertical-align: middle;
+    margin-left: 4px;
+    animation: blink 0.8s infinite;
+}
+
+@keyframes blink {
+    0%, 50% { opacity: 1; }
+    51%, 100% { opacity: 0; }
+}
+
+/* 开始按钮 */
+.start-btn {
+    display: none;
+    margin-top: 20px;
+    padding: 14px 40px;
+    background-color: transparent;
+    border: 1px solid #a45c5c;
+    color: #e0c0c0;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 1.2rem;
+    letter-spacing: 2px;
+    cursor: pointer;
+    transition: all 0.4s ease;
+    box-shadow: 0 0 8px rgba(164, 92, 92, 0.2);
+    flex-shrink: 0;
+}
+
+.start-btn:hover {
+    background-color: rgba(164, 92, 92, 0.15);
+    box-shadow: 0 0 20px rgba(164, 92, 92, 0.6);
+    text-shadow: 0 0 8px #a45c5c;
+    transform: scale(1.02);
+}
+
+/* 底部信息块 */
+.info-block {
+    display: none;
+    width: 100%;
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px solid rgba(150, 100, 80, 0.2);
+    text-align: left;
+}
+
+.info-section {
+    margin-bottom: 18px;
+}
+
+/* 调大追加文字标题字号 */
+.info-title {
+    color: #a45c5c;
+    font-weight: 600;
+    font-size: 1.15rem; /* 从 1.05rem 提升到 1.15rem */
+    margin-bottom: 6px;
+    letter-spacing: 1px;
+}
+
+/* 调大追加文字正文字号 */
+.info-section p {
+    font-size: 1.1rem; /* 从 0.95rem 提升到 1.1rem */
+    color: #d1d5db;
+    line-height: 1.7;
+    margin: 0;
+}
+
+.info-section a {
+    color: #a45c5c;
+    text-decoration: underline;
+    transition: color 0.3s;
+}
+
+.info-section a:hover {
+    color: #ff4d4d;
+}
+
+/* ---- 追加信息块后触发的布局模式 ---- */
+.content-card.expanded {
+    justify-content: flex-start; /* 从顶部开始排列，不再强制整体居中 */
+    min-height: auto; /* 让高度跟随内容自然撑开 */
+    padding-bottom: 40px;
+}
+
+.content-card.expanded .story-wrapper {
+    flex-grow: 1; /* 占据标题和按钮之间的所有空白 */
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* 保证打字机文字在卡片的中心区域垂直居中 */
+    margin: 20px 0; /* 适当的上下间距 */
+    min-height: 120px;
+}
+
+/* 移动端适配（字号相应放大） */
+@media (max-width: 640px) {
+    body {
+        padding: 10px 0;
+    }
+    .content-card {
+        padding: 25px 18px;
+        min-height: 50vh;
+    }
+    .game-title {
+        font-size: 2.2rem;
+        margin-bottom: 20px;
+    }
+    .story-text {
+        font-size: 1.05rem; /* 从 0.95rem 提升到 1.05rem */
+    }
+    .story-wrapper {
+        min-height: 80px;
+    }
+    .start-btn {
+        padding: 12px 20px;
+        font-size: 1rem;
+        width: 100%;
+        max-width: 220px;
+    }
+    .content-card.expanded .story-wrapper {
+        min-height: 80px;
+    }
+    .info-title {
+        font-size: 1rem; /* 从 0.95rem 提升到 1rem */
+    }
+    .info-section p {
+        font-size: 0.95rem; /* 从 0.85rem 提升到 0.95rem */
+    }
+}
+
+@media (max-width: 400px) {
+    .game-title {
+        font-size: 1.8rem;
+    }
+    .story-text {
+        font-size: 0.95rem;
+    }
+    .content-card {
+        padding: 15px 10px;
+    }
+}
