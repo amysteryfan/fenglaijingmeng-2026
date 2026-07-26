@@ -271,7 +271,7 @@
             margin-top: 0px;
         }
 
-        /* --- 响应式适配 --- */
+        /* --- 响应式适配 (手机端) --- */
         @media (max-width: 768px) {
             .header { padding: 0 15px; height: 50px; }
             .logo-area { gap: 5px; }
@@ -285,6 +285,14 @@
             .thread-item { padding: 12px 15px; }
             .reply-box { width: 40px; margin-right: 10px; }
             .reply-num { font-size: 14px; }
+            
+            /* ===== 【修改点】：仅针对手机端取消截断，允许换行 ===== */
+            .thread-title {
+                white-space: normal !important;
+                overflow: visible !important;
+                text-overflow: clip !important;
+                line-height: 1.5; /* 增加一点行高，方便两行阅读 */
+            }
         }
     </style>
 </head>
