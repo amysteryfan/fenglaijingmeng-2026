@@ -138,7 +138,7 @@
         .input-wrapper {
             flex: 1; display: flex; align-items: center; flex-wrap: wrap; gap: 4px;
         }
-        .fill-text { font-size: 15px; white-space: nowrap; }
+        .fill-text { font-size: 15px; white-space: normal; }  /* 允许换行 */
         .fill-blank {
             width: 60px; border: none; border-bottom: 1px solid #07c160;
             outline: none; font-size: 15px; padding: 2px 4px;
@@ -206,8 +206,9 @@
             .mobile-tab-item.active { color: #07c160; }
             .mobile-tab-item .icon { font-size: 24px; margin-bottom: 2px; }
             .fill-blank.wide {
-                width: 200px;
+                width: 140px; /* 移动端适当缩小 */
             }
+            .fill-text { font-size: 14px; }
         }
     </style>
 </head>
@@ -533,7 +534,7 @@
                         const endingBtn = document.getElementById('goToEnding');
                         if (endingBtn) {
                             endingBtn.addEventListener('click', function() {
-                                window.location.href = 'ending.html';  // ← 修改为 ending.html
+                                window.location.href = 'ending.html';
                             });
                         }
                     }
@@ -575,6 +576,7 @@
                 let messages = [];
                 let step = 0;
                 let animating = false;
+                let isChatting = false;  // 是否正在聊天详情
 
                 if (isReload()) clearProgress();
                 const savedProgress = loadProgress();
@@ -617,7 +619,20 @@
                     }
                 }
 
+                // 仅更新聊天详情内容（不改变视图类型）
+                function updateChatDetail(scroll = false) {
+                    mobileMain.innerHTML = `<div class="chat-messages" id="mobileChatMessages" style="flex:1;overflow-y:auto;padding:12px;"></div>${renderMobileInput()}`;
+                    renderMobileMessages(scroll);
+                    bindMobileEvents();
+                }
+
                 function updateMobileView(scroll = false) {
+                    if (isChatting) {
+                        // 正在聊天详情中，只更新内容，不切换视图
+                        updateChatDetail(scroll);
+                        return;
+                    }
+
                     if (mobileTab === 'chats') {
                         mobileTitle.textContent = '微信';
                         mobileMain.innerHTML = `
@@ -630,11 +645,16 @@
                                 <div class="chat-time">今天</div>
                             </div>`;
                         document.getElementById('mobileLynne').addEventListener('click', () => {
+                            isChatting = true;
                             mobileTitle.innerHTML = '<span class="back-btn" id="mobileBack" style="margin-right:10px;cursor:pointer;">←</span> Lynne';
-                            mobileMain.innerHTML = `<div class="chat-messages" id="mobileChatMessages" style="flex:1;overflow-y:auto;padding:12px;"></div>${renderMobileInput()}`;
-                            document.getElementById('mobileBack').addEventListener('click', () => { mobileTab = 'chats'; updateMobileView(false); setActiveMobileTab('chats'); });
-                            renderMobileMessages(true);
-                            bindMobileEvents();
+                            updateChatDetail(true);
+                            // 绑定返回按钮
+                            document.getElementById('mobileBack').addEventListener('click', () => {
+                                isChatting = false;
+                                mobileTab = 'chats';
+                                updateMobileView(false);
+                                setActiveMobileTab('chats');
+                            });
                         });
                     } else if (mobileTab === 'profile') {
                         mobileTitle.textContent = '我';
@@ -750,7 +770,7 @@
                         const endingBtn = document.getElementById('mGoToEnding');
                         if (endingBtn) {
                             endingBtn.addEventListener('click', function() {
-                                window.location.href = 'ending.html';  // ← 修改为 ending.html
+                                window.location.href = 'ending.html';
                             });
                         }
                     }
@@ -763,6 +783,7 @@
                 tabs.forEach(tab => {
                     tab.addEventListener('click', function() {
                         mobileTab = this.dataset.tab;
+                        isChatting = false; // 切换标签退出聊天详情
                         updateMobileView(false);
                         setActiveMobileTab(mobileTab);
                     });
