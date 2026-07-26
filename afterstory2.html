@@ -55,7 +55,7 @@
             pointer-events: none;
         }
 
-        /* 入场乱码报错遮罩，初始全屏显示，慢慢消失 */
+        /* 入场乱码报错遮罩 */
         .init-error-screen {
             position: fixed;
             inset: 0;
@@ -70,7 +70,7 @@
         }
         .init-error-screen.fade-off {
             opacity: 0;
-            pointer-events: none;
+            pointer-events: none; /* 这里虽然设置无交互，但为了防止极个别兼容问题，再配合JS移除 */
         }
 
         /* 日记容器 */
@@ -85,6 +85,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
+            pointer-events: none; /* 防止日记本身拦截点击，事件全部交给最外层侦听 */
         }
 
         .page-wrapper {
@@ -135,7 +136,7 @@
             z-index: 1;
         }
 
-        /* 日记被火烧的两个阶段：烘烤变色 → 烧毁消失 */
+        /* 日记被火烧的两个阶段 */
         .page-wrapper.burning img {
             filter: brightness(0.5) sepia(0.4) saturate(1.6);
         }
@@ -145,7 +146,7 @@
             transform: scale(0.93) translateY(-6px);
         }
 
-        /* 火焰三层状态：燃烧 → 衰减 → 完全熄灭 */
+        /* 火焰层 */
         .fire-container {
             position: fixed;
             inset: 0;
@@ -176,7 +177,7 @@
             transition: opacity 0.25s ease;
         }
 
-        /* 点击区域 */
+        /* 提示箭头 */
         #hint-area {
             position: absolute;
             bottom: 0;
@@ -189,7 +190,7 @@
             align-items: flex-end;
             cursor: pointer;
             padding-bottom: 40px;
-            pointer-events: auto;
+            pointer-events: auto; /* 允许下半部分触控 */
         }
 
         #hint-icon {
@@ -197,6 +198,7 @@
             color: rgba(255, 255, 255, 0.4);
             animation: floatHint 1.8s ease-in-out infinite;
             transition: opacity 0.5s;
+            pointer-events: none;
         }
 
         @keyframes floatHint {
@@ -259,7 +261,7 @@
 </head>
 <body>
     <!-- 页面入场乱码报错图 -->
-    <div class="init-error-screen"></div>
+    <div class="init-error-screen" id="errorScreen"></div>
 
     <div id="app">
         <div id="bg-layer"></div>
@@ -272,7 +274,7 @@
             <img src="images/fire3.png" class="fire-img" alt="fire" style="opacity:0">
         </div>
 
-        <div id="diary-wrapper" onclick="handlePageClick()">
+        <div id="diary-wrapper">
             <div id="page1" class="page-wrapper state-active">
                 <img src="images/riji1.jpg" alt="2011年8月日记" draggable="false">
             </div>
@@ -281,7 +283,7 @@
             </div>
         </div>
 
-        <div id="hint-area" onclick="handlePageClick()">
+        <div id="hint-area">
             <div id="hint-icon">▼</div>
         </div>
 
@@ -289,24 +291,33 @@
     </div>
 
     <script>
-        let state = 0;
+        // 获取所有元素
         const page1 = document.getElementById('page1');
         const page2 = document.getElementById('page2');
         const hintIcon = document.getElementById('hint-area');
         const endText = document.getElementById('end-text');
-        const errorScreen = document.querySelector('.init-error-screen');
+        const errorScreen = document.getElementById('errorScreen');
         const fireBox = document.querySelector('.fire-container');
         const fireImgs = document.querySelectorAll('.fire-img');
+        const appContainer = document.getElementById('app');
+        const diaryWrapper = document.getElementById('diary-wrapper');
+
+        let state = 0;
         let fireAnimationTimer = null;
 
-        // 页面载入，乱码图片缓缓消散露出日记
+        // ===== 修复1：乱码层消散与彻底移除 =====
         window.addEventListener('load', () => {
             setTimeout(() => {
                 errorScreen.classList.add('fade-off');
-            }, 300);
-        })
+                // 等待过渡动画彻底结束（3秒），然后直接移走 DOM 节点，防止遮挡移动端点击
+                setTimeout(() => {
+                    if (errorScreen) errorScreen.style.display = 'none';
+                }, 3200); 
+            }, 500); // 延迟 500ms 再开始消散，提高移动端适配度
+        });
 
-        // 燃烧时序：日记烧毁 → 火焰衰减 → 火焰完全熄灭 → 短暂停顿 → 文字淡入
+        // ===== 修复2：全局点击事件监听（解决移动端点击不灵敏） =====
+        // 燃烧时序
         function runFireEffect() {
             fireBox.classList.add('play-fire');
             let index = 0;
@@ -328,23 +339,36 @@
                 fireBox.classList.remove('play-fire', 'fire-fading');
                 fireBox.classList.add('fire-gone');
             }, 3200);
-            // 火焰熄灭后停顿400ms，再弹出结束文字
+            // 火焰熄灭后停顿 400ms，再弹出结束文字
             setTimeout(() => endText.classList.add('text-fade-in'), 3600);
         }
 
-        function handlePageClick() {
+        // 核心互动监听器
+        appContainer.addEventListener('click', function(e) {
+            // 1. 如果乱码层还存在（显示不等于 none），阻止任何操作
+            if (errorScreen.style.display !== 'none') return;
+
+            // 2. 如果点击的目标是 IMG (图片) 本身，或者点击在日记包装器内部，阻断操作 (只允许点击空白阴影区域)
+            if (e.target.tagName === 'IMG' || diaryWrapper.contains(e.target)) {
+                return;
+            }
+
+            // 3. 如果游戏已经结束，不响应
+            if (state === 2) return;
+
+            // 4. 开始判定流程
             if (state === 0) {
+                // 第一页 -> 第二页
                 state = 1;
                 page1.className = 'page-wrapper state-hide-left';
                 setTimeout(() => page2.className = 'page-wrapper state-active', 50);
             } else if (state === 1) {
+                // 第二页 -> 燃烧
                 state = 2;
                 hintIcon.classList.add('hint-hidden');
                 runFireEffect();
-            } else {
-                return;
             }
-        }
+        });
     </script>
 </body>
 </html>
