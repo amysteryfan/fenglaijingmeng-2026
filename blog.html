@@ -2,7 +2,7 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>风来博客 - 光与影</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <style>
@@ -314,7 +314,7 @@
             font-size: 16px;
         }
 
-        /* 相册内容区（4列瀑布流） */
+        /* 相册内容区（4列瀑布流，移动端会自动调整为2列） */
         .album-content {
             display: none;
         }
@@ -485,6 +485,61 @@
             word-wrap: break-word;
             margin-top: 8px;
         }
+
+        /* ================= 移动端/手机端适配 ================= */
+        @media screen and (max-width: 768px) {
+            /* 隐藏侧边栏 */
+            .left-sidebar { display: none; }
+            
+            /* 去掉圆角阴影，撑满全屏 */
+            .container { flex-direction: column; margin: 0; gap: 0; max-width: 100%; }
+            .main-content { border-radius: 0; box-shadow: none; padding-bottom: 20px; }
+            
+            /* 顶部导航压缩 */
+            .header { padding: 0 10px; height: 50px; }
+            .header-logo { font-size: 16px; }
+            .header-logo i { font-size: 20px; }
+            .search-bar { width: 100px; padding: 6px 10px; font-size: 12px; }
+            .header-center { gap: 15px; font-size: 16px; }
+            .header-center .active::after { bottom: -19px; } /* 适配压缩后的高度 */
+            .header-right { gap: 8px; }
+            .btn-login, .btn-register { padding: 4px 10px; font-size: 12px; }
+            
+            /* 顶部Banner和资料区 */
+            .banner { height: 140px; padding: 10px 15px; }
+            .profile-info-area { flex-direction: column; align-items: center; text-align: center; margin-top: -35px; margin-bottom: 10px; }
+            .avatar { width: 80px; height: 80px; }
+            .info-details { margin-left: 0; padding-top: 10px; }
+            .info-stats { font-size: 13px; }
+            .info-name { font-size: 20px; }
+            .action-buttons { justify-content: center; }
+            
+            /* 数据统计条 */
+            .stats-bar { flex-wrap: wrap; gap: 5px; font-size: 12px; padding: 10px 15px; }
+            
+            /* 导航 Tab */
+            .nav-tabs { margin: 0 15px; }
+            .nav-tab { padding: 12px 10px; font-size: 14px; }
+            .nav-tab.active::after { left: 10px; right: 10px; }
+            
+            /* 相册 - 手机端改为2列 */
+            .gallery-grid { grid-template-columns: repeat(2, 1fr); gap: 8px; }
+            .gallery-card img { height: 120px; }
+            .gallery-card .caption { padding: 8px 10px; }
+            .gallery-card .caption .time { font-size: 12px; }
+            .gallery-card .caption .location { font-size: 11px; }
+            .album-content.active { padding: 15px; }
+            
+            /* 文章 - 移动端适配 */
+            .article-content.active { padding: 20px 15px; }
+            .post-list { max-width: 100%; }
+            .post-item { padding: 20px; margin-bottom: 15px; }
+            .post-avatar { width: 44px; height: 44px; margin-right: 12px; }
+            .post-author { font-size: 16px; }
+            .post-date { font-size: 13px; }
+            .post-body { font-size: 16px; }
+            .input-group input { width: 150px; }
+        }
     </style>
 </head>
 <body>
@@ -535,7 +590,6 @@
             <!-- 个人中心头部 -->
             <div class="profile-header">
                 <div class="banner">
-                    <!-- 已修改为跳转到 search_guangyuying.html -->
                     <a href="search_guangyuying.html" class="back-link">
                         <i class="fas fa-chevron-left"></i> 返回
                     </a>
@@ -563,7 +617,7 @@
 
             <!-- 数据统计栏 -->
             <div class="stats-bar">
-                <span>昨日发文0篇
+                <span>昨日发文0篇</span>
             </div>
 
             <!-- 导航 Tabs -->
@@ -765,7 +819,8 @@
             const errorMsg = document.getElementById('error-message');
             const password = input.value.trim();
 
-            if (password.toLowerCase() === 'lost') {
+            // 修改密码正确逻辑，从 'lost' 变更为 'lose'
+            if (password.toLowerCase() === 'lose') {
                 // 密码正确
                 document.getElementById('article-locked').style.display = 'none';
                 document.getElementById('article-unlocked').style.display = 'block';
