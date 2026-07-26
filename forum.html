@@ -20,13 +20,12 @@
         a { text-decoration: none; color: inherit; transition: 0.2s; }
         ul { list-style: none; }
 
-        /* --- 顶部 Header --- */
+        /* --- 顶部 Header (更新布局) --- */
         .header {
             background-color: #fff;
             height: 60px;
             display: flex;
             align-items: center;
-            justify-content: space-between;
             padding: 0 5%;
             border-bottom: 1px solid #ddd;
             box-shadow: 0 2px 4px rgba(0,0,0,0.05);
@@ -35,13 +34,25 @@
             z-index: 100;
         }
 
-        .logo-area { display: flex; align-items: center; gap: 10px; }
+        .logo-area { 
+            display: flex; 
+            align-items: center; 
+            gap: 10px; 
+            margin-right: auto; /* 将Logo推到最左侧 */
+        }
         .logo-img {
             height: 45px;
             width: auto;
             object-fit: contain;
         }
         .site-name { font-size: 20px; font-weight: bold; color: var(--primary-red); letter-spacing: 1px; }
+
+        /* ===== 右侧功能区 (搜索 + 退出按钮) ===== */
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 15px; /* 按钮与搜索框的间距 */
+        }
 
         /* ===== 搜索区域及下拉菜单容器 ===== */
         .search-area { 
@@ -113,6 +124,31 @@
             color: #999;
             font-size: 13px;
             text-align: center;
+        }
+
+        /* ===== 新增：退出/关闭按钮样式 ===== */
+        .close-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 34px;
+            height: 34px;
+            background-color: #f2f6f9;
+            border: 1px solid #dcebf5;
+            border-radius: 50%;
+            color: #666;
+            font-size: 22px;
+            font-weight: bold;
+            text-decoration: none;
+            transition: all 0.2s ease;
+            cursor: pointer;
+            line-height: 1;
+        }
+        .close-btn:hover {
+            background-color: var(--primary-red);
+            border-color: var(--primary-red);
+            color: #fff;
+            transform: scale(1.05);
         }
 
         /* --- 主体容器 --- */
@@ -238,10 +274,13 @@
         /* --- 响应式适配 --- */
         @media (max-width: 768px) {
             .header { padding: 0 15px; height: 50px; }
+            .logo-area { gap: 5px; }
             .logo-img { height: 35px; }
             .site-name { font-size: 16px; }
+            .header-right { gap: 10px; }
             .search-input { width: 120px; }
-            .search-dropdown { width: 120px; } /* 严格对齐移动端输入框宽度 */
+            .search-dropdown { width: 120px; }
+            .close-btn { width: 28px; height: 28px; font-size: 18px; } /* 手机端缩小按钮 */
             .container { margin: 0; width: 100%; box-shadow: none; }
             .thread-item { padding: 12px 15px; }
             .reply-box { width: 40px; margin-right: 10px; }
@@ -257,13 +296,18 @@
             <img src="images/forum_logo.png" alt="明德校徽" class="logo-img">
             <span class="site-name">明德私立学校论坛</span>
         </div>
-        <!-- ===== 搜索区域修改 ===== -->
-        <div class="search-area">
-            <input type="text" class="search-input" id="searchInput" placeholder="输入关键词搜索...">
-            <button class="search-btn" id="searchBtn">搜索</button>
+        <!-- ===== 右侧功能区：搜索 + 退出 ===== -->
+        <div class="header-right">
+            <div class="search-area">
+                <input type="text" class="search-input" id="searchInput" placeholder="输入关键词搜索...">
+                <button class="search-btn" id="searchBtn">搜索</button>
+                
+                <!-- 下拉菜单容器 -->
+                <div class="search-dropdown" id="searchDropdown"></div>
+            </div>
             
-            <!-- 下拉菜单容器 -->
-            <div class="search-dropdown" id="searchDropdown"></div>
+            <!-- 新增：退出论坛按钮 -->
+            <a href="mail_xu.html" class="close-btn" title="退出论坛">&times;</a>
         </div>
     </header>
 
@@ -298,7 +342,6 @@
                     <span class="reply-label">回复</span>
                 </div>
                 <div class="content-box">
-                    <!-- 修改：href="#" 改为 javascript:void(0); 避免跳转顶端 -->
                     <a href="javascript:void(0);" class="thread-title">保卫科的人在追跑出校门的天鹅？</a>
                     <div class="thread-info"><span class="author-name">学长还回来吗学长</span></div>
                 </div>
@@ -310,7 +353,6 @@
                     <span class="reply-label">回复</span>
                 </div>
                 <div class="content-box">
-                    <!-- 修改：href="#" 改为 javascript:void(0); 避免跳转顶端 -->
                     <a href="javascript:void(0);" class="thread-title">捞捞图书馆这个女生，我一眼就心动了，附图她踩过的地板</a>
                     <div class="thread-info"><span class="author-name">干嘛啊我的图片不是很精准吗</span></div>
                 </div>
@@ -322,7 +364,6 @@
                     <span class="reply-label">回复</span>
                 </div>
                 <div class="content-box">
-                    <!-- 修改：href="#" 改为 javascript:void(0); 避免跳转顶端 -->
                     <a href="javascript:void(0);" class="thread-title">正走着路，有个人在我面前缓缓倒下</a>
                     <div class="thread-info"><span class="author-name">我也快吓犯病了</span></div>
                 </div>
@@ -334,7 +375,6 @@
                     <span class="reply-label">回复</span>
                 </div>
                 <div class="content-box">
-                    <!-- 修改：href="#" 改为 javascript:void(0); 避免跳转顶端 -->
                     <a href="javascript:void(0);" class="thread-title">出闲置：99新英语词典，带电子发音功能，毕业带不走低价出。</a>
                     <div class="thread-info"><span class="author-name">毕业季是清仓季</span></div>
                 </div>
@@ -357,7 +397,6 @@
                     <span class="reply-label">回复</span>
                 </div>
                 <div class="content-box">
-                    <!-- 修改：href="#" 改为 javascript:void(0); 避免跳转顶端 -->
                     <a href="javascript:void(0);" class="thread-title">今天的晚霞真好看</a>
                     <div class="thread-info"><span class="author-name">我们抬头望天空</span></div>
                 </div>
@@ -369,7 +408,6 @@
                     <span class="reply-label">回复</span>
                 </div>
                 <div class="content-box">
-                    <!-- 修改：href="#" 改为 javascript:void(0); 避免跳转顶端 -->
                     <a href="javascript:void(0);" class="thread-title">避雷食堂二楼这个窗口</a>
                     <div class="thread-info"><span class="author-name">你看看这是给人吃的吗</span></div>
                 </div>
@@ -381,13 +419,11 @@
                     <span class="reply-label">回复</span>
                 </div>
                 <div class="content-box">
-                    <!-- 修改：href="#" 改为 javascript:void(0); 避免跳转顶端 -->
                     <a href="javascript:void(0);" class="thread-title">大家的社团考核都是什么内容？</a>
                     <div class="thread-info"><span class="author-name">难死我算了</span></div>
                 </div>
             </li>
 
-            <!-- 链接已修改为 forum_post_9.html -->
             <li class="thread-item">
                 <div class="reply-box">
                     <span class="reply-num">0</span>
@@ -418,12 +454,11 @@
         <p>本站内容纯属虚构，仅供演示使用</p>
     </footer>
 
-    <!-- ===== 新增搜索下拉菜单交互脚本 ===== -->
+    <!-- ===== 搜索下拉菜单交互脚本 (无需修改) ===== -->
     <script>
         (function() {
             'use strict';
 
-            // 1. 定义搜索数据映射表
             const searchData = {
                 "宋令仪": [
                     { text: "差不多得了吧？一个生日会炫耀半个月了。宋某仪你是没有别的事情能显摆了是吗？", url: "forum_post_1.html" },
@@ -437,29 +472,18 @@
                 "陈楚梦": [ { text: "陈xx那事儿都听说了吗？？", url: "forum_post_7.html" } ]
             };
 
-            // 2. 获取DOM元素
             const searchInput = document.getElementById('searchInput');
             const searchBtn = document.getElementById('searchBtn');
             const dropdown = document.getElementById('searchDropdown');
 
-            // 3. 渲染下拉菜单函数
             function renderDropdown(keyword) {
-                // 清空下拉框
                 dropdown.innerHTML = '';
-                
-                // 去除前后空格并匹配
                 const trimmedKeyword = keyword.trim();
-                
-                // 如果没有任何输入，直接隐藏下拉框
                 if (!trimmedKeyword) {
                     dropdown.classList.remove('show');
                     return;
                 }
-
-                // 匹配数据
                 const results = searchData[trimmedKeyword];
-
-                // 如果匹配不到结果
                 if (!results || results.length === 0) {
                     const emptyMsg = document.createElement('div');
                     emptyMsg.className = 'search-dropdown-empty';
@@ -468,38 +492,29 @@
                     dropdown.classList.add('show');
                     return;
                 }
-
-                // 循环生成下拉选项 (文字截断已由 CSS 的 text-overflow: ellipsis 自动控制)
                 results.forEach(item => {
                     const itemDiv = document.createElement('div');
                     itemDiv.className = 'search-dropdown-item';
                     itemDiv.textContent = item.text;
-                    // 绑定跳转事件
                     itemDiv.addEventListener('click', function() {
                         window.location.href = item.url;
                     });
                     dropdown.appendChild(itemDiv);
                 });
-
-                // 显示下拉菜单
                 dropdown.classList.add('show');
             }
 
-            // 4. 绑定搜索按钮点击事件
             searchBtn.addEventListener('click', function() {
                 renderDropdown(searchInput.value);
             });
 
-            // 5. 输入框按回车键也触发搜索
             searchInput.addEventListener('keydown', function(e) {
                 if (e.key === 'Enter') {
                     searchBtn.click();
                 }
             });
 
-            // 6. 点击页面空白处，关闭下拉菜单（提升交互体验）
             document.addEventListener('click', function(e) {
-                // 如果点击的区域不在搜索框区域内，则隐藏下拉框
                 if (!searchInput.contains(e.target) && !searchBtn.contains(e.target) && !dropdown.contains(e.target)) {
                     dropdown.classList.remove('show');
                 }
