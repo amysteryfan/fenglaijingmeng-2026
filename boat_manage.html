@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>风来水榭管理系统 - 工作日志</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Microsoft YaHei", SimSun, sans-serif;
+        }
+        body {
+            /* 替换为更深的青绿色 #169182 */
+            background-color: #169182;
+            padding: 20px 15px;
+        }
+        .top-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #ffffff;
+            padding: 14px 22px;
+            border-radius: 6px;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        .header-title-box h1 {
+            font-size: 24px;
+            color: #00665c;
+        }
+        .header-title-box p {
+            font-size: 14px;
+            color: #555;
+            margin-top: 4px;
+        }
+        .back-btn {
+            background: #00786d;
+            color: #fff;
+            border: none;
+            padding: 9px 20px;
+            border-radius: 4px;
+            font-size: 15px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .back-btn:hover {
+            background: #005e55;
+        }
+        .slogan-text {
+            text-align: center;
+            font-size: 20px;
+            color: #ffffff;
+            font-weight: 500;
+            margin-bottom: 22px;
+            letter-spacing: 2px;
+        }
+        .message-container {
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+        .message-card {
+            background: #fff;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 18px;
+            box-shadow: 0 1px 5px rgba(0,0,0,0.1);
+        }
+        .post-head {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+        }
+        .post-user-name {
+            font-size: 16px;
+            font-weight: 600;
+            color: #0058b8;
+            cursor: pointer;
+        }
+        .post-user-name:hover {
+            text-decoration: underline;
+        }
+        .post-meta {
+            font-size: 13px;
+            color: #777;
+        }
+        .post-content {
+            font-size: 15px;
+            line-height: 1.7;
+            color: #222;
+            margin-bottom: 16px;
+        }
+        .reply-block {
+            background: #f0f7f6;
+            /* 侧边条同步加深配色 */
+            border-left: 4px solid #169182;
+            padding: 14px 16px;
+            margin-left: 12px;
+        }
+        .reply-head {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }
+        .reply-user {
+            font-size: 15px;
+            font-weight: 600;
+            color: #00665c;
+            cursor: pointer;
+        }
+        .reply-user:hover {
+            text-decoration: underline;
+        }
+        .reply-time {
+            font-size: 12px;
+            color: #666;
+        }
+        .reply-text {
+            font-size: 14px;
+            line-height: 1.6;
+            color: #333;
+        }
+        .footer-tips {
+            text-align: center;
+            margin-top: 30px;
+            font-size: 13px;
+            color: #fff;
+        }
+        /* 移动端适配 */
+        @media (max-width:768px) {
+            .top-header {
+                flex-direction: column;
+                gap: 12px;
+                text-align: center;
+            }
+            .slogan-text {
+                font-size: 17px;
+            }
+            .post-head {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 6px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="top-header">
+        <div class="header-title-box">
+            <h1>风来水榭管理系统 - 工作日志</h1>
+            <p>艾希皇后号内部工作报备记录</p>
+        </div>
+        <!-- 修改跳转地址为 boat_admin.html -->
+        <button class="back-btn" onclick="location.href='boat_admin.html'">返回管理首页</button>
+    </div>
+
+    <div class="slogan-text">游轮内部工作日志归档记录</div>
+
+    <div class="message-container">
+        <!-- 7月9日 新增日志 -->
+        <div class="message-card">
+            <div class="post-head">
+                <span class="post-user-name" onclick="adminTip()">物资管理组</span>
+                <span class="post-meta">07月09日 | 来源：艾希皇后号</span>
+            </div>
+            <div class="post-content">
+                已将阅辉送来的红酒柜放置在宴会厅中。
+            </div>
+        </div>
+
+        <!-- 7月8日 日志 -->
+        <div class="message-card">
+            <div class="post-head">
+                <span class="post-user-name" onclick="adminTip()">安全管理组</span>
+                <span class="post-meta">07月08日 | 来源：艾希皇后号</span>
+            </div>
+            <div class="post-content">
+                厨房反应存放亚硝酸盐的袋子被人动过。
+            </div>
+        </div>
+
+        <!-- 7月3日 日志 -->
+        <div class="message-card">
+            <div class="post-head">
+                <span class="post-user-name" onclick="adminTip()">人事督查组</span>
+                <span class="post-meta">07月03日 | 来源：艾希皇后号</span>
+            </div>
+            <div class="post-content">
+                有人反应陈百惠工作态度不积极，总是躲闲偷懒，偷看订婚宴彩排，还多次悄悄摸到客房部去。据了解，陈百惠花钱一向大手大脚，因此生活拮据，怀疑陈百惠有偷窃的念头。经调查，未发现阅辉、鼎峰的订婚宴参与人员及亲属有任何财物失窃，陈百惠也表示自己只是好奇想看热闹。经批评教育，陈百惠已认识到自己的错误，主动包揽订婚宴后宴会厅的打扫工作。
+            </div>
+        </div>
+
+        <!-- 7月2日 日志（原7月1日修改日期） -->
+        <div class="message-card">
+            <div class="post-head">
+                <span class="post-user-name" onclick="adminTip()">运营管理部</span>
+                <span class="post-meta">07月02日 | 来源：艾希皇后号</span>
+            </div>
+            <div class="post-content">
+                鼎峰集团的宋闻溪来视察工作人员培训情况。所有工作人员到场接受检查。
+            </div>
+        </div>
+
+        <!-- 6月26日客房分配日志 -->
+        <div class="message-card">
+            <div class="post-head">
+                <span class="post-user-name" onclick="adminTip()">客房管理部</span>
+                <span class="post-meta">06月26日 | 来源：艾希皇后号</span>
+            </div>
+            <div class="post-content">
+                分配客房。已在鼎峰的要求下，为订婚宴的新郎和新娘安排隔音效果好、隐蔽性强、无视线干扰、无封闭遮挡、可饱览海面风光的海景房。
+            </div>
+        </div>
+
+        <!-- 6月17日 新增日志 -->
+        <div class="message-card">
+            <div class="post-head">
+                <span class="post-user-name" onclick="adminTip()">人事督查组</span>
+                <span class="post-meta">06月17日 | 来源：艾希皇后号</span>
+            </div>
+            <div class="post-content">
+                已将鼎峰审核通过的客房服务员、卫生保洁员、酒水调配员等工作人员名单与风来水榭审核通过的工作人员名单汇合。将在两日内召集新招聘员工，对其展开培训。
+            </div>
+        </div>
+    </div>
+
+    <div class="footer-tips">
+        风来水榭游轮综合管理系统 ©2026 内部保密资料
+    </div>
+
+    <script>
+        // 点击部门名称弹窗提示
+        function adminTip() {
+            alert("仅限系统管理员账号查看部门详细信息");
+        }
+    </script>
+</body>
+</html>
