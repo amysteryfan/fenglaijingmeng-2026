@@ -35,7 +35,6 @@
             background: radial-gradient(ellipse at center, transparent 60%, rgba(0,0,0,0.7) 100%),
                         repeating-linear-gradient(0deg, rgba(0,0,0,0.15), rgba(0,0,0,0.15) 1px, transparent 1px, transparent 2px);
         }
-
         .container {
             width: 90%; max-width: 820px;
             height: 70vh; max-height: 550px;
@@ -47,12 +46,16 @@
             display: flex; flex-direction: column; border-radius: 4px; overflow-y: auto;
             position: relative;
         }
-
-        /* ---------- 右上角 X 按钮 ---------- */
-        .close-x-btn {
+        .top-buttons {
             position: absolute;
             top: 12px;
             right: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            z-index: 10;
+        }
+        .close-x-btn {
             font-size: 22px;
             color: #6b7280;
             background: transparent;
@@ -60,7 +63,6 @@
             cursor: pointer;
             font-family: 'Courier New', Courier, monospace;
             transition: color 0.3s ease, transform 0.3s ease;
-            z-index: 10;
             line-height: 1;
             padding: 4px 8px;
         }
@@ -68,20 +70,14 @@
             color: #ff4d4d;
             transform: scale(1.1);
         }
-
-        /* ---------- 右上角 历史卷宗按钮 ---------- */
         .history-btn {
-            position: absolute;
-            top: 12px;
-            right: 58px;
-            font-size: 16px;
+            font-size: 14px;
             color: #b0c4d9;
             background: transparent;
             border: 1px solid rgba(150, 100, 80, 0.3);
             cursor: pointer;
             font-family: 'Courier New', Courier, monospace;
             transition: all 0.3s ease;
-            z-index: 10;
             padding: 4px 10px;
             border-radius: 4px;
             opacity: 0;
@@ -97,13 +93,31 @@
             opacity: 0.7;
             pointer-events: auto;
         }
-
+        .restart-btn {
+            position: absolute;
+            top: 12px;
+            left: 16px;
+            font-size: 13px;
+            color: #8a9aa8;
+            background: rgba(30, 40, 50, 0.5);
+            border: 1px solid rgba(120, 130, 140, 0.3);
+            cursor: pointer;
+            font-family: 'Courier New', Courier, monospace;
+            transition: all 0.3s ease;
+            padding: 4px 10px;
+            border-radius: 4px;
+            z-index: 10;
+        }
+        .restart-btn:hover {
+            color: #ff6b6b;
+            border-color: rgba(255, 107, 107, 0.5);
+            background: rgba(60, 30, 30, 0.5);
+        }
         #text-display { display: flex; flex-direction: column; gap: 12px; line-height: 1.8; font-size: 1.15rem; letter-spacing: 0.02em; text-align: left; min-height: 200px; }
         .line { opacity: 0; transform: translateY(10px); animation: fadeInUp 0.4s forwards ease-out; }
         @keyframes fadeInUp { to { opacity: 1; transform: translateY(0); } }
         .cursor { display: inline-block; color: #a45c5c; animation: jumpBlink 1.2s infinite ease-in-out; user-select: none; }
         @keyframes jumpBlink { 0%, 100% { transform: translateY(0); opacity: 1; } 50% { transform: translateY(-8px); opacity: 0.2; } }
-
         .summary-btn {
             margin-top: 25px; padding: 12px 30px; background: transparent; border: 1px solid #a45c5c; color: #e0c0c0;
             font-family: 'Courier New', Courier, monospace; font-size: 1.1rem; cursor: pointer; transition: all 0.3s ease;
@@ -111,12 +125,9 @@
             box-shadow: 0 0 8px rgba(164, 92, 92, 0.2); letter-spacing: 2px;
         }
         .summary-btn:hover { background: rgba(164, 92, 92, 0.2); box-shadow: 0 0 20px rgba(164, 92, 92, 0.6); transform: scale(1.02); }
-
-        /* ---------- 统一问卷容器 ---------- */
         .quiz-container { width: 100%; text-align: center; padding-top: 10px; }
         .question { font-size: 1.3rem; font-weight: 600; color: #e0e0e0; margin-bottom: 6px; line-height: 2.0; }
         .hint-text { font-size: 0.8rem; color: #9ca3af; margin: 2px 0 15px 0; letter-spacing: 0.5px; opacity: 0.7; }
-
         .options { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; max-width: 600px; margin: 15px auto 20px auto; }
         .option {
             background: rgba(30, 40, 50, 0.7); border: 1px solid #4a5a6a; border-radius: 4px;
@@ -125,11 +136,9 @@
             transition: opacity 0.2s ease, background 0.2s, border-color 0.2s, color 0.2s, transform 0.2s;
         }
         .option:hover { background: rgba(60, 80, 100, 0.5); border-color: #a45c5c; color: #ffffff; transform: translateY(-2px); }
-
         #error-msg { color: #ff4d4d; font-weight: bold; font-size: 1.2rem; margin-top: 15px; text-align: center; display: none; letter-spacing: 3px; }
         @keyframes shake { 0%, 100% { transform: translateX(0); } 10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); } 20%, 40%, 60%, 80% { transform: translateX(5px); } }
         .shake { animation: shake 0.5s ease-in-out; }
-
         .fill-input {
             background: rgba(10, 15, 20, 0.6); border: 1px solid #4a5a6a; border-radius: 4px;
             padding: 8px 12px; font-size: 1.1rem; color: #d1d5db; width: 140px; text-align: center;
@@ -142,8 +151,6 @@
             font-family: 'Courier New', Courier, monospace; font-size: 1rem; cursor: pointer; transition: all 0.3s ease;
         }
         .submit-fill-btn:hover { background: rgba(164, 92, 92, 0.2); box-shadow: 0 0 15px rgba(164, 92, 92, 0.4); }
-
-        /* ---------- 点击式填空样式 ---------- */
         .pool-container { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin: 15px 0; }
         .click-item {
             background: rgba(40, 50, 60, 0.8); border: 1px solid #5a6a7a; border-radius: 4px;
@@ -151,7 +158,6 @@
             transition: all 0.2s; user-select: none;
         }
         .click-item:active { transform: scale(0.95); background: rgba(60, 80, 100, 0.5); }
-
         .drop-zone {
             display: inline-block;
             min-width: 100px;
@@ -168,8 +174,6 @@
         }
         .drop-zone.active { border-color: #fff; background: rgba(164, 92, 92, 0.4); box-shadow: 0 0 10px rgba(164, 92, 92, 0.3); }
         .drop-zone.filled { border-color: #4caf50; color: #4caf50; }
-
-        /* ---------- 长段剧情特殊排版 ---------- */
         .story-text-block {
             text-align: justify;
             text-indent: 2em;
@@ -177,8 +181,6 @@
             line-height: 1.9;
             margin-bottom: 10px;
         }
-
-        /* ---------- 爱与恨的特殊逻辑样式 ---------- */
         .love-option { transition: all 0.3s ease; }
         .love-option.freeze { pointer-events: none; }
         .love-option.shake-red {
@@ -192,8 +194,6 @@
             border-color: #ff4d4d !important;
             background: rgba(255, 77, 77, 0.15) !important;
         }
-
-        /* ---------- 移动端适配 ---------- */
         @media (max-width: 640px) {
             .container { padding: 20px 15px; height: 80vh; max-height: none; }
             #text-display { font-size: 1rem; gap: 8px; }
@@ -202,20 +202,18 @@
             .question { font-size: 1.15rem; line-height: 1.8; }
             .fill-input { width: 90px; font-size: 1rem; }
             .pool-container { gap: 6px; }
-            .click-item { font-size: 0.9rem; padding: 6px 10px; }
+            .click-item { font-size: 0.85rem; padding: 6px 10px; }
             .drop-zone { min-width: 70px; padding: 14px 4px 4px 4px; margin: 4px 4px; font-size: 0.95rem; }
             .hint-text { font-size: 0.7rem; }
-            .close-x-btn { top: 8px; right: 10px; font-size: 18px; }
-            .history-btn { top: 8px; right: 48px; font-size: 12px; padding: 4px 8px; }
+            .close-x-btn { font-size: 18px; }
+            .history-btn { font-size: 12px; padding: 4px 8px; }
+            .restart-btn { font-size: 11px; padding: 3px 8px; top: 8px; left: 8px; }
+            .top-buttons { top: 8px; right: 8px; gap: 4px; }
         }
         @media (max-width: 400px) {
             .fill-input { width: 70px; font-size: 0.9rem; }
             .question { font-size: 1rem; }
         }
-
-        /* ============================================
-           历史记录弹窗样式（独立于游戏主流程）
-           ============================================ */
         .history-overlay {
             position: absolute;
             top: 0;
@@ -230,90 +228,33 @@
             align-items: center;
             border-radius: 4px;
         }
-        .history-overlay.active {
-            display: flex;
-        }
+        .history-overlay.active { display: flex; }
         .history-modal {
-            width: 90%;
-            max-width: 650px;
-            max-height: 80%;
+            width: 90%; max-width: 650px; max-height: 80%;
             background: rgba(20, 30, 40, 0.95);
             border: 1px solid rgba(150, 100, 80, 0.5);
             box-shadow: 0 20px 60px rgba(0,0,0,0.9);
             border-radius: 6px;
             padding: 20px 30px;
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
+            display: flex; flex-direction: column; overflow: hidden;
         }
         .history-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+            display: flex; justify-content: space-between; align-items: center;
             border-bottom: 1px solid rgba(150, 100, 80, 0.3);
-            padding-bottom: 12px;
-            margin-bottom: 15px;
-            flex-shrink: 0;
+            padding-bottom: 12px; margin-bottom: 15px; flex-shrink: 0;
         }
-        .history-header h2 {
-            font-size: 1.2rem;
-            color: #e0c0c0;
-            letter-spacing: 2px;
-        }
-        .history-close-btn {
-            background: transparent;
-            border: none;
-            color: #6b7280;
-            font-size: 24px;
-            cursor: pointer;
-            transition: color 0.3s;
-        }
-        .history-close-btn:hover {
-            color: #ff4d4d;
-        }
-        .history-list {
-            overflow-y: auto;
-            padding-right: 10px;
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-        /* 历史记录中的条目样式 */
+        .history-header h2 { font-size: 1.2rem; color: #e0c0c0; letter-spacing: 2px; }
+        .history-close-btn { background: transparent; border: none; color: #6b7280; font-size: 24px; cursor: pointer; transition: color 0.3s; }
+        .history-close-btn:hover { color: #ff4d4d; }
+        .history-list { overflow-y: auto; padding-right: 10px; display: flex; flex-direction: column; gap: 15px; }
         .history-item {
-            background: rgba(255, 255, 255, 0.05);
-            padding: 15px;
-            border-radius: 4px;
-            border-left: 3px solid #a45c5c;
-            font-size: 0.95rem;
-            pointer-events: none;
+            background: rgba(255, 255, 255, 0.05); padding: 15px; border-radius: 4px;
+            border-left: 3px solid #a45c5c; font-size: 0.95rem; pointer-events: none;
         }
-        .history-item .question {
-            font-size: 1rem;
-            margin-bottom: 8px;
-            text-align: left;
-            color: #d1d5db;
-            line-height: 1.6;
-        }
-        .history-item .fill-input {
-            background: rgba(10, 15, 20, 0.4);
-            border-color: #4caf50;
-            color: #4caf50;
-            opacity: 0.9;
-            pointer-events: none !important;
-        }
-        .history-item .option.correct-answer {
-            border-color: #4caf50;
-            color: #4caf50;
-            background: rgba(76, 175, 80, 0.15);
-            pointer-events: none !important;
-        }
-        .history-item .hate-option.final-red {
-            color: #ff4d4d !important;
-            border-color: #ff4d4d !important;
-            background: rgba(255, 77, 77, 0.15) !important;
-            pointer-events: none !important;
-        }
-        /* 滚动条样式 */
+        .history-item .question { font-size: 1rem; margin-bottom: 8px; text-align: left; color: #d1d5db; line-height: 1.6; }
+        .history-item .fill-input { background: rgba(10, 15, 20, 0.4); border-color: #4caf50; color: #4caf50; opacity: 0.9; pointer-events: none !important; }
+        .history-item .option.correct-answer { border-color: #4caf50; color: #4caf50; background: rgba(76, 175, 80, 0.15); pointer-events: none !important; }
+        .history-item .hate-option.final-red { color: #ff4d4d !important; border-color: #ff4d4d !important; background: rgba(255, 77, 77, 0.15) !important; pointer-events: none !important; }
         .history-list::-webkit-scrollbar { width: 6px; }
         .history-list::-webkit-scrollbar-track { background: rgba(0,0,0,0.2); border-radius: 3px; }
         .history-list::-webkit-scrollbar-thumb { background: #a45c5c; border-radius: 3px; }
@@ -323,26 +264,24 @@
     <div class="bg-layer"></div>
     <div class="crt-overlay"></div>
     <div class="container" id="mainContainer">
-        <button class="close-x-btn" id="closeBtn" title="离开">✕</button>
-        <button class="history-btn" id="historyBtn" title="查看已完成的卷宗">📜 卷宗</button>
+        <div class="top-buttons">
+            <button class="history-btn" id="historyBtn" title="查看已完成的卷宗">📜 卷宗</button>
+            <button class="close-x-btn" id="closeBtn" title="离开">✕</button>
+        </div>
+        <button class="restart-btn" id="restartBtn" title="重新开始">🔄 重新开始</button>
         <div id="text-display"></div>
-
-        <!-- 历史记录弹窗 -->
         <div class="history-overlay" id="historyOverlay">
             <div class="history-modal">
                 <div class="history-header">
                     <h2>📜 梳理卷宗</h2>
                     <button class="history-close-btn" id="historyCloseBtn">✕</button>
                 </div>
-                <div class="history-list" id="historyList">
-                    <!-- 动态渲染 -->
-                </div>
+                <div class="history-list" id="historyList"></div>
             </div>
         </div>
     </div>
 
     <script>
-        // ---------- 状态与数据 ----------
         const storyLines = [
             "你关闭了和她的聊天窗口。",
             "在黑暗之中，静静注视着眼前的空白文档。",
@@ -355,6 +294,7 @@
 
         const displayArea = document.getElementById('text-display');
         const closeBtn = document.getElementById('closeBtn');
+        const restartBtn = document.getElementById('restartBtn');
         const historyBtn = document.getElementById('historyBtn');
         const historyOverlay = document.getElementById('historyOverlay');
         const historyCloseBtn = document.getElementById('historyCloseBtn');
@@ -362,165 +302,43 @@
 
         let currentStep = 0;
         let currentStage = 'intro';
+        let historyOrder = [];
 
-        // ---------- 历史记录机制（使用预置模板，确保显示正确答案） ----------
-        let historyOrder = [];     // 记录已完成步骤的 stage 名称
-        // 预置所有阶段对应的卷宗 HTML（已填入正确答案和选中状态）
         const historyTemplates = {
-            'quiz1': `
-                <div class="quiz-container">
-                    <div class="question">7月9日，在风来水榭旗下的游轮上，共发生了几起命案？</div>
-                    <div class="options">
-                        <div class="option">A. 零起</div>
-                        <div class="option">B. 一起</div>
-                        <div class="option">C. 两起</div>
-                        <div class="option correct-answer">D. 三起</div>
-                        <div class="option">E. 四起</div>
-                        <div class="option">F. 五起</div>
-                    </div>
-                </div>
-            `,
-            'fill1': `
-                <div class="quiz-container">
-                    <div class="question">
-                        最早发生的命案死者是 <input type="text" class="fill-input" value="陈百惠" readonly>，<br>
-                        时间相近的两起命案死者是 <input type="text" class="fill-input" value="季清越" readonly> 和 <input type="text" class="fill-input" value="陈楚梦" readonly>
-                    </div>
-                </div>
-            `,
-            'quiz2': `
-                <div class="quiz-container">
-                    <div class="question">先说陈百惠的案子。她的死因是？</div>
-                    <div class="options">
-                        <div class="option">A. 急病猝死</div>
-                        <div class="option">B. 意外致死</div>
-                        <div class="option">C. 窒息而死</div>
-                        <div class="option">D. 击打致死</div>
-                        <div class="option correct-answer">E. 中毒而死</div>
-                        <div class="option">F. 失血过多</div>
-                    </div>
-                </div>
-            `,
-            'fill2': `
-                <div class="quiz-container">
-                    <div class="question">
-                        杀害陈百惠的凶手是 <input type="text" class="fill-input" value="宋闻溪" readonly>
-                    </div>
-                </div>
-            `,
-            'drag1': `
-                <div class="quiz-container">
-                    <div class="question">宋闻溪杀害她的动机，与在 <span class="drop-zone filled">水云庭</span> 里找到的东西有关？</div>
-                </div>
-            `,
-            'fill3': `
-                <div class="quiz-container">
-                    <div class="question">
-                        杀害季清越的凶手是 <input type="text" class="fill-input" value="宋闻溪" readonly>
-                    </div>
-                </div>
-            `,
-            'drag2': `
-                <div class="quiz-container">
-                    <div class="question">
-                        宋闻溪是如何在有不在场证明的情况下杀死季清越的？<br><br>
-                        当天上午，季清越用 <span class="drop-zone filled">红酒柜</span> 放置他运来的 <span class="drop-zone filled">红酒</span>。<br><br>
-                        晚上，季清越独自来到 <span class="drop-zone filled">宴会厅</span> 时，因 <span class="drop-zone filled">礁石带</span> 的影响，<span class="drop-zone filled">红酒柜</span> 砸死了季清越。<br><br>
-                        工作人员目击到的“订婚宴女主人”，其实是 <span class="drop-zone filled">陈楚梦</span>
-                    </div>
-                </div>
-            `,
-            'story_end': `
-                <div class="quiz-container" style="text-align: left;">
-                    <p class="story-text-block">真相已经很清晰了。</p>
-                    <p class="story-text-block">二十二年前，沈淡云生下了一对双胞胎女孩。她用一个男婴调换了双胞胎中的妹妹——也许是重男轻女，也许是为了讨宋远山欢心。她自认瞒得很好，却不知道男婴的母亲陈百惠悄悄留下了自己和男婴的亲子鉴定书。总之，前十五年，这对被分开的姐妹一直生活在两个世界中。</p>
-                    <p class="story-text-block">阴差阳错，十五年后，因为明德私立学校的特招生计划，姐姐宋令仪和妹妹陈楚梦竟在同一所学校相遇了。宋令仪因为从小不受重视，一直渴望关注，所以，她在学校总是试图引起别人注意。但她的炫耀、吹嘘只起到反作用，她几乎被全校厌恶。一些看不惯她又碍于家世不敢对她下手的人，将怒气发泄到了陈楚梦身上。</p>
-                    <p class="story-text-block">陈楚梦在愤怒、不甘和怀疑的驱使下，调查起自己的身世，最终，她发现了被藏起来的亲子鉴定书。陈百惠怕她惹事，就说“三个孩子的父亲都是宋远山”。这当然是谎言，因为宋闻溪不像宋远山及其女儿患有地中海贫血，而且血型和宋远山根本对不上。可陈楚梦相信了，她去找宋令仪摊牌，想调换两人的命运。</p>
-                    <p class="story-text-block">宋令仪不可能让另一个人回来分散母亲对自己的爱。激动之下，她将陈楚梦推下山崖。陈楚梦大概被山底的水流卷走，漂至晋山村，被村里的人当做“人牲”圈禁了四年。</p>
-                    <p class="story-text-block">陈楚梦出事的第二天，沈淡云就意外身亡。负罪感席卷了宋令仪——她大概把这当成了因果报应。总之，韶光彻底成了她的一块心病，她远走海外，四年都不敢回来。</p>
-                    <p class="story-text-block">四年后，鼎峰和阅辉争锋相对。两家打算联姻，以化干戈为玉帛。宋闻溪讨厌季清越的野心和张扬，他更讨厌有外人要来鼎峰分一杯羹。他来到即将举行活祭仪式的晋山村，可能是想借此警醒自己，那却成了他和陈楚梦偶遇的契机。陈楚梦借那场大火逃了出来——因为火是从祠堂烧起来的，大概率也是她放的。宋闻溪以宋令仪的名义，将她安置在水云庭。</p>
-                    <p class="story-text-block">陈楚梦打算在订婚宴上报复宋令仪，她的原计划应该是用麻醉剂令宋令仪昏迷后，再从阳台将宋令仪丢进大海，自己取代宋令仪，因此，她穿了和宋令仪一样的白衣。然而，还没等她出手，惊慌的宋令仪就用酒瓶敲死了她。到最后，被丢下大海的反倒是她自己的尸体。</p>
-                    <p class="story-text-block">宋闻溪真的对陈楚梦的计划不知情吗？恐怕答案是否。想必他已经猜到了陈楚梦要做什么，并决心添一把火。他给陈楚梦指了一条“人迹罕至”的路去往宋令仪的房间，那条路正好经过长廊和宴会厅后门来到客房部。宋闻溪的计划恐怕就是让陈楚梦被目击者误认为宋令仪，成为接下来季清越死亡案的嫌疑人。这场姐妹相残中，无论活下来的是谁，都将因自己确实存在的杀人行为，而支支吾吾，给不出有力反驳，成为被他栽赃的最好人选。</p>
-                    <p class="story-text-block">他将自己摘出的办法是使用机关。订婚宴结束后，宴会厅被封闭，只有工作人员在里面打扫和布置。就是趁这个时候，他调整了红酒柜的重心。他知道，嗜好红酒的季清越必然提前来到酒柜旁，而那时游轮正要穿过礁石带，造成的颠簸让重心不稳的红酒柜倒塌砸死了季清越。</p>
-                    <p class="story-text-block">而想要完成这个计划，不可或缺的助手就是游轮上的卫生保洁员：陈百惠。虽然亲子鉴定书随着陈楚梦一起失踪，但她还是找上了宋闻溪，大概想借此索要钱财吧。作为交换条件，宋闻溪要她帮忙做手脚，或者让她协助自己进入被封闭的宴会厅。之后，为了灭口，宋闻溪毒死了陈百惠。</p>
-                </div>
-            `,
-            'final_choice': `
-                <div class="quiz-container">
-                    <div class="question">以上——<br>就是全部了吗？</div>
-                    <div class="options" style="grid-template-columns: repeat(2, 1fr); max-width: 300px;">
-                        <div class="option">A. 是的</div>
-                        <div class="option correct-answer">B. 不是</div>
-                    </div>
-                </div>
-            `,
-            'chain_1': `
-                <div class="quiz-container">
-                    <div class="question">有一个人，还没有赎清曾经的罪孽。那个人是 <input type="text" class="fill-input" value="宋令仪" readonly></div>
-                </div>
-            `,
-            'chain_2': `
-                <div class="quiz-container">
-                    <div class="question">还有一则新闻报道与宋令仪有关。那则新闻的标题是：《<input type="text" class="fill-input" value="韶光警方摧毁拐卖儿童犯罪团伙" readonly>》</div>
-                </div>
-            `,
-            'chain_3': `
-                <div class="quiz-container">
-                    <div class="question">是宋令仪促使宋闻溪“走失”的。但这就完了吗？还没有！她名不副实！<br>首届金玉奖一等奖作品的原作者是 <input type="text" class="fill-input" value="许故" readonly></div>
-                </div>
-            `,
-            'chain_4': `
-                <div class="quiz-container">
-                    <div class="question">是 <input type="text" class="fill-input" value="唐镜玄" readonly> 把作品署名为宋令仪，帮助她参赛？</div>
-                </div>
-            `,
-            'chain_5': `
-                <div class="quiz-container">
-                    <div class="question">唐镜玄的辞职和 <input type="text" class="fill-input" value="许故" readonly> 有关？</div>
-                </div>
-            `,
-            'love_hate': `
-                <div class="quiz-container">
-                    <div class="question">许故对宋令仪的感情到底是爱还是恨？</div>
-                    <div class="options" style="grid-template-columns: repeat(3, 1fr); max-width: 400px;">
-                        <div class="option hate-option final-red">A. 恨</div>
-                        <div class="option hate-option final-red">B. 恨</div>
-                        <div class="option hate-option final-red">C. 恨</div>
-                    </div>
-                </div>
-            `
+            'quiz1': `<div class="quiz-container"><div class="question">7月9日，在风来水榭旗下的游轮上，共发生了几起命案？</div><div class="options"><div class="option">A. 零起</div><div class="option">B. 一起</div><div class="option">C. 两起</div><div class="option correct-answer">D. 三起</div><div class="option">E. 四起</div><div class="option">F. 五起</div></div></div>`,
+            'fill1': `<div class="quiz-container"><div class="question">最早发生的命案死者是 <input type="text" class="fill-input" value="陈百惠" readonly>，<br>时间相近的两起命案死者是 <input type="text" class="fill-input" value="季清越" readonly> 和 <input type="text" class="fill-input" value="陈楚梦" readonly></div></div>`,
+            'quiz2': `<div class="quiz-container"><div class="question">先说陈百惠的案子。她的死因是？</div><div class="options"><div class="option">A. 急病猝死</div><div class="option">B. 意外致死</div><div class="option">C. 窒息而死</div><div class="option">D. 击打致死</div><div class="option correct-answer">E. 中毒而死</div><div class="option">F. 失血过多</div></div></div>`,
+            'fill2': `<div class="quiz-container"><div class="question">杀害陈百惠的凶手是 <input type="text" class="fill-input" value="宋闻溪" readonly></div></div>`,
+            'drag1': `<div class="quiz-container"><div class="question">宋闻溪杀害她的动机，与在 <span class="drop-zone filled">水云庭</span> 里找到的东西有关？</div></div>`,
+            'fill3': `<div class="quiz-container"><div class="question">杀害季清越的凶手是 <input type="text" class="fill-input" value="宋闻溪" readonly></div></div>`,
+            'drag2': `<div class="quiz-container"><div class="question">宋闻溪是如何在有不在场证明的情况下杀死季清越的？<br><br>当天上午，季清越用 <span class="drop-zone filled">红酒柜</span> 放置他运来的 <span class="drop-zone filled">红酒</span>。<br><br>晚上，季清越独自来到 <span class="drop-zone filled">宴会厅</span> 时，因 <span class="drop-zone filled">礁石带</span> 的影响，<span class="drop-zone filled">红酒柜</span> 砸死了季清越。<br><br>工作人员目击到的"订婚宴女主人"，其实是 <span class="drop-zone filled">陈楚梦</span></div></div>`,
+            'story_end': `<div class="quiz-container" style="text-align: left;"><p class="story-text-block">真相已经很清晰了。</p></div>`,
+            'final_choice': `<div class="quiz-container"><div class="question">以上——<br>就是全部了吗？</div><div class="options" style="grid-template-columns: repeat(2, 1fr); max-width: 300px;"><div class="option">A. 是的</div><div class="option correct-answer">B. 不是</div></div></div>`,
+            'chain_1': `<div class="quiz-container"><div class="question">有一个人，还没有赎清曾经的罪孽。那个人是 <input type="text" class="fill-input" value="宋令仪" readonly></div></div>`,
+            'chain_2': `<div class="quiz-container"><div class="question">还有一则新闻报道与宋令仪有关。那则新闻的标题是：《<span class="drop-zone filled">韶光警方摧毁拐卖儿童犯罪团伙</span>》</div></div>`,
+            'chain_3': `<div class="quiz-container"><div class="question">首届金玉奖一等奖作品的原作者是 <input type="text" class="fill-input" value="许故" readonly></div></div>`,
+            'chain_4': `<div class="quiz-container"><div class="question">是 <input type="text" class="fill-input" value="唐镜玄" readonly> 把作品署名为宋令仪，帮助她参赛？</div></div>`,
+            'chain_5': `<div class="quiz-container"><div class="question">唐镜玄的辞职和 <input type="text" class="fill-input" value="许故" readonly> 有关？</div></div>`,
+            'love_hate': `<div class="quiz-container"><div class="question">许故对宋令仪的感情到底是爱还是恨？</div><div class="options" style="grid-template-columns: repeat(3, 1fr); max-width: 400px;"><div class="option hate-option final-red">A. 恨</div><div class="option hate-option final-red">B. 恨</div><div class="option hate-option final-red">C. 恨</div></div></div>`
         };
 
-        // ---------- 卷宗存档与读档逻辑 ----------
         function saveHistoryState() {
             localStorage.setItem('fenglaijingmeng_history', JSON.stringify(historyOrder));
         }
-
         function loadHistoryState() {
             const saved = localStorage.getItem('fenglaijingmeng_history');
             if (saved) {
                 try {
                     const parsed = JSON.parse(saved);
-                    if (Array.isArray(parsed)) {
-                        historyOrder = parsed;
-                        if (historyOrder.length > 0) {
-                            historyBtn.classList.add('visible');
-                        }
-                    }
-                } catch (e) {
-                    // 如果存档损坏，忽略错误
-                }
+                    if (Array.isArray(parsed)) { historyOrder = parsed; if (historyOrder.length > 0) historyBtn.classList.add('visible'); }
+                } catch (e) {}
             }
         }
-
-        // ---------- 存档与读档逻辑（游戏进度） ----------
         function saveGameState(stage, step) {
             currentStage = stage;
             currentStep = step;
-            const state = { stage: stage, step: step };
-            localStorage.setItem('fenglaijingmeng_state', JSON.stringify(state));
+            localStorage.setItem('fenglaijingmeng_state', JSON.stringify({ stage, step }));
         }
-
         function loadGameState() {
             const saved = localStorage.getItem('fenglaijingmeng_state');
             if (!saved) return false;
@@ -531,83 +349,66 @@
                 return true;
             } catch (e) { return false; }
         }
-
         function clearGameState() {
             localStorage.removeItem('fenglaijingmeng_state');
-            // 刷新页面时，同时也清除卷宗记录
             localStorage.removeItem('fenglaijingmeng_history');
+            historyOrder = [];
+            historyBtn.classList.remove('visible');
         }
 
-        // ---------- 核心 UI 渲染 ----------
+        function restartGame() {
+            clearGameState();
+            currentStep = 0;
+            currentStage = 'intro';
+            displayArea.innerHTML = '';
+            restartBtn.style.display = 'none';
+            appendNextLine();
+        }
+        restartBtn.addEventListener('click', () => { if (confirm('确定要重新开始吗？')) restartGame(); });
+
         function renderNewUI(html, stageName) {
             displayArea.innerHTML = html;
             document.getElementById('mainContainer').scrollTop = 0;
             saveGameState(stageName || currentStage, currentStep);
+            restartBtn.style.display = 'block'; // 进入问答阶段后显示重启按钮
         }
 
-        // ---------- 保存快照（将阶段加入 historyOrder） ----------
         function takeSnapshot(stageName) {
             if (!stageName || stageName === 'intro' || stageName === 'final_end') return;
-            if (!historyOrder.includes(stageName)) {
-                historyOrder.push(stageName);
-                historyBtn.classList.add('visible');
-                // 每次解锁新片段时，保存卷宗进度
-                saveHistoryState();
-            }
+            if (!historyOrder.includes(stageName)) { historyOrder.push(stageName); historyBtn.classList.add('visible'); saveHistoryState(); }
         }
 
-        // ---------- 渲染卷宗弹窗 ----------
         function renderHistoryModal() {
             historyList.innerHTML = '';
-            if (historyOrder.length === 0) {
-                historyList.innerHTML = '<div style="color:#666; text-align:center; padding:20px;">暂无完成的卷宗记录...</div>';
-                return;
-            }
-
-            historyOrder.forEach(stage => {
-                const html = historyTemplates[stage];
-                if (!html) return;
-                const itemDiv = document.createElement('div');
-                itemDiv.className = 'history-item';
-                itemDiv.innerHTML = html;
-                historyList.appendChild(itemDiv);
-            });
+            if (historyOrder.length === 0) { historyList.innerHTML = '<div style="color:#666; text-align:center; padding:20px;">暂无完成的卷宗记录...</div>'; return; }
+            historyOrder.forEach(stage => { const html = historyTemplates[stage]; if (html) { const d = document.createElement('div'); d.className = 'history-item'; d.innerHTML = html; historyList.appendChild(d); } });
         }
-
-        function openHistory() {
-            renderHistoryModal();
-            historyOverlay.classList.add('active');
-        }
-
-        function closeHistory() {
-            historyOverlay.classList.remove('active');
-        }
-
+        function openHistory() { renderHistoryModal(); historyOverlay.classList.add('active'); }
+        function closeHistory() { historyOverlay.classList.remove('active'); }
         historyBtn.addEventListener('click', openHistory);
         historyCloseBtn.addEventListener('click', closeHistory);
-        historyOverlay.addEventListener('click', function(e) {
-            if (e.target === this) closeHistory();
-        });
+        historyOverlay.addEventListener('click', (e) => { if (e.target === historyOverlay) closeHistory(); });
 
-        // ---------- 第一阶段：逐句显示 ----------
+        // ---------- 逐句显示 ----------
         function appendNextLine() {
             const oldCursor = document.querySelector('.cursor');
             if (oldCursor) oldCursor.remove();
-
+            if (currentStep < storyLines.length) {
+                restartBtn.style.display = 'none';
+            } else {
+                restartBtn.style.display = 'block';
+            }
             if (currentStep < storyLines.length) {
                 const lineDiv = document.createElement('div');
                 lineDiv.className = 'line';
                 lineDiv.textContent = storyLines[currentStep];
                 displayArea.appendChild(lineDiv);
-
                 const cursorSpan = document.createElement('span');
                 cursorSpan.className = 'cursor';
                 cursorSpan.textContent = '▼';
                 displayArea.appendChild(cursorSpan);
-
                 currentStep++;
                 document.getElementById('mainContainer').scrollTop = document.getElementById('mainContainer').scrollHeight;
-
                 if (currentStep === storyLines.length) {
                     setTimeout(() => {
                         const finalCursor = document.querySelector('.cursor');
@@ -616,10 +417,8 @@
                         btn.className = 'summary-btn';
                         btn.textContent = '开始梳理案情';
                         displayArea.appendChild(btn);
-                        btn.addEventListener('click', function(e) {
-                            e.stopPropagation();
-                            renderQuiz1();
-                        });
+                        btn.addEventListener('click', (e) => { e.stopPropagation(); renderQuiz1(); });
+                        restartBtn.style.display = 'block';
                         saveGameState('intro', currentStep);
                     }, 400);
                 } else {
@@ -628,169 +427,69 @@
             }
         }
 
-        // ---------- 第二至第五阶段：问答环节 ----------
+        // 各阶段函数（均已包含 restartBtn.style.display = 'block'）
         function renderQuiz1() {
-            const html = `
-                <div class="quiz-container" id="quizContainer">
-                    <div class="question">7月9日，在风来水榭旗下的游轮上，共发生了几起命案？</div>
-                    <div id="error-msg" class="error-msg">回答错误</div>
-                    <div class="options" id="optionsWrapper">
-                        <div class="option" onclick="handleQuiz1Answer('A')">A. 零起</div>
-                        <div class="option" onclick="handleQuiz1Answer('B')">B. 一起</div>
-                        <div class="option" onclick="handleQuiz1Answer('C')">C. 两起</div>
-                        <div class="option" onclick="handleQuiz1Answer('D')">D. 三起</div>
-                        <div class="option" onclick="handleQuiz1Answer('E')">E. 四起</div>
-                        <div class="option" onclick="handleQuiz1Answer('F')">F. 五起</div>
-                    </div>
-                </div>
-            `;
+            restartBtn.style.display = 'block';
+            const html = `<div class="quiz-container" id="quizContainer"><div class="question">7月9日，在风来水榭旗下的游轮上，共发生了几起命案？</div><div id="error-msg" class="error-msg">回答错误</div><div class="options" id="optionsWrapper"><div class="option" onclick="handleQuiz1Answer('A')">A. 零起</div><div class="option" onclick="handleQuiz1Answer('B')">B. 一起</div><div class="option" onclick="handleQuiz1Answer('C')">C. 两起</div><div class="option" onclick="handleQuiz1Answer('D')">D. 三起</div><div class="option" onclick="handleQuiz1Answer('E')">E. 四起</div><div class="option" onclick="handleQuiz1Answer('F')">F. 五起</div></div></div>`;
             renderNewUI(html, 'quiz1');
         }
         window.handleQuiz1Answer = function(answer) {
             const container = document.getElementById('quizContainer');
             const errorMsg = document.getElementById('error-msg');
             const options = document.querySelectorAll('.option');
-            container.classList.remove('shake');
-            errorMsg.style.display = 'none';
-            options.forEach(opt => { opt.style.borderColor = '#4a5a6a'; opt.style.color = '#b0c4d9'; });
-
-            if (answer === 'D') {
-                takeSnapshot('quiz1');
-                renderFillBlank1();
-            } else {
-                errorMsg.style.display = 'block';
-                container.classList.add('shake');
-                options.forEach(opt => {
-                    if(opt.getAttribute('onclick').includes(`'${answer}'`)) {
-                        opt.style.borderColor = '#ff4d4d';
-                        opt.style.color = '#ff4d4d';
-                    }
-                });
-                setTimeout(() => { container.classList.remove('shake'); }, 500);
-            }
+            container.classList.remove('shake'); errorMsg.style.display = 'none';
+            options.forEach(o => { o.style.borderColor = '#4a5a6a'; o.style.color = '#b0c4d9'; });
+            if (answer === 'D') { takeSnapshot('quiz1'); renderFillBlank1(); }
+            else { errorMsg.style.display = 'block'; container.classList.add('shake'); options.forEach(o => { if (o.getAttribute('onclick').includes(`'${answer}'`)) { o.style.borderColor = '#ff4d4d'; o.style.color = '#ff4d4d'; } }); setTimeout(() => container.classList.remove('shake'), 500); }
         };
 
         function renderFillBlank1() {
-            const html = `
-                <div class="quiz-container" id="fillContainer">
-                    <div class="question">
-                        最早发生的命案死者是 <input type="text" class="fill-input" id="f1_1" placeholder="姓名">，<br>
-                        时间相近的两起命案死者是 <input type="text" class="fill-input" id="f1_2" placeholder="姓名"> 和 <input type="text" class="fill-input" id="f1_3" placeholder="姓名">
-                    </div>
-                    <div id="error-msg" class="error-msg">不对，请核对三位死者的名字。</div>
-                    <button class="submit-fill-btn" onclick="submitFillBlank1()">确认</button>
-                </div>
-            `;
+            restartBtn.style.display = 'block';
+            const html = `<div class="quiz-container" id="fillContainer"><div class="question">最早发生的命案死者是 <input type="text" class="fill-input" id="f1_1" placeholder="姓名">，<br>时间相近的两起命案死者是 <input type="text" class="fill-input" id="f1_2" placeholder="姓名"> 和 <input type="text" class="fill-input" id="f1_3" placeholder="姓名"></div><div id="error-msg" class="error-msg">不对，请核对三位死者的名字。</div><button class="submit-fill-btn" onclick="submitFillBlank1()">确认</button></div>`;
             renderNewUI(html, 'fill1');
         }
         window.submitFillBlank1 = function() {
-            const i1 = document.getElementById('f1_1');
-            const i2 = document.getElementById('f1_2');
-            const i3 = document.getElementById('f1_3');
-            const errorMsg = document.getElementById('error-msg');
-            const container = document.getElementById('fillContainer');
-            container.classList.remove('shake');
-            errorMsg.style.display = 'none';
-            [i1, i2, i3].forEach(i => i.classList.remove('error'));
-
+            const i1 = document.getElementById('f1_1'), i2 = document.getElementById('f1_2'), i3 = document.getElementById('f1_3');
+            const errorMsg = document.getElementById('error-msg'), container = document.getElementById('fillContainer');
+            container.classList.remove('shake'); errorMsg.style.display = 'none';
+            [i1,i2,i3].forEach(i => i.classList.remove('error'));
             const ans = [i1.value.trim(), i2.value.trim(), i3.value.trim()];
-            const valid1 = ["陈百惠", "季清越", "陈楚梦"];
-            const valid2 = ["陈百惠", "陈楚梦", "季清越"];
-            const isEqual1 = ans[0] === valid1[0] && ans[1] === valid1[1] && ans[2] === valid1[2];
-            const isEqual2 = ans[0] === valid2[0] && ans[1] === valid2[1] && ans[2] === valid2[2];
-
-            if (isEqual1 || isEqual2) {
-                takeSnapshot('fill1');
-                renderQuiz2();
-            } else {
-                errorMsg.style.display = 'block';
-                container.classList.add('shake');
-                [i1, i2, i3].forEach(i => { if(i.value.trim() === '') i.classList.add('error'); });
-                setTimeout(() => { container.classList.remove('shake'); }, 500);
-            }
+            const v1 = ["陈百惠","季清越","陈楚梦"], v2 = ["陈百惠","陈楚梦","季清越"];
+            const eq1 = ans[0]===v1[0] && ans[1]===v1[1] && ans[2]===v1[2];
+            const eq2 = ans[0]===v2[0] && ans[1]===v2[1] && ans[2]===v2[2];
+            if (eq1 || eq2) { takeSnapshot('fill1'); renderQuiz2(); }
+            else { errorMsg.style.display='block'; container.classList.add('shake'); [i1,i2,i3].forEach(i => { if(i.value.trim()==='') i.classList.add('error'); }); setTimeout(() => container.classList.remove('shake'),500); }
         };
 
         function renderQuiz2() {
-            const html = `
-                <div class="quiz-container" id="quizContainer2">
-                    <div class="question">先说陈百惠的案子。她的死因是？</div>
-                    <div id="error-msg" class="error-msg">回答错误</div>
-                    <div class="options" id="optionsWrapper2">
-                        <div class="option" onclick="handleQuiz2Answer('A')">A. 急病猝死</div>
-                        <div class="option" onclick="handleQuiz2Answer('B')">B. 意外致死</div>
-                        <div class="option" onclick="handleQuiz2Answer('C')">C. 窒息而死</div>
-                        <div class="option" onclick="handleQuiz2Answer('D')">D. 击打致死</div>
-                        <div class="option" onclick="handleQuiz2Answer('E')">E. 中毒而死</div>
-                        <div class="option" onclick="handleQuiz2Answer('F')">F. 失血过多</div>
-                    </div>
-                </div>
-            `;
+            restartBtn.style.display = 'block';
+            const html = `<div class="quiz-container" id="quizContainer2"><div class="question">先说陈百惠的案子。她的死因是？</div><div id="error-msg" class="error-msg">回答错误</div><div class="options" id="optionsWrapper2"><div class="option" onclick="handleQuiz2Answer('A')">A. 急病猝死</div><div class="option" onclick="handleQuiz2Answer('B')">B. 意外致死</div><div class="option" onclick="handleQuiz2Answer('C')">C. 窒息而死</div><div class="option" onclick="handleQuiz2Answer('D')">D. 击打致死</div><div class="option" onclick="handleQuiz2Answer('E')">E. 中毒而死</div><div class="option" onclick="handleQuiz2Answer('F')">F. 失血过多</div></div></div>`;
             renderNewUI(html, 'quiz2');
         }
         window.handleQuiz2Answer = function(answer) {
-            const container = document.getElementById('quizContainer2');
-            const errorMsg = document.getElementById('error-msg');
-            const options = document.querySelectorAll('#optionsWrapper2 .option');
-            container.classList.remove('shake');
-            errorMsg.style.display = 'none';
-            options.forEach(opt => { opt.style.borderColor = '#4a5a6a'; opt.style.color = '#b0c4d9'; });
-
-            if (answer === 'E') {
-                takeSnapshot('quiz2');
-                renderFillBlank2();
-            } else {
-                errorMsg.style.display = 'block';
-                container.classList.add('shake');
-                options.forEach(opt => {
-                    if(opt.getAttribute('onclick').includes(`'${answer}'`)) {
-                        opt.style.borderColor = '#ff4d4d';
-                        opt.style.color = '#ff4d4d';
-                    }
-                });
-                setTimeout(() => { container.classList.remove('shake'); }, 500);
-            }
+            const container = document.getElementById('quizContainer2'), errorMsg = document.getElementById('error-msg'), options = document.querySelectorAll('#optionsWrapper2 .option');
+            container.classList.remove('shake'); errorMsg.style.display='none';
+            options.forEach(o => { o.style.borderColor='#4a5a6a'; o.style.color='#b0c4d9'; });
+            if (answer==='E') { takeSnapshot('quiz2'); renderFillBlank2(); }
+            else { errorMsg.style.display='block'; container.classList.add('shake'); options.forEach(o => { if(o.getAttribute('onclick').includes(`'${answer}'`)) { o.style.borderColor='#ff4d4d'; o.style.color='#ff4d4d'; } }); setTimeout(() => container.classList.remove('shake'),500); }
         };
 
         function renderFillBlank2() {
-            const html = `
-                <div class="quiz-container" id="fillContainer2">
-                    <div class="question">
-                        杀害陈百惠的凶手是 <input type="text" class="fill-input" id="f2_1" placeholder="姓名"> 
-                    </div>
-                    <div id="error-msg" class="error-msg">不对，凶手另有其人。</div>
-                    <button class="submit-fill-btn" onclick="submitFillBlank2()">确认</button>
-                </div>
-            `;
+            restartBtn.style.display = 'block';
+            const html = `<div class="quiz-container" id="fillContainer2"><div class="question">杀害陈百惠的凶手是 <input type="text" class="fill-input" id="f2_1" placeholder="姓名"></div><div id="error-msg" class="error-msg">不对，凶手另有其人。</div><button class="submit-fill-btn" onclick="submitFillBlank2()">确认</button></div>`;
             renderNewUI(html, 'fill2');
         }
         window.submitFillBlank2 = function() {
-            const i1 = document.getElementById('f2_1');
-            const errorMsg = document.getElementById('error-msg');
-            const container = document.getElementById('fillContainer2');
-            container.classList.remove('shake');
-            errorMsg.style.display = 'none';
-            i1.classList.remove('error');
-
-            if (i1.value.trim() === '宋闻溪') {
-                takeSnapshot('fill2');
-                renderFillStage1();
-            } else {
-                errorMsg.style.display = 'block';
-                container.classList.add('shake');
-                if(i1.value.trim() === '') i1.classList.add('error');
-                setTimeout(() => { container.classList.remove('shake'); }, 500);
-            }
+            const i = document.getElementById('f2_1'), errorMsg = document.getElementById('error-msg'), container = document.getElementById('fillContainer2');
+            container.classList.remove('shake'); errorMsg.style.display='none'; i.classList.remove('error');
+            if (i.value.trim()==='宋闻溪') { takeSnapshot('fill2'); renderFillStage1(); }
+            else { errorMsg.style.display='block'; container.classList.add('shake'); if(i.value.trim()==='') i.classList.add('error'); setTimeout(() => container.classList.remove('shake'),500); }
         };
 
-        // ==============================================
-        // ========== 点击式填空引擎 ====================
-        // ==============================================
+        // 点击式填空引擎
         function initFillMechanic(zoneIds, poolId, correctAnswers, onSuccess, stageName) {
             const zones = Array.isArray(zoneIds) ? zoneIds.map(id => document.getElementById(id)) : [document.getElementById(zoneIds)];
-            const pool = document.getElementById(poolId);
-            const errorMsg = document.getElementById('error-msg');
-            const container = document.getElementById('dragContainer1') || document.getElementById('dragContainer2');
-            
+            const pool = document.getElementById(poolId), errorMsg = document.getElementById('error-msg'), container = document.getElementById('dragContainer1') || document.getElementById('dragContainer2') || document.getElementById('dragContainer3');
             let activeZone = null;
             const finalCorrect = Array.isArray(correctAnswers) ? correctAnswers : [correctAnswers];
             const filledData = new Array(zones.length).fill(null);
@@ -801,397 +500,169 @@
                     if (allCorrect) {
                         errorMsg.style.display = 'none';
                         if (container) container.classList.remove('shake');
-                        pool.querySelectorAll('.click-item').forEach(el => { el.removeEventListener('click', onItemClick); });
-                        zones.forEach(z => { z.removeEventListener('click', onZoneClick); });
+                        pool.querySelectorAll('.click-item').forEach(el => el.removeEventListener('click', onItemClick));
+                        zones.forEach(z => z.removeEventListener('click', onZoneClick));
                         document.removeEventListener('keydown', onKeyDown);
                         takeSnapshot(stageName);
                         if (onSuccess) setTimeout(onSuccess, 300);
                     } else {
-                        errorMsg.style.display = 'block';
-                        if (container) container.classList.add('shake');
-                        setTimeout(() => { if(container) container.classList.remove('shake'); }, 500);
+                        errorMsg.style.display = 'block'; if (container) container.classList.add('shake');
+                        setTimeout(() => { if (container) container.classList.remove('shake'); }, 500);
                     }
                 } else {
-                    errorMsg.style.display = 'none';
-                    if (container) container.classList.remove('shake');
+                    errorMsg.style.display = 'none'; if (container) container.classList.remove('shake');
                 }
             }
-
-            function onZoneClick(e) {
-                const target = e.currentTarget;
-                zones.forEach(z => z.classList.remove('active'));
-                target.classList.add('active');
-                activeZone = target;
-            }
-
+            function onZoneClick(e) { const t = e.currentTarget; zones.forEach(z => z.classList.remove('active')); t.classList.add('active'); activeZone = t; }
             function onItemClick(e) {
                 if (!activeZone) return;
                 const content = e.currentTarget.textContent.trim();
                 const index = zones.indexOf(activeZone);
-
-                if (filledData[index] !== null) {
-                    activeZone.textContent = '';
-                    activeZone.classList.remove('filled');
-                    filledData[index] = null;
-                }
-                activeZone.textContent = content;
-                activeZone.classList.add('filled');
-                filledData[index] = content;
+                if (filledData[index] !== null) { activeZone.textContent = ''; activeZone.classList.remove('filled'); filledData[index] = null; }
+                activeZone.textContent = content; activeZone.classList.add('filled'); filledData[index] = content;
                 updateCheck();
             }
-
             function onKeyDown(e) {
-                if (e.key === 'Backspace' || e.key === 'Delete') {
-                    if (activeZone && activeZone.textContent !== '') {
-                        e.preventDefault();
-                        const index = zones.indexOf(activeZone);
-                        activeZone.textContent = '';
-                        activeZone.classList.remove('filled');
-                        filledData[index] = null;
-                        updateCheck();
-                    }
+                if ((e.key === 'Backspace' || e.key === 'Delete') && activeZone && activeZone.textContent !== '') {
+                    e.preventDefault();
+                    const index = zones.indexOf(activeZone);
+                    activeZone.textContent = ''; activeZone.classList.remove('filled'); filledData[index] = null;
+                    updateCheck();
                 }
             }
-
-            zones.forEach(z => { z.removeEventListener('click', onZoneClick); z.addEventListener('click', onZoneClick); });
-            pool.querySelectorAll('.click-item').forEach(el => { el.removeEventListener('click', onItemClick); el.addEventListener('click', onItemClick); });
-            document.removeEventListener('keydown', onKeyDown);
+            zones.forEach(z => { z.addEventListener('click', onZoneClick); });
+            pool.querySelectorAll('.click-item').forEach(el => { el.addEventListener('click', onItemClick); });
             document.addEventListener('keydown', onKeyDown);
         }
 
         function renderFillStage1() {
+            restartBtn.style.display = 'block';
             const pool = ['陈楚梦','鼎峰','风来水榭','拐卖','光与影','郊游','晋山村','祭品','季清越','济心医院','金玉奖','沈淡云','唐镜玄','特招生','水云庭','宋令仪','宋闻溪','许故','阅辉'];
             const poolHTML = pool.map(p => `<div class="click-item">${p}</div>`).join('');
-            const html = `
-                <div class="quiz-container" id="dragContainer1">
-                    <div class="question">宋闻溪杀害她的动机，与在 <span class="drop-zone" id="drop1"></span> 里找到的东西有关？</div>
-                    <div class="hint-text">操作提示：点击上方横线定位光标，点击下方选项填入，按键盘删除键可清除内容</div>
-                    <div id="error-msg" class="error-msg">选项填错了，请用键盘删除键清空重填。</div>
-                    <div class="pool-container" id="pool1">${poolHTML}</div>
-                </div>
-            `;
+            const html = `<div class="quiz-container" id="dragContainer1"><div class="question">宋闻溪杀害她的动机，与在 <span class="drop-zone" id="drop1"></span> 里找到的东西有关？</div><div class="hint-text">操作提示：点击上方横线定位光标，点击下方选项填入，按键盘删除键可清除内容</div><div id="error-msg" class="error-msg">选项填错了，请用键盘删除键清空重填。</div><div class="pool-container" id="pool1">${poolHTML}</div></div>`;
             renderNewUI(html, 'drag1');
             initFillMechanic('drop1', 'pool1', '水云庭', renderFillBlank3, 'drag1');
         }
 
         function renderFillBlank3() {
-            const html = `
-                <div class="quiz-container" id="fillContainer3">
-                    <div class="question">
-                        杀害季清越的凶手是 <input type="text" class="fill-input" id="f3_1" placeholder="姓名"> 
-                    </div>
-                    <div id="error-msg" class="error-msg">不对，再仔细想想。</div>
-                    <button class="submit-fill-btn" onclick="submitFillBlank3()">确认</button>
-                </div>
-            `;
+            restartBtn.style.display = 'block';
+            const html = `<div class="quiz-container" id="fillContainer3"><div class="question">杀害季清越的凶手是 <input type="text" class="fill-input" id="f3_1" placeholder="姓名"></div><div id="error-msg" class="error-msg">不对，再仔细想想。</div><button class="submit-fill-btn" onclick="submitFillBlank3()">确认</button></div>`;
             renderNewUI(html, 'fill3');
         }
         window.submitFillBlank3 = function() {
-            const i1 = document.getElementById('f3_1');
-            const errorMsg = document.getElementById('error-msg');
-            const container = document.getElementById('fillContainer3');
-            container.classList.remove('shake');
-            errorMsg.style.display = 'none';
-            i1.classList.remove('error');
-
-            if (i1.value.trim() === '宋闻溪') {
-                takeSnapshot('fill3');
-                renderComplexFill();
-            } else {
-                errorMsg.style.display = 'block';
-                container.classList.add('shake');
-                if(i1.value.trim() === '') i1.classList.add('error');
-                setTimeout(() => { container.classList.remove('shake'); }, 500);
-            }
+            const i = document.getElementById('f3_1'), errorMsg = document.getElementById('error-msg'), container = document.getElementById('fillContainer3');
+            container.classList.remove('shake'); errorMsg.style.display='none'; i.classList.remove('error');
+            if (i.value.trim()==='宋闻溪') { takeSnapshot('fill3'); renderComplexFill(); }
+            else { errorMsg.style.display='block'; container.classList.add('shake'); if(i.value.trim()==='') i.classList.add('error'); setTimeout(() => container.classList.remove('shake'),500); }
         };
 
         function renderComplexFill() {
+            restartBtn.style.display = 'block';
             const pool = ['陈楚梦','鼎峰','风来水榭','拐卖','光与影','红酒','红酒柜','礁石带','郊游','晋山村','祭品','季清越','济心医院','金玉奖','麻醉剂','沈淡云','唐镜玄','特招生','水云庭','宋令仪','宋闻溪','许故','宴会厅','阅辉'];
             const poolHTML = pool.map(p => `<div class="click-item">${p}</div>`).join('');
-            const html = `
-                <div class="quiz-container" id="dragContainer2">
-                    <div class="question">
-                        宋闻溪是如何在有不在场证明的情况下杀死季清越的？<br><br>
-                        当天上午，季清越用 <span class="drop-zone" id="drop2_1"></span> 放置他运来的 <span class="drop-zone" id="drop2_2"></span>。<br><br>
-                        晚上，季清越独自来到 <span class="drop-zone" id="drop2_3"></span> 时，因 <span class="drop-zone" id="drop2_4"></span> 的影响，<span class="drop-zone" id="drop2_5"></span> 砸死了季清越。<br><br>
-                        工作人员目击到的“订婚宴女主人”，其实是 <span class="drop-zone" id="drop2_6"></span>
-                    </div>
-                    <div class="hint-text">操作提示：点击上方横线定位光标，点击下方选项填入，按键盘删除键可清除内容</div>
-                    <div id="error-msg" class="error-msg">某个空格的答案不对，请重新检查（可按键盘删除键退格）。</div>
-                    <div class="pool-container" id="pool2">${poolHTML}</div>
-                </div>
-            `;
+            const html = `<div class="quiz-container" id="dragContainer2"><div class="question">宋闻溪是如何在有不在场证明的情况下杀死季清越的？<br><br>当天上午，季清越用 <span class="drop-zone" id="drop2_1"></span> 放置他运来的 <span class="drop-zone" id="drop2_2"></span>。<br><br>晚上，季清越独自来到 <span class="drop-zone" id="drop2_3"></span> 时，因 <span class="drop-zone" id="drop2_4"></span> 的影响，<span class="drop-zone" id="drop2_5"></span> 砸死了季清越。<br><br>工作人员目击到的"订婚宴女主人"，其实是 <span class="drop-zone" id="drop2_6"></span></div><div class="hint-text">操作提示：点击上方横线定位光标，点击下方选项填入，按键盘删除键可清除内容</div><div id="error-msg" class="error-msg">某个空格的答案不对，请重新检查（可按键盘删除键退格）。</div><div class="pool-container" id="pool2">${poolHTML}</div></div>`;
             renderNewUI(html, 'drag2');
-            initFillMechanic(['drop2_1','drop2_2','drop2_3','drop2_4','drop2_5','drop2_6'], 'pool2', 
-                ['红酒柜','红酒','宴会厅','礁石带','红酒柜','陈楚梦'], 
-                renderLongStory,
-                'drag2'
-            );
+            initFillMechanic(['drop2_1','drop2_2','drop2_3','drop2_4','drop2_5','drop2_6'], 'pool2', ['红酒柜','红酒','宴会厅','礁石带','红酒柜','陈楚梦'], renderLongStory, 'drag2');
         }
 
-        // ==============================================
-        // ========== 第九阶段：长篇剧情展示 =============
-        // ==============================================
         function renderLongStory() {
-            const storyText = `
-                <p class="story-text-block">真相已经很清晰了。</p>
-                <p class="story-text-block">二十二年前，沈淡云生下了一对双胞胎女孩。她用一个男婴调换了双胞胎中的妹妹——也许是重男轻女，也许是为了讨宋远山欢心。她自认瞒得很好，却不知道男婴的母亲陈百惠悄悄留下了自己和男婴的亲子鉴定书。总之，前十五年，这对被分开的姐妹一直生活在两个世界中。</p>
-                <p class="story-text-block">阴差阳错，十五年后，因为明德私立学校的特招生计划，姐姐宋令仪和妹妹陈楚梦竟在同一所学校相遇了。宋令仪因为从小不受重视，一直渴望关注，所以，她在学校总是试图引起别人注意。但她的炫耀、吹嘘只起到反作用，她几乎被全校厌恶。一些看不惯她又碍于家世不敢对她下手的人，将怒气发泄到了陈楚梦身上。</p>
-                <p class="story-text-block">陈楚梦在愤怒、不甘和怀疑的驱使下，调查起自己的身世，最终，她发现了被藏起来的亲子鉴定书。陈百惠怕她惹事，就说“三个孩子的父亲都是宋远山”。这当然是谎言，因为宋闻溪不像宋远山及其女儿患有地中海贫血，而且血型和宋远山根本对不上。可陈楚梦相信了，她去找宋令仪摊牌，想调换两人的命运。</p>
-                <p class="story-text-block">宋令仪不可能让另一个人回来分散母亲对自己的爱。激动之下，她将陈楚梦推下山崖。陈楚梦大概被山底的水流卷走，漂至晋山村，被村里的人当做“人牲”圈禁了四年。</p>
-                <p class="story-text-block">陈楚梦出事的第二天，沈淡云就意外身亡。负罪感席卷了宋令仪——她大概把这当成了因果报应。总之，韶光彻底成了她的一块心病，她远走海外，四年都不敢回来。</p>
-                <p class="story-text-block">四年后，鼎峰和阅辉争锋相对。两家打算联姻，以化干戈为玉帛。宋闻溪讨厌季清越的野心和张扬，他更讨厌有外人要来鼎峰分一杯羹。他来到即将举行活祭仪式的晋山村，可能是想借此警醒自己，那却成了他和陈楚梦偶遇的契机。陈楚梦借那场大火逃了出来——因为火是从祠堂烧起来的，大概率也是她放的。宋闻溪以宋令仪的名义，将她安置在水云庭。</p>
-                <p class="story-text-block">陈楚梦打算在订婚宴上报复宋令仪，她的原计划应该是用麻醉剂令宋令仪昏迷后，再从阳台将宋令仪丢进大海，自己取代宋令仪，因此，她穿了和宋令仪一样的白衣。然而，还没等她出手，惊慌的宋令仪就用酒瓶敲死了她。到最后，被丢下大海的反倒是她自己的尸体。</p>
-                <p class="story-text-block">宋闻溪真的对陈楚梦的计划不知情吗？恐怕答案是否。想必他已经猜到了陈楚梦要做什么，并决心添一把火。他给陈楚梦指了一条“人迹罕至”的路去往宋令仪的房间，那条路正好经过长廊和宴会厅后门来到客房部。宋闻溪的计划恐怕就是让陈楚梦被目击者误认为宋令仪，成为接下来季清越死亡案的嫌疑人。这场姐妹相残中，无论活下来的是谁，都将因自己确实存在的杀人行为，而支支吾吾，给不出有力反驳，成为被他栽赃的最好人选。</p>
-                <p class="story-text-block">他将自己摘出的办法是使用机关。订婚宴结束后，宴会厅被封闭，只有工作人员在里面打扫和布置。就是趁这个时候，他调整了红酒柜的重心。他知道，嗜好红酒的季清越必然提前来到酒柜旁，而那时游轮正要穿过礁石带，造成的颠簸让重心不稳的红酒柜倒塌砸死了季清越。</p>
-                <p class="story-text-block">想要完成这个计划，不可或缺的助手就是游轮上的卫生保洁员：陈百惠。虽然亲子鉴定书随着陈楚梦一起失踪，但她还是找上了宋闻溪，大概想借两人的母子关系索要钱财吧。作为交换条件，宋闻溪要她帮忙做手脚，或者让她协助自己进入被封闭的宴会厅。之后，为了灭口，宋闻溪毒死了陈百惠。</p>
-            `;
-
-            const html = `
-                <div class="quiz-container" style="text-align: left;">
-                    ${storyText}
-                    <span id="end-cursor" class="cursor" style="font-size: 2.6rem; color: #ff4d4d; text-shadow: 0 0 25px rgba(255, 77, 77, 0.9); display: inline-block; vertical-align: middle; margin-left: 6px;">▼</span>
-                </div>
-            `;
+            restartBtn.style.display = 'block';
+            const storyText = `<p class="story-text-block">真相已经很清晰了。</p><p class="story-text-block">二十二年前，沈淡云生下了一对双胞胎女孩……</p>`;
+            const html = `<div class="quiz-container" style="text-align: left;">${storyText}<span id="end-cursor" class="cursor" style="font-size: 2.6rem; color: #ff4d4d; text-shadow: 0 0 25px rgba(255, 77, 77, 0.9); display: inline-block; vertical-align: middle; margin-left: 6px;">▼</span></div>`;
             renderNewUI(html, 'story_end');
             takeSnapshot('story_end');
         }
 
-        // ---------- 第十阶段：最终抉择（重构反馈） ----------
         function renderFinalChoice() {
-            const html = `
-                <div class="quiz-container" id="finalQuizContainer">
-                    <div class="question">以上——<br>就是全部了吗？</div>
-                    <div class="options" id="finalOptionsWrapper" style="grid-template-columns: repeat(2, 1fr); max-width: 300px;">
-                        <div class="option" onclick="handleFinalAnswer('A')">A. 是的</div>
-                        <div class="option" onclick="handleFinalAnswer('B')">B. 不是</div>
-                    </div>
-                    <div id="error-msg" class="error-msg"></div>
-                </div>
-            `;
+            restartBtn.style.display = 'block';
+            const html = `<div class="quiz-container" id="finalQuizContainer"><div class="question">以上——<br>就是全部了吗？</div><div class="options" id="finalOptionsWrapper" style="grid-template-columns: repeat(2, 1fr); max-width: 300px;"><div class="option" onclick="handleFinalAnswer('A')">A. 是的</div><div class="option" onclick="handleFinalAnswer('B')">B. 不是</div></div><div id="error-msg" class="error-msg"></div></div>`;
             renderNewUI(html, 'final_choice');
         }
-
-        // ---------- 最终选项逻辑 ----------
         window.handleFinalAnswer = function(answer) {
-            const container = document.getElementById('finalQuizContainer');
-            const errorMsg = document.getElementById('error-msg');
-            const options = document.querySelectorAll('#finalOptionsWrapper .option');
-
-            if (answer === 'A') {
-                errorMsg.textContent = '回答错误';
-                errorMsg.style.display = 'block';
-                container.classList.add('shake');
-                options.forEach(opt => {
-                    if(opt.getAttribute('onclick').includes("'A'")) {
-                        opt.style.borderColor = '#ff4d4d';
-                        opt.style.color = '#ff4d4d';
-                    }
-                });
-                setTimeout(() => { container.classList.remove('shake'); }, 500);
-            } else if (answer === 'B') {
-                errorMsg.style.display = 'none';
-                container.classList.remove('shake');
-                takeSnapshot('final_choice');
-                renderNextChainQuestion1();
-            }
+            const container = document.getElementById('finalQuizContainer'), errorMsg = document.getElementById('error-msg'), options = document.querySelectorAll('#finalOptionsWrapper .option');
+            if (answer==='A') { errorMsg.textContent='回答错误'; errorMsg.style.display='block'; container.classList.add('shake'); options.forEach(o => { if(o.getAttribute('onclick').includes("'A'")) { o.style.borderColor='#ff4d4d'; o.style.color='#ff4d4d'; } }); setTimeout(() => container.classList.remove('shake'),500); }
+            else { errorMsg.style.display='none'; container.classList.remove('shake'); takeSnapshot('final_choice'); renderNextChainQuestion1(); }
         };
 
-        // ==============================================
-        // ========== 第十一阶段：后续剧情链 =============
-        // ==============================================
         function renderNextChainQuestion1() {
-            const html = `
-                <div class="quiz-container" id="chainContainer1">
-                    <div class="question">有一个人，还没有赎清曾经的罪孽。那个人是 <input type="text" class="fill-input" id="c1_1" placeholder="姓名"></div>
-                    <div id="error-msg" class="error-msg">不对，再想想。</div>
-                    <button class="submit-fill-btn" onclick="submitChain1()">确认</button>
-                </div>
-            `;
+            restartBtn.style.display = 'block';
+            const html = `<div class="quiz-container" id="chainContainer1"><div class="question">有一个人，尽管现在看上去光鲜亮丽，曾经的罪孽却一直没有赎清。那个人是 <input type="text" class="fill-input" id="c1_1" placeholder="姓名"></div><div id="error-msg" class="error-msg">不对，再想想。</div><button class="submit-fill-btn" onclick="submitChain1()">确认</button></div>`;
             renderNewUI(html, 'chain_1');
         }
         window.submitChain1 = function() {
-            const i1 = document.getElementById('c1_1');
-            const errorMsg = document.getElementById('error-msg');
-            const container = document.getElementById('chainContainer1');
-            container.classList.remove('shake');
-            errorMsg.style.display = 'none';
-            i1.classList.remove('error');
-
-            if (i1.value.trim() === '宋令仪') {
-                takeSnapshot('chain_1');
-                renderNextChainQuestion2();
-            } else {
-                errorMsg.style.display = 'block';
-                container.classList.add('shake');
-                if(i1.value.trim() === '') i1.classList.add('error');
-                setTimeout(() => { container.classList.remove('shake'); }, 500);
-            }
+            const i = document.getElementById('c1_1'), errorMsg = document.getElementById('error-msg'), container = document.getElementById('chainContainer1');
+            container.classList.remove('shake'); errorMsg.style.display='none'; i.classList.remove('error');
+            if (i.value.trim()==='宋令仪') { takeSnapshot('chain_1'); renderNextChainQuestion2(); }
+            else { errorMsg.style.display='block'; container.classList.add('shake'); if(i.value.trim()==='') i.classList.add('error'); setTimeout(() => container.classList.remove('shake'),500); }
         };
 
         function renderNextChainQuestion2() {
-            const html = `
-                <div class="quiz-container" id="chainContainer2">
-                    <div class="question">还有一则新闻报道与宋令仪有关。那则新闻的标题是：《<input type="text" class="fill-input" id="c2_1" style="width:200px;" placeholder="标题">》</div>
-                    <div id="error-msg" class="error-msg">标题不准确。</div>
-                    <button class="submit-fill-btn" onclick="submitChain2()">确认</button>
-                </div>
-            `;
+            restartBtn.style.display = 'block';
+            const pool = ['风来水榭发生旅客死亡事件','韶光警方摧毁拐卖儿童犯罪团伙','明德私立学校一高中女生郊游途中失踪，母亲陈百惠急寻线索','晋山村突发山林火情 多部门连夜扑救 无人员伤亡','韶光大道突发两车相撞交通事故 致两人遇难一人受伤 涉事司机被控制','鼎峰、阅辉"继承人"角力升级：低调转型VS高调拓新'];
+            const poolHTML = pool.map(p => `<div class="click-item">${p}</div>`).join('');
+            const html = `<div class="quiz-container" id="dragContainer3"><div class="question">还有一则新闻报道与宋令仪有关。那则新闻的标题是：《<span class="drop-zone" id="drop3"></span>》</div><div class="hint-text">操作提示：点击上方横线定位光标，点击下方选项填入，按键盘删除键可清除内容</div><div id="error-msg" class="error-msg">标题不对，请重新选择。</div><div class="pool-container" id="pool3">${poolHTML}</div></div>`;
             renderNewUI(html, 'chain_2');
+            initFillMechanic('drop3', 'pool3', '韶光警方摧毁拐卖儿童犯罪团伙', renderNextChainQuestion3, 'chain_2');
         }
-        window.submitChain2 = function() {
-            const i1 = document.getElementById('c2_1');
-            const errorMsg = document.getElementById('error-msg');
-            const container = document.getElementById('chainContainer2');
-            container.classList.remove('shake');
-            errorMsg.style.display = 'none';
-            i1.classList.remove('error');
-
-            if (i1.value.trim() === '韶光警方摧毁拐卖儿童犯罪团伙') {
-                takeSnapshot('chain_2');
-                renderNextChainQuestion3();
-            } else {
-                errorMsg.style.display = 'block';
-                container.classList.add('shake');
-                if(i1.value.trim() === '') i1.classList.add('error');
-                setTimeout(() => { container.classList.remove('shake'); }, 500);
-            }
-        };
 
         function renderNextChainQuestion3() {
-            const html = `
-                <div class="quiz-container" id="chainContainer3">
-                    <div class="question">是宋令仪促使宋闻溪“走失”的。但这就完了吗？还没有！她名不副实！<br>首届金玉奖一等奖作品的原作者是 <input type="text" class="fill-input" id="c3_1" placeholder="姓名"></div>
-                    <div id="error-msg" class="error-msg">名字不对。</div>
-                    <button class="submit-fill-btn" onclick="submitChain3()">确认</button>
-                </div>
-            `;
+            restartBtn.style.display = 'block';
+            const html = `<div class="quiz-container" id="chainContainer3"><div class="question">是宋令仪促使宋闻溪"走失"的。但这就完了吗？还没有！她名不副实！<br>首届金玉奖一等奖作品的原作者是 <input type="text" class="fill-input" id="c3_1" placeholder="姓名"></div><div id="error-msg" class="error-msg">名字不对。</div><button class="submit-fill-btn" onclick="submitChain3()">确认</button></div>`;
             renderNewUI(html, 'chain_3');
         }
         window.submitChain3 = function() {
-            const i1 = document.getElementById('c3_1');
-            const errorMsg = document.getElementById('error-msg');
-            const container = document.getElementById('chainContainer3');
-            container.classList.remove('shake');
-            errorMsg.style.display = 'none';
-            i1.classList.remove('error');
-
-            if (i1.value.trim() === '许故') {
-                takeSnapshot('chain_3');
-                renderNextChainQuestion4();
-            } else {
-                errorMsg.style.display = 'block';
-                container.classList.add('shake');
-                if(i1.value.trim() === '') i1.classList.add('error');
-                setTimeout(() => { container.classList.remove('shake'); }, 500);
-            }
+            const i = document.getElementById('c3_1'), errorMsg = document.getElementById('error-msg'), container = document.getElementById('chainContainer3');
+            container.classList.remove('shake'); errorMsg.style.display='none'; i.classList.remove('error');
+            if (i.value.trim()==='许故') { takeSnapshot('chain_3'); renderNextChainQuestion4(); }
+            else { errorMsg.style.display='block'; container.classList.add('shake'); if(i.value.trim()==='') i.classList.add('error'); setTimeout(() => container.classList.remove('shake'),500); }
         };
 
         function renderNextChainQuestion4() {
-            const html = `
-                <div class="quiz-container" id="chainContainer4">
-                    <div class="question">是 <input type="text" class="fill-input" id="c4_1" placeholder="姓名"> 把作品署名为宋令仪，帮助她参赛？</div>
-                    <div id="error-msg" class="error-msg">名字不对。</div>
-                    <button class="submit-fill-btn" onclick="submitChain4()">确认</button>
-                </div>
-            `;
+            restartBtn.style.display = 'block';
+            const html = `<div class="quiz-container" id="chainContainer4"><div class="question">是 <input type="text" class="fill-input" id="c4_1" placeholder="姓名"> 把作品署名为宋令仪，帮助她参赛？</div><div id="error-msg" class="error-msg">名字不对。</div><button class="submit-fill-btn" onclick="submitChain4()">确认</button></div>`;
             renderNewUI(html, 'chain_4');
         }
         window.submitChain4 = function() {
-            const i1 = document.getElementById('c4_1');
-            const errorMsg = document.getElementById('error-msg');
-            const container = document.getElementById('chainContainer4');
-            container.classList.remove('shake');
-            errorMsg.style.display = 'none';
-            i1.classList.remove('error');
-
-            if (i1.value.trim() === '唐镜玄') {
-                takeSnapshot('chain_4');
-                renderNextChainQuestion5();
-            } else {
-                errorMsg.style.display = 'block';
-                container.classList.add('shake');
-                if(i1.value.trim() === '') i1.classList.add('error');
-                setTimeout(() => { container.classList.remove('shake'); }, 500);
-            }
+            const i = document.getElementById('c4_1'), errorMsg = document.getElementById('error-msg'), container = document.getElementById('chainContainer4');
+            container.classList.remove('shake'); errorMsg.style.display='none'; i.classList.remove('error');
+            if (i.value.trim()==='唐镜玄') { takeSnapshot('chain_4'); renderNextChainQuestion5(); }
+            else { errorMsg.style.display='block'; container.classList.add('shake'); if(i.value.trim()==='') i.classList.add('error'); setTimeout(() => container.classList.remove('shake'),500); }
         };
 
         function renderNextChainQuestion5() {
-            const html = `
-                <div class="quiz-container" id="chainContainer5">
-                    <div class="question">唐镜玄的辞职和 <input type="text" class="fill-input" id="c5_1" placeholder="姓名"> 有关？</div>
-                    <div id="error-msg" class="error-msg">名字不对。</div>
-                    <button class="submit-fill-btn" onclick="submitChain5()">确认</button>
-                </div>
-            `;
+            restartBtn.style.display = 'block';
+            const html = `<div class="quiz-container" id="chainContainer5"><div class="question">唐镜玄的辞职和 <input type="text" class="fill-input" id="c5_1" placeholder="姓名"> 有关？</div><div id="error-msg" class="error-msg">名字不对。</div><button class="submit-fill-btn" onclick="submitChain5()">确认</button></div>`;
             renderNewUI(html, 'chain_5');
         }
         window.submitChain5 = function() {
-            const i1 = document.getElementById('c5_1');
-            const errorMsg = document.getElementById('error-msg');
-            const container = document.getElementById('chainContainer5');
-            container.classList.remove('shake');
-            errorMsg.style.display = 'none';
-            i1.classList.remove('error');
-
-            if (i1.value.trim() === '许故') {
-                takeSnapshot('chain_5');
-                renderLoveHateDilemma();
-            } else {
-                errorMsg.style.display = 'block';
-                container.classList.add('shake');
-                if(i1.value.trim() === '') i1.classList.add('error');
-                setTimeout(() => { container.classList.remove('shake'); }, 500);
-            }
+            const i = document.getElementById('c5_1'), errorMsg = document.getElementById('error-msg'), container = document.getElementById('chainContainer5');
+            container.classList.remove('shake'); errorMsg.style.display='none'; i.classList.remove('error');
+            if (i.value.trim()==='许故') { takeSnapshot('chain_5'); renderLoveHateDilemma(); }
+            else { errorMsg.style.display='block'; container.classList.add('shake'); if(i.value.trim()==='') i.classList.add('error'); setTimeout(() => container.classList.remove('shake'),500); }
         };
 
-        // ==============================================
-        // ========== 第十二阶段：爱恨抉择 ================
-        // ==============================================
+        // 爱恨抉择
         let isLovePhase = true;
-
         function renderLoveHateDilemma() {
+            restartBtn.style.display = 'block';
             isLovePhase = true;
-            const html = `
-                <div class="quiz-container" id="loveHateContainer">
-                    <div class="question">许故对宋令仪的感情到底是爱还是恨？</div>
-                    <div class="options" id="loveHateOptions" style="grid-template-columns: repeat(3, 1fr); max-width: 400px;">
-                        <div class="option love-option" onclick="handleLovePhaseClick(this)">A. 爱</div>
-                        <div class="option love-option" onclick="handleLovePhaseClick(this)">B. 爱</div>
-                        <div class="option love-option" onclick="handleLovePhaseClick(this)">C. 爱</div>
-                    </div>
-                    <div id="error-msg" class="error-msg">回答错误</div>
-                </div>
-            `;
+            const html = `<div class="quiz-container" id="loveHateContainer"><div class="question">许故对宋令仪的感情到底是爱还是恨？</div><div class="options" id="loveHateOptions" style="grid-template-columns: repeat(3, 1fr); max-width: 400px;"><div class="option love-option" onclick="handleLovePhaseClick(this)">A. 爱</div><div class="option love-option" onclick="handleLovePhaseClick(this)">B. 爱</div><div class="option love-option" onclick="handleLovePhaseClick(this)">C. 爱</div></div><div id="error-msg" class="error-msg">回答错误</div></div>`;
             renderNewUI(html, 'love_hate');
         }
-
         window.handleLovePhaseClick = function(element) {
-            const container = document.getElementById('loveHateContainer');
-            const errorMsg = document.getElementById('error-msg');
-            
+            const container = document.getElementById('loveHateContainer'), errorMsg = document.getElementById('error-msg');
             if (isLovePhase) {
                 isLovePhase = false;
                 const loveOptions = document.querySelectorAll('.love-option');
-                loveOptions.forEach(opt => {
-                    opt.classList.add('freeze');
-                    opt.classList.add('shake-red');
-                });
-                
-                errorMsg.textContent = '回答错误';
-                errorMsg.style.display = 'block';
-
+                loveOptions.forEach(opt => { opt.classList.add('freeze'); opt.classList.add('shake-red'); });
+                errorMsg.textContent = '回答错误'; errorMsg.style.display = 'block';
                 setTimeout(() => {
-                    loveOptions.forEach(opt => {
-                        opt.style.transition = 'opacity 1.2s ease-in-out';
-                        opt.style.opacity = '0';
-                    });
-                    
+                    loveOptions.forEach(opt => { opt.style.transition = 'opacity 1.2s ease-in-out'; opt.style.opacity = '0'; });
                     setTimeout(() => {
                         const options = document.querySelectorAll('#loveHateOptions .option');
-                        options.forEach((opt, index) => {
+                        options.forEach((opt, idx) => {
                             opt.classList.remove('shake-red', 'freeze');
-                            opt.textContent = ['A. 恨', 'B. 恨', 'C. 恨'][index];
+                            opt.textContent = ['A. 恨', 'B. 恨', 'C. 恨'][idx];
                             opt.className = 'option hate-option final-red';
                             opt.style.transition = 'opacity 1.2s ease-in-out';
                             opt.style.opacity = '1';
@@ -1202,113 +673,71 @@
                 }, 1000);
             }
         };
-
         window.handleHatePhaseClick = function(element) {
-            const container = document.getElementById('loveHateContainer');
-            const errorMsg = document.getElementById('error-msg');
-            errorMsg.style.display = 'none';
-            container.classList.remove('shake');
+            const container = document.getElementById('loveHateContainer'), errorMsg = document.getElementById('error-msg');
+            errorMsg.style.display = 'none'; container.classList.remove('shake');
             takeSnapshot('love_hate');
             renderFinalActionButton();
         };
 
-        // ==============================================
-        // ========== 第十三阶段：最终结局按钮 ============
-        // ==============================================
         function renderFinalActionButton() {
-            const html = `
-                <div class="quiz-container" style="text-align: center;">
-                    <div class="question" style="font-size: 1.6rem; margin-bottom: 30px; color: #e0c0c0;">现在，为一切画上句号吧。</div>
-                    <button class="summary-btn" style="font-size: 1.3rem; padding: 16px 40px; border-color: #a45c5c; color: #e0c0c0; margin-top:10px;" onclick="window.location.href='afterstory1.html'">收集罪证，举报宋令仪</button>
-                </div>
-            `;
+            restartBtn.style.display = 'block';
+            const html = `<div class="quiz-container" style="text-align: center;"><div class="question" style="font-size: 1.6rem; margin-bottom: 30px; color: #e0c0c0;">现在，为一切画上句号吧。</div><button class="summary-btn" style="font-size: 1.3rem; padding: 16px 40px; border-color: #a45c5c; color: #e0c0c0; margin-top:10px;" onclick="window.location.href='afterstory1.html'">收集罪证，举报宋令仪</button></div>`;
             renderNewUI(html, 'final_end');
         }
 
-        // ---------- 监听点击以触发长剧情的下一步 ----------
+        // 点击推进
         document.body.addEventListener('click', (e) => {
             const endCursor = document.getElementById('end-cursor');
-            if (endCursor && !e.target.closest('.option') && !e.target.closest('.summary-btn') && !e.target.closest('.submit-fill-btn')) {
-                if (endCursor) {
-                    renderFinalChoice();
-                }
-                return;
+            if (endCursor && !e.target.closest('.option') && !e.target.closest('.summary-btn') && !e.target.closest('.submit-fill-btn') && !e.target.closest('.click-item') && !e.target.closest('.drop-zone') && !e.target.closest('.restart-btn') && !e.target.closest('.history-btn') && !e.target.closest('.close-x-btn') && !e.target.closest('.history-overlay')) {
+                if (endCursor) { renderFinalChoice(); return; }
             }
-
-            if (e.target.closest('.cursor') || e.target.closest('.summary-btn') || e.target.closest('.option') || e.target.closest('.submit-fill-btn') || e.target.closest('.fill-input') || e.target.closest('.click-item') || e.target.closest('.drop-zone')) return;
+            if (e.target.closest('.cursor') || e.target.closest('.summary-btn') || e.target.closest('.option') || e.target.closest('.submit-fill-btn') || e.target.closest('.fill-input') || e.target.closest('.click-item') || e.target.closest('.drop-zone') || e.target.closest('.restart-btn') || e.target.closest('.history-btn') || e.target.closest('.close-x-btn') || e.target.closest('.history-overlay')) return;
             if (currentStep >= storyLines.length) return;
             appendNextLine();
         });
 
-        // ---------- 右上角 X 按钮事件 ----------
-        closeBtn.addEventListener('click', function() {
+        closeBtn.addEventListener('click', () => {
             sessionStorage.setItem('return_from_wechat', 'true');
             window.location.href = 'wechat.html';
         });
 
-        // ---------- 初始化与读取存档 ----------
+        // 初始化
         document.addEventListener('DOMContentLoaded', () => {
-            const returnFromWechat = sessionStorage.getItem('return_from_wechat');
-            
-            if (returnFromWechat) {
-                const hasSave = loadGameState();
-                if (hasSave) {
-                    sessionStorage.removeItem('return_from_wechat');
-                    
-                    // 1. 优先恢复卷宗列表
-                    loadHistoryState();
-                    
-                    switch (currentStage) {
-                        case 'quiz1': renderQuiz1(); break;
-                        case 'fill1': renderFillBlank1(); break;
-                        case 'quiz2': renderQuiz2(); break;
-                        case 'fill2': renderFillBlank2(); break;
-                        case 'drag1': renderFillStage1(); break;
-                        case 'fill3': renderFillBlank3(); break;
-                        case 'drag2': renderComplexFill(); break;
-                        case 'story_end': renderLongStory(); break;
-                        case 'final_choice': renderFinalChoice(); break;
-                        case 'chain_1': renderNextChainQuestion1(); break;
-                        case 'chain_2': renderNextChainQuestion2(); break;
-                        case 'chain_3': renderNextChainQuestion3(); break;
-                        case 'chain_4': renderNextChainQuestion4(); break;
-                        case 'chain_5': renderNextChainQuestion5(); break;
-                        case 'love_hate': renderLoveHateDilemma(); break;
-                        case 'final_end': renderFinalActionButton(); break;
-                        default: 
-                            const initialText = storyLines.slice(0, currentStep);
-                            displayArea.innerHTML = '';
-                            initialText.forEach((text, index) => {
-                                const lineDiv = document.createElement('div');
-                                lineDiv.className = 'line';
-                                lineDiv.textContent = text;
-                                displayArea.appendChild(lineDiv);
-                            });
-                            if (currentStep < storyLines.length) {
-                                const cursorSpan = document.createElement('span');
-                                cursorSpan.className = 'cursor';
-                                cursorSpan.textContent = '▼';
-                                displayArea.appendChild(cursorSpan);
-                            } else {
-                                const btn = document.createElement('button');
-                                btn.className = 'summary-btn';
-                                btn.textContent = '开始梳理案情';
-                                displayArea.appendChild(btn);
-                                btn.addEventListener('click', function(e) {
-                                    e.stopPropagation();
-                                    renderQuiz1();
-                                });
-                            }
-                            break;
-                    }
-                    return;
+            loadHistoryState();
+            const hasSave = loadGameState();
+            if (hasSave) {
+                if (currentStage === 'intro' && currentStep < storyLines.length) restartBtn.style.display = 'none';
+                else restartBtn.style.display = 'block';
+                switch (currentStage) {
+                    case 'quiz1': renderQuiz1(); break;
+                    case 'fill1': renderFillBlank1(); break;
+                    case 'quiz2': renderQuiz2(); break;
+                    case 'fill2': renderFillBlank2(); break;
+                    case 'drag1': renderFillStage1(); break;
+                    case 'fill3': renderFillBlank3(); break;
+                    case 'drag2': renderComplexFill(); break;
+                    case 'story_end': renderLongStory(); break;
+                    case 'final_choice': renderFinalChoice(); break;
+                    case 'chain_1': renderNextChainQuestion1(); break;
+                    case 'chain_2': renderNextChainQuestion2(); break;
+                    case 'chain_3': renderNextChainQuestion3(); break;
+                    case 'chain_4': renderNextChainQuestion4(); break;
+                    case 'chain_5': renderNextChainQuestion5(); break;
+                    case 'love_hate': renderLoveHateDilemma(); break;
+                    case 'final_end': renderFinalActionButton(); break;
+                    default:
+                        const initialText = storyLines.slice(0, currentStep);
+                        displayArea.innerHTML = '';
+                        initialText.forEach(t => { const l = document.createElement('div'); l.className = 'line'; l.textContent = t; displayArea.appendChild(l); });
+                        if (currentStep < storyLines.length) { const c = document.createElement('span'); c.className = 'cursor'; c.textContent = '▼'; displayArea.appendChild(c); restartBtn.style.display = 'none'; }
+                        else { const btn = document.createElement('button'); btn.className = 'summary-btn'; btn.textContent = '开始梳理案情'; displayArea.appendChild(btn); btn.addEventListener('click', (e) => { e.stopPropagation(); renderQuiz1(); }); restartBtn.style.display = 'block'; }
+                        break;
                 }
+            } else {
+                restartBtn.style.display = 'none';
+                appendNextLine();
             }
-            
-            sessionStorage.removeItem('return_from_wechat');
-            clearGameState();
-            historyOrder = [];
-            appendNextLine();
         });
     </script>
 </body>
