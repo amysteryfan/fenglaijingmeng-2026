@@ -333,7 +333,7 @@
             const contentPanel = document.getElementById('contentPanel');
             const btnExit = document.getElementById('btnExit');
 
-            const propertyBody = '尊敬的业主您好，您家的2026年上半年物业费还未缴纳，请您尽快到<strong>水云庭</strong>物业服务中心结算相关费用，感谢您的支持与配合。\n\n水云庭物业公司\n2026年6月30日';
+            const propertyBody = '尊敬的业主您好，您家的2026年六月份物业费还未缴纳，请您尽快到<strong>水云庭</strong>物业服务中心结算相关费用，感谢您的支持与配合。\n\n水云庭物业公司\n2026年6月30日';
             const inviteBody = '尊敬的宋令仪女士：\n\n向您致以最诚挚的问候！您已成功入选第三届学术交流研讨会参会名单，会议时间、会议地址、参会要求、住宿预定等信息将另行通知，请您耐心等待。\n\n为确保会议筹备工作有序进行，请您协助完成参会确认事宜：请您于2022年12月15日24:00之前，通过邮件反馈是否前来参会，逾期未回复将视为自动放弃参会资格。\n\n如有问题，欢迎在工作时间致电或发邮件询问组委会。\n\n学术交流研讨组委会\n2022年11月30日';
 
             const draftBody = `妈妈：
@@ -349,7 +349,7 @@
                         {
                             sender: '水云庭物业公司',
                             subject: '缴费提醒',
-                            preview: '尊敬的业主您好，您家的2026年上半年物业费还未缴纳...',
+                            preview: '尊敬的业主您好，您家的2026年六月份物业费还未缴纳...',
                             date: '2026-06-30',
                             isExpired: false,
                             fullContent: {
@@ -430,6 +430,15 @@
                                 date: '2023-12-23',
                                 body: '令仪，今年还回来吗？'
                             }
+                        },
+                        // ★ 新增邮件：2023-10-22 发给 Juliet
+                        {
+                            sender: '宋令仪',
+                            recipient: 'Juliet',
+                            subject: '论文不要再发到我的邮箱了',
+                            preview: '论文不要再发到我的邮箱了，我们改成在微信上交易吧。',
+                            date: '2023-10-22',
+                            replyContent: 'Juliet‌：\n\n论文不要再发到我的邮箱了，我们改成在微信上交易吧。钱我会照常转给你。\n\n                                 Lynne'
                         },
                         {
                             sender: '宋令仪',
@@ -631,12 +640,13 @@
                             <div class="back-link" id="backBtn">${backText}</div>
                             <div class="letter-header">
                                 <div class="field"><strong>发件人：</strong>${email.sender} <songlingyi@Email.com></div>
-                                <div class="field"><strong>收件人：</strong>${email.recipient} <songyuanshan@dingfeng.com></div>
+                                <div class="field"><strong>收件人：</strong>${email.recipient}${email.recipient === 'Juliet' ? '' : ' <songyuanshan@dingfeng.com>'}</div>
                                 <div class="field"><strong>时间：</strong>${email.date}</div>
                             </div>
                             <div class="letter-body">${email.replyContent.replace(/\n/g, '<br>')}</div>
                     `;
 
+                    // 如果有嵌套回复则显示
                     if (email.nested1) {
                         html += renderNestedReply(email.nested1);
                     }
