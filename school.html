@@ -126,6 +126,29 @@
             text-decoration: underline;
         }
 
+        /* --- 【新增】优雅的关闭按钮 --- */
+        .close-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background-color: #8B0000;
+            color: #fff;
+            font-size: 18px;
+            font-weight: normal;
+            cursor: pointer;
+            transition: background 0.3s, transform 0.2s;
+            text-decoration: none;
+            border: none;
+        }
+
+        .close-btn:hover {
+            background-color: #6d0000;
+            transform: scale(1.05); /* 悬停微放大效果 */
+        }
+
         /* --- 主体布局容器 --- */
         .main-container {
             display: flex;
@@ -331,6 +354,7 @@
             }
             .top-right-container {
                 margin-left: auto;
+                gap: 15px; /* 手机上缩小元素间距 */
             }
             .search-box input { width: 100px; }
             .main-container {
@@ -376,6 +400,8 @@
                 <button id="schoolSearchBtn">搜索</button>
             </div>
             <a href="forum.html" class="back-forum-link">↩ 进入论坛</a>
+            <!-- 【新增】页面右上角跳转至 mail_xu.html 的 X 按钮 -->
+            <a href="mail_xu.html" class="close-btn">✕</a>
         </div>
     </header>
 
