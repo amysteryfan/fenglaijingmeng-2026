@@ -341,7 +341,7 @@
                 step1Other: { from: 'other', text: '你知道？呵呵，你说得真逗。我不就是宋令仪吗？', isCorrect: true },
                 step1Correct: { from: 'me', text: '你是宋令仪。并且，你在艾希皇后号杀了陈楚梦。', isCorrect: true },
                 step2Other: { from: 'other', text: '你，你在说什么？', isCorrect: true },
-                step2Correct: { from: 'me', text: '答案差点就要颠倒过来。但是你房间里的那个麻醉剂告诉我，某人的计划恐怕破产了。', isCorrect: true },
+                step2Correct: { from: 'me', text: '答案差点就要颠倒过来。但是你房间里那个未使用的麻醉剂告诉我，某人的计划恐怕破产了。', isCorrect: true },
                 step3Other: { from: 'other', text: '你说得我都有点糊涂了。', isCorrect: true },
                 step3Correct: { from: 'me', text: '尸体已经被你扔到大海里了吧？连同凶器一起。至于凶器，恐怕就是你房间消失的红酒。', isCorrect: true },
                 step4Other1: { from: 'other', text: '……这你都查到了。还问我干什么？', isCorrect: true },
@@ -459,7 +459,7 @@
                     } else if (step === 1) {
                         return `<div class="chat-input-area"><div class="input-wrapper"><span class="fill-text">你是</span><input class="fill-blank" id="blank1" maxlength="10"><span class="fill-text">，并且，你在艾希皇后号杀了</span><input class="fill-blank" id="blank2" maxlength="10"><span class="fill-text">。</span></div><button class="send-btn" id="sendBtn1">发送</button></div>`;
                     } else if (step === 2) {
-                        return `<div class="chat-input-area"><div class="input-wrapper"><span class="fill-text">答案差点就要颠倒过来。但是你房间里的那个</span><input class="fill-blank" id="blank3" maxlength="10"><span class="fill-text">告诉我，某人的计划恐怕破产了。</span></div><button class="send-btn" id="sendBtn2">发送</button></div>`;
+                        return `<div class="chat-input-area"><div class="input-wrapper"><span class="fill-text">答案差点就要颠倒过来。但是你房间里那个未使用的</span><input class="fill-blank" id="blank3" maxlength="10"><span class="fill-text">告诉我，某人的计划恐怕破产了。</span></div><button class="send-btn" id="sendBtn2">发送</button></div>`;
                     } else if (step === 3) {
                         return `<div class="chat-input-area"><div class="input-wrapper"><span class="fill-text">尸体已经被你扔到大海里了吧？连同凶器一起。至于凶器，恐怕就是你房间消失的</span><input class="fill-blank" id="blank4" maxlength="10"><span class="fill-text">。</span></div><button class="send-btn" id="sendBtn3">发送</button></div>`;
                     } else if (step === 4) {
@@ -532,7 +532,7 @@
                         correct = (a1 === '宋令仪' && a2 === '陈楚梦');
                     } else if (level === 2) {
                         const a3 = document.getElementById('blank3').value.trim();
-                        sentMsg = `答案差点就要颠倒过来。但是你房间里的那个${a3}告诉我，某人的计划恐怕破产了。`;
+                        sentMsg = `答案差点就要颠倒过来。但是你房间里那个未使用的${a3}告诉我，某人的计划恐怕破产了。`;
                         correct = (a3 === '麻醉剂');
                     } else if (level === 3) {
                         const a4 = document.getElementById('blank4').value.trim();
