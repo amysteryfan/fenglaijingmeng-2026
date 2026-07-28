@@ -538,10 +538,27 @@
         const confirmWechatPwd = document.getElementById('confirmWechatPwd');
         const cancelWechatPwd = document.getElementById('cancelWechatPwd');
 
+        // 检查本地存储中是否已记录微信成功解锁
+        function isWechatUnlocked() {
+            return localStorage.getItem('wechat_unlocked') === 'true';
+        }
+
+        // 设置微信解锁状态
+        function setWechatUnlocked() {
+            localStorage.setItem('wechat_unlocked', 'true');
+        }
+
         wechatIcon.addEventListener('click', function() {
             wechatPwdDialog.classList.add('active');
-            wechatPwdInput.value = '';
             wechatPwdError.classList.remove('show');
+            
+            // 如果微信已经成功解锁过，自动填充密码
+            if (isWechatUnlocked()) {
+                wechatPwdInput.value = 'order';
+            } else {
+                wechatPwdInput.value = '';
+            }
+            
             wechatPwdInput.focus();
         });
 
@@ -552,6 +569,8 @@
         confirmWechatPwd.addEventListener('click', function() {
             const answer = wechatPwdInput.value.trim();
             if (answer.toLowerCase() === 'order') {
+                // 记录微信已成功解锁
+                setWechatUnlocked();
                 wechatPwdDialog.classList.remove('active');
                 window.location.href = 'wechat.html';
             } else {
