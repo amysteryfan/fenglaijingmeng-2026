@@ -690,7 +690,7 @@
                         <input type="password" id="article-password" placeholder="请输入密码" onkeydown="if(event.key==='Enter') checkArticlePassword()">
                         <button onclick="checkArticlePassword()">解锁</button>
                     </div>
-                    <div id="error-message" class="error-msg">四字母，不区分大小写</div>
+                    <div id="error-message" class="error-msg">四位英文字母，使用小写</div>
                 </div>
 
                 <!-- 状态2：已解锁 / 排版优化的帖文列表 -->
@@ -829,7 +829,7 @@
             } else {
                 // 密码错误（空字符串时也显示错误提示，符合要求）
                 errorMsg.style.display = 'block';
-                errorMsg.innerText = '四字母，不区分大小写';
+                errorMsg.innerText = '四位英文字母，使用小写';
             }
         }
     </script>
