@@ -20,7 +20,7 @@
         a { text-decoration: none; color: inherit; transition: 0.2s; }
         ul { list-style: none; }
 
-        /* --- 顶部 Header (更新布局) --- */
+        /* --- 顶部 Header --- */
         .header {
             background-color: #fff;
             height: 60px;
@@ -38,20 +38,16 @@
             display: flex; 
             align-items: center; 
             gap: 10px; 
-            margin-right: auto; /* 将Logo推到最左侧 */
+            margin-right: auto;
         }
-        .logo-img {
-            height: 45px;
-            width: auto;
-            object-fit: contain;
-        }
+        .logo-img { height: 45px; width: auto; object-fit: contain; }
         .site-name { font-size: 20px; font-weight: bold; color: var(--primary-red); letter-spacing: 1px; }
 
-        /* ===== 右侧功能区 (搜索 + 退出按钮) ===== */
+        /* ===== 右侧功能区 ===== */
         .header-right {
             display: flex;
             align-items: center;
-            gap: 15px; /* 按钮与搜索框的间距 */
+            gap: 15px;
         }
 
         /* ===== 搜索区域及下拉菜单容器 ===== */
@@ -59,7 +55,7 @@
             display: flex; 
             align-items: center; 
             gap: 8px; 
-            position: relative; /* 为下拉菜单提供绝对定位基点 */
+            position: relative;
         }
         .search-input {
             padding: 6px 12px;
@@ -81,13 +77,13 @@
         }
         .search-btn:hover { background-color: #8a1414; }
 
-        /* 搜索下拉菜单样式 */
+        /* 搜索下拉菜单 */
         .search-dropdown {
-            display: none; /* 默认隐藏 */
+            display: none;
             position: absolute;
-            top: 100%; /* 紧贴搜索框下方 */
+            top: 100%;
             left: 0;
-            width: 200px; /* 与搜索输入框宽度严格保持一致 */
+            width: 200px;
             background-color: #fff;
             border: 1px solid #ccc;
             border-radius: 4px;
@@ -105,20 +101,13 @@
             color: #333;
             cursor: pointer;
             transition: background 0.2s;
-            /* 严格限制宽度和文本截断 */
             max-width: 100%;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
         }
-        .search-dropdown-item:hover {
-            background-color: #f0f4f8;
-            color: var(--link-blue);
-        }
-        .search-dropdown-item:not(:last-child) {
-            border-bottom: 1px solid #f0f0f0;
-        }
-        /* 当没有搜索结果时的提示样式 */
+        .search-dropdown-item:hover { background-color: #f0f4f8; color: var(--link-blue); }
+        .search-dropdown-item:not(:last-child) { border-bottom: 1px solid #f0f0f0; }
         .search-dropdown-empty {
             padding: 10px 12px;
             color: #999;
@@ -126,7 +115,7 @@
             text-align: center;
         }
 
-        /* ===== 新增：退出/关闭按钮样式 ===== */
+        /* ===== 退出/关闭按钮样式 ===== */
         .close-btn {
             display: inline-flex;
             align-items: center;
@@ -169,14 +158,62 @@
             display: flex;
             gap: 20px;
             font-size: 15px;
+            flex-wrap: wrap;
         }
-        .sub-nav a { color: var(--link-blue); font-weight: bold; }
+        .sub-nav a { color: var(--link-blue); font-weight: bold; cursor: pointer; }
         .sub-nav a:hover { color: var(--primary-red); }
         .sub-nav .active { color: var(--primary-red); border-bottom: 2px solid var(--primary-red); padding-bottom: 2px; }
 
+        /* ===== 【修改】浏览足迹视图面板样式 ===== */
+        #history-panel {
+            display: none; /* 默认隐藏 */
+            padding: 20px;
+            background: #fff;
+            font-size: 14px;
+            /* 保证在隐藏帖子列表时铺满原本列表的位置 */
+        }
+        #history-panel .history-title {
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: var(--text-main);
+            border-bottom: 1px solid #eee;
+            padding-bottom: 10px;
+        }
+        #history-list li {
+            padding: 8px 0;
+            border-bottom: 1px dashed #f0f0f0;
+        }
+        #history-list li:last-child { border-bottom: none; }
+        #history-list a {
+            color: var(--link-blue);
+            display: block;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        #history-list a:hover { color: var(--primary-red); text-decoration: underline; }
+        #history-list .empty-msg { color: #999; padding: 20px 0; text-align: center; font-size: 15px; }
+        
+        #clear-history-btn {
+            margin-top: 15px;
+            padding: 8px 20px;
+            border: 1px solid var(--primary-red);
+            color: var(--primary-red);
+            background: transparent;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.2s;
+            display: inline-block;
+        }
+        #clear-history-btn:hover {
+            background: var(--primary-red);
+            color: #fff;
+        }
+
         /* --- 帖子列表 --- */
         .thread-list { padding: 0; }
-        
         .thread-item {
             display: flex;
             align-items: center;
@@ -211,12 +248,13 @@
             text-overflow: ellipsis;
             margin-bottom: 5px;
             display: block;
+            cursor: pointer;
         }
         .thread-title:hover { color: var(--primary-red); text-decoration: underline; }
         .thread-info { font-size: 12px; color: #999; }
         .author-name { color: #666; margin-right: 10px; }
 
-        /* ===== 分页按钮模块 ===== */
+        /* ===== 分页按钮 ===== */
         .pagination {
             display: flex;
             justify-content: center;
@@ -259,6 +297,7 @@
         .pagination .page-btn:not(.active):not(.dots):hover {
             border-color: var(--primary-red);
             color: var(--primary-red);
+            cursor: pointer;
         }
 
         /* --- 页脚 --- */
@@ -280,18 +319,20 @@
             .header-right { gap: 10px; }
             .search-input { width: 120px; }
             .search-dropdown { width: 120px; }
-            .close-btn { width: 28px; height: 28px; font-size: 18px; } /* 手机端缩小按钮 */
+            .close-btn { width: 28px; height: 28px; font-size: 18px; }
             .container { margin: 0; width: 100%; box-shadow: none; }
+            .sub-nav { padding: 8px 12px; gap: 12px; font-size: 14px; }
             .thread-item { padding: 12px 15px; }
             .reply-box { width: 40px; margin-right: 10px; }
             .reply-num { font-size: 14px; }
+            #history-panel { padding: 15px; font-size: 13px; }
+            #history-list li { padding: 6px 0; }
             
-            /* ===== 【修改点】：仅针对手机端取消截断，允许换行 ===== */
             .thread-title {
                 white-space: normal !important;
                 overflow: visible !important;
                 text-overflow: clip !important;
-                line-height: 1.5; /* 增加一点行高，方便两行阅读 */
+                line-height: 1.5;
             }
         }
     </style>
@@ -304,17 +345,12 @@
             <img src="images/forum_logo.png" alt="明德校徽" class="logo-img">
             <span class="site-name">明德私立学校论坛</span>
         </div>
-        <!-- ===== 右侧功能区：搜索 + 退出 ===== -->
         <div class="header-right">
             <div class="search-area">
                 <input type="text" class="search-input" id="searchInput" placeholder="输入关键词搜索...">
                 <button class="search-btn" id="searchBtn">搜索</button>
-                
-                <!-- 下拉菜单容器 -->
                 <div class="search-dropdown" id="searchDropdown"></div>
             </div>
-            
-            <!-- 新增：退出论坛按钮 -->
             <a href="mail_xu.html" class="close-btn" title="退出论坛">&times;</a>
         </div>
     </header>
@@ -323,15 +359,26 @@
     <div class="container">
         <!-- 简易子导航 -->
         <nav class="sub-nav">
-            <a href="#" class="active">综合讨论区</a>
-            <a href="#">社团分享</a>
-            <a href="#">失物招领</a>
-            <a href="#">二手交易</a>
-            <a href="#">校友交流</a>
+            <a href="javascript:void(0);" class="active section-tab">综合讨论区</a>
+            <a href="javascript:void(0);" class="section-tab">社团分享</a>
+            <a href="javascript:void(0);" class="section-tab">失物招领</a>
+            <a href="javascript:void(0);" class="section-tab">二手交易</a>
+            <a href="javascript:void(0);" class="section-tab">校友交流</a>
+            <!-- ===== 【修改】浏览足迹 Tab ===== -->
+            <a href="javascript:void(0);" id="history-tab" class="history-tab" style="cursor:pointer;">浏览足迹</a>
         </nav>
 
+        <!-- ===== 【修改】浏览足迹视图面板 ===== -->
+        <div id="history-panel">
+            <div class="history-title">📖 我的浏览足迹</div>
+            <ul id="history-list">
+                <li class="empty-msg">暂无浏览足迹</li>
+            </ul>
+            <button id="clear-history-btn">清除足迹</button>
+        </div>
+
         <!-- 帖子列表 -->
-        <ul class="thread-list">
+        <ul class="thread-list" id="threadList">
             <!-- 置顶帖 -->
             <li class="thread-item" style="background-color: #fffbfb;">
                 <div class="reply-box">
@@ -343,7 +390,7 @@
                 </div>
             </li>
 
-            <!-- 普通帖子 (虚构数据) -->
+            <!-- 普通帖子 -->
             <li class="thread-item">
                 <div class="reply-box">
                     <span class="reply-num">128</span>
@@ -445,7 +492,7 @@
         </ul>
 
         <!-- 分页按钮 -->
-        <div class="pagination">
+        <div class="pagination" id="paginationDiv">
             <span class="page-btn active">1</span>
             <span class="page-btn">2</span>
             <span class="page-btn">3</span>
@@ -462,11 +509,12 @@
         <p>本站内容纯属虚构，仅供演示使用</p>
     </footer>
 
-    <!-- ===== 搜索下拉菜单交互脚本 (无需修改) ===== -->
+    <!-- ===== 全局脚本 ===== -->
     <script>
         (function() {
             'use strict';
 
+            // 1. 定义搜索数据映射表
             const searchData = {
                 "宋令仪": [
                     { text: "差不多得了吧？一个生日会炫耀半个月了。宋某仪你是没有别的事情能显摆了是吗？", url: "forum_post_1.html" },
@@ -480,10 +528,137 @@
                 "陈楚梦": [ { text: "陈xx那事儿都听说了吗？？", url: "forum_post_7.html" } ]
             };
 
+            // 2. 获取DOM元素
             const searchInput = document.getElementById('searchInput');
             const searchBtn = document.getElementById('searchBtn');
             const dropdown = document.getElementById('searchDropdown');
+            const historyTab = document.getElementById('history-tab');
+            const historyPanel = document.getElementById('history-panel');
+            const historyList = document.getElementById('history-list');
+            const clearBtn = document.getElementById('clear-history-btn');
+            const threadList = document.getElementById('threadList');
+            const paginationDiv = document.getElementById('paginationDiv');
+            const sectionTabs = document.querySelectorAll('.section-tab');
 
+            // =============================================
+            // 3. 浏览足迹持久化模块
+            // =============================================
+            const STORAGE_KEY = 'forumBrowsingHistory';
+
+            function getHistory() {
+                try {
+                    const data = localStorage.getItem(STORAGE_KEY);
+                    return data ? JSON.parse(data) : [];
+                } catch (e) {
+                    return [];
+                }
+            }
+
+            function saveHistory(history) {
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(history));
+            }
+
+            function addToHistory(title, url) {
+                if (!title || !url || url.startsWith('javascript') || url.startsWith('#')) return;
+                let history = getHistory();
+                history = history.filter(item => item.url !== url);
+                history.unshift({ title, url });
+                saveHistory(history);
+                // 如果当前在足迹界面，刷新渲染
+                if (historyPanel.style.display === 'block') {
+                    renderHistory();
+                }
+            }
+
+            function renderHistory() {
+                const history = getHistory();
+                historyList.innerHTML = '';
+                if (history.length === 0) {
+                    const emptyLi = document.createElement('li');
+                    emptyLi.className = 'empty-msg';
+                    emptyLi.textContent = '暂无浏览足迹';
+                    historyList.appendChild(emptyLi);
+                } else {
+                    history.forEach(item => {
+                        const li = document.createElement('li');
+                        const a = document.createElement('a');
+                        a.href = item.url;
+                        a.textContent = item.title;
+                        li.appendChild(a);
+                        historyList.appendChild(li);
+                    });
+                }
+            }
+
+            // =============================================
+            // 4. 【核心修改】视图切换逻辑
+            // =============================================
+
+            // 切换到常规板块视图
+            function showSectionView() {
+                historyPanel.style.display = 'none';
+                threadList.style.display = 'block';
+                paginationDiv.style.display = 'flex';
+            }
+
+            // 切换到足迹视图
+            function showHistoryView() {
+                renderHistory(); // 先刷新数据
+                historyPanel.style.display = 'block';
+                threadList.style.display = 'none';
+                paginationDiv.style.display = 'none';
+            }
+
+            // 绑定常规导航标签点击事件
+            sectionTabs.forEach(tab => {
+                tab.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    // 清除所有导航项的高亮
+                    sectionTabs.forEach(t => t.classList.remove('active'));
+                    historyTab.classList.remove('active');
+                    // 高亮当前点击的标签
+                    this.classList.add('active');
+
+                    showSectionView();
+                });
+            });
+
+            // 绑定“浏览足迹”点击事件
+            historyTab.addEventListener('click', function(e) {
+                e.preventDefault();
+                // 清除所有常规标签的高亮
+                sectionTabs.forEach(t => t.classList.remove('active'));
+                // 高亮“浏览足迹”标签
+                this.classList.add('active');
+
+                showHistoryView();
+            });
+
+            // =============================================
+            // 5. 监听帖子点击与处理
+            // =============================================
+            document.querySelector('.thread-list').addEventListener('click', function(e) {
+                const target = e.target.closest('.thread-title');
+                if (target) {
+                    const href = target.getAttribute('href');
+                    if (href && !href.startsWith('javascript') && !href.startsWith('#')) {
+                        const title = target.textContent.trim();
+                        addToHistory(title, href);
+                    }
+                }
+            });
+
+            // 清除足迹
+            clearBtn.addEventListener('click', function() {
+                if (confirm('确定要清除所有浏览足迹吗？')) {
+                    localStorage.removeItem(STORAGE_KEY);
+                    renderHistory();
+                }
+            });
+
+            // =============================================
+            // 6. 原有搜索下拉模块（注入足迹记录）
+            // =============================================
             function renderDropdown(keyword) {
                 dropdown.innerHTML = '';
                 const trimmedKeyword = keyword.trim();
@@ -505,6 +680,7 @@
                     itemDiv.className = 'search-dropdown-item';
                     itemDiv.textContent = item.text;
                     itemDiv.addEventListener('click', function() {
+                        addToHistory(item.text, item.url);
                         window.location.href = item.url;
                     });
                     dropdown.appendChild(itemDiv);
@@ -528,7 +704,7 @@
                 }
             });
 
-            console.log('搜索下拉菜单功能已启动！');
+            console.log('搜索下拉菜单与浏览足迹视图切换已启动！');
         })();
     </script>
 
