@@ -17,15 +17,12 @@
             padding: 0;
             width: 100%;
             height: 100%;
-            overflow: hidden;       /* 彻底隐藏滚动条 */
-            background-color: #000; /* 防止图片加载时出现白边 */
+            overflow: hidden;
+            background-color: #000;
         }
 
-        /* ================================
-           桌面容器与壁纸
-           ================================ */
         #desktop {
-            position: fixed;       /* 固定定位，绝对贴合视口 */
+            position: fixed;
             top: 0;
             left: 0;
             width: 100%;
@@ -39,7 +36,6 @@
             font-family: 'Courier New', Courier, monospace;
         }
 
-        /* 左侧软件图标区域 */
         .desktop-icons {
             position: absolute;
             top: 50px;
@@ -100,9 +96,6 @@
             border-radius: 0;
         }
 
-        /* ================================
-           文件夹窗口 (模拟Windows)
-           ================================ */
         .window-overlay {
             position: absolute;
             top: 50%;
@@ -159,7 +152,6 @@
             min-height: 160px;
         }
 
-        /* 文件夹内的图标样式 */
         .file-icon {
             display: flex;
             flex-direction: column;
@@ -191,7 +183,6 @@
             text-shadow: none;
         }
 
-        /* 密码弹窗（通用） */
         .pwd-dialog {
             position: absolute;
             top: 50%;
@@ -259,7 +250,6 @@
             display: block;
         }
 
-        /* 移动端适配 */
         @media (max-width: 768px) {
             .desktop-icons { top: 20px; left: 10px; gap: 18px; }
             .desktop-icon { width: 65px; padding: 5px; }
@@ -272,7 +262,6 @@
             .window-overlay { width: 90vw; }
         }
 
-        /* 任务栏 */
         #taskbar {
             position: absolute;
             bottom: 0;
@@ -321,8 +310,6 @@
 </head>
 <body>
     <div id="desktop">
-        
-        <!-- 左侧图标区域 -->
         <div class="desktop-icons">
             <div class="desktop-icon" id="folderIcon">
                 <div class="icon-img">
@@ -366,7 +353,6 @@
                 <div class="icon-label">回收站</div>
             </div>
 
-            <!-- 微信图标（点击弹出密码框） -->
             <div class="desktop-icon" id="wechatIcon">
                 <div class="icon-img">
                     <svg viewBox="0 0 32 32">
@@ -377,7 +363,6 @@
             </div>
         </div>
 
-        <!-- 底部任务栏 -->
         <div id="taskbar">
             <div class="taskbar-start">
                 <span>★</span> 开始
@@ -388,17 +373,14 @@
             </div>
         </div>
 
-        <!-- 文件夹窗口 -->
         <div class="window-overlay" id="folderWindow">
             <div class="window-titlebar">
                 <span>📁 文件夹</span>
                 <div class="close-btn" id="closeWindow">✖</div>
             </div>
-            <div class="window-content" id="windowContent">
-            </div>
+            <div class="window-content" id="windowContent"></div>
         </div>
 
-        <!-- 文件夹密码弹窗 -->
         <div class="pwd-dialog" id="pwdDialog">
             <label for="pwdInput">我的委托人叫什么名字？</label>
             <input type="text" id="pwdInput" placeholder="请输入名字">
@@ -409,7 +391,6 @@
             </div>
         </div>
 
-        <!-- 微信密码弹窗 -->
         <div class="pwd-dialog" id="wechatPwdDialog">
             <label for="wechatPwdInput">Is my watchword. Method, _____, and the little grey cells.</label>
             <input type="text" id="wechatPwdInput" placeholder="请输入密码">
@@ -422,7 +403,6 @@
     </div>
 
     <script>
-        // 时钟
         function updateClock() {
             const now = new Date();
             document.getElementById('clock').textContent = now.toLocaleTimeString('zh-CN', { hour12: false });
@@ -430,7 +410,6 @@
         setInterval(updateClock, 1000);
         updateClock();
 
-        // 桌面图标跳转（仅处理带有 data-href 的图标）
         document.querySelectorAll('.desktop-icon[data-href]').forEach(icon => {
             icon.addEventListener('click', function(e) {
                 window.location.href = this.getAttribute('data-href');
@@ -449,6 +428,16 @@
         const cancelPwdBtn = document.getElementById('cancelPwd');
 
         let folderState = 0;
+        // 文件夹委托解锁状态键名
+        const FOLDER_UNLOCK_KEY = 'folder_0625_unlocked';
+
+        function isFolderUnlocked() {
+            return localStorage.getItem(FOLDER_UNLOCK_KEY) === 'true';
+        }
+
+        function setFolderUnlocked() {
+            localStorage.setItem(FOLDER_UNLOCK_KEY, 'true');
+        }
 
         function renderFolderContents() {
             if (folderState === 0) {
@@ -463,10 +452,17 @@
                     </div>
                 `;
                 document.getElementById('subFolder').addEventListener('click', function() {
-                    pwdDialog.classList.add('active');
-                    pwdInput.value = '';
-                    pwdError.classList.remove('show');
-                    pwdInput.focus();
+                    if (isFolderUnlocked()) {
+                        // 已解锁：直接显示文件列表
+                        folderState = 1;
+                        renderFolderContents();
+                    } else {
+                        // 未解锁：弹出密码框
+                        pwdDialog.classList.add('active');
+                        pwdInput.value = '';
+                        pwdError.classList.remove('show');
+                        pwdInput.focus();
+                    }
                 });
             } else if (folderState === 1) {
                 windowContent.innerHTML = `
@@ -516,6 +512,8 @@
         confirmPwdBtn.addEventListener('click', function() {
             const answer = pwdInput.value.trim();
             if (answer === '季清越') {
+                // 记录解锁状态
+                setFolderUnlocked();
                 pwdDialog.classList.remove('active');
                 folderState = 1;
                 renderFolderContents();
@@ -538,28 +536,25 @@
         const confirmWechatPwd = document.getElementById('confirmWechatPwd');
         const cancelWechatPwd = document.getElementById('cancelWechatPwd');
 
-        // 检查本地存储中是否已记录微信成功解锁
         function isWechatUnlocked() {
             return localStorage.getItem('wechat_unlocked') === 'true';
         }
 
-        // 设置微信解锁状态
         function setWechatUnlocked() {
             localStorage.setItem('wechat_unlocked', 'true');
         }
 
         wechatIcon.addEventListener('click', function() {
-            wechatPwdDialog.classList.add('active');
-            wechatPwdError.classList.remove('show');
-            
-            // 如果微信已经成功解锁过，自动填充密码
             if (isWechatUnlocked()) {
-                wechatPwdInput.value = 'order';
+                // 已经解锁，直接跳转
+                window.location.href = 'wechat.html';
             } else {
-                wechatPwdInput.value = '';
+                // 未解锁，显示密码框
+                wechatPwdDialog.classList.add('active');
+                wechatPwdError.classList.remove('show');
+                wechatPwdInput.value = '';   // 首次为空
+                wechatPwdInput.focus();
             }
-            
-            wechatPwdInput.focus();
         });
 
         cancelWechatPwd.addEventListener('click', function() {
@@ -569,7 +564,6 @@
         confirmWechatPwd.addEventListener('click', function() {
             const answer = wechatPwdInput.value.trim();
             if (answer.toLowerCase() === 'order') {
-                // 记录微信已成功解锁
                 setWechatUnlocked();
                 wechatPwdDialog.classList.remove('active');
                 window.location.href = 'wechat.html';
