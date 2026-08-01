@@ -68,9 +68,49 @@
             display: flex;
             align-items: center;
             gap: 20px;
+            /* 允许手机端自动换行折行 */
+            flex-wrap: wrap;
+            justify-content: flex-end;
         }
 
-        /* --- 搜索框容器 --- */
+        /* --- 搜索框容器（作为历史记录和输入框的外包） --- */
+        .search-wrapper {
+            position: relative; /* 用于定位下拉菜单 */
+            display: flex;
+            flex-direction: column; /* 垂直排列，让历史记录在上方 */
+            align-items: flex-end;  /* 整体靠右对齐 */
+            gap: 4px;               /* 历史记录与搜索框的间距 */
+            width: 230px;           /* 电脑端固定宽度 */
+        }
+
+        /* --- 搜索历史记录区（放置在搜索框正上方） --- */
+        .search-history-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: flex-end; /* 靠右对齐 */
+            gap: 6px;
+            max-width: 100%;
+            font-size: 12px;
+            color: #666;
+            line-height: 1.2;
+        }
+
+        .search-history-tag {
+            background-color: #f1f1f1;
+            padding: 2px 10px;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: background 0.2s, color 0.2s;
+            white-space: nowrap;
+            color: #555;
+        }
+
+        .search-history-tag:hover {
+            background-color: #8B0000;
+            color: #fff;
+        }
+
+        /* --- 搜索框 --- */
         .search-box {
             display: flex;
             align-items: center;
@@ -79,6 +119,7 @@
             padding-left: 15px;
             border: 1px solid transparent;
             transition: all 0.3s;
+            width: 100%; /* 跟随 wrapper 宽度 */
         }
         
         .search-box:focus-within {
@@ -95,6 +136,7 @@
             width: 160px;
             font-size: 14px;
             color: #333;
+            flex: 1; /* 占据剩余空间 */
         }
 
         .search-box button {
@@ -107,10 +149,51 @@
             font-size: 14px;
             transition: background 0.3s;
             margin: 2px;
+            white-space: nowrap;
         }
         
         .search-box button:hover {
             background: #6d0000;
+        }
+
+        /* --- 搜索下拉菜单 --- */
+        .search-dropdown {
+            position: absolute;
+            top: 100%; /* 紧贴搜索框底部 */
+            left: 0;
+            width: 100%; /* 宽度完全等于搜索框 */
+            background: #fff;
+            border: 1px solid #ddd;
+            border-radius: 0 0 8px 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.08);
+            display: none; /* 默认隐藏 */
+            z-index: 1000;
+            overflow: hidden;
+        }
+
+        .search-dropdown.active {
+            display: block;
+        }
+
+        .search-dropdown-item {
+            padding: 12px 16px;
+            cursor: pointer;
+            font-size: 14px;
+            color: #333;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            border-bottom: 1px solid #f9f9f9;
+            transition: background 0.2s;
+        }
+
+        .search-dropdown-item:last-child {
+            border-bottom: none;
+        }
+
+        .search-dropdown-item:hover {
+            background-color: #f4f4f4;
+            color: #8B0000;
         }
 
         /* --- 返回论坛按钮 --- */
@@ -347,31 +430,48 @@
         @media (max-width: 1000px) {
             .top-bar {
                 padding: 0 20px;
-                flex-wrap: wrap;
+                flex-wrap: wrap; /* 允许通栏折行 */
                 height: auto;
                 padding-top: 10px;
                 padding-bottom: 10px;
             }
             .top-right-container {
-                margin-left: auto;
-                gap: 15px;
+                gap: 8px;
             }
-            .search-box input { width: 100px; }
+
+            /* 手机端搜索包裹器自适应宽度 */
+            .search-wrapper {
+                width: 100%;
+                max-width: 220px;
+                align-items: flex-end;
+            }
+            .search-box input {
+                width: 80px;
+                flex: 1;
+            }
+
             .main-container {
                 flex-direction: column;
             }
+
+            /* 手机端侧边栏换行排列（3列） */
             .sidebar {
                 width: 100%;
                 flex-direction: row;
-                overflow-x: auto;
-                padding: 0;
+                flex-wrap: wrap;
+                justify-content: center;
+                padding: 5px 10px;
             }
             .nav-item {
-                padding: 15px 20px;
+                padding: 12px 15px;
                 border-bottom: none;
                 border-right: 1px solid rgba(255,255,255,0.1);
                 white-space: nowrap;
+                flex: 0 0 33.33%; /* 三等分 */
+                box-sizing: border-box;
+                border-bottom: 1px solid rgba(255,255,255,0.1);
             }
+            .sidebar::-webkit-scrollbar { display: none; }
             .nav-item.active::before {
                 width: 100%;
                 height: 4px;
@@ -395,9 +495,20 @@
             明德私立学校 <span>MINGDE PRIVATE SCHOOL</span>
         </div>
         <div class="top-right-container">
-            <div class="search-box">
-                <input type="text" id="schoolSearchInput" placeholder="请输入关键字搜索...">
-                <button id="schoolSearchBtn">搜索</button>
+            <!-- 搜索包裹器（包含历史记录、搜索框、下拉菜单） -->
+            <div class="search-wrapper">
+                <!-- 搜索历史记录区（放置在最上方紧贴搜索框） -->
+                <div id="searchHistoryContainer" class="search-history-container">
+                    <span style="color: #999; white-space: nowrap; margin-right: 2px;">🔍</span>
+                </div>
+                
+                <div class="search-box">
+                    <input type="text" id="schoolSearchInput" placeholder="请输入关键字搜索...">
+                    <button id="schoolSearchBtn">搜索</button>
+                </div>
+                
+                <!-- 下拉菜单 -->
+                <div id="searchDropdown" class="search-dropdown"></div>
             </div>
             <a href="forum.html" class="back-forum-link">↩ 进入论坛</a>
             <a href="mail_xu.html" class="close-btn">✕</a>
@@ -484,8 +595,13 @@
             const newsList = document.getElementById('newsList');
             const moreLink = document.getElementById('moreLink');
 
-            // ---------- 定义各栏目数据 ----------
+            // 搜索相关元素
+            const searchInput = document.getElementById('schoolSearchInput');
+            const searchBtn = document.getElementById('schoolSearchBtn');
+            const searchDropdown = document.getElementById('searchDropdown');
+            const historyContainer = document.getElementById('searchHistoryContainer');
 
+            // ---------- 定义各栏目数据 ----------
             // 1. 默认状态（学校要闻）
             const defaultTitle = '学校要闻';
             const defaultMoreLink = 'javascript:void(0);';
@@ -634,7 +750,7 @@
                 </li>
             `;
 
-            // 6. 校园文化（新增栏目）
+            // 6. 校园文化
             const cultureTitle = '校园文化';
             const cultureMoreLink = 'javascript:void(0);';
             const cultureNewsHTML = `
@@ -667,14 +783,11 @@
             // ---------- 导航点击切换逻辑 ----------
             navItems.forEach(item => {
                 item.addEventListener('click', function() {
-                    // 移除所有激活状态
                     navItems.forEach(nav => nav.classList.remove('active'));
                     this.classList.add('active');
-                    
                     const navName = this.innerText.trim();
                     console.log('切换至栏目：' + navName);
 
-                    // 根据导航文字切换右侧面板内容
                     if (navName === '教学特色') {
                         panelTitle.innerText = featureTitle;
                         newsList.innerHTML = featureNewsHTML;
@@ -696,7 +809,6 @@
                         newsList.innerHTML = cultureNewsHTML;
                         moreLink.href = cultureMoreLink;
                     } else {
-                        // 其他选项（学校概况、社团活动、校友之家）恢复默认
                         panelTitle.innerText = defaultTitle;
                         newsList.innerHTML = defaultNewsHTML;
                         moreLink.href = defaultMoreLink;
@@ -704,30 +816,131 @@
                 });
             });
 
-            // ---------- 搜索框逻辑 ----------
-            const searchInput = document.getElementById('schoolSearchInput');
-            const searchBtn = document.getElementById('schoolSearchBtn');
+            // =======================================================
+            // ---------- 新搜索与下拉菜单逻辑 ----------
+            // =======================================================
 
-            function performSchoolSearch() {
-                const keyword = searchInput.value.trim();
-                if (!keyword) {
-                    alert('请输入要搜索的关键词！');
-                    return;
+            const searchMap = {
+                "金玉奖": { title: "首届“金玉奖”圆满落幕，六位学子斩获殊荣", url: "school_page_5.html" },
+                "特招生": { title: "明德私立学校2019学年招生公示", url: "school_page_8.html" },
+                "教师邮箱": { title: "关于开通教师专属办公邮箱的通知", url: "school_page_9.html" }
+            };
+
+            document.addEventListener('click', function(e) {
+                const wrapper = document.querySelector('.search-wrapper');
+                if (!wrapper.contains(e.target)) {
+                    searchDropdown.classList.remove('active');
                 }
+            });
 
-                if (keyword.includes('金玉奖')) {
-                    window.location.href = 'school_page_5.html';
-                } else {
-                    window.location.href = 'school_search.html?q=' + encodeURIComponent(keyword);
+            function performSearchQuery(keyword) {
+                const trimmed = keyword.trim();
+                searchDropdown.innerHTML = '';
+                searchDropdown.classList.remove('active');
+                if (trimmed === '') return;
+
+                let matchFound = false;
+                for (const [key, value] of Object.entries(searchMap)) {
+                    if (trimmed.includes(key)) {
+                        const item = document.createElement('div');
+                        item.className = 'search-dropdown-item';
+                        item.textContent = value.title;
+                        item.addEventListener('click', function(e) {
+                            e.stopPropagation();
+                            saveSearchHistory(key);
+                            window.location.href = value.url;
+                        });
+                        searchDropdown.appendChild(item);
+                        matchFound = true;
+                    }
+                }
+                if (matchFound) {
+                    searchDropdown.classList.add('active');
                 }
             }
 
-            searchBtn.addEventListener('click', performSchoolSearch);
-            searchInput.addEventListener('keypress', function(e) {
-                if (e.key === 'Enter') {
-                    performSchoolSearch();
+            searchBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                const keyword = searchInput.value.trim();
+                if (keyword) {
+                    performSearchQuery(keyword);
+                } else {
+                    searchDropdown.classList.remove('active');
                 }
             });
+
+            searchInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    searchBtn.click();
+                }
+            });
+
+            searchInput.addEventListener('input', function() {
+                const keyword = this.value.trim();
+                if (keyword) {
+                    performSearchQuery(keyword);
+                } else {
+                    searchDropdown.classList.remove('active');
+                }
+            });
+
+            // ---------- 搜索历史记录逻辑 ----------
+            const HISTORY_KEY = 'mingde_search_history';
+            const historySet = new Set();
+
+            function loadSearchHistory() {
+                try {
+                    const stored = localStorage.getItem(HISTORY_KEY);
+                    if (stored) {
+                        const arr = JSON.parse(stored);
+                        arr.forEach(item => historySet.add(item));
+                        renderHistoryTags();
+                    }
+                } catch (e) {
+                    console.warn('加载历史记录失败');
+                }
+            }
+
+            function saveSearchHistory(keyword) {
+                if (!keyword) return;
+                historySet.add(keyword);
+                const arr = Array.from(historySet).slice(-6);
+                localStorage.setItem(HISTORY_KEY, JSON.stringify(arr));
+                renderHistoryTags();
+            }
+
+            function renderHistoryTags() {
+                // 保留最前方的 "🔍" 标签
+                const iconSpan = historyContainer.querySelector('span');
+                historyContainer.innerHTML = '';
+                historyContainer.appendChild(iconSpan);
+
+                const arr = Array.from(historySet);
+                if (arr.length === 0) {
+                    const emptyMsg = document.createElement('span');
+                    emptyMsg.style.color = '#ccc';
+                    emptyMsg.style.fontSize = '12px';
+                    emptyMsg.textContent = '暂无搜索记录';
+                    historyContainer.appendChild(emptyMsg);
+                    return;
+                }
+
+                const reversed = arr.slice().reverse();
+                reversed.forEach(key => {
+                    const tag = document.createElement('span');
+                    tag.className = 'search-history-tag';
+                    tag.textContent = key;
+                    tag.addEventListener('click', function() {
+                        searchInput.value = key;
+                        performSearchQuery(key);
+                        searchInput.focus();
+                    });
+                    historyContainer.appendChild(tag);
+                });
+            }
+
+            loadSearchHistory();
 
         })();
     </script>
