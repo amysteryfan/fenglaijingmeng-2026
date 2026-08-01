@@ -371,6 +371,20 @@
                                 date: '2022年11月30日',
                                 body: inviteBody
                             }
+                        },
+                        // ★ 新增：已删除邮件
+                        {
+                            sender: '已删除',
+                            subject: '已删除',
+                            preview: '已删除',
+                            date: '2021-06-07',
+                            isExpired: false,
+                            fullContent: {
+                                from: '已删除',
+                                to: '已删除',
+                                date: '已删除',
+                                body: '已删除'
+                            }
                         }
                     ]
                 },
@@ -431,7 +445,6 @@
                                 body: '令仪，今年还回来吗？'
                             }
                         },
-                        // ★ 新增邮件：2023-10-22 发给 Juliet
                         {
                             sender: '宋令仪',
                             recipient: 'Juliet',
@@ -646,7 +659,6 @@
                             <div class="letter-body">${email.replyContent.replace(/\n/g, '<br>')}</div>
                     `;
 
-                    // 如果有嵌套回复则显示
                     if (email.nested1) {
                         html += renderNestedReply(email.nested1);
                     }
