@@ -10,7 +10,7 @@
 
     <style>
         /* ================================
-           【核心修复】取消所有页面边距并锁定滚动
+           全局重置
            ================================ */
         html, body {
             margin: 0;
@@ -36,6 +36,7 @@
             font-family: 'Courier New', Courier, monospace;
         }
 
+        /* 图标区域 */
         .desktop-icons {
             position: absolute;
             top: 50px;
@@ -96,6 +97,9 @@
             border-radius: 0;
         }
 
+        /* ================================
+           文件夹窗口 (模拟Windows)
+           ================================ */
         .window-overlay {
             position: absolute;
             top: 50%;
@@ -183,6 +187,51 @@
             text-shadow: none;
         }
 
+        /* ================================
+           文档查看器窗口
+           ================================ */
+        .doc-viewer {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 480px;
+            max-width: 90vw;
+            background: #c0c0c0;
+            border: 2px solid #000;
+            box-shadow: 4px 4px 0 #000;
+            z-index: 25;
+            display: none;
+            flex-direction: column;
+            font-family: 'SimSun', 'Microsoft YaHei', serif;
+            color: #000;
+        }
+        .doc-viewer.active {
+            display: flex;
+        }
+
+        .doc-content {
+            background: #fff;
+            margin: 4px;
+            padding: 16px;
+            border: 2px inset #ddd;
+            flex: 1;
+            overflow-y: auto;
+            min-height: 200px;
+            max-height: 300px;
+            font-size: 15px;
+            line-height: 1.6;
+        }
+        .doc-content h3 {
+            text-align: center;
+            margin-bottom: 16px;
+            font-size: 16px;
+            color: #000;
+        }
+
+        /* ================================
+           密码弹窗（通用）
+           ================================ */
         .pwd-dialog {
             position: absolute;
             top: 50%;
@@ -250,6 +299,7 @@
             display: block;
         }
 
+        /* 移动端适配 */
         @media (max-width: 768px) {
             .desktop-icons { top: 20px; left: 10px; gap: 18px; }
             .desktop-icon { width: 65px; padding: 5px; }
@@ -259,9 +309,10 @@
             #taskbar { height: 40px; padding: 0 10px; }
             .taskbar-start { font-size: 12px; padding: 2px 8px; }
             .taskbar-status { font-size: 11px; }
-            .window-overlay { width: 90vw; }
+            .window-overlay, .doc-viewer { width: 90vw; }
         }
 
+        /* 任务栏 */
         #taskbar {
             position: absolute;
             bottom: 0;
@@ -373,6 +424,7 @@
             </div>
         </div>
 
+        <!-- 文件夹窗口 -->
         <div class="window-overlay" id="folderWindow">
             <div class="window-titlebar">
                 <span>📁 文件夹</span>
@@ -381,6 +433,19 @@
             <div class="window-content" id="windowContent"></div>
         </div>
 
+        <!-- 文档查看器窗口 -->
+        <div class="doc-viewer" id="docViewer">
+            <div class="window-titlebar">
+                <span>📄 调查报告.txt - 记事本</span>
+                <div class="close-btn" id="closeDocViewer">✖</div>
+            </div>
+            <div class="doc-content">
+                <h3>宋令仪与Juliet交易记录</h3>
+                <p>......</p>
+            </div>
+        </div>
+
+        <!-- 文件夹密码弹窗 -->
         <div class="pwd-dialog" id="pwdDialog">
             <label for="pwdInput">我的委托人叫什么名字？</label>
             <input type="text" id="pwdInput" placeholder="请输入名字">
@@ -391,6 +456,7 @@
             </div>
         </div>
 
+        <!-- 微信密码弹窗 -->
         <div class="pwd-dialog" id="wechatPwdDialog">
             <label for="wechatPwdInput">Is my watchword. Method, _____, and the little grey cells.</label>
             <input type="text" id="wechatPwdInput" placeholder="请输入密码">
@@ -403,6 +469,7 @@
     </div>
 
     <script>
+        // 时钟
         function updateClock() {
             const now = new Date();
             document.getElementById('clock').textContent = now.toLocaleTimeString('zh-CN', { hour12: false });
@@ -410,6 +477,7 @@
         setInterval(updateClock, 1000);
         updateClock();
 
+        // 桌面图标跳转
         document.querySelectorAll('.desktop-icon[data-href]').forEach(icon => {
             icon.addEventListener('click', function(e) {
                 window.location.href = this.getAttribute('data-href');
@@ -427,8 +495,11 @@
         const confirmPwdBtn = document.getElementById('confirmPwd');
         const cancelPwdBtn = document.getElementById('cancelPwd');
 
+        // 文档查看器
+        const docViewer = document.getElementById('docViewer');
+        const closeDocViewer = document.getElementById('closeDocViewer');
+
         let folderState = 0;
-        // 文件夹委托解锁状态键名
         const FOLDER_UNLOCK_KEY = 'folder_0625_unlocked';
 
         function isFolderUnlocked() {
@@ -453,11 +524,9 @@
                 `;
                 document.getElementById('subFolder').addEventListener('click', function() {
                     if (isFolderUnlocked()) {
-                        // 已解锁：直接显示文件列表
                         folderState = 1;
                         renderFolderContents();
                     } else {
-                        // 未解锁：弹出密码框
                         pwdDialog.classList.add('active');
                         pwdInput.value = '';
                         pwdError.classList.remove('show');
@@ -488,6 +557,9 @@
                         <div class="icon-label">0702录音.mp3</div>
                     </div>
                 `;
+                document.getElementById('txtFile').addEventListener('click', function() {
+                    docViewer.classList.add('active');
+                });
                 document.getElementById('mp3File').addEventListener('click', function() {
                     window.location.href = 'recording_0702.html';
                 });
@@ -505,6 +577,11 @@
             pwdDialog.classList.remove('active');
         });
 
+        // 关闭文档查看器
+        closeDocViewer.addEventListener('click', function() {
+            docViewer.classList.remove('active');
+        });
+
         cancelPwdBtn.addEventListener('click', function() {
             pwdDialog.classList.remove('active');
         });
@@ -512,7 +589,6 @@
         confirmPwdBtn.addEventListener('click', function() {
             const answer = pwdInput.value.trim();
             if (answer === '季清越') {
-                // 记录解锁状态
                 setFolderUnlocked();
                 pwdDialog.classList.remove('active');
                 folderState = 1;
@@ -546,13 +622,11 @@
 
         wechatIcon.addEventListener('click', function() {
             if (isWechatUnlocked()) {
-                // 已经解锁，直接跳转
                 window.location.href = 'wechat.html';
             } else {
-                // 未解锁，显示密码框
                 wechatPwdDialog.classList.add('active');
                 wechatPwdError.classList.remove('show');
-                wechatPwdInput.value = '';   // 首次为空
+                wechatPwdInput.value = '';
                 wechatPwdInput.focus();
             }
         });
