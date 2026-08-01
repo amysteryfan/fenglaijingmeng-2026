@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>唐镜玄的邮箱 - 风来惊梦</title>
+    
+    <link rel="stylesheet" href="css/style.css">
+    <script src="js/main.js"></script>
+
+    <style>
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body {
+            background: #f5f7fa;
+            font-family: 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+            display: flex; justify-content: center; align-items: center;
+            height: 100vh; color: #333;
+        }
+        .mail-client {
+            width: 960px; max-width: 98vw; height: 90vh; max-height: 700px;
+            background: #fff; border-radius: 12px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+            display: flex; flex-direction: column; overflow: hidden;
+        }
+        .mail-header {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 16px 24px; border-bottom: 1px solid #e0e4e8;
+            background: #fff; flex-shrink: 0;
+        }
+        .mail-brand { display: flex; align-items: center; gap: 10px; font-size: 20px; font-weight: 600; color: #1a1a1a; }
+        .mail-brand .icon {
+            width: 34px; height: 34px; background: #1a73e8; border-radius: 8px;
+            display: flex; align-items: center; justify-content: center;
+            color: #fff; font-size: 18px;
+        }
+        .btn-exit {
+            padding: 8px 20px; border: 1px solid #d0d5dd; border-radius: 6px;
+            background: #fff; font-size: 14px; color: #555; cursor: pointer;
+            transition: 0.2s; font-family: inherit; white-space: nowrap;
+        }
+        .btn-exit:hover { background: #f0f2f5; border-color: #999; }
+        .mail-body { display: flex; flex: 1; overflow: hidden; }
+        .folder-list {
+            width: 200px; background: #fafbfc; border-right: 1px solid #e0e4e8;
+            padding: 12px 8px; display: flex; flex-direction: column; gap: 4px;
+            flex-shrink: 0;
+        }
+        .folder-item {
+            padding: 10px 16px; border-radius: 6px; font-size: 15px; cursor: pointer;
+            color: #333; transition: background 0.15s, color 0.15s;
+            display: flex; align-items: center; gap: 8px; font-weight: 500;
+        }
+        .folder-item:hover { background: #e8f0fe; }
+        .folder-item.active { background: #1a73e8; color: #fff; }
+        .content-panel { flex: 1; overflow-y: auto; padding: 20px 24px; background: #fff; }
+        .email-list { display: flex; flex-direction: column; gap: 2px; }
+        .email-item {
+            padding: 14px 16px; border-bottom: 1px solid #f0f0f0;
+            cursor: pointer; transition: background 0.15s; border-radius: 4px;
+        }
+        .email-item:hover { background: #f8faff; }
+        .email-sender {
+            font-weight: 600; font-size: 15px; margin-bottom: 4px;
+            display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
+        }
+        .email-subject { color: #555; font-size: 14px; margin-bottom: 4px; font-weight: 500; }
+        .email-preview {
+            color: #999; font-size: 13px; white-space: nowrap; overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .email-date { font-size: 12px; color: #aaa; margin-left: auto; }
+        .draft-list .email-item { cursor: pointer; }
+        .draft-list .email-item:hover { background: #f8faff; }
+        .letter-view { display: none; }
+        .letter-view.show { display: block; }
+        .back-link {
+            color: #1a73e8; cursor: pointer; font-size: 14px; margin-bottom: 20px;
+            display: inline-block; font-weight: 500; padding: 4px 0;
+        }
+        .back-link:hover { text-decoration: underline; }
+        .letter-header { margin-bottom: 20px; }
+        .letter-header .field { margin-bottom: 8px; font-size: 14px; color: #555; }
+        .letter-header .field strong { display: inline-block; width: 60px; color: #333; }
+        .letter-body {
+            font-size: 15px; line-height: 1.8; color: #333; white-space: pre-wrap;
+            padding: 16px; background: #fafbfc; border-radius: 8px; border: 1px solid #eee;
+        }
+        .original-mail {
+            margin-top: 20px; padding-top: 16px; border-top: 1px dashed #ddd;
+        }
+        .original-mail .original-label { font-size: 13px; color: #888; margin-bottom: 10px; font-weight: 500; }
+        .attachment-box {
+            margin-top: 16px; padding: 12px 16px; background: #f0f2f5;
+            border: 1px solid #d0d5dd; border-radius: 8px; display: flex;
+            align-items: center; gap: 10px; font-size: 14px; color: #555;
+            pointer-events: none; user-select: none;
+        }
+        .empty-state { text-align: center; padding: 40px; color: #aaa; font-size: 15px; }
+
+        @media (max-width: 640px) {
+            body { align-items: stretch; }
+            .mail-client { width: 100vw; height: 100vh; max-height: 100vh; border-radius: 0; box-shadow: none; }
+            .mail-header { padding: 12px 16px; }
+            .mail-brand { font-size: 16px; }
+            .btn-exit { padding: 6px 14px; font-size: 13px; }
+            .folder-list { width: 110px; padding: 8px 4px; }
+            .folder-item { font-size: 13px; padding: 8px 10px; gap: 4px; }
+            .content-panel { padding: 12px 12px; }
+            .email-item { padding: 12px 10px; }
+            .email-sender { font-size: 14px; }
+            .email-subject { font-size: 13px; }
+            .letter-header .field { font-size: 13px; }
+            .letter-body { font-size: 14px; padding: 12px; }
+            .back-link { font-size: 13px; margin-bottom: 16px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="mail-client">
+        <div class="mail-header">
+            <div class="mail-brand">
+                <div class="icon">✉</div> 邮箱
+            </div>
+            <button class="btn-exit" id="btnExit">退出</button>
+        </div>
+        <div class="mail-body">
+            <div class="folder-list" id="folderList">
+                <div class="folder-item active" data-folder="inbox">收件箱</div>
+                <div class="folder-item" data-folder="sent">发信箱</div>
+                <div class="folder-item" data-folder="drafts">草稿箱</div>
+            </div>
+            <div class="content-panel" id="contentPanel"></div>
+        </div>
+    </div>
+
+    <script>
+        (function() {
+            const folderItems = document.querySelectorAll('.folder-item');
+            const contentPanel = document.getElementById('contentPanel');
+            const btnExit = document.getElementById('btnExit');
+
+            // 保存草稿箱滚动位置
+            let draftScrollPos = 0;
+
+            // 邮件内容定义（保持不变）
+            const gu2021Body = `唐老师：
+
+你真是展示我们明德教育风采的桥头堡，工作做得非常出色，连这次鼎峰的宋总来学校，都特意夸奖了你。前几年让你明珠蒙尘，确实是学校的不对。其实学校计划下一年给你涨薪，正好趁此机会通知你。教研组组长过两年要退，我们一致认为你是个好苗子。希望你在日后的工作中，能呈现给我们、给宋总更多的惊喜。
+
+<div style="text-align:right;">顾怀远</div>`;
+
+            const tangOriginalBody = `顾校长：
+
+不知道我的待遇何时能改善？当初学校承诺工作后一年转正，两年涨薪，三年内必升级，到现在只给我落实了转正，还是我磨了好几年才办下来的。我的情况您也了解，现在手头实在有些紧张。如果不是这样，也不会来麻烦您。我进入学校这几年，工作做得如何，学生都是看在眼里的。我知道学校每年都有升职涨薪的名额，您看我今年能不能也算在名额内？
+
+<div style="text-align:right;">唐镜玄</div>`;
+
+            const gu2020ReplyBody = `小唐：
+
+你反映的这个情况，我也知道了。确实，你孩子还小，家庭经济负担重，急于解决这个难题。但是学校里面有规定，你的资历还有些欠缺，校董会也认为，可以把升职的机会留给更加劳苦功高的老教师们。你还年轻，之后总有机会，学校不会亏待你的。你的转正不是已经解决了吗？至于升职和加薪，就先不要太急躁了，要耐得住寂寞，经得住考验。
+
+<div style="text-align:right;">顾怀远</div>`;
+
+            const data = {
+                inbox: {
+                    type: 'emailList',
+                    emails: [
+                        {
+                            sender: '已删除', subject: '已删除', preview: '已删除', date: '2025-09-24',
+                            fullContent: { from: '已删除', to: '已删除', date: '已删除', body: '已删除' }
+                        },
+                        {
+                            sender: 'guhuaiyuan@edu.mail.com', subject: '工作表现与涨薪通知',
+                            preview: '你真是展示我们明德教育风采的桥头堡...', date: '2021-10-27',
+                            fullContent: {
+                                from: '顾怀远 <guhuaiyuan@edu.mail.com>',
+                                to: '唐镜玄 <tangjingxuan.edu.mail.com>',
+                                date: '2021年10月27日', body: gu2021Body
+                            }
+                        },
+                        {
+                            sender: 'guhuaiyuan@edu.mail.com', subject: '关于待遇问题的回复',
+                            preview: '你反映的这个情况，我也知道了...', date: '2020-03-01', isReply: true,
+                            fullContent: {
+                                from: '顾怀远 <guhuaiyuan@edu.mail.com>',
+                                to: '唐镜玄 <tangjingxuan.edu.mail.com>',
+                                date: '2020年3月1日', body: gu2020ReplyBody
+                            },
+                            original: {
+                                from: '唐镜玄 <tangjingxuan.edu.mail.com>',
+                                to: '顾怀远 <guhuaiyuan@edu.mail.com>',
+                                date: '2020年2月26日', body: tangOriginalBody
+                            }
+                        }
+                    ]
+                },
+                sent: {
+                    type: 'sentList',
+                    emails: [
+                        {
+                            sender: '唐镜玄', recipient: 'baby@Email.com', subject: '关于考试作弊的事',
+                            preview: '儿子，你说你在学校，不肯帮同桌考试作弊...', date: '2025-06-20',
+                            replyContent: `儿子，你说你在学校，不肯帮同桌考试作弊，还被他骂了，心里觉得很委屈。
+爸爸要夸夸你，你做得对，爸爸从小就教育你，不能作弊，不能做坏事，不能因为班里有其他人作弊，就觉得这件事是对的。同桌骂你，你不要放在心上，你们不是一路人，道不同不相为谋。如果你很在意，可以教育同桌，告诉他这件事是不对的。如果他不听劝，你又因此很难受，就找老师调开你们的座位吧。
+
+<div style="text-align:right;">爱你的爸爸</div>`
+                        },
+                        {
+                            sender: '唐镜玄', recipient: 'baby@Email.com', subject: '关于电话手表的事',
+                            preview: '儿子，你说你在学校，看见同学们有最新款电话手表...', date: '2025-03-17',
+                            replyContent: `儿子，你说你在学校，看见同学们有最新款电话手表，心里很羡慕。爸爸理解你的心情，但是你不要被那些外物所干扰，爸爸不是故意不给你买，而是你已经有一个电话手表了。爸爸之前怎么和你说的？人要学会满足。如果不满足的话，你就会像故事里那个不停地吃最后被撑死的人一样。
+
+<div style="text-align:right;">爱你的爸爸</div>`
+                        },
+                        {
+                            sender: '唐镜玄', recipient: 'baby@Email.com', subject: '关于当班长的事',
+                            preview: '儿子，听你班主任说，你当上班长了...', date: '2024-09-22',
+                            replyContent: `儿子，听你班主任说，你当上班长了。爸爸真为你高兴，爸爸就知道你一定行。可你要记住，当了班长，一定照章办事，别人要是拿了什么好吃的好喝的好玩的收买你，你一定不能动摇，不能给他们行方便，记住了吗？
+
+<div style="text-align:right;">爱你的爸爸</div>`
+                        },
+                        {
+                            sender: '唐镜玄', recipient: 'Xugu', subject: '白皮书申报事宜',
+                            preview: '这件事交给我吧，你不用再操心了。', date: '2021-06-08',
+                            replyContent: `这件事交给我吧，你不用再操心了。`,
+                            original: {
+                                from: 'Xugu <Xugu>',
+                                to: '唐镜玄 <tangjingxuan@edu.mail.com>',
+                                date: '2021年6月3日',
+                                body: `唐老师：
+
+这是我的白皮书的电子附件，请过目。以及，我想请您作为我的指导老师，进行申报。
+
+<div class="attachment-box">
+    <span>📎</span>
+    <span>白皮书电子附件.pdf</span>
+</div>`
+                            }
+                        },
+                        {
+                            sender: '唐镜玄', recipient: 'Lynne', subject: '关于认可的事',
+                            preview: '老师相信，你只是缺少一个机会...', date: '2021-06-07',
+                            replyContent: `宋同学：
+
+老师相信，你只是缺少一个机会，一个被人注视的机会。这个机会并不难得，只要你有一项优秀的成果，我保证，他们都会用惊叹的眼光看你......老师会帮你发掘那个机会的。
+
+<div style="text-align:right;">唐镜玄</div>`,
+                            original: {
+                                from: 'Lynne <Lynne>',
+                                to: '唐镜玄 <tangjingxuan@edu.mail.com>',
+                                date: '2021年6月7日',
+                                body: `唐老师：
+
+我是不是永远都没法得到别人的认可了？无论我怎么努力，怎么尝试，别人的注意力永远不在我身上。即使他们不说，我也知道他们背地里把我当小丑一样的角色......可是我真的尽力了！我没办法，我好像一直都不能成为一个被人真心夸赞的人！我该怎么办，唐老师？
+
+<div style="text-align:right;">Lynne</div>`
+                            }
+                        }
+                    ]
+                },
+                drafts: {
+                    type: 'draftList',
+                    emails: [
+                        { sender: 'tangjingxuan@edu.mail.com', recipient: '（无）', subject: '沧浪之水清兮，可以濯吾缨；沧浪之水浊兮，可以濯吾足。', date: '2022-01-29', body: '沧浪之水清兮，可以濯吾缨；沧浪之水浊兮，可以濯吾足。' },
+                        { sender: 'tangjingxuan@edu.mail.com', recipient: '（无）', subject: '世人皆浊，何不淈其泥而扬其波？众人皆醉，何不哺其糟而歠其醨？', date: '2021-06-08', body: '世人皆浊，何不淈其泥而扬其波？众人皆醉，何不哺其糟而歠其醨？' },
+                        { sender: 'tangjingxuan@edu.mail.com', recipient: '（无）', subject: '狗屁规则，狗屁章程！', date: '2020-03-01', body: '狗屁规则，狗屁章程！说的话全是放屁！\n我是一条天狗呀！我把月来吞了，我把日来吞了，我把该死的明德和顾怀远都来吞了！' },
+                        { sender: 'tangjingxuan@edu.mail.com', recipient: '（无）', subject: '那个姓张的进学校比我还晚呢！', date: '2019-07-05', body: '那个姓张的进学校比我还晚呢！他凭什么？？？\n没在巴结的，被人说在巴结；真在巴结的，到最后反而什么都有了，还没人指摘！\n真是为善的受贫穷更命短，造恶的享富贵又寿延。' },
+                        { sender: 'tangjingxuan@edu.mail.com', recipient: '（无）', subject: '举世皆浊我独清，众人皆醉我独醒。', date: '2018-09-19', body: '随便你们再说什么吧。举世皆浊我独清，众人皆醉我独醒。' },
+                        { sender: 'tangjingxuan@edu.mail.com', recipient: '（无）', subject: '每次看到学生们的笑脸', date: '2017-05-13', body: '每次看到学生们的笑脸，感受到学生对我的信任，这就是对我最大的奖赏了。' },
+                        { sender: 'tangjingxuan@edu.mail.com', recipient: '（无）', subject: '他们都说我是讨好学生', date: '2016-12-08', body: '他们都说我是讨好学生。心思龌龊的人看什么都龌龊。\n我知道自己不是为了别的，只是觉得不管什么孩子都有其可爱的一面，只要你愿意发现。' }
+                    ]
+                }
+            };
+
+            function renderContent(folder) {
+                const folderData = data[folder];
+                if (!folderData) return;
+                let html = '';
+
+                if (folderData.type === 'emailList') {
+                    html = '<div class="email-list">';
+                    folderData.emails.forEach((email, idx) => {
+                        html += `
+                            <div class="email-item" data-email-index="${idx}">
+                                <div class="email-sender">${email.sender}<span class="email-date">${email.date}</span></div>
+                                <div class="email-subject">${email.subject}</div>
+                                <div class="email-preview">${email.preview}</div>
+                            </div>`;
+                    });
+                    html += '</div>';
+                } else if (folderData.type === 'sentList') {
+                    html = '<div class="email-list">';
+                    folderData.emails.forEach((email, idx) => {
+                        html += `
+                            <div class="email-item" data-email-index="${idx}">
+                                <div class="email-sender">${email.sender}<span class="email-date">${email.date}</span></div>
+                                <div class="email-subject">${email.subject}</div>
+                                <div class="email-preview">${email.preview}</div>
+                                <div style="font-size:12px; color:#999;">收件人：${email.recipient}</div>
+                            </div>`;
+                    });
+                    html += '</div>';
+                } else if (folderData.type === 'draftList') {
+                    html = '<div class="email-list draft-list">';
+                    folderData.emails.forEach((email, idx) => {
+                        const preview = email.subject.length > 20 ? email.subject.substring(0, 20) + '...' : email.subject;
+                        html += `
+                            <div class="email-item" data-email-index="${idx}">
+                                <div class="email-sender">${email.sender}<span class="email-date">${email.date}</span></div>
+                                <div class="email-subject">${email.subject}</div>
+                                <div class="email-preview">${preview}</div>
+                                <div style="font-size:12px; color:#999;">收件人：${email.recipient}</div>
+                            </div>`;
+                    });
+                    html += '</div>';
+                } else if (folderData.type === 'empty') {
+                    html = `<div class="empty-state">${folderData.message}</div>`;
+                }
+
+                contentPanel.innerHTML = html;
+
+                // 恢复草稿箱滚动位置
+                if (folder === 'drafts' && draftScrollPos > 0) {
+                    contentPanel.scrollTop = draftScrollPos;
+                    draftScrollPos = 0; // 恢复后清除，避免影响其他操作
+                } else {
+                    draftScrollPos = 0; // 非草稿箱或不需要恢复时清零
+                }
+
+                if (folderData.type === 'emailList' || folderData.type === 'sentList' || folderData.type === 'draftList') {
+                    bindEmailClicks(folderData, folder);
+                }
+            }
+
+            // 增加 folderName 参数，用于保存草稿箱滚动位置
+            function bindEmailClicks(folderData, folderName) {
+                const emailItems = contentPanel.querySelectorAll('.email-item');
+                emailItems.forEach(item => {
+                    item.addEventListener('click', function() {
+                        // 点击草稿箱条目时保存滚动位置
+                        if (folderName === 'drafts') {
+                            draftScrollPos = contentPanel.scrollTop;
+                        }
+                        const index = parseInt(this.getAttribute('data-email-index'));
+                        const email = folderData.emails[index];
+                        renderLetterDetail(email, folderData.type);
+                    });
+                });
+            }
+
+            function renderLetterDetail(email, type) {
+                let html = '';
+                let backFolder = 'inbox';
+                let backText = '← 返回收件箱';
+                if (type === 'sentList') { backFolder = 'sent'; backText = '← 返回发信箱'; }
+                else if (type === 'draftList') { backFolder = 'drafts'; backText = '← 返回草稿箱'; }
+
+                if (type === 'emailList') {
+                    const full = email.fullContent;
+                    html = `<div class="letter-view show">
+                        <div class="back-link" id="backBtn">${backText}</div>
+                        <div class="letter-header">
+                            <div class="field"><strong>发件人：</strong>${full.from}</div>
+                            <div class="field"><strong>收件人：</strong>${full.to}</div>
+                            <div class="field"><strong>时间：</strong>${full.date}</div>
+                        </div>
+                        <div class="letter-body">${full.body.replace(/\n/g, '<br>')}</div>`;
+                    if (email.original) {
+                        html += `<div class="original-mail">
+                            <div class="original-label">——原始邮件——</div>
+                            <div class="letter-header" style="margin-bottom:10px;">
+                                <div class="field"><strong>发件人：</strong>${email.original.from}</div>
+                                <div class="field"><strong>收件人：</strong>${email.original.to}</div>
+                                <div class="field"><strong>时间：</strong>${email.original.date}</div>
+                            </div>
+                            <div class="letter-body" style="background:#f0f0f0;">${email.original.body.replace(/\n/g, '<br>')}</div>
+                        </div>`;
+                    }
+                    html += `</div>`;
+                } else if (type === 'sentList') {
+                    html = `<div class="letter-view show">
+                        <div class="back-link" id="backBtn">${backText}</div>
+                        <div class="letter-header">
+                            <div class="field"><strong>发件人：</strong>${email.sender} <tangjingxuan@edu.mail.com></div>
+                            <div class="field"><strong>收件人：</strong>${email.recipient}</div>
+                            <div class="field"><strong>时间：</strong>${email.date}</div>
+                        </div>
+                        <div class="letter-body">${email.replyContent.replace(/\n/g, '<br>')}</div>`;
+                    if (email.original) {
+                        html += `<div class="original-mail">
+                            <div class="original-label">——原始邮件——</div>
+                            <div class="letter-header" style="margin-bottom:10px;">
+                                <div class="field"><strong>发件人：</strong>${email.original.from}</div>
+                                <div class="field"><strong>收件人：</strong>${email.original.to}</div>
+                                <div class="field"><strong>时间：</strong>${email.original.date}</div>
+                            </div>
+                            <div class="letter-body" style="background:#f0f0f0;">${email.original.body.replace(/\n/g, '<br>')}</div>
+                        </div>`;
+                    }
+                    html += `</div>`;
+                } else if (type === 'draftList') {
+                    html = `<div class="letter-view show">
+                        <div class="back-link" id="backBtn">${backText}</div>
+                        <div class="letter-header">
+                            <div class="field"><strong>发件人：</strong>${email.sender}</div>
+                            <div class="field"><strong>收件人：</strong>${email.recipient}</div>
+                            <div class="field"><strong>时间：</strong>${email.date}</div>
+                        </div>
+                        <div class="letter-body">${email.body.replace(/\n/g, '<br>')}</div>
+                    </div>`;
+                }
+
+                contentPanel.innerHTML = html;
+                document.getElementById('backBtn').addEventListener('click', () => {
+                    renderContent(backFolder);
+                    setActiveFolder(backFolder);
+                });
+            }
+
+            function setActiveFolder(folder) {
+                folderItems.forEach(item => {
+                    const f = item.getAttribute('data-folder');
+                    if (f === folder) item.classList.add('active');
+                    else item.classList.remove('active');
+                });
+            }
+
+            folderItems.forEach(item => {
+                item.addEventListener('click', function() {
+                    const folder = this.getAttribute('data-folder');
+                    setActiveFolder(folder);
+                    draftScrollPos = 0; // 切换文件夹时重置滚动位置
+                    renderContent(folder);
+                });
+            });
+
+            btnExit.addEventListener('click', () => {
+                window.location.href = 'desktop.html';
+            });
+
+            renderContent('inbox');
+        })();
+    </script>
+</body>
+</html>
