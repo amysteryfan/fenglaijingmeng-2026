@@ -35,7 +35,6 @@
             position: relative;
         }
 
-        /* 退出/关闭按钮 */
         .btn-close {
             position: absolute;
             top: 16px;
@@ -229,7 +228,6 @@
             display: block;
         }
 
-        /* 忘记密码弹窗 */
         .modal-overlay {
             display: none;
             position: fixed;
@@ -382,9 +380,7 @@
 
 <body>
 
-    <!-- 登录卡片 -->
     <div class="login-wrapper">
-        <!-- 关闭按钮 -->
         <button class="btn-close" id="btnClose" title="退出">✕</button>
 
         <div class="brand">
@@ -422,7 +418,6 @@
         </div>
     </div>
 
-    <!-- 忘记密码弹窗 -->
     <div class="modal-overlay" id="forgotModal">
         <div class="modal-box">
             <h3>找回密码</h3>
@@ -460,7 +455,6 @@
     <script>
         document.addEventListener('DOMContentLoaded', () => {
 
-            // 关闭按钮跳转桌面
             document.getElementById('btnClose').addEventListener('click', () => {
                 window.location.href = 'desktop.html';
             });
@@ -492,9 +486,13 @@
                     password: 'detective0217',
                     redirect: 'mail_xu.html'
                 },
-                'songlingyi@Email.com': {
+                'Lynne@Email.com': {
                     password: 'songlingyi0605',
                     redirect: 'mail_song.html'
+                },
+                'tangjingxuan@edu.mail.com': {
+                    password: 'MingdePrivateSchool',
+                    redirect: 'mail_tang.html'
                 }
             };
 
@@ -574,7 +572,7 @@
 
             btnCheckAccount.addEventListener('click', () => {
                 const acc = forgotAccountInput.value.trim();
-                if (acc === 'songlingyi@Email.com') {
+                if (acc === 'Lynne@Email.com') {
                     forgotAccountError.classList.remove('show');
                     stepAccount.style.display = 'none';
                     stepQuestions.classList.add('show');
