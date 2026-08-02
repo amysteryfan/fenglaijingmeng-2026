@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>艾希皇后号｜宴会厅卫生作业任务单</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "SimSun", "Microsoft YaHei", serif;
+        }
+        body {
+            background-color: #f6f7f9;
+            padding: 20px 16px;
+        }
+        .container {
+            max-width: 1040px;
+            margin: 0 auto;
+            background: #ffffff;
+            border-radius: 6px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.07);
+            overflow: hidden;
+        }
+        .header-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #273447;
+            color: #fff;
+            padding: 14px 24px;
+        }
+        .header-title h1 {
+            font-size: 20px;
+            letter-spacing: 1px;
+        }
+        .header-title p {
+            font-size: 13px;
+            opacity: 0.8;
+            margin-top: 4px;
+        }
+        .back-btn {
+            background-color: #d83b3b;
+            border: none;
+            color: white;
+            padding: 8px 18px;
+            border-radius: 4px;
+            font-size: 14px;
+            cursor: pointer;
+        }
+        .back-btn:hover {
+            background-color: #bc2f2f;
+        }
+        .content-wrap {
+            padding: 30px;
+        }
+        .doc-head {
+            text-align: center;
+            border-bottom: 2px solid #333;
+            padding-bottom: 16px;
+            margin-bottom: 24px;
+        }
+        .doc-head h2 {
+            font-size: 24px;
+            margin-bottom: 8px;
+        }
+        .doc-info-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 24px;
+            font-size: 15px;
+            margin-bottom: 20px;
+            color: #333;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        table td, table th {
+            border: 1px solid #bbbbbb;
+            padding: 12px 14px;
+            font-size: 14.5px;
+            line-height: 1.6;
+        }
+        table th {
+            background-color: #f1f3f6;
+            font-weight: bold;
+        }
+        .block-title {
+            font-size: 17px;
+            font-weight: bold;
+            margin: 26px 0 10px;
+            border-left: 4px solid #273447;
+            padding-left: 10px;
+        }
+        .text-desc {
+            font-size: 15px;
+            line-height: 1.8;
+            text-indent: 2em;
+            color: #222;
+            margin-bottom: 12px;
+        }
+        .sign-area {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 45px;
+            font-size: 14px;
+        }
+        .footer-note {
+            margin-top: 35px;
+            padding-top: 16px;
+            border-top: 1px dashed #aaaaaa;
+            font-size: 13px;
+            color: #444;
+            line-height: 1.7;
+        }
+        @media (max-width:768px) {
+            .header-bar {
+                flex-direction: column;
+                gap: 12px;
+                text-align: center;
+            }
+            .content-wrap {
+                padding: 18px;
+            }
+            table td, table th {
+                padding: 9px 6px;
+                font-size: 13px;
+            }
+            .sign-area {
+                flex-direction: column;
+                gap: 8px;
+                align-items: flex-end;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header-bar">
+            <div class="header-title">
+                <h1>艾希皇后号游轮管理系统</h1>
+                <p>内部作业文件 · 仅限行政、安保、客房部查阅</p>
+            </div>
+            <button class="back-btn" onclick="location.href='boat_admin.html'">退出</button>
+        </div>
+        <div class="content-wrap">
+            <div class="doc-head">
+                <h2>宴会厅卫生清洁任务分配单</h2>
+                <div class="doc-info-row">
+                    <span>单据编号：AXHQ-HW-20260709-02</span>
+                    <span>所属部门：卫生保洁组</span>
+                    <span>执行日期：2026年07月09日</span>
+                </div>
+            </div>
+
+            <h3 class="block-title">一、作业基础信息</h3>
+            <table>
+                <tr>
+                    <td style="width:180px;">作业区域</td>
+                    <td>游轮主宴会厅（二层宴会厅全域，包含就餐区、备餐间、酒水间、走廊）</td>
+                </tr>
+                <tr>
+                    <td>计划作业时段</td>
+                    <td>当日 14:00 — 15:10</td>
+                </tr>
+                <tr>
+                    <td>负责人员名单</td>
+                    <td>陈百惠、黄芳、伍丁香、张彩霞</td>
+                </tr>
+                <tr>
+                    <td>作业标准</td>
+                    <td>游轮公共区域卫生管理规范（V2.3版）</td>
+                </tr>
+            </table>
+
+            <h3 class="block-title">二、分时段工作内容与人员分工</h3>
+            <table>
+                <tr>
+                    <th>时间段</th>
+                    <th>整体工作项目</th>
+                    <th>细分工作内容</th>
+                    <th>负责人员</th>
+                </tr>
+                <tr>
+                    <td>14:00 ~ 14:40</td>
+                    <td>全域垃圾集中清理</td>
+                    <td>1. 清理桌面、地面散落大件包装物、废弃装饰物料；<br>2. 清空所有餐桌、备餐区厨余垃圾、食物残渣；<br>3. 收集各处垃圾桶内废弃物并初步打包封口</td>
+                    <td>陈百惠、黄芳、伍丁香、张彩霞（全员共同作业）</td>
+                </tr>
+                <tr>
+                    <td>14:40 ~ 15:10</td>
+                    <td>垃圾转运 + 酒水陈设复原</td>
+                    <td>左侧：打包垃圾运送至甲板垃圾集中收纳站，完成垃圾桶清洗归位<br>右侧：整理高脚杯、瓶装酒水、展示摆件，按照标准布局完成陈列摆放，擦拭台面浮尘</td>
+                    <td>伍丁香、张彩霞（垃圾转运）<br>陈百惠、黄芳（酒水陈设摆放）</td>
+                </tr>
+            </table>
+
+            <h3 class="block-title">三、作业硬性要求</h3>
+            <p class="text-desc">全体人员需准时抵达作业点位，穿戴统一保洁工作服、防滑胶鞋及一次性橡胶手套。处理厨余垃圾过程中，避免污渍飞溅污染宴会厅地面及陈设摆件，垃圾包装袋必须双层封装，杜绝渗漏异味。酒水陈设摆放需严格对照宴会厅标准陈设图纸对齐排布，玻璃器皿无水渍、指纹残留。</p>
+            <p class="text-desc">作业全部结束后，四名工作人员需自行核验卫生质量，核验合格后方可离岗。若遇设备故障、污渍难以清理等突发情况，第一时间联系保洁组办公室处理，禁止私自处理遗留问题。</p>
+
+            <div class="sign-area">
+                <div>制表人：行政文员 周琳</div>
+                <div>部门负责人签字：胡白云</div>
+                <div>单据生成日期：2026年07月07日</div>
+            </div>
+
+            <div class="footer-note">
+                备注：1、本任务单为当日硬性排班工作，无特殊病假报备不得擅自缺勤、迟到；2、垃圾转运过程严禁沿途遗撒废弃物，违者按照游轮管理制度进行绩效扣分；3、本单据归档至客房部月度工作台账留存备查。
+            </div>
+        </div>
+    </div>
+</body>
+</html>
