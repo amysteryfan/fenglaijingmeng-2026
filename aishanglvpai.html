@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>爱尚旅拍婚纱摄影 - 定格每一份浪漫瞬间</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Microsoft YaHei", "SimSun", serif;
+        }
+        html, body {
+            width: 100%;
+            overflow-x: hidden;
+            overflow-y: auto;
+            background-color: #fcfbf8;
+        }
+
+        /* 顶部slogan栏 */
+        .top-banner-text {
+            width: 100%;
+            height: 52px;
+            background-color: #f7f5f2;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .top-banner-text p {
+            font-size: 18px;
+            color: #584e49;
+            letter-spacing: 1px;
+            font-style: italic;
+        }
+
+        /* 导航头部 */
+        header {
+            width: 100%;
+            height: 82px;
+            background: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 6%;
+            position: sticky;
+            top: 0;
+            z-index: 999;
+            box-shadow: 0 1px 6px rgba(184, 146, 104, 0.1);
+        }
+        .nav-group {
+            display: flex;
+            gap: 58px;
+        }
+        .nav-group a {
+            text-decoration: none;
+            color: #333;
+            font-size: 20px;
+            position: relative;
+            transition: color 0.3s ease;
+            cursor: pointer;
+        }
+        .nav-group a:hover {
+            color: #b89268;
+        }
+        .nav-group a::after {
+            content: "";
+            width: 0;
+            height: 2px;
+            background: #b89268;
+            position: absolute;
+            bottom: -6px;
+            left: 0;
+            transition: width 0.3s linear;
+        }
+        .nav-group a:hover::after {
+            width: 100%;
+        }
+        .brand-logo {
+            text-align: right;
+        }
+        .brand-logo .en-name {
+            font-size: 33px;
+            color: #b89268;
+            letter-spacing: 5px;
+        }
+        .brand-logo .cn-name {
+            font-size: 23px;
+            color: #444444;
+            letter-spacing: 2px;
+        }
+        /* 右上角X跳转按钮 */
+        .jump-search {
+            position: absolute;
+            right: 3.2%;
+            top: 27px;
+            width: 32px;
+            height: 32px;
+            border: 1px solid #b89268;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #b89268;
+            font-size: 20px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        .jump-search:hover {
+            background-color: #b89268;
+            color: #fff;
+        }
+
+        /* 首页全屏横幅区域 */
+        .home-banner {
+            width: 100%;
+            height: 100vh;
+            background: url("images/wedding.jpg") center center / cover no-repeat;
+            position: relative;
+        }
+        .banner-dark-mask {
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.38);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding-left: 8%;
+            color: #ffffff;
+        }
+        .banner-en-title {
+            font-size: 62px;
+            font-family: cursive;
+            letter-spacing: 4px;
+            opacity: 0.92;
+            margin-bottom: 12px;
+        }
+        .banner-cn-title {
+            font-size: 50px;
+            letter-spacing: 8px;
+            color: #f0e6dd;
+            margin-bottom: 32px;
+        }
+        .banner-desc-text {
+            font-size: 21px;
+            line-height: 2.1;
+            max-width: 580px;
+            opacity: 0.9;
+        }
+        .banner-english-desc {
+            font-size: 14px;
+            margin-top: 10px;
+            opacity: 0.75;
+        }
+
+        /* ========== 作品日期弹窗样式 ========== */
+        .modal-mask {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: rgba(0,0,0,0.6);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+        }
+        .modal-box {
+            background: #fff;
+            padding: 40px 35px;
+            border-radius: 12px;
+            min-width: 420px;
+            text-align: center;
+            box-shadow: 0 8px 30px rgba(184,146,104,0.25);
+        }
+        .modal-title {
+            font-size: 22px;
+            color: #333;
+            margin-bottom: 30px;
+            letter-spacing: 1px;
+        }
+        .date-select-wrap {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-bottom: 30px;
+        }
+        .date-select-wrap select, .year-fixed {
+            padding: 10px 14px;
+            font-size: 16px;
+            border: 1px solid #d4c5b3;
+            border-radius: 6px;
+            color: #444;
+        }
+        .year-fixed {
+            background-color: #eee;
+            cursor: not-allowed;
+        }
+        #daySelect:disabled {
+            background-color: #f5f5f5;
+            cursor: not-allowed;
+        }
+        .btn-group {
+            display: flex;
+            gap: 18px;
+            justify-content: center;
+        }
+        .confirm-btn {
+            padding: 10px 28px;
+            background-color: #b89268;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .confirm-btn:hover {
+            background-color: #a07e58;
+        }
+        .close-btn {
+            padding: 10px 28px;
+            background-color: #eee;
+            color: #555;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        .tip-text {
+            margin-top: 20px;
+            font-size: 15px;
+            min-height: 22px;
+        }
+        .success-tip {
+            color: #298742;
+        }
+        .error-tip {
+            color: #c83838;
+        }
+
+        /* 底部版权区域 */
+        footer {
+            width: 100%;
+            padding: 45px 0;
+            background-color: #2c2825;
+            color: #c8c2bc;
+            text-align: center;
+            line-height: 1.8;
+        }
+        footer .footer-brand {
+            font-size: 22px;
+            color: #d4b899;
+            margin-bottom: 12px;
+            letter-spacing: 3px;
+        }
+        footer .copyright-info {
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <!-- 顶部标语 -->
+    <div class="top-banner-text">
+        <p>爱尚，帮您定格每一个浪漫的瞬间</p>
+    </div>
+
+    <!-- 导航栏 -->
+    <header>
+        <nav class="nav-group">
+            <a href="#">首页</a>
+            <a id="workShowBtn">作品展示</a>
+            <a href="#">品牌介绍</a>
+            <a href="#">服务流程</a>
+        </nav>
+        <div class="brand-logo">
+            <div class="en-name">AISHANG</div>
+            <div class="cn-name">爱尚旅拍</div>
+        </div>
+        <!-- 跳转搜索页X按钮 -->
+        <a href="search_aishanglvpai.html" class="jump-search">X</a>
+    </header>
+
+    <!-- 作品日期查询弹窗 -->
+    <div class="modal-mask" id="modalMask">
+        <div class="modal-box">
+            <h3 class="modal-title">您想查看哪一天的影像？</h3>
+            <div class="date-select-wrap">
+                <div class="year-fixed">2026年</div>
+                <select id="monthSelect">
+                    <option value="">选择月份</option>
+                    <option value="1">1月</option>
+                    <option value="2">2月</option>
+                    <option value="3">3月</option>
+                    <option value="4">4月</option>
+                    <option value="5">5月</option>
+                    <option value="6">6月</option>
+                    <option value="7">7月</option>
+                    <option value="8">8月</option>
+                    <option value="9">9月</option>
+                    <option value="10">10月</option>
+                    <option value="11">11月</option>
+                    <option value="12">12月</option>
+                </select>
+                <select id="daySelect" disabled>
+                    <option value="">先选择月份</option>
+                </select>
+            </div>
+            <div class="btn-group">
+                <button class="confirm-btn" id="submitDate">确认</button>
+                <button class="close-btn" id="closeModal">关闭</button>
+            </div>
+            <div class="tip-text" id="resultTip"></div>
+        </div>
+    </div>
+
+    <!-- 首页主Banner -->
+    <section class="home-banner">
+        <div class="banner-dark-mask">
+            <div class="banner-en-title">Romantic Lock</div>
+            <div class="banner-cn-title">爱意之约</div>
+            <div class="banner-desc-text">
+                在岁月的温柔长河里<br>
+                珍藏属于二人独有的心动与仪式感
+            </div>
+            <div class="banner-english-desc">In the gentle years, preserve exclusive love rituals forever</div>
+        </div>
+    </section>
+
+    <!-- 底部版权 -->
+    <footer>
+        <div class="footer-brand">爱尚旅拍婚纱摄影有限公司</div>
+        <div class="copyright-info">
+            © 2021-2026 爱尚旅拍 版权所有<br>
+            地址：韶光市新辰区艺术创意园A座 | 预约热线：XXXXXX6699
+        </div>
+    </footer>
+
+    <script>
+        // 获取DOM元素
+        const workShowBtn = document.getElementById('workShowBtn');
+        const modalMask = document.getElementById('modalMask');
+        const closeModal = document.getElementById('closeModal');
+        const monthSelect = document.getElementById('monthSelect');
+        const daySelect = document.getElementById('daySelect');
+        const submitDate = document.getElementById('submitDate');
+        const resultTip = document.getElementById('resultTip');
+
+        // 每个月份对应的总天数
+        const monthDays = {
+            1:31,2:28,3:31,4:30,5:31,6:30,
+            7:31,8:31,9:30,10:31,11:30,12:31
+        };
+
+        // 打开弹窗
+        workShowBtn.addEventListener('click', () => {
+            modalMask.style.display = 'flex';
+            // 重置选择项与提示文字
+            monthSelect.value = "";
+            daySelect.innerHTML = `<option value="">先选择月份</option>`;
+            daySelect.disabled = true;
+            resultTip.className = "tip-text";
+            resultTip.innerText = "";
+        });
+
+        // 关闭弹窗
+        closeModal.addEventListener('click', () => {
+            modalMask.style.display = 'none';
+        });
+        // 点击遮罩空白处关闭弹窗
+        modalMask.addEventListener('click', (e) => {
+            if(e.target === modalMask) modalMask.style.display = 'none';
+        });
+
+        // 切换月份，自动生成对应天数下拉
+        monthSelect.addEventListener('change', () => {
+            const chooseMonth = monthSelect.value;
+            daySelect.innerHTML = "";
+            if(!chooseMonth) {
+                daySelect.innerHTML = `<option value="">先选择月份</option>`;
+                daySelect.disabled = true;
+                return;
+            }
+            daySelect.disabled = false;
+            const maxDay = monthDays[chooseMonth];
+            // 填充天数选项
+            for(let d = 1; d <= maxDay; d++){
+                const opt = document.createElement('option');
+                opt.value = d;
+                opt.innerText = d + "日";
+                daySelect.appendChild(opt);
+            }
+            resultTip.className = "tip-text";
+            resultTip.innerText = "";
+        });
+
+        // 确认按钮校验日期
+        submitDate.addEventListener('click', () => {
+            const m = monthSelect.value;
+            const d = daySelect.value;
+            if(!m || !d){
+                resultTip.className = "tip-text error-tip";
+                resultTip.innerText = "请完整选择年月日后再确认";
+                return;
+            }
+            // 唯一正确日期：7月9日
+            if(m === "7" && d === "9"){
+                resultTip.className = "tip-text success-tip";
+                resultTip.innerText = "影像加载成功，正在为您展示当日婚纱作品";
+            }else{
+                resultTip.className = "tip-text error-tip";
+                resultTip.innerText = "暂无影像";
+            }
+        })
+    </script>
+</body>
+</html>

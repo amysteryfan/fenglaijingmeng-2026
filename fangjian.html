@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>海上房间调查</title>
+    <style>
+        /* 重置基础样式，确保全屏覆盖 */
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden; /* 禁止滚动，保持沉浸式 */
+            font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif;
+            background-color: #f0f0f0;
+            cursor: default;
+        }
+
+        /* 背景图片容器 */
+        #scene-container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            /* 图片路径 */
+            background-image: url('images/fangjian.png');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+
+        /* 通用按钮基础样式（半透明黑色遮挡） */
+        .btn-action {
+            position: absolute;
+            background-color: rgba(0, 0, 0, 0.65); /* 黑色底，可遮挡画面 */
+            color: #ffffff;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            padding: 12px 18px;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            transition: all 0.2s ease;
+            user-select: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10;
+            min-height: 44px;
+            min-width: 80px;
+            letter-spacing: 1px;
+        }
+
+        .btn-action:active {
+            transform: scale(0.95);
+            background-color: rgba(0, 0, 0, 0.85);
+        }
+
+        /* 1. 放大床铺 (向右移动) */
+        #btn-bed {
+            top: 75%;
+            left: 25%;
+        }
+
+        /* 2. 放大地板 (居中) */
+        #btn-floor {
+            top: 84%;
+            left: 50%;
+            transform: translateX(-50%); /* 绝对居中 */
+        }
+
+        /* 3. 放大阳台 (移动到地板正上方，垂直对齐) */
+        #btn-balcony {
+            top: 40%;
+            left: 50%;
+            transform: translateX(-50%); /* 与地板水平居中对齐 */
+        }
+
+        /* 4. 右上角离开按钮 (配合明亮海景的毛玻璃效果) */
+        #btn-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.25); /* 半透明白 */
+            backdrop-filter: blur(8px); /* 毛玻璃模糊效果 */
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            color: #333333; /* 深色文字 */
+            font-size: 24px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: 0.2s;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            z-index: 20;
+        }
+
+        #btn-close:active {
+            transform: scale(0.9);
+            background-color: rgba(255, 255, 255, 0.8);
+        }
+
+        /* 移动端适配微调 */
+        @media (max-width: 768px) {
+            .btn-action {
+                padding: 8px 12px;
+                font-size: 14px;
+                min-height: 36px;
+                min-width: 60px;
+            }
+            #btn-bed { top: 70%; left: 15%; }
+            #btn-floor { top: 82%; left: 50%; transform: translateX(-50%); }
+            #btn-balcony { top: 35%; left: 50%; transform: translateX(-50%); }
+            
+            #btn-close {
+                width: 40px;
+                height: 40px;
+                top: 12px;
+                right: 12px;
+                font-size: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="scene-container">
+        <!-- 按钮：放大床铺 -->
+        <button class="btn-action" id="btn-bed">放大床铺</button>
+        
+        <!-- 按钮：放大地板 -->
+        <button class="btn-action" id="btn-floor">放大地板</button>
+        
+        <!-- 按钮：放大阳台 -->
+        <button class="btn-action" id="btn-balcony">放大阳台</button>
+        
+        <!-- 右上角离开/X按钮 -->
+        <div id="btn-close" title="离开">✕</div>
+    </div>
+
+    <script>
+        // 获取各个交互元素
+        const btnBed = document.getElementById('btn-bed');
+        const btnFloor = document.getElementById('btn-floor');
+        const btnBalcony = document.getElementById('btn-balcony');
+        const btnClose = document.getElementById('btn-close');
+
+        // 1. 放大床铺 -> 弹窗
+        btnBed.addEventListener('click', function() {
+            alert('床下发现了一支没有使用的麻醉剂');
+        });
+
+        // 2. 放大地板 -> 弹窗
+        btnFloor.addEventListener('click', function() {
+            alert('地板上有深色的痕迹，还有一些细小的玻璃碎片');
+        });
+
+        // 3. 放大阳台 -> 弹窗
+        btnBalcony.addEventListener('click', function() {
+            alert('阳台的栏杆上有一些白纱的勾丝');
+        });
+
+        // 4. 右上角离开/X按钮 -> 跳转到 gzh_fenglaishuixie.html 的锚点
+        btnClose.addEventListener('click', function() {
+            // 【核心改动】写入标记，告诉文章页这是从房间点击“X”主动回来的
+            sessionStorage.setItem('goto_room', '1');
+            
+            // 利用锚点定位目标页面中的图片容器
+            window.location.href = 'gzh_fenglaishuixie.html#fangjian-img';
+        });
+    </script>
+</body>
+</html>

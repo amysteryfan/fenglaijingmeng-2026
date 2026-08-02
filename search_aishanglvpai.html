@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>风来搜索 - 爱尚旅拍</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Microsoft Yahei", "PingFang SC", sans-serif;
+        }
+
+        body {
+            background: url("images/bg.jpg") no-repeat center center fixed;
+            background-size: cover;
+            min-height: 100vh;
+            padding: 18px 3%;
+            color: #333;
+        }
+
+        /* 顶部搜索栏 */
+        .search-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            max-width: 1200px;
+            margin: 0 auto 24px;
+        }
+
+        .search-input {
+            flex: 1;
+            height: 46px;
+            padding: 0 18px;
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            border-radius: 8px;
+            font-size: 16px;
+            outline: none;
+            background: rgba(255, 255, 255, 0.95);
+            color: #222;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        .search-btn {
+            height: 46px;
+            padding: 0 20px;
+            border-radius: 8px;
+            border: none;
+            background-color: #d92f2f;
+            color: #fff;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            white-space: nowrap;
+        }
+
+        .search-btn:hover {
+            background-color: #b82424;
+        }
+
+        /* 搜索结果容器 */
+        .result-wrap {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.90);
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        /* 结果数量提示 */
+        .result-count {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 24px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid #eee;
+        }
+
+        /* 单条搜索结果 */
+        .result-item {
+            margin-bottom: 28px;
+            padding-bottom: 24px;
+            border-bottom: 1px solid #e8e8e8;
+        }
+
+        .result-item:last-child {
+            margin-bottom: 0;
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+
+        .result-title {
+            font-size: 20px;
+            margin-bottom: 8px;
+            line-height: 1.45;
+        }
+
+        .result-title a {
+            color: #2b579a;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .result-title a:hover {
+            text-decoration: underline;
+        }
+
+        .result-desc {
+            font-size: 15px;
+            color: #555;
+            line-height: 1.7;
+            margin-bottom: 6px;
+        }
+
+        .result-source {
+            font-size: 13px;
+            color: #777;
+        }
+
+        /* 广告标签 */
+        .tag-ad {
+            display: inline-block;
+            font-size: 12px;
+            color: #d92f2f;
+            border: 1px solid #d92f2f;
+            padding: 2px 7px;
+            border-radius: 4px;
+            margin-left: 10px;
+            font-weight: 500;
+            background: rgba(217, 47, 47, 0.06);
+        }
+
+        /* 广告词条底部强调 */
+        .ad-item {
+            background: rgba(217, 47, 47, 0.04);
+            border-radius: 8px;
+            padding: 18px;
+            margin-top: 8px;
+        }
+
+        /* 分页区域 */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            margin-top: 32px;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .page-btn {
+            padding: 8px 14px;
+            border-radius: 6px;
+            border: 1px solid #ddd;
+            background: #fff;
+            color: #555;
+            cursor: pointer;
+            font-size: 14px;
+            white-space: nowrap;
+        }
+
+        .page-btn:hover {
+            border-color: #d92f2f;
+            color: #d92f2f;
+        }
+
+        .page-btn.active {
+            background: #d92f2f;
+            color: #fff;
+            border-color: #d92f2f;
+        }
+
+        /* 手机适配 */
+        @media (max-width: 768px) {
+            body {
+                padding: 12px 4%;
+            }
+
+            .search-header {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .search-btn {
+                width: 100%;
+            }
+
+            .result-wrap {
+                padding: 18px;
+            }
+
+            .result-title {
+                font-size: 18px;
+            }
+
+            .result-desc {
+                font-size: 14px;
+            }
+
+            .pagination {
+                gap: 6px;
+            }
+
+            .page-btn {
+                padding: 6px 10px;
+                font-size: 13px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="search-header">
+        <input class="search-input" value="爱尚旅拍">
+        <button class="search-btn" onclick="location.href='browser.html'">回到搜索</button>
+    </div>
+
+    <div class="result-wrap">
+        <div class="result-count">找到约 34,200 条结果</div>
+
+        <!-- 结果1 -->
+        <div class="result-item">
+            <div class="result-title">
+                <a href="javascript:void(0);">爱尚旅拍婚纱摄影公司 - 风来百科</a>
+            </div>
+            <div class="result-desc">
+                爱尚旅拍是韶光市主打全域目的地旅拍的婚纱摄影品牌，集婚纱照拍摄、婚礼纪实、情侣写真、礼服定制、化妆造型于一体，开设海边、山林、城市人文、古风建筑多条旅拍线路，坚持客片原创拍摄模式。
+            </div>
+            <div class="result-source">风来百科</div>
+        </div>
+
+        <!-- 结果2 (保留正常页面跳转) -->
+        <div class="result-item">
+            <div class="result-title">
+                <a href="aishanglvpai.html">爱尚旅拍婚纱摄影官网｜婚纱照套餐、客片展示、在线预约</a>
+            </div>
+            <div class="result-desc">
+                品牌官方线上服务平台，实时更新各目的地旅拍套餐明细、真实客片作品集、门店地址与客服通道，支持线上免费测算预算、预约到店体验、一对一拍摄方案定制。
+            </div>
+            <div class="result-source">爱尚旅拍官方官网</div>
+        </div>
+
+        <!-- 结果3 -->
+        <div class="result-item">
+            <div class="result-title">
+                <a href="javascript:void(0);">限时特惠｜爱尚旅拍婚纱旅拍套餐立减，全包无隐形消费</a>
+            </div>
+            <div class="result-desc">
+                暑期婚拍活动正式上线，多款热门目的地旅拍套餐限时折扣，包含往返车程、住宿、多套婚纱礼服、全程妆造、底片全送、精修成片一站式全包，全程公开收费明细，杜绝二次加价。
+            </div>
+            <div class="result-source">韶光本地广告资讯</div>
+        </div>
+
+        <!-- 结果4 -->
+        <div class="result-item">
+            <div class="result-title">
+                <a href="javascript:void(0);">真实评价｜爱尚旅拍服务质量、成片质感深度测评</a>
+            </div>
+            <div class="result-desc">
+                结合数百对新人真实体验反馈，客观点评爱尚旅拍的摄影师审美、化妆师妆造水平、外景行程安排以及后期修图水准，对比同价位婚纱机构的综合优劣。
+            </div>
+            <div class="result-source">城市婚嫁测评社</div>
+        </div>
+
+        <!-- 结果5 -->
+        <div class="result-item">
+            <div class="result-title">
+                <a href="javascript:void(0);">不止婚纱照，爱尚旅拍还有婚礼跟拍、领证纪实、周年写真业务</a>
+            </div>
+            <div class="result-desc">
+                品牌业务覆盖婚前婚纱旅拍、婚礼全天纪实拍摄、民政局领证抓拍、情侣周年纪念写真、亲子外景影像录制，可根据需求组合定制影像服务方案。
+            </div>
+            <div class="result-source">韶光日报生活版</div>
+        </div>
+
+        <!-- 结果6 -->
+        <div class="result-item">
+            <div class="result-title">
+                <a href="javascript:void(0);">爱尚旅拍获评韶光市优质婚嫁服务商，原创影像作品入选城市摄影展</a>
+            </div>
+            <div class="result-desc">
+                在年度婚嫁行业评选中，爱尚旅拍凭借稳定的拍摄品质与标准化服务体系获评正规优质婚嫁机构，多组婚纱旅拍作品入选韶光城市青年摄影公开展览。
+            </div>
+            <div class="result-source">韶光文旅协会公告</div>
+        </div>
+
+        <!-- 结果7 -->
+        <div class="result-item">
+            <div class="result-title">
+                <a href="javascript:void(0);">爱尚旅拍目的地出行贴士，外景拍摄出行食宿安排说明</a>
+            </div>
+            <div class="result-desc">
+                针对异地旅拍客户，说明爱尚旅拍配套合作民宿、出行车队管理标准，告知拍摄当日的时间规划、雨天改期规则、服装养护等配套服务细则。
+            </div>
+            <div class="result-source">城市民生问答社</div>
+        </div>
+
+        <!-- 结果8 广告 -->
+        <div class="result-item ad-item">
+            <div class="result-title">
+                <a href="search_ad_nzcp.html">逆转裁判重制版发售</a>
+                <span class="tag-ad">广告</span>
+            </div>
+        </div>
+
+        <!-- 分页 -->
+        <div class="pagination">
+            <button class="page-btn">上一页</button>
+            <button class="page-btn active">1</button>
+            <button class="page-btn">2</button>
+            <button class="page-btn">3</button>
+            <button class="page-btn">4</button>
+            <button class="page-btn">5</button>
+            <button class="page-btn">下一页</button>
+        </div>
+    </div>
+</body>
+</html>
