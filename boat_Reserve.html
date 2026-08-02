@@ -105,12 +105,19 @@
             padding-left: 8px;
             border-left: 4px solid var(--main-teal);
         }
-        /* 活动列表布局（写实平台网格布局，区别留言板单卡片） */
+        /* 固定一行3列布局 */
         .activity-list {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
-            gap: 20px;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
         }
+        
+        /* ===== 🛠️ 修复核心点：确保初次加载就是3列 ===== */
+        #list_0709 {
+            display: contents;
+        }
+        /* =========================================== */
+
         .activity-card {
             background: #fff;
             border-radius: 10px;
@@ -218,7 +225,12 @@
             background: #fff;
             margin-top: 40px;
         }
-        /* 移动端适配 */
+        /* 移动端：电脑一行3个，手机自动改成一行1个 */
+        @media (max-width:992px) {
+            .activity-list {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
         @media (max-width:768px) {
             .navbar {
                 flex-direction: column;
@@ -251,7 +263,11 @@
         <div class="filter-box">
             <div class="filter-item">
                 <label>活动日期：</label>
-                <span class="date-tag">2026-07-09</span>
+                <select id="dateSelect">
+                    <option value="2026-07-09">2026-07-09</option>
+                    <option value="2026-07-10">2026-07-10</option>
+                </select>
+                <span class="date-tag" id="currentDateText">2026-07-09</span>
             </div>
             <div class="filter-item">
                 <label>所属船舶：</label>
@@ -273,139 +289,214 @@
     <!-- 活动主列表 -->
     <div class="container">
         <h2 class="page-title">当日可预约活动列表</h2>
-        <div class="activity-list">
-            <!-- 活动1 晨间摄影 -->
-            <div class="activity-card">
-                <div class="card-top">
-                    <div class="activity-time">07:30 - 09:00 | 顶层露天甲板</div>
-                    <div class="activity-name">晨间海景摄影打卡活动</div>
+        <div class="activity-list" id="activityContainer">
+            <!-- ========== 7月9日活动：第一行3个，第二行2个 ========== -->
+            <div id="list_0709">
+                <!-- 第一行 3张卡片 -->
+                <div class="activity-card">
+                    <div class="card-top">
+                        <div class="activity-time">07:30 - 09:00 | 露天甲板</div>
+                        <div class="activity-name">晨间海景摄影打卡活动</div>
+                    </div>
+                    <div class="card-body">
+                        <p class="desc-text">配备专业旅拍摄影师，爱心花艺、海景打卡布景免费使用，适合情侣、家庭拍摄海上日出人像，道具包含头纱、气球、复古摆件。</p>
+                        <div class="info-row">
+                            <span>参与费用</span>
+                            <span>免费</span>
+                        </div>
+                        <div class="info-row">
+                            <span>参与上限</span>
+                            <span>不限人数</span>
+                        </div>
+                        <div class="info-row">
+                            <span>入场凭证</span>
+                            <span>客房房卡</span>
+                        </div>
+                    </div>
+                    <div class="card-bottom">
+                        <span class="surplus-num">剩余名额：充足</span>
+                        <button class="book-btn" onclick="alert('活动已过期，无法预约。')">立即预约</button>
+                    </div>
                 </div>
-                <div class="card-body">
-                    <p class="desc-text">配备专业旅拍摄影师，爱心花艺、海景打卡布景免费使用，适合情侣、家庭拍摄海上日出人像，道具包含头纱、气球、复古摆件。</p>
-                    <div class="info-row">
-                        <span>参与费用</span>
-                        <span>免费</span>
+                <div class="activity-card">
+                    <div class="card-top">
+                        <div class="activity-time">10:30 - 11:30 | 一层美食体验厅</div>
+                        <div class="activity-name">海上新鲜海鲜DIY烹饪课堂</div>
                     </div>
-                    <div class="info-row">
-                        <span>参与上限</span>
-                        <span>不限人数</span>
+                    <div class="card-body">
+                        <p class="desc-text">船上主厨现场教学海鲜简餐制作，食材为当日近海捕捞生鲜，全套厨具、调料免费提供，制作完成可现场食用。</p>
+                        <div class="info-row">
+                            <span>参与费用</span>
+                            <span>免费</span>
+                        </div>
+                        <div class="info-row">
+                            <span>参与上限</span>
+                            <span>单场20人</span>
+                        </div>
+                        <div class="info-row">
+                            <span>入场凭证</span>
+                            <span>预约凭证+房卡</span>
+                        </div>
                     </div>
-                    <div class="info-row">
-                        <span>入场凭证</span>
-                        <span>客房房卡</span>
+                    <div class="card-bottom">
+                        <span class="surplus-num">剩余名额：8</span>
+                        <button class="book-btn" onclick="alert('活动已过期，无法预约。')">立即预约</button>
                     </div>
                 </div>
-                <div class="card-bottom">
-                    <span class="surplus-num">剩余名额：充足</span>
-                    <button class="book-btn" onclick="alert('活动已过期，无法预约。')">立即预约</button>
+                <div class="activity-card">
+                    <div class="card-top">
+                        <div class="activity-time">14:00 - 20:00 | 一层休闲沙龙厅</div>
+                        <div class="activity-name">午后休闲桌游棋牌专场</div>
+                    </div>
+                    <div class="card-body">
+                        <p class="desc-text">提供麻将、扑克、狼人杀、飞行棋等多款桌游，全程免费供应茶水、时令果盘，适合亲友结伴休闲放松。</p>
+                        <div class="info-row">
+                            <span>参与费用</span>
+                            <span>免费</span>
+                        </div>
+                        <div class="info-row">
+                            <span>参与上限</span>
+                            <span>不限人数</span>
+                        </div>
+                        <div class="info-row">
+                            <span>入场凭证</span>
+                            <span>客房房卡</span>
+                        </div>
+                    </div>
+                    <div class="card-bottom">
+                        <span class="surplus-num">剩余名额：充足</span>
+                        <button class="book-btn" onclick="alert('活动已过期，无法预约。')">立即预约</button>
+                    </div>
+                </div>
+                <!-- 第二行 2张卡片 -->
+                <div class="activity-card">
+                    <div class="card-top">
+                        <div class="activity-time">20:00 - 21:30 | 二层宴会厅</div>
+                        <div class="activity-name">高端进口红酒品鉴会</div>
+                    </div>
+                    <div class="card-body">
+                        <p class="desc-text">本次包场专属酒会，配备多款干红、起泡葡萄酒，搭配芝士、冷盘小食；专业侍酒师讲解品酒、储酒知识，宾客自由社交交谈。</p>
+                        <div class="info-row">
+                            <span>参与费用</span>
+                            <span>免费</span>
+                        </div>
+                        <div class="info-row">
+                            <span>参与上限</span>
+                            <span>单场30人</span>
+                        </div>
+                        <div class="info-row">
+                            <span>入场凭证</span>
+                            <span>预约凭证+房卡</span>
+                        </div>
+                    </div>
+                    <div class="card-bottom">
+                        <span class="surplus-num">剩余名额：6</span>
+                        <button class="book-btn ordered" onclick="alert('您已成功预定，无需重复申请。')">已经预约</button>
+                    </div>
+                </div>
+                <div class="activity-card">
+                    <div class="card-top">
+                        <div class="activity-time">21:40 - 22:30 | 四层星空观景露台</div>
+                        <div class="activity-name">海上星空民谣驻唱晚会</div>
+                    </div>
+                    <div class="card-body">
+                        <p class="desc-text">休闲活动，露天海景舞台民谣弹唱，免费提供低度果酒、气泡水，可观赏海面夜景与远处岸灯。</p>
+                        <div class="info-row">
+                            <span>参与费用</span>
+                            <span>免费</span>
+                        </div>
+                        <div class="info-row">
+                            <span>参与上限</span>
+                            <span>不限人数</span>
+                        </div>
+                        <div class="info-row">
+                            <span>入场凭证</span>
+                            <span>客房房卡</span>
+                        </div>
+                    </div>
+                    <div class="card-bottom">
+                        <span class="surplus-num">剩余名额：充足</span>
+                        <button class="book-btn" onclick="alert('活动已过期，无法预约。')">立即预约</button>
+                    </div>
                 </div>
             </div>
 
-            <!-- 活动2 海鲜DIY -->
-            <div class="activity-card">
-                <div class="card-top">
-                    <div class="activity-time">10:30 - 11:30 | 一层美食体验厅</div>
-                    <div class="activity-name">海上新鲜海鲜DIY烹饪课堂</div>
-                </div>
-                <div class="card-body">
-                    <p class="desc-text">船上主厨现场教学海鲜简餐制作，食材为当日近海捕捞生鲜，全套厨具、调料免费提供，制作完成可现场食用。</p>
-                    <div class="info-row">
-                        <span>参与费用</span>
-                        <span>免费</span>
+            <!-- ========== 7月10日活动：一行刚好3个 ========== -->
+            <div id="list_0710" style="display: none;">
+                <div class="activity-card">
+                    <div class="card-top">
+                        <div class="activity-time">09:00 - 11:20 | 二层主宴会厅</div>
+                        <div class="activity-name">慈善拍卖会场布景与流程彩排</div>
                     </div>
-                    <div class="info-row">
-                        <span>参与上限</span>
-                        <span>单场20人</span>
+                    <div class="card-body">
+                        <p class="desc-text">工作人员完成拍卖台搭建、展品陈列、音响投影调试，受邀宾客可到场提前观摩场地布局，禁止触碰各类拍卖藏品与专业设备。</p>
+                        <div class="info-row">
+                            <span>参与费用</span>
+                            <span>免费</span>
+                        </div>
+                        <div class="info-row">
+                            <span>参与上限</span>
+                            <span>不限人数</span>
+                        </div>
+                        <div class="info-row">
+                            <span>入场凭证</span>
+                            <span>客房房卡</span>
+                        </div>
                     </div>
-                    <div class="info-row">
-                        <span>入场凭证</span>
-                        <span>预约凭证+房卡</span>
-                    </div>
-                </div>
-                <div class="card-bottom">
-                    <span class="surplus-num">剩余名额：8</span>
-                    <button class="book-btn" onclick="alert('活动已过期，无法预约。')">立即预约</button>
-                </div>
-            </div>
-
-            <!-- 活动3 午后桌游棋牌 -->
-            <div class="activity-card">
-                <div class="card-top">
-                    <div class="activity-time">14:00 - 20:00 | 一层休闲沙龙厅</div>
-                    <div class="activity-name">午后休闲桌游棋牌专场</div>
-                </div>
-                <div class="card-body">
-                    <p class="desc-text">提供麻将、扑克、狼人杀、飞行棋等多款桌游，全程免费供应茶水、时令果盘，适合亲友结伴休闲放松。</p>
-                    <div class="info-row">
-                        <span>参与费用</span>
-                        <span>免费</span>
-                    </div>
-                    <div class="info-row">
-                        <span>参与上限</span>
-                        <span>不限人数</span>
-                    </div>
-                    <div class="info-row">
-                        <span>入场凭证</span>
-                        <span>客房房卡</span>
+                    <div class="card-bottom">
+                        <span class="surplus-num">剩余名额：充足</span>
+                        <button class="book-btn" onclick="alert('本场活动仅开放观摩，无法线上预约。')">立即预约</button>
                     </div>
                 </div>
-                <div class="card-bottom">
-                    <span class="surplus-num">剩余名额：充足</span>
-                    <button class="book-btn" onclick="alert('活动已过期，无法预约。')">立即预约</button>
-                </div>
-            </div>
-
-            <!-- 核心活动：20:00红酒品鉴会（已预约红色按钮） -->
-            <div class="activity-card">
-                <div class="card-top">
-                    <div class="activity-time">20:00 - 21:30 | 二层宴会厅</div>
-                    <div class="activity-name">高端进口红酒品鉴会</div>
-                </div>
-                <div class="card-body">
-                    <p class="desc-text">本次包场专属酒会，配备多款干红、起泡葡萄酒，搭配芝士、冷盘小食；专业侍酒师讲解品酒、储酒知识，宾客自由社交交谈。</p>
-                    <div class="info-row">
-                        <span>参与费用</span>
-                        <span>免费</span>
+                <div class="activity-card">
+                    <div class="card-top">
+                        <div class="activity-time">14:00 - 18:00 | 二层主宴会厅</div>
+                        <div class="activity-name">海上公益慈善艺术品拍卖会</div>
                     </div>
-                    <div class="info-row">
-                        <span>参与上限</span>
-                        <span>单场30人</span>
+                    <div class="card-body">
+                        <p class="desc-text">本场拍卖所得款项全部用于海洋生态保护公益项目，展出画作、手工藏品、珠宝饰品等拍品，配备专业拍卖师主持整场竞价流程。</p>
+                        <div class="info-row">
+                            <span>参与费用</span>
+                            <span>免费入场</span>
+                        </div>
+                        <div class="info-row">
+                            <span>参与上限</span>
+                            <span>不限人数</span>
+                        </div>
+                        <div class="info-row">
+                            <span>入场凭证</span>
+                            <span>客房房卡</span>
+                        </div>
                     </div>
-                    <div class="info-row">
-                        <span>入场凭证</span>
-                        <span>预约凭证+房卡</span>
+                    <div class="card-bottom">
+                        <span class="surplus-num">剩余名额：充足</span>
+                        <button class="book-btn" onclick="alert('本场拍卖会统一现场签到入场，线上无法预约。')">立即预约</button>
                     </div>
                 </div>
-                <div class="card-bottom">
-                    <span class="surplus-num">剩余名额：6</span>
-                    <button class="book-btn ordered" onclick="alert('您已成功预定，无需重复申请。')">已经预约</button>
-                </div>
-            </div>
-
-            <!-- 活动4 星空民谣驻唱 -->
-            <div class="activity-card">
-                <div class="card-top">
-                    <div class="activity-time">21:40 - 22:30 | 三层星空观景露台</div>
-                    <div class="activity-name">海上星空民谣驻唱晚会</div>
-                </div>
-                <div class="card-body">
-                    <p class="desc-text">休闲活动，露天海景舞台民谣弹唱，免费提供低度果酒、气泡水，可观赏海面夜景与远处岸灯。</p>
-                    <div class="info-row">
-                        <span>参与费用</span>
-                        <span>免费</span>
+                <div class="activity-card">
+                    <div class="card-top">
+                        <div class="activity-time">19:00 - 21:00 | 二层主宴会厅</div>
+                        <div class="activity-name">商界名流专属交流晚宴</div>
                     </div>
-                    <div class="info-row">
-                        <span>参与上限</span>
-                        <span>不限人数</span>
+                    <div class="card-body">
+                        <p class="desc-text">定制西式正餐餐食，搭配专属酒水套餐，为登船企业客商提供商务洽谈、人脉交流的正式晚宴场合，全程配备服务人员随行服务。</p>
+                        <div class="info-row">
+                            <span>参与费用</span>
+                            <span>定向受邀制</span>
+                        </div>
+                        <div class="info-row">
+                            <span>参与上限</span>
+                            <span>不限人数</span>
+                        </div>
+                        <div class="info-row">
+                            <span>入场凭证</span>
+                            <span>纸质邀请函+房卡</span>
+                        </div>
                     </div>
-                    <div class="info-row">
-                        <span>入场凭证</span>
-                        <span>客房房卡</span>
+                    <div class="card-bottom">
+                        <span class="surplus-num">仅限受邀人员参与</span>
+                        <button class="book-btn" onclick="alert('本次晚宴为定向邀约活动，不对外开放预约通道。')">立即预约</button>
                     </div>
-                </div>
-                <div class="card-bottom">
-                    <span class="surplus-num">剩余名额：充足</span>
-                    <button class="book-btn" onclick="alert('活动已过期，无法预约。')">立即预约</button>
                 </div>
             </div>
         </div>
@@ -419,7 +510,7 @@
             2. 人数限制类活动预约成功后，请提前15分钟到场签到，超时未签到名额自动释放；<br>
             3. 如需取消预约，可返回首页进入留言板提交需求，工作人员将同步释放名额。<br>
             4. 红酒品鉴会仅限二十周岁以上的订婚宴宾客参加。
-</p>
+            </p>
         </div>
     </div>
 
@@ -427,5 +518,24 @@
     <div class="footer-copyright">
         风来水榭游轮综合服务系统 ©2026 版权所有 | 服务船舶：艾希皇后号
     </div>
+
+    <script>
+        const dateSelect = document.getElementById('dateSelect');
+        const currentDateText = document.getElementById('currentDateText');
+        const list0709 = document.getElementById('list_0709');
+        const list0710 = document.getElementById('list_0710');
+
+        dateSelect.addEventListener('change', function () {
+            const selectedVal = this.value;
+            currentDateText.textContent = selectedVal;
+            if (selectedVal === '2026-07-09') {
+                list0709.style.display = 'contents';
+                list0710.style.display = 'none';
+            } else {
+                list0709.style.display = 'none';
+                list0710.style.display = 'contents';
+            }
+        })
+    </script>
 </body>
 </html>
