@@ -876,14 +876,7 @@
                 }
             });
 
-            searchInput.addEventListener('input', function() {
-                const keyword = this.value.trim();
-                if (keyword) {
-                    performSearchQuery(keyword);
-                } else {
-                    searchDropdown.classList.remove('active');
-                }
-            });
+            // 为了保持您的需求，将 input 监听事件移除，避免出现“输入过程中弹出下拉框”的情况
 
             // ---------- 搜索历史记录逻辑 ----------
             const HISTORY_KEY = 'mingde_search_history';
