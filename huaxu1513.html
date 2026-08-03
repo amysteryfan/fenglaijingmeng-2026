@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>视频播放 · 休闲厅对话</title>
+    <style>
+        /* === 全局 === */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #008080;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            font-family: 'Segoe UI', 'Microsoft YaHei', system-ui, sans-serif;
+            padding: 24px;
+        }
+
+        /* === 主窗口 === */
+        .window {
+            width: 820px;
+            max-width: 100%;
+            background: #c0c0c0;
+            border: 2px solid #000;
+            box-shadow: 6px 6px 0 rgba(0, 0, 0, 0.5);
+            display: flex;
+            flex-direction: column;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        /* === 标题栏 === */
+        .titlebar {
+            background: linear-gradient(180deg, #000080 0%, #1a1a8a 100%);
+            color: #fff;
+            padding: 5px 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 14px;
+            font-weight: 600;
+            letter-spacing: 0.3px;
+            user-select: none;
+            border-bottom: 2px solid #000;
+        }
+        .titlebar .title-left {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .titlebar .title-left span {
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+        }
+        .titlebar .close-btn {
+            background: #c0c0c0;
+            border: 2px solid #fff;
+            border-right-color: #000;
+            border-bottom-color: #000;
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 13px;
+            font-weight: 700;
+            color: #000;
+            line-height: 1;
+            transition: 0.05s linear;
+        }
+        .titlebar .close-btn:active {
+            border: 2px solid #000;
+            border-right-color: #fff;
+            border-bottom-color: #fff;
+        }
+
+        /* === 内容区 === */
+        .content {
+            display: flex;
+            gap: 10px;
+            padding: 10px;
+            background: #c0c0c0;
+            flex-wrap: wrap;
+        }
+
+        /* === 左侧：视频播放器 === */
+        .player {
+            flex: 0 0 260px;
+            min-width: 200px;
+            background: #d4d4d4;
+            border: 2px inset #e8e8e8;
+            padding: 12px 12px 14px 12px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+        }
+        .player-title {
+            font-size: 13px;
+            font-weight: 600;
+            color: #1a1a1a;
+            align-self: flex-start;
+            margin-bottom: 2px;
+            letter-spacing: 0.2px;
+        }
+        .video-screen {
+            width: 100%;
+            aspect-ratio: 16 / 9;
+            background: #0a0a0c;
+            border: 2px inset #666;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            box-shadow: inset 0 0 30px rgba(0, 0, 0, 0.6);
+            transition: background 0.2s;
+            cursor: default;
+        }
+        .video-screen .play-icon-big {
+            width: 56px;
+            height: 56px;
+            background: rgba(255, 255, 255, 0.12);
+            backdrop-filter: blur(4px);
+            border-radius: 50%;
+            border: 2px solid rgba(255, 255, 255, 0.25);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 28px;
+            box-shadow: 0 0 30px rgba(0, 80, 200, 0.15);
+            transition: 0.15s;
+        }
+        .video-screen .play-icon-big svg {
+            width: 32px;
+            height: 32px;
+            fill: currentColor;
+        }
+        .video-screen .play-icon-big:hover {
+            background: rgba(255, 255, 255, 0.20);
+            border-color: rgba(255, 255, 255, 0.40);
+            transform: scale(1.04);
+        }
+        .video-screen .badge {
+            position: absolute;
+            bottom: 8px;
+            right: 10px;
+            color: rgba(255, 255, 255, 0.25);
+            font-size: 11px;
+            font-weight: 300;
+            letter-spacing: 0.5px;
+            background: rgba(0, 0, 0, 0.4);
+            padding: 2px 10px;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 14px;
+            background: #e0e0e0;
+            border: 1px solid #999;
+            border-top-color: #777;
+            position: relative;
+            margin: 6px 0 4px 0;
+        }
+        .progress-fill {
+            width: 0%;
+            height: 100%;
+            background: #000080;
+            transition: width 0.1s;
+        }
+
+        .time-label {
+            font-size: 12px;
+            color: #222;
+            font-weight: 500;
+            letter-spacing: 0.3px;
+            align-self: flex-end;
+            margin-top: -2px;
+        }
+
+        .controls {
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+            margin-top: 6px;
+            flex-wrap: wrap;
+        }
+        .win-btn {
+            padding: 3px 12px;
+            background: #c0c0c0;
+            border: 2px solid #fff;
+            border-right-color: #000;
+            border-bottom-color: #000;
+            cursor: default;
+            font-size: 14px;
+            font-weight: 600;
+            color: #000;
+            min-width: 38px;
+            text-align: center;
+            transition: 0.05s linear;
+            user-select: none;
+            line-height: 1.4;
+        }
+        .win-btn:active {
+            border: 2px solid #000;
+            border-right-color: #fff;
+            border-bottom-color: #fff;
+        }
+
+        /* === 右侧：字幕（记事本风格） === */
+        .notepad {
+            flex: 1;
+            min-width: 200px;
+            background: #fdfdfd;
+            border: 2px inset #ddd;
+            padding: 14px 18px 18px 18px;
+            display: flex;
+            flex-direction: column;
+        }
+        .notepad-header {
+            font-weight: 600;
+            border-bottom: 2px solid #ccc;
+            padding-bottom: 8px;
+            margin-bottom: 12px;
+            color: #000080;
+            font-size: 15px;
+            letter-spacing: 0.4px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .notepad-header small {
+            font-weight: 400;
+            color: #666;
+            font-size: 12px;
+            margin-left: auto;
+            letter-spacing: 0;
+        }
+        .text-content {
+            font-family: 'Segoe UI', 'Microsoft YaHei', 'SimSun', serif;
+            font-size: 14px;
+            line-height: 1.8;
+            color: #1a1a1a;
+            white-space: pre-wrap;
+            word-break: break-word;
+            overflow-y: auto;
+            flex: 1;
+            max-height: 320px;
+            padding-right: 4px;
+        }
+        .text-content::-webkit-scrollbar {
+            width: 5px;
+        }
+        .text-content::-webkit-scrollbar-track {
+            background: #f0f0f0;
+        }
+        .text-content::-webkit-scrollbar-thumb {
+            background: #aaa;
+            border-radius: 4px;
+        }
+        .text-content::-webkit-scrollbar-thumb:hover {
+            background: #888;
+        }
+
+        /* 字幕中的说话人标记 */
+        .speaker-a { color: #0044aa; font-weight: 500; }
+        .speaker-b { color: #aa6600; font-weight: 500; }
+        .text-content .line {
+            padding: 1px 0;
+            border-left: 3px solid transparent;
+            padding-left: 10px;
+            margin-bottom: 2px;
+        }
+        .text-content .line.speaker-a-line { border-left-color: #0044aa; }
+        .text-content .line.speaker-b-line { border-left-color: #aa6600; }
+        .text-content .line.desc-line {
+            border-left: none;
+            padding-left: 0;
+            color: #666;
+            font-style: italic;
+            font-size: 13px;
+        }
+
+        /* === 响应式 === */
+        @media (max-width: 680px) {
+            .window { width: 100%; border-radius: 2px; }
+            .content { flex-direction: column; }
+            .player { flex: unset; width: 100%; }
+            .video-screen { aspect-ratio: 16 / 9; max-height: 200px; }
+            .notepad { max-height: 280px; }
+            .text-content { max-height: 200px; }
+            body { padding: 12px; }
+        }
+        @media (max-width: 420px) {
+            .titlebar { font-size: 12px; padding: 4px 6px; }
+            .player { padding: 8px; }
+            .controls .win-btn { padding: 2px 8px; font-size: 12px; min-width: 30px; }
+            .video-screen .play-icon-big { width: 42px; height: 42px; font-size: 20px; }
+            .video-screen .play-icon-big svg { width: 24px; height: 24px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="window">
+        <!-- 标题栏 -->
+        <div class="titlebar">
+            <div class="title-left">
+                <span>🎬 休闲厅对话 · 视频字幕</span>
+            </div>
+            <div class="close-btn" id="closeBtn">✖</div>
+        </div>
+
+        <!-- 内容 -->
+        <div class="content">
+            <!-- 左侧：视频播放器 -->
+            <div class="player">
+                <div class="player-title">📺 视频画面</div>
+
+                <!-- 视频占位 -->
+                <div class="video-screen" id="videoScreen">
+                    <div class="play-icon-big">
+                        <svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21" /></svg>
+                    </div>
+                    <span class="badge">● 休闲厅</span>
+                </div>
+
+                <!-- 进度条 -->
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill" style="width:0%;"></div>
+                </div>
+
+                <!-- 时间显示 -->
+                <div class="time-label" id="timeLabel">00:00 / 03:05</div>
+
+                <!-- 控制按钮 -->
+                <div class="controls">
+                    <button class="win-btn" title="上一段">⏮</button>
+                    <button class="win-btn" title="播放">▶</button>
+                    <button class="win-btn" title="暂停">⏸</button>
+                    <button class="win-btn" title="停止">⏹</button>
+                    <button class="win-btn" title="下一段">⏭</button>
+                </div>
+            </div>
+
+            <!-- 右侧：字幕 -->
+            <div class="notepad">
+                <div class="notepad-header">
+                    📄 识别字幕
+                    <small>共 14 句 · 总时长 03:05</small>
+                </div>
+                <div class="text-content" id="textContent"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        (function() {
+            // ----- 字幕数据 (第一行为描述性文字) -----
+            const lines = [
+                { speaker: 'desc', text: '（视频内容为休闲厅的景象。已对杂音进行分离，以下是识别到的人声）' },
+                { speaker: 'A', text: '哟，来了？来得正好，坐下陪我来几圈。' },
+                { speaker: 'B', text: '我才刚睡醒，你就不能换个人打？' },
+                { speaker: 'A', text: '就趁你脑子不清醒的时候，多赢你点。' },
+                { speaker: 'B', text: '某人就没有这个顾虑了，因为他的脑子无论什么时候都一个样。' },
+                { speaker: 'A', text: '你！算了，你也就嘴上逞逞强了。真输给我的时候，可不要哭得太难看。' },
+                { speaker: 'B', text: '是么？' },
+                { speaker: 'A', text: '有些人表面风光，但都是给外人看的伪装，实际什么样，自己心里清楚。就拿红酒来说吧，你们鼎峰的定制红酒外观上做得那么漂亮，口感却绝对抵不上阅辉那批看起来毫不起眼的佳酿。' },
+                { speaker: 'B', text: '文犹质也，质犹文也，虎豹之鞟，犹犬羊之鞟。我们鼎峰的酒外形优美，自然也配得上内在香醇。至于某人的酒么，就不知道是文胜质，还是质胜文了。' },
+                { speaker: 'A', text: '哼，到了晚上喝酒的时候，就让你见见分晓。有些人别以为自己现在是庄家，就能一直赢下去。同理，有些人别觉得自己永远能在上游。流向是会变的，谁会是下一个潮头？' },
+                { speaker: 'B', text: '你觉得那个人会是你？' },
+                { speaker: 'A', text: '当然，阅辉总有一天会胜过鼎峰的。' },
+                { speaker: 'B', text: '未必。（倒牌声）胡牌。我赢了。' },
+                { speaker: 'A', text: '你！哎呀，一局说明不了什么，笑到最后的才是赢家，我们继续！' }
+            ];
+
+            // 总时长：185 秒 = 03:05
+            const totalSeconds = 185;
+
+            // ----- 渲染字幕 (静态，无高亮) -----
+            const container = document.getElementById('textContent');
+            let html = '';
+            lines.forEach((item) => {
+                const speaker = item.speaker;
+                const text = item.text;
+                let cssClass = 'line';
+                let prefix = '';
+                let speakerSpanClass = '';
+
+                if (speaker === 'desc') {
+                    // 描述行：无前缀，无边框，斜体灰色
+                    cssClass += ' desc-line';
+                } else if (speaker === 'A') {
+                    cssClass += ' speaker-a-line';
+                    prefix = '声音A：';
+                    speakerSpanClass = 'speaker-a';
+                } else if (speaker === 'B') {
+                    cssClass += ' speaker-b-line';
+                    prefix = '声音B：';
+                    speakerSpanClass = 'speaker-b';
+                }
+
+                if (prefix) {
+                    html += `<div class="${cssClass}"><span class="${speakerSpanClass}">${prefix}</span>${text}</div>`;
+                } else {
+                    html += `<div class="${cssClass}">${text}</div>`;
+                }
+            });
+            container.innerHTML = html;
+
+            // ----- 进度条与交互 (静态模拟) -----
+            const progressFill = document.getElementById('progressFill');
+            const timeLabel = document.getElementById('timeLabel');
+
+            // 设置总时长显示
+            const totalStr = formatTime(totalSeconds);
+            timeLabel.textContent = `00:00 / ${totalStr}`;
+
+            // 点击进度条跳转
+            const progressBar = document.querySelector('.progress-bar');
+            progressBar.addEventListener('click', function(e) {
+                const rect = this.getBoundingClientRect();
+                const x = (e.clientX - rect.left) / rect.width;
+                const pct = Math.min(Math.max(x, 0), 1);
+                progressFill.style.width = (pct * 100) + '%';
+                const currentSec = Math.round(pct * totalSeconds);
+                timeLabel.textContent = `${formatTime(currentSec)} / ${totalStr}`;
+            });
+
+            // 按钮功能模拟
+            const playBtn = document.querySelector('.controls .win-btn:nth-child(2)'); // ▶
+            const pauseBtn = document.querySelector('.controls .win-btn:nth-child(3)'); // ⏸
+            const stopBtn = document.querySelector('.controls .win-btn:nth-child(4)'); // ⏹
+            const prevBtn = document.querySelector('.controls .win-btn:nth-child(1)'); // ⏮
+            const nextBtn = document.querySelector('.controls .win-btn:nth-child(5)'); // ⏭
+
+            let fakeProgress = 0;
+
+            function setProgress(pct) {
+                fakeProgress = Math.min(Math.max(pct, 0), 100);
+                progressFill.style.width = fakeProgress + '%';
+                const currentSec = Math.round((fakeProgress / 100) * totalSeconds);
+                timeLabel.textContent = `${formatTime(currentSec)} / ${totalStr}`;
+            }
+
+            // 播放：进度条往前走
+            playBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                if (fakeProgress >= 99.5) setProgress(0);
+                let newPct = Math.min(fakeProgress + 8, 100);
+                setProgress(newPct);
+                if (newPct >= 100) setTimeout(() => setProgress(0), 300);
+            });
+
+            // 暂停：不做任何事 (保留进度)
+            pauseBtn.addEventListener('click', function(e) { e.preventDefault(); });
+
+            // 停止：回到 0
+            stopBtn.addEventListener('click', function(e) { e.preventDefault(); setProgress(0); });
+
+            // 上一段 / 下一段：微调进度
+            prevBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                setProgress(Math.max(fakeProgress - 12, 0));
+            });
+
+            nextBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                setProgress(Math.min(fakeProgress + 12, 100));
+            });
+
+            // 视频占位上的大播放按钮
+            const bigPlayIcon = document.querySelector('.video-screen .play-icon-big');
+            bigPlayIcon.addEventListener('click', function(e) {
+                e.stopPropagation();
+                if (fakeProgress >= 99.5) setProgress(0);
+                let newPct = Math.min(fakeProgress + 10, 100);
+                setProgress(newPct);
+                if (newPct >= 100) setTimeout(() => setProgress(0), 400);
+            });
+
+            // 关闭按钮 → 跳转到 aishanglvpai.html 并定位到花絮区域
+            document.getElementById('closeBtn').addEventListener('click', function() {
+                window.location.href = 'aishanglvpai.html#blooper-section';
+            });
+
+            // 辅助：格式化时间 mm:ss
+            function formatTime(sec) {
+                const m = Math.floor(sec / 60);
+                const s = Math.floor(sec % 60);
+                return `${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
+            }
+
+            // 初始进度 0
+            setProgress(0);
+
+            // 禁用所有按钮的默认行为
+            document.querySelectorAll('.win-btn').forEach(btn => {
+                btn.addEventListener('click', function(e) { e.preventDefault(); });
+            });
+
+            console.log('🎬 Windows 风格视频字幕页面 (休闲厅) 已加载');
+            console.log(`📝 共 ${lines.length} 句，总时长 ${totalStr}`);
+        })();
+    </script>
+</body>
+</html>

@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=yes">
+<title>艾希皇后号 · 四层平面图</title>
+<style>
+  body { 
+    background: #f8f5eb; 
+    text-align: center; 
+    font-family: 'Times New Roman', '宋体', serif; 
+    padding: 20px; 
+    margin: 0;
+  }
+  .deck-wrap { 
+    margin-bottom: 60px; 
+    border-bottom: 2px dashed #aaa; 
+    padding-bottom: 40px; 
+  }
+  svg { 
+    max-width: 100%; 
+    height: auto; 
+    border: 1px solid #ccc; 
+    background: #fbf8f0; 
+    box-shadow: 2px 4px 8px rgba(0,0,0,0.02);
+  }
+  #close-btn {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    background: rgba(251, 248, 240, 0.9);
+    border: 1.5px solid #2a2a2a;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Times New Roman', serif;
+    font-size: 24px;
+    font-weight: 300;
+    color: #1a1a1a;
+    z-index: 999;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+    transition: all 0.2s ease;
+    line-height: 1;
+    text-decoration: none;
+  }
+  #close-btn:hover {
+    background: #eee7db;
+    transform: scale(1.05);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  }
+</style>
+</head>
+<body>
+
+<!-- 右上角X按钮 -->
+<div id="close-btn" onclick="window.location.href='search_fenglaishuixie.html'">✕</div>
+
+<h1 style="font-family: 'Times New Roman', serif; font-weight: 300; color: #1a1a1a;">⚓ 艾希皇后号 · 平面图总览</h1>
+
+<!-- 第一层 -->
+<div class="deck-wrap">
+<svg width="800" height="460" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style>
+      .bg { fill: #fbf8f0; }
+      .title { font-family: 'Times New Roman', serif; font-size: 22px; font-weight: bold; fill: #1a1a1a; }
+      .sub { font-family: 'Times New Roman', serif; font-size: 14px; fill: #1a1a1a; }
+      .label { font-family: 'Courier New', monospace; font-size: 13px; fill: #1a1a1a; text-anchor: middle; }
+      .label-sm { font-family: 'Courier New', monospace; font-size: 10px; fill: #1a1a1a; text-anchor: middle; }
+      .wall { stroke: #1a1a1a; stroke-width: 2.5; fill: none; }
+      .wall-inner { stroke: #1a1a1a; stroke-width: 1.5; stroke-dasharray: 5 4; fill: none; }
+      .stair-line { stroke: #1a1a1a; stroke-width: 1.5; }
+    </style>
+  </defs>
+  <rect class="bg" width="100%" height="100%"/>
+  
+  <text x="400" y="25" text-anchor="middle" class="title">艾希皇后号 · 一层平面图</text>
+  <text x="400" y="48" text-anchor="middle" class="sub">—— 休闲厅 · 储物间 · 美食厅 ——</text>
+
+  <rect x="50" y="135" width="700" height="220" class="wall"/>
+
+  <rect x="50" y="135" width="233" height="220" class="wall-inner"/>
+  <text x="166" y="245" class="label">休闲厅</text>
+
+  <rect x="283" y="135" width="467" height="110" class="wall-inner"/>
+  <text x="516" y="185" class="label">储物间</text>
+
+  <rect x="283" y="245" width="467" height="110" class="wall-inner"/>
+  <text x="516" y="300" class="label">美食厅</text>
+
+  <!-- 左楼梯 -->
+  <rect x="12" y="185" width="30" height="40" class="wall"/>
+  <line x1="12" y1="185" x2="42" y2="225" class="stair-line"/>
+  <line x1="42" y1="185" x2="12" y2="225" class="stair-line"/>
+  <text x="20" y="160" text-anchor="end" class="label-sm">左楼梯</text>
+  <text x="20" y="175" text-anchor="end" class="label-sm">  至2F</text>
+ 
+
+  <!-- 右楼梯 -->
+  <rect x="496" y="80" width="40" height="30" class="wall"/>
+  <line x1="496" y1="80" x2="536" y2="110" class="stair-line"/>
+  <line x1="536" y1="80" x2="496" y2="110" class="stair-line"/>
+  <text x="560" y="95" class="label-sm">右楼梯</text>
+  <text x="560" y="105" class="label-sm">至2F</text>
+
+
+</svg>
+</div>
+
+<!-- 第二层 -->
+<div class="deck-wrap">
+<svg width="800" height="460" xmlns="http://www.w3.org/2000/svg">
+  <defs><style>.bg { fill: #fbf8f0; }.title { font-family: 'Times New Roman', serif; font-size: 22px; font-weight: bold; fill: #1a1a1a; }.sub { font-family: 'Times New Roman', serif; font-size: 14px; fill: #1a1a1a; }.label { font-family: 'Courier New', monospace; font-size: 13px; fill: #1a1a1a; text-anchor: middle; }.label-sm { font-family: 'Courier New', monospace; font-size: 10px; fill: #1a1a1a; text-anchor: middle; }.wall { stroke: #1a1a1a; stroke-width: 2.5; fill: none; }.wall-inner { stroke: #1a1a1a; stroke-width: 1.5; stroke-dasharray: 5 4; fill: none; }.stair-line { stroke: #1a1a1a; stroke-width: 1.5; }</style></defs>
+  <rect class="bg" width="100%" height="100%"/>
+  <text x="400" y="25" text-anchor="middle" class="title">艾希皇后号 · 二层平面图</text>
+  <text x="400" y="48" text-anchor="middle" class="sub">—— 长廊 · 宴会厅 ——</text>
+
+  <rect x="50" y="135" width="700" height="220" class="wall"/>
+
+  <!-- 长廊 -->
+  <rect x="50" y="135" width="280" height="220" class="wall-inner"/>
+  <text x="190" y="245" class="label">长廊</text>
+
+  <!-- 宴会厅 -->
+  <rect x="330" y="135" width="420" height="220" class="wall-inner"/>
+  <text x="540" y="205" class="label">宴会厅</text>
+  <text x="540" y="225" class="label-sm">(宴会区)</text>
+
+  <!-- 备餐间 -->
+  <rect x="340" y="145" width="90" height="70" class="wall"/>
+  <text x="385" y="185" class="label-sm">备餐间</text>
+
+  <!-- 酒水间 -->
+  <rect x="340" y="225" width="90" height="120" class="wall"/>
+  <text x="385" y="285" class="label-sm">酒水间</text>
+
+  <!-- 左楼梯 -->
+  <rect x="12" y="185" width="30" height="40" class="wall"/>
+  <line x1="12" y1="185" x2="42" y2="225" class="stair-line"/>
+  <line x1="42" y1="185" x2="12" y2="225" class="stair-line"/>
+  <text x="20" y="160" text-anchor="end" class="label-sm">左楼梯</text>
+  <text x="20" y="175" text-anchor="end" class="label-sm">至3F</text>
+  <text x="20" y="240" text-anchor="end" class="label-sm">至1F</text>
+
+  <!-- 后门楼梯 -->
+  <rect x="760" y="185" width="30" height="40" class="wall"/>
+  <line x1="760" y1="185" x2="790" y2="225" class="stair-line"/>
+  <line x1="790" y1="185" x2="760" y2="225" class="stair-line"/>
+  <text x="775" y="160" text-anchor="start" class="label-sm">后门楼梯</text>
+  <text x="780" y="175" text-anchor="start" class="label-sm">至3F</text>
+
+
+  <!-- 长廊下方楼梯入口（已移除虚线连接，文字换行处理） -->
+  <rect x="170" y="370" width="40" height="30" class="wall"/>
+  <line x1="170" y1="370" x2="210" y2="400" class="stair-line"/>
+  <line x1="210" y1="370" x2="170" y2="400" class="stair-line"/>
+  <text x="240" y="380" class="label-sm">右楼梯</text>
+  <text x="240" y="395" class="label-sm">至1F</text>
+
+</svg>
+</div>
+
+<!-- 第三层 -->
+<div class="deck-wrap">
+<svg width="800" height="460" xmlns="http://www.w3.org/2000/svg">
+  <defs><style>.bg { fill: #fbf8f0; }.title { font-family: 'Times New Roman', serif; font-size: 22px; font-weight: bold; fill: #1a1a1a; }.sub { font-family: 'Times New Roman', serif; font-size: 14px; fill: #1a1a1a; }.label { font-family: 'Courier New', monospace; font-size: 13px; fill: #1a1a1a; text-anchor: middle; }.label-sm { font-family: 'Courier New', monospace; font-size: 10px; fill: #1a1a1a; text-anchor: middle; }.wall { stroke: #1a1a1a; stroke-width: 2.5; fill: none; }.wall-inner { stroke: #1a1a1a; stroke-width: 1.5; stroke-dasharray: 5 4; fill: none; }.stair-line { stroke: #1a1a1a; stroke-width: 1.5; }.balcony { stroke: #1a1a1a; stroke-width: 1.5; fill: none; stroke-dasharray: 2 2; }</style></defs>
+  <rect class="bg" width="100%" height="100%"/>
+  <text x="400" y="25" text-anchor="middle" class="title">艾希皇后号 · 三层平面图</text>
+  <text x="400" y="48" text-anchor="middle" class="sub">—— 客房部 ——</text>
+
+  <rect x="50" y="135" width="700" height="220" class="wall"/>
+
+  <!-- 左楼梯 -->
+  <rect x="12" y="185" width="30" height="40" class="wall"/>
+  <line x1="12" y1="185" x2="42" y2="225" class="stair-line"/>
+  <line x1="42" y1="185" x2="12" y2="225" class="stair-line"/>
+  <text x="20" y="175" text-anchor="end" class="label-sm">左楼梯</text>
+  <text x="20" y="240" text-anchor="end" class="label-sm">至2F</text>
+
+  <!-- 302房间 -->
+  <rect x="50" y="135" width="180" height="180" class="wall-inner"/>
+  <text x="140" y="225" class="label">302</text>
+  <rect x="50" y="315" width="180" height="40" class="balcony"/>
+  <text x="140" y="340" class="label-sm">阳台</text>
+
+  <!-- 客房部 -->
+  <rect x="230" y="135" width="340" height="220" class="wall-inner"/>
+  <text x="400" y="245" class="label">客房部</text>
+  <text x="400" y="265" class="label-sm">(走廊及客房区)</text>
+
+  <!-- 至4F楼梯 -->
+  <rect x="380" y="80" width="40" height="30" class="wall"/>
+  <line x1="380" y1="80" x2="420" y2="110" class="stair-line"/>
+  <line x1="420" y1="80" x2="380" y2="110" class="stair-line"/>
+  <text x="400" y="70" class="label-sm">中央楼梯</text>
+  <text x="400" y="125" class="label-sm">至4F</text>
+
+  <!-- 右楼梯 -->
+  <rect x="760" y="185" width="30" height="40" class="wall"/>
+  <line x1="760" y1="185" x2="790" y2="225" class="stair-line"/>
+  <line x1="790" y1="185" x2="760" y2="225" class="stair-line"/>
+  <text x="775" y="175" text-anchor="start" class="label-sm">后门楼梯</text>
+  <text x="780" y="245" text-anchor="start" class="label-sm">至2F</text>
+
+  <!-- 301房间 -->
+  <rect x="570" y="135" width="180" height="180" class="wall-inner"/>
+  <text x="660" y="225" class="label">301</text>
+  <rect x="570" y="315" width="180" height="40" class="balcony"/>
+  <text x="660" y="340" class="label-sm">阳台</text>
+
+</svg>
+</div>
+
+<!-- 第四层 -->
+<div class="deck-wrap">
+<svg width="800" height="460" xmlns="http://www.w3.org/2000/svg">
+  <defs><style>.bg { fill: #fbf8f0; }.title { font-family: 'Times New Roman', serif; font-size: 22px; font-weight: bold; fill: #1a1a1a; }.sub { font-family: 'Times New Roman', serif; font-size: 14px; fill: #1a1a1a; }.label { font-family: 'Courier New', monospace; font-size: 13px; fill: #1a1a1a; text-anchor: middle; }.label-sm { font-family: 'Courier New', monospace; font-size: 10px; fill: #1a1a1a; text-anchor: middle; }.wall { stroke: #1a1a1a; stroke-width: 2.5; fill: none; }.wall-inner { stroke: #1a1a1a; stroke-width: 1.5; stroke-dasharray: 5 4; fill: none; }.stair-line { stroke: #1a1a1a; stroke-width: 1.5; }.deck-area { stroke: #1a1a1a; stroke-width: 1.5; stroke-dasharray: 3 3; fill: none; }</style></defs>
+  <rect class="bg" width="100%" height="100%"/>
+  <text x="400" y="25" text-anchor="middle" class="title">艾希皇后号 · 四层平面图</text>
+  <text x="400" y="48" text-anchor="middle" class="sub">—— 员工休息间 · 星空露台 ——</text>
+
+  <rect x="50" y="135" width="700" height="220" class="wall"/>
+
+  <!-- 员工休息间 -->
+  <rect x="50" y="135" width="300" height="220" class="wall-inner"/>
+  <text x="200" y="245" class="label">员工休息间</text>
+
+  <!-- 星空露台 -->
+  <rect x="350" y="135" width="400" height="220" class="wall-inner"/>
+  <text x="550" y="225" class="label">星空露台</text>
+  <text x="550" y="245" class="label-sm">(露天甲板)</text>
+
+  <line x1="380" y1="165" x2="420" y2="165" class="deck-area"/>
+  <line x1="450" y1="195" x2="490" y2="195" class="deck-area"/>
+  <line x1="520" y1="175" x2="560" y2="175" class="deck-area"/>
+  <line x1="600" y1="225" x2="640" y2="225" class="deck-area"/>
+  <line x1="680" y1="185" x2="720" y2="185" class="deck-area"/>
+
+  <!-- 楼梯 -->
+  <rect x="380" y="80" width="40" height="30" class="wall"/>
+  <line x1="380" y1="80" x2="420" y2="110" class="stair-line"/>
+  <line x1="420" y1="80" x2="380" y2="110" class="stair-line"/>
+  <text x="400" y="70" class="label-sm">中央楼梯</text>
+  <text x="400" y="125" class="label-sm">至3F</text>
+
+</svg>
+</div>
+
+</body>
+</html>

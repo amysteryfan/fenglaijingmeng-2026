@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>视频播放 · 酒水间现场</title>
+    <style>
+        /* === 全局 === */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #008080;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            font-family: 'Segoe UI', 'Microsoft YaHei', system-ui, sans-serif;
+            padding: 24px;
+        }
+
+        /* === 主窗口 === */
+        .window {
+            width: 820px;
+            max-width: 100%;
+            background: #c0c0c0;
+            border: 2px solid #000;
+            box-shadow: 6px 6px 0 rgba(0, 0, 0, 0.5);
+            display: flex;
+            flex-direction: column;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        /* === 标题栏 === */
+        .titlebar {
+            background: linear-gradient(180deg, #000080 0%, #1a1a8a 100%);
+            color: #fff;
+            padding: 5px 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 14px;
+            font-weight: 600;
+            letter-spacing: 0.3px;
+            user-select: none;
+            border-bottom: 2px solid #000;
+        }
+        .titlebar .title-left {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .titlebar .title-left span {
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+        }
+        .titlebar .close-btn {
+            background: #c0c0c0;
+            border: 2px solid #fff;
+            border-right-color: #000;
+            border-bottom-color: #000;
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 13px;
+            font-weight: 700;
+            color: #000;
+            line-height: 1;
+            transition: 0.05s linear;
+        }
+        .titlebar .close-btn:active {
+            border: 2px solid #000;
+            border-right-color: #fff;
+            border-bottom-color: #fff;
+        }
+
+        /* === 内容区 === */
+        .content {
+            display: flex;
+            gap: 10px;
+            padding: 10px;
+            background: #c0c0c0;
+            flex-wrap: wrap;
+        }
+
+        /* === 左侧：现场照片 + 播放器 === */
+        .player {
+            flex: 0 0 260px;
+            min-width: 200px;
+            background: #d4d4d4;
+            border: 2px inset #e8e8e8;
+            padding: 12px 12px 14px 12px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+        }
+        .player-title {
+            font-size: 13px;
+            font-weight: 600;
+            color: #1a1a1a;
+            align-self: flex-start;
+            margin-bottom: 2px;
+            letter-spacing: 0.2px;
+        }
+        /* 图片展示区域 */
+        .video-screen {
+            width: 100%;
+            aspect-ratio: 16 / 9;
+            border: 2px inset #666;
+            overflow: hidden;
+            cursor: pointer;
+            position: relative;
+            background: #0a0a0c;
+        }
+        .video-screen img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+        .video-screen .badge {
+            position: absolute;
+            bottom: 8px;
+            right: 10px;
+            color: rgba(255, 255, 255, 0.25);
+            font-size: 11px;
+            font-weight: 300;
+            letter-spacing: 0.5px;
+            background: rgba(0, 0, 0, 0.4);
+            padding: 2px 10px;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            pointer-events: none;
+        }
+        .image-hint {
+            text-align: center;
+            font-size: 12px;
+            color: #666;
+            margin-bottom: 4px;
+            margin-top: -4px;
+            user-select: none;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 14px;
+            background: #e0e0e0;
+            border: 1px solid #999;
+            border-top-color: #777;
+            position: relative;
+            margin: 6px 0 4px 0;
+        }
+        .progress-fill {
+            width: 0%;
+            height: 100%;
+            background: #000080;
+            transition: width 0.1s;
+        }
+
+        .time-label {
+            font-size: 12px;
+            color: #222;
+            font-weight: 500;
+            letter-spacing: 0.3px;
+            align-self: flex-end;
+            margin-top: -2px;
+        }
+
+        .controls {
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+            margin-top: 6px;
+            flex-wrap: wrap;
+        }
+        .win-btn {
+            padding: 3px 12px;
+            background: #c0c0c0;
+            border: 2px solid #fff;
+            border-right-color: #000;
+            border-bottom-color: #000;
+            cursor: default;
+            font-size: 14px;
+            font-weight: 600;
+            color: #000;
+            min-width: 38px;
+            text-align: center;
+            transition: 0.05s linear;
+            user-select: none;
+            line-height: 1.4;
+        }
+        .win-btn:active {
+            border: 2px solid #000;
+            border-right-color: #fff;
+            border-bottom-color: #fff;
+        }
+
+        /* === 右侧：字幕（记事本风格） === */
+        .notepad {
+            flex: 1;
+            min-width: 200px;
+            background: #fdfdfd;
+            border: 2px inset #ddd;
+            padding: 14px 18px 18px 18px;
+            display: flex;
+            flex-direction: column;
+        }
+        .notepad-header {
+            font-weight: 600;
+            border-bottom: 2px solid #ccc;
+            padding-bottom: 8px;
+            margin-bottom: 12px;
+            color: #000080;
+            font-size: 15px;
+            letter-spacing: 0.4px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .notepad-header small {
+            font-weight: 400;
+            color: #666;
+            font-size: 12px;
+            margin-left: auto;
+            letter-spacing: 0;
+        }
+        .text-content {
+            font-family: 'Segoe UI', 'Microsoft YaHei', 'SimSun', serif;
+            font-size: 14px;
+            line-height: 1.8;
+            color: #1a1a1a;
+            white-space: pre-wrap;
+            word-break: break-word;
+            overflow-y: auto;
+            flex: 1;
+            max-height: 320px;
+            padding-right: 4px;
+        }
+        .text-content::-webkit-scrollbar {
+            width: 5px;
+        }
+        .text-content::-webkit-scrollbar-track {
+            background: #f0f0f0;
+        }
+        .text-content::-webkit-scrollbar-thumb {
+            background: #aaa;
+            border-radius: 4px;
+        }
+        .text-content::-webkit-scrollbar-thumb:hover {
+            background: #888;
+        }
+
+        /* 字幕中的说话人标记 */
+        .speaker-a { color: #0044aa; font-weight: 500; }
+        .speaker-b { color: #aa6600; font-weight: 500; }
+
+        .text-content .line {
+            padding: 1px 0;
+            border-left: 3px solid transparent;
+            padding-left: 10px;
+            margin-bottom: 2px;
+        }
+        .text-content .line.speaker-a-line { border-left-color: #0044aa; }
+        .text-content .line.speaker-b-line { border-left-color: #aa6600; }
+        .text-content .line.desc-line {
+            border-left: none;
+            padding-left: 0;
+            color: #666;
+            font-style: italic;
+            font-size: 13px;
+        }
+
+        /* === 响应式 === */
+        @media (max-width: 680px) {
+            .window { width: 100%; border-radius: 2px; }
+            .content { flex-direction: column; }
+            .player { flex: unset; width: 100%; }
+            .video-screen { aspect-ratio: 16 / 9; max-height: 200px; }
+            .notepad { max-height: 280px; }
+            .text-content { max-height: 200px; }
+            body { padding: 12px; }
+        }
+        @media (max-width: 420px) {
+            .titlebar { font-size: 12px; padding: 4px 6px; }
+            .player { padding: 8px; }
+            .controls .win-btn { padding: 2px 8px; font-size: 12px; min-width: 30px; }
+            .video-screen .badge { font-size: 9px; padding: 1px 6px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="window">
+        <!-- 标题栏 -->
+        <div class="titlebar">
+            <div class="title-left">
+                <span>🎬 酒水间现场 · 视频字幕</span>
+            </div>
+            <div class="close-btn" id="closeBtn">✖</div>
+        </div>
+
+        <!-- 内容 -->
+        <div class="content">
+            <!-- 左侧：现场照片 + 播放器 -->
+            <div class="player">
+                <div class="player-title">📺 现场照片</div>
+
+                <!-- 图片区域，点击跳转 xianchang.html -->
+                <div class="video-screen" onclick="window.location.href='xianchang.html'">
+                    <img src="images/xianchang.png" alt="酒水间现场照片" />
+                    <span class="badge">● 酒水间</span>
+                </div>
+                <div class="image-hint">（点击图片查看详情）</div>
+
+                <!-- 进度条 -->
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill" style="width:0%;"></div>
+                </div>
+
+                <!-- 时间显示 -->
+                <div class="time-label" id="timeLabel">00:00 / 01:00</div>
+
+                <!-- 控制按钮 -->
+                <div class="controls">
+                    <button class="win-btn" title="上一段">⏮</button>
+                    <button class="win-btn" title="播放">▶</button>
+                    <button class="win-btn" title="暂停">⏸</button>
+                    <button class="win-btn" title="停止">⏹</button>
+                    <button class="win-btn" title="下一段">⏭</button>
+                </div>
+            </div>
+
+            <!-- 右侧：字幕 -->
+            <div class="notepad">
+                <div class="notepad-header">
+                    📄 识别字幕
+                    <small>共 5 句 · 总时长 01:00</small>
+                </div>
+                <div class="text-content" id="textContent"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        (function() {
+            // ----- 字幕数据 -----
+            const lines = [
+                { speaker: 'desc', text: '（视频内容为一片狼藉的酒水间，能听到很多惊讶的讨论声，但过于模糊无法识别。已分离杂音，识别到如下人声：）' },
+                { speaker: 'A', text: '【画外音A：你跑到这里来录什么？！】' },
+                { speaker: 'B', text: '【画外音B：我看有很多人都往这边来。】' },
+                { speaker: 'A', text: '【画外音A：别录了！没看见出事了吗？】' },
+                { speaker: 'A', text: '【画面黑屏】' }
+            ];
+
+            // 总时长：60 秒 = 01:00 (一分钟以内)
+            const totalSeconds = 60;
+
+            // ----- 渲染字幕 (静态，无高亮) -----
+            const container = document.getElementById('textContent');
+            let html = '';
+            lines.forEach((item) => {
+                const speaker = item.speaker;
+                const text = item.text;
+                let cssClass = 'line';
+
+                if (speaker === 'desc') {
+                    cssClass += ' desc-line';
+                } else if (speaker === 'A') {
+                    cssClass += ' speaker-a-line';
+                } else if (speaker === 'B') {
+                    cssClass += ' speaker-b-line';
+                }
+
+                // 直接显示文本，不加前缀（A/B 说话人保留原文本中的【画外音X：】）
+                html += `<div class="${cssClass}">${text}</div>`;
+            });
+            container.innerHTML = html;
+
+            // ----- 进度条与交互 (静态模拟) -----
+            const progressFill = document.getElementById('progressFill');
+            const timeLabel = document.getElementById('timeLabel');
+
+            // 设置总时长显示
+            const totalStr = formatTime(totalSeconds);
+            timeLabel.textContent = `00:00 / ${totalStr}`;
+
+            // 点击进度条跳转
+            const progressBar = document.querySelector('.progress-bar');
+            progressBar.addEventListener('click', function(e) {
+                const rect = this.getBoundingClientRect();
+                const x = (e.clientX - rect.left) / rect.width;
+                const pct = Math.min(Math.max(x, 0), 1);
+                progressFill.style.width = (pct * 100) + '%';
+                const currentSec = Math.round(pct * totalSeconds);
+                timeLabel.textContent = `${formatTime(currentSec)} / ${totalStr}`;
+            });
+
+            // 按钮功能模拟
+            const playBtn = document.querySelector('.controls .win-btn:nth-child(2)'); // ▶
+            const pauseBtn = document.querySelector('.controls .win-btn:nth-child(3)'); // ⏸
+            const stopBtn = document.querySelector('.controls .win-btn:nth-child(4)'); // ⏹
+            const prevBtn = document.querySelector('.controls .win-btn:nth-child(1)'); // ⏮
+            const nextBtn = document.querySelector('.controls .win-btn:nth-child(5)'); // ⏭
+
+            let fakeProgress = 0;
+
+            function setProgress(pct) {
+                fakeProgress = Math.min(Math.max(pct, 0), 100);
+                progressFill.style.width = fakeProgress + '%';
+                const currentSec = Math.round((fakeProgress / 100) * totalSeconds);
+                timeLabel.textContent = `${formatTime(currentSec)} / ${totalStr}`;
+            }
+
+            // 播放：进度条往前走
+            playBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                if (fakeProgress >= 99.5) setProgress(0);
+                let newPct = Math.min(fakeProgress + 8, 100);
+                setProgress(newPct);
+                if (newPct >= 100) setTimeout(() => setProgress(0), 300);
+            });
+
+            // 暂停：不做任何事 (保留进度)
+            pauseBtn.addEventListener('click', function(e) { e.preventDefault(); });
+
+            // 停止：回到 0
+            stopBtn.addEventListener('click', function(e) { e.preventDefault(); setProgress(0); });
+
+            // 上一段 / 下一段：微调进度
+            prevBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                setProgress(Math.max(fakeProgress - 12, 0));
+            });
+
+            nextBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                setProgress(Math.min(fakeProgress + 12, 100));
+            });
+
+            // 图片本身已经绑定了跳转 onclick，这里不再重复绑定
+
+            // 关闭按钮 → 跳转到 aishanglvpai.html 并定位到花絮区域
+            document.getElementById('closeBtn').addEventListener('click', function() {
+                window.location.href = 'aishanglvpai.html#blooper-section';
+            });
+
+            // 辅助：格式化时间 mm:ss
+            function formatTime(sec) {
+                const m = Math.floor(sec / 60);
+                const s = Math.floor(sec % 60);
+                return `${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
+            }
+
+            // 初始进度 0
+            setProgress(0);
+
+            // 禁用所有按钮的默认行为
+            document.querySelectorAll('.win-btn').forEach(btn => {
+                btn.addEventListener('click', function(e) { e.preventDefault(); });
+            });
+
+            console.log('🎬 Windows 风格视频字幕页面 (酒水间) 已加载');
+            console.log(`📝 共 ${lines.length} 句，总时长 ${totalStr}`);
+        })();
+    </script>
+</body>
+</html>
