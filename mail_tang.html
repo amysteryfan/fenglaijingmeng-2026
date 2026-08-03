@@ -140,10 +140,8 @@
             const contentPanel = document.getElementById('contentPanel');
             const btnExit = document.getElementById('btnExit');
 
-            // 保存草稿箱滚动位置
             let draftScrollPos = 0;
 
-            // 邮件内容定义（保持不变）
             const gu2021Body = `唐老师：
 
 你真是展示我们明德教育风采的桥头堡，工作做得非常出色，连这次鼎峰的宋总来学校，都特意夸奖了你。前几年让你明珠蒙尘，确实是学校的不对。其实学校计划下一年给你涨薪，正好趁此机会通知你。教研组组长过两年要退，我们一致认为你是个好苗子。希望你在日后的工作中，能呈现给我们、给宋总更多的惊喜。
@@ -264,6 +262,7 @@
                     emails: [
                         { sender: 'tangjingxuan@edu.mail.com', recipient: '（无）', subject: '沧浪之水清兮，可以濯吾缨；沧浪之水浊兮，可以濯吾足。', date: '2022-01-29', body: '沧浪之水清兮，可以濯吾缨；沧浪之水浊兮，可以濯吾足。' },
                         { sender: 'tangjingxuan@edu.mail.com', recipient: '（无）', subject: '世人皆浊，何不淈其泥而扬其波？众人皆醉，何不哺其糟而歠其醨？', date: '2021-06-08', body: '世人皆浊，何不淈其泥而扬其波？众人皆醉，何不哺其糟而歠其醨？' },
+                        { sender: 'tangjingxuan@edu.mail.com', recipient: '（无）', subject: '如果不是为了孩子，谁愿意咬牙忍耐......', date: '2020-08-31', body: '如果不是为了孩子，谁愿意咬牙忍耐......\n<strong>招聘简章</strong>当时说得那么好听，什么教师子女优待，希望到时候不要是一张废纸。' },
                         { sender: 'tangjingxuan@edu.mail.com', recipient: '（无）', subject: '狗屁规则，狗屁章程！', date: '2020-03-01', body: '狗屁规则，狗屁章程！说的话全是放屁！\n我是一条天狗呀！我把月来吞了，我把日来吞了，我把该死的明德和顾怀远都来吞了！' },
                         { sender: 'tangjingxuan@edu.mail.com', recipient: '（无）', subject: '那个姓张的进学校比我还晚呢！', date: '2019-07-05', body: '那个姓张的进学校比我还晚呢！他凭什么？？？\n没在巴结的，被人说在巴结；真在巴结的，到最后反而什么都有了，还没人指摘！\n真是为善的受贫穷更命短，造恶的享富贵又寿延。' },
                         { sender: 'tangjingxuan@edu.mail.com', recipient: '（无）', subject: '举世皆浊我独清，众人皆醉我独醒。', date: '2018-09-19', body: '随便你们再说什么吧。举世皆浊我独清，众人皆醉我独醒。' },
@@ -320,12 +319,11 @@
 
                 contentPanel.innerHTML = html;
 
-                // 恢复草稿箱滚动位置
                 if (folder === 'drafts' && draftScrollPos > 0) {
                     contentPanel.scrollTop = draftScrollPos;
-                    draftScrollPos = 0; // 恢复后清除，避免影响其他操作
+                    draftScrollPos = 0;
                 } else {
-                    draftScrollPos = 0; // 非草稿箱或不需要恢复时清零
+                    draftScrollPos = 0;
                 }
 
                 if (folderData.type === 'emailList' || folderData.type === 'sentList' || folderData.type === 'draftList') {
@@ -333,12 +331,10 @@
                 }
             }
 
-            // 增加 folderName 参数，用于保存草稿箱滚动位置
             function bindEmailClicks(folderData, folderName) {
                 const emailItems = contentPanel.querySelectorAll('.email-item');
                 emailItems.forEach(item => {
                     item.addEventListener('click', function() {
-                        // 点击草稿箱条目时保存滚动位置
                         if (folderName === 'drafts') {
                             draftScrollPos = contentPanel.scrollTop;
                         }
@@ -430,7 +426,7 @@
                 item.addEventListener('click', function() {
                     const folder = this.getAttribute('data-folder');
                     setActiveFolder(folder);
-                    draftScrollPos = 0; // 切换文件夹时重置滚动位置
+                    draftScrollPos = 0;
                     renderContent(folder);
                 });
             });
