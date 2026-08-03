@@ -47,6 +47,7 @@
             top: 0;
             z-index: 999;
             box-shadow: 0 1px 6px rgba(184, 146, 104, 0.1);
+            position: relative;
         }
         .nav-group {
             display: flex;
@@ -76,6 +77,14 @@
         .nav-group a:hover::after {
             width: 100%;
         }
+        /* 导航选中态样式 */
+        .nav-group a.active {
+            color: #b89268;
+        }
+        .nav-group a.active::after {
+            width: 100%;
+        }
+
         .brand-logo {
             text-align: right;
         }
@@ -89,11 +98,12 @@
             color: #444444;
             letter-spacing: 2px;
         }
-        /* 右上角X跳转按钮 */
+        /* 右上角X跳转按钮【桌面端】 */
         .jump-search {
             position: absolute;
             right: 3.2%;
-            top: 27px;
+            top: 50%;
+            transform: translateY(-50%);
             width: 32px;
             height: 32px;
             border: 1px solid #b89268;
@@ -111,12 +121,13 @@
             color: #fff;
         }
 
-        /* 首页全屏横幅区域 */
+        /* 首页原始大图 */
         .home-banner {
             width: 100%;
             height: 100vh;
             background: url("images/wedding.jpg") center center / cover no-repeat;
             position: relative;
+            transition: opacity 0.4s ease;
         }
         .banner-dark-mask {
             width: 100%;
@@ -151,6 +162,112 @@
             font-size: 14px;
             margin-top: 10px;
             opacity: 0.75;
+        }
+
+        /* 作品展示内容容器，默认隐藏 */
+        .works-container {
+            display: none;
+            width: 100%;
+            padding: 60px 8%;
+        }
+        .works-section {
+            margin-bottom: 80px;
+        }
+        .works-title {
+            font-size: 26px;
+            color: #444;
+            margin-bottom: 30px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #e0d8cf;
+        }
+        .empty-text {
+            width: 100%;
+            height: 180px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #999;
+            font-size: 18px;
+        }
+
+        /* 花絮外层容器 + 左右箭头容器 */
+        .bloom-wrap-box {
+            display: flex;
+            align-items: center;
+            position: relative;
+        }
+        .arrow-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 1px solid #ccc;
+            background: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #777;
+            font-size: 18px;
+            pointer-events: none; /* 禁止点击 */
+            user-select: none;
+        }
+        .arrow-left {
+            margin-right: 12px;
+        }
+        .arrow-right {
+            margin-left: 12px;
+        }
+
+        /* 花絮视频卡片布局 */
+        .video-wrap {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 24px;
+            flex: 1;
+        }
+        .video-item {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .video-card {
+            aspect-ratio: 16 / 9;
+            background-color: #e9e3dd;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+        /* 播放按钮图标 */
+        .play-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .play-icon::after {
+            content: "";
+            width: 0;
+            height: 0;
+            border-top: 10px solid transparent;
+            border-bottom: 10px solid transparent;
+            border-left: 16px solid #666;
+            margin-left: 4px;
+        }
+        /* 视频下方跳转标题 */
+        .video-title {
+            text-align: center;
+            font-size: 15px;
+        }
+        .video-title a {
+            color: #b89268;
+            text-decoration: none;
+        }
+        .video-title a:hover {
+            text-decoration: underline;
         }
 
         /* ========== 作品日期弹窗样式 ========== */
@@ -258,6 +375,59 @@
         footer .copyright-info {
             font-size: 14px;
         }
+
+        /* ====== 手机端适配修复X按钮挤压问题 ====== */
+        @media screen and (max-width: 768px) {
+            header {
+                height: auto;
+                padding: 15px 5%;
+                flex-wrap: wrap;
+                row-gap: 12px;
+            }
+            .nav-group {
+                order: 2;
+                width: 100%;
+                justify-content: space-between;
+                gap: 8px;
+            }
+            .nav-group a {
+                font-size: 16px;
+            }
+            .brand-logo {
+                order: 1;
+                width: calc(100% - 50px);
+                text-align: left;
+            }
+            .brand-logo .en-name {
+                font-size: 24px;
+            }
+            .brand-logo .cn-name {
+                font-size: 18px;
+            }
+            /* 移动端X按钮放到logo右侧独立区域，不会挤压文字 */
+            .jump-search {
+                position: static;
+                transform: none;
+                order: 1;
+                flex-shrink: 0;
+            }
+
+            .banner-en-title {
+                font-size: 36px;
+            }
+            .banner-cn-title {
+                font-size: 30px;
+            }
+            .date-select-wrap {
+                flex-wrap: wrap;
+            }
+            .modal-box {
+                min-width: 90%;
+            }
+            .video-wrap {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
     </style>
 </head>
 <body>
@@ -269,7 +439,7 @@
     <!-- 导航栏 -->
     <header>
         <nav class="nav-group">
-            <a href="#">首页</a>
+            <a id="homeBtn">首页</a>
             <a id="workShowBtn">作品展示</a>
             <a href="#">品牌介绍</a>
             <a href="#">服务流程</a>
@@ -278,7 +448,6 @@
             <div class="en-name">AISHANG</div>
             <div class="cn-name">爱尚旅拍</div>
         </div>
-        <!-- 跳转搜索页X按钮 -->
         <a href="search_aishanglvpai.html" class="jump-search">X</a>
     </header>
 
@@ -315,8 +484,8 @@
         </div>
     </div>
 
-    <!-- 首页主Banner -->
-    <section class="home-banner">
+    <!-- 原始首页大图 -->
+    <section class="home-banner" id="bannerMain">
         <div class="banner-dark-mask">
             <div class="banner-en-title">Romantic Lock</div>
             <div class="banner-cn-title">爱意之约</div>
@@ -328,6 +497,70 @@
         </div>
     </section>
 
+    <!-- 7月9日解锁后的作品三栏内容 -->
+    <div class="works-container" id="worksBox">
+        <!-- 婚礼录像 -->
+        <div class="works-section">
+            <h2 class="works-title">婚礼录像</h2>
+            <div class="empty-text">正在制作</div>
+        </div>
+        <!-- 婚纱照 -->
+        <div class="works-section">
+            <h2 class="works-title">婚纱照</h2>
+            <div class="empty-text">正在制作</div>
+        </div>
+        <!-- 花絮 → 添加 id 用于锚点定位 -->
+        <div class="works-section" id="blooper-section">
+            <h2 class="works-title">花絮</h2>
+            <div class="bloom-wrap-box">
+                <!-- 左箭头（不可点击） -->
+                <div class="arrow-btn arrow-left">&lt;</div>
+
+                <div class="video-wrap">
+                    <!-- 视频1 -->
+                    <div class="video-item">
+                        <div class="video-card">
+                            <div class="play-icon"></div>
+                        </div>
+                        <div class="video-title">
+                            <a href="huaxu2004.html">【20:04 于客房部】</a>
+                        </div>
+                    </div>
+                    <!-- 视频2 -->
+                    <div class="video-item">
+                        <div class="video-card">
+                            <div class="play-icon"></div>
+                        </div>
+                        <div class="video-title">
+                            <a href="huaxu2001.html">【20:01 于宴会厅】</a>
+                        </div>
+                    </div>
+                    <!-- 视频3 -->
+                    <div class="video-item">
+                        <div class="video-card">
+                            <div class="play-icon"></div>
+                        </div>
+                        <div class="video-title">
+                            <a href="huaxu1513.html">【15:13 于休闲厅】</a>
+                        </div>
+                    </div>
+                    <!-- 视频4 -->
+                    <div class="video-item">
+                        <div class="video-card">
+                            <div class="play-icon"></div>
+                        </div>
+                        <div class="video-title">
+                            <a href="huaxu1405.html">【14:05 于客房部】</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 右箭头（不可点击） -->
+                <div class="arrow-btn arrow-right">&gt;</div>
+            </div>
+        </div>
+    </div>
+
     <!-- 底部版权 -->
     <footer>
         <div class="footer-brand">爱尚旅拍婚纱摄影有限公司</div>
@@ -338,25 +571,47 @@
     </footer>
 
     <script>
-        // 获取DOM元素
         const workShowBtn = document.getElementById('workShowBtn');
+        const homeBtn = document.getElementById('homeBtn');
         const modalMask = document.getElementById('modalMask');
         const closeModal = document.getElementById('closeModal');
         const monthSelect = document.getElementById('monthSelect');
         const daySelect = document.getElementById('daySelect');
         const submitDate = document.getElementById('submitDate');
         const resultTip = document.getElementById('resultTip');
+        const bannerMain = document.getElementById('bannerMain');
+        const worksBox = document.getElementById('worksBox');
 
-        // 每个月份对应的总天数
         const monthDays = {
             1:31,2:28,3:31,4:30,5:31,6:30,
             7:31,8:31,9:30,10:31,11:30,12:31
         };
 
-        // 打开弹窗
+        // 读取本地解锁状态
+        const isUnlocked = localStorage.getItem("videoUnLock") === "true";
+
+        // 点击首页：切回主页底图，取消作品选中高亮
+        homeBtn.addEventListener('click', () => {
+            bannerMain.style.display = 'block';
+            worksBox.style.display = 'none';
+            workShowBtn.classList.remove('active');
+            // 如果当前 URL 有锚点，清除它
+            if (window.location.hash) {
+                history.replaceState(null, null, ' ');
+            }
+        });
+
+        // 作品展示点击事件
         workShowBtn.addEventListener('click', () => {
+            // 已解锁：直接打开作品页面
+            if(isUnlocked) {
+                workShowBtn.classList.add('active');
+                bannerMain.style.display = 'none';
+                worksBox.style.display = 'block';
+                return;
+            }
+            // 未解锁：弹出日期弹窗
             modalMask.style.display = 'flex';
-            // 重置选择项与提示文字
             monthSelect.value = "";
             daySelect.innerHTML = `<option value="">先选择月份</option>`;
             daySelect.disabled = true;
@@ -368,12 +623,11 @@
         closeModal.addEventListener('click', () => {
             modalMask.style.display = 'none';
         });
-        // 点击遮罩空白处关闭弹窗
         modalMask.addEventListener('click', (e) => {
             if(e.target === modalMask) modalMask.style.display = 'none';
         });
 
-        // 切换月份，自动生成对应天数下拉
+        // 根据月份生成对应天数
         monthSelect.addEventListener('change', () => {
             const chooseMonth = monthSelect.value;
             daySelect.innerHTML = "";
@@ -384,7 +638,6 @@
             }
             daySelect.disabled = false;
             const maxDay = monthDays[chooseMonth];
-            // 填充天数选项
             for(let d = 1; d <= maxDay; d++){
                 const opt = document.createElement('option');
                 opt.value = d;
@@ -395,7 +648,7 @@
             resultTip.innerText = "";
         });
 
-        // 确认按钮校验日期
+        // 日期校验逻辑
         submitDate.addEventListener('click', () => {
             const m = monthSelect.value;
             const d = daySelect.value;
@@ -404,15 +657,53 @@
                 resultTip.innerText = "请完整选择年月日后再确认";
                 return;
             }
-            // 唯一正确日期：7月9日
+            // 正确日期 7月9日，永久写入解锁标识
             if(m === "7" && d === "9"){
-                resultTip.className = "tip-text success-tip";
-                resultTip.innerText = "影像加载成功，正在为您展示当日婚纱作品";
+                localStorage.setItem("videoUnLock", "true");
+                modalMask.style.display = 'none';
+                workShowBtn.classList.add('active');
+                bannerMain.style.display = 'none';
+                worksBox.style.display = 'block';
             }else{
                 resultTip.className = "tip-text error-tip";
                 resultTip.innerText = "暂无影像";
             }
-        })
+        });
+
+        // ====== 新增：锚点定位到花絮 ======
+        function goToBlooper() {
+            if (isUnlocked) {
+                workShowBtn.classList.add('active');
+                bannerMain.style.display = 'none';
+                worksBox.style.display = 'block';
+                // 使用 requestAnimationFrame 确保 DOM 已渲染
+                requestAnimationFrame(() => {
+                    const el = document.getElementById('blooper-section');
+                    if (el) {
+                        el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                });
+            } else {
+                // 如果未解锁，无法显示花絮，清除锚点
+                if (window.location.hash) {
+                    history.replaceState(null, null, ' ');
+                }
+            }
+        }
+
+        // 页面加载时检查锚点
+        window.addEventListener('DOMContentLoaded', function() {
+            if (window.location.hash === '#blooper-section') {
+                goToBlooper();
+            }
+        });
+
+        // 监听哈希变化（从视频页返回时）
+        window.addEventListener('hashchange', function() {
+            if (window.location.hash === '#blooper-section') {
+                goToBlooper();
+            }
+        });
     </script>
 </body>
 </html>
