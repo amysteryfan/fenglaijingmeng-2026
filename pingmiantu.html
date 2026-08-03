@@ -16,6 +16,10 @@
     margin-bottom: 60px; 
     border-bottom: 2px dashed #aaa; 
     padding-bottom: 40px; 
+    width: 100%;
+    overflow-x: hidden; /* 防止手机上出现横向滚动条 */
+    display: flex;
+    justify-content: center;
   }
   svg { 
     max-width: 100%; 
@@ -23,6 +27,7 @@
     border: 1px solid #ccc; 
     background: #fbf8f0; 
     box-shadow: 2px 4px 8px rgba(0,0,0,0.02);
+    display: block;
   }
   #close-btn {
     position: fixed;
@@ -63,7 +68,8 @@
 
 <!-- 第一层 -->
 <div class="deck-wrap">
-<svg width="800" height="460" xmlns="http://www.w3.org/2000/svg">
+<!-- 核心修改：增加 viewBox="0 0 800 460" 保证手机适配比例 -->
+<svg viewBox="0 0 800 460" xmlns="http://www.w3.org/2000/svg">
   <defs>
     <style>
       .bg { fill: #fbf8f0; }
@@ -92,28 +98,26 @@
   <rect x="283" y="245" width="467" height="110" class="wall-inner"/>
   <text x="516" y="300" class="label">美食厅</text>
 
-  <!-- 左楼梯 -->
+  <!-- 左楼梯（修改了文字锚点，避免被手机屏切断） -->
   <rect x="12" y="185" width="30" height="40" class="wall"/>
   <line x1="12" y1="185" x2="42" y2="225" class="stair-line"/>
   <line x1="42" y1="185" x2="12" y2="225" class="stair-line"/>
-  <text x="20" y="160" text-anchor="end" class="label-sm">左楼梯</text>
-  <text x="20" y="175" text-anchor="end" class="label-sm">  至2F</text>
- 
+  <text x="33" y="165" text-anchor="start" class="label-sm">左楼梯</text>
+  <text x="33" y="180" text-anchor="start" class="label-sm">至2F</text>
 
   <!-- 右楼梯 -->
   <rect x="496" y="80" width="40" height="30" class="wall"/>
   <line x1="496" y1="80" x2="536" y2="110" class="stair-line"/>
   <line x1="536" y1="80" x2="496" y2="110" class="stair-line"/>
-  <text x="560" y="95" class="label-sm">右楼梯</text>
-  <text x="560" y="105" class="label-sm">至2F</text>
-
+  <text x="560" y="85" class="label-sm">右楼梯</text>
+  <text x="560" y="100" class="label-sm">至2F</text>
 
 </svg>
 </div>
 
 <!-- 第二层 -->
 <div class="deck-wrap">
-<svg width="800" height="460" xmlns="http://www.w3.org/2000/svg">
+<svg viewBox="0 0 800 460" xmlns="http://www.w3.org/2000/svg">
   <defs><style>.bg { fill: #fbf8f0; }.title { font-family: 'Times New Roman', serif; font-size: 22px; font-weight: bold; fill: #1a1a1a; }.sub { font-family: 'Times New Roman', serif; font-size: 14px; fill: #1a1a1a; }.label { font-family: 'Courier New', monospace; font-size: 13px; fill: #1a1a1a; text-anchor: middle; }.label-sm { font-family: 'Courier New', monospace; font-size: 10px; fill: #1a1a1a; text-anchor: middle; }.wall { stroke: #1a1a1a; stroke-width: 2.5; fill: none; }.wall-inner { stroke: #1a1a1a; stroke-width: 1.5; stroke-dasharray: 5 4; fill: none; }.stair-line { stroke: #1a1a1a; stroke-width: 1.5; }</style></defs>
   <rect class="bg" width="100%" height="100%"/>
   <text x="400" y="25" text-anchor="middle" class="title">艾希皇后号 · 二层平面图</text>
@@ -138,27 +142,26 @@
   <rect x="340" y="225" width="90" height="120" class="wall"/>
   <text x="385" y="285" class="label-sm">酒水间</text>
 
-  <!-- 左楼梯 -->
+  <!-- 左楼梯（修改了文字锚点） -->
   <rect x="12" y="185" width="30" height="40" class="wall"/>
   <line x1="12" y1="185" x2="42" y2="225" class="stair-line"/>
   <line x1="42" y1="185" x2="12" y2="225" class="stair-line"/>
-  <text x="20" y="160" text-anchor="end" class="label-sm">左楼梯</text>
-  <text x="20" y="175" text-anchor="end" class="label-sm">至3F</text>
-  <text x="20" y="240" text-anchor="end" class="label-sm">至1F</text>
+  <text x="33" y="165" text-anchor="start" class="label-sm">左楼梯</text>
+  <text x="33" y="180" text-anchor="start" class="label-sm">至3F</text>
+  <text x="33" y="240" text-anchor="start" class="label-sm">至1F</text>
 
   <!-- 后门楼梯 -->
   <rect x="760" y="185" width="30" height="40" class="wall"/>
   <line x1="760" y1="185" x2="790" y2="225" class="stair-line"/>
   <line x1="790" y1="185" x2="760" y2="225" class="stair-line"/>
-  <text x="775" y="160" text-anchor="start" class="label-sm">后门楼梯</text>
-  <text x="780" y="175" text-anchor="start" class="label-sm">至3F</text>
+  <text x="780" y="165" text-anchor="start" class="label-sm">后门楼梯</text>
+  <text x="780" y="180" text-anchor="start" class="label-sm">至3F</text>
 
-
-  <!-- 长廊下方楼梯入口（已移除虚线连接，文字换行处理） -->
+  <!-- 长廊下方楼梯入口（对应一楼的右楼梯，文字优化换行） -->
   <rect x="170" y="370" width="40" height="30" class="wall"/>
   <line x1="170" y1="370" x2="210" y2="400" class="stair-line"/>
   <line x1="210" y1="370" x2="170" y2="400" class="stair-line"/>
-  <text x="240" y="380" class="label-sm">右楼梯</text>
+  <text x="240" y="380" class="label-sm">楼梯入口</text>
   <text x="240" y="395" class="label-sm">至1F</text>
 
 </svg>
@@ -166,7 +169,7 @@
 
 <!-- 第三层 -->
 <div class="deck-wrap">
-<svg width="800" height="460" xmlns="http://www.w3.org/2000/svg">
+<svg viewBox="0 0 800 460" xmlns="http://www.w3.org/2000/svg">
   <defs><style>.bg { fill: #fbf8f0; }.title { font-family: 'Times New Roman', serif; font-size: 22px; font-weight: bold; fill: #1a1a1a; }.sub { font-family: 'Times New Roman', serif; font-size: 14px; fill: #1a1a1a; }.label { font-family: 'Courier New', monospace; font-size: 13px; fill: #1a1a1a; text-anchor: middle; }.label-sm { font-family: 'Courier New', monospace; font-size: 10px; fill: #1a1a1a; text-anchor: middle; }.wall { stroke: #1a1a1a; stroke-width: 2.5; fill: none; }.wall-inner { stroke: #1a1a1a; stroke-width: 1.5; stroke-dasharray: 5 4; fill: none; }.stair-line { stroke: #1a1a1a; stroke-width: 1.5; }.balcony { stroke: #1a1a1a; stroke-width: 1.5; fill: none; stroke-dasharray: 2 2; }</style></defs>
   <rect class="bg" width="100%" height="100%"/>
   <text x="400" y="25" text-anchor="middle" class="title">艾希皇后号 · 三层平面图</text>
@@ -174,12 +177,12 @@
 
   <rect x="50" y="135" width="700" height="220" class="wall"/>
 
-  <!-- 左楼梯 -->
+  <!-- 左楼梯（修改了文字锚点） -->
   <rect x="12" y="185" width="30" height="40" class="wall"/>
   <line x1="12" y1="185" x2="42" y2="225" class="stair-line"/>
   <line x1="42" y1="185" x2="12" y2="225" class="stair-line"/>
-  <text x="20" y="175" text-anchor="end" class="label-sm">左楼梯</text>
-  <text x="20" y="240" text-anchor="end" class="label-sm">至2F</text>
+  <text x="33" y="165" text-anchor="start" class="label-sm">左楼梯</text>
+  <text x="33" y="180" text-anchor="start" class="label-sm">至2F</text>
 
   <!-- 302房间 -->
   <rect x="50" y="135" width="180" height="180" class="wall-inner"/>
@@ -203,8 +206,8 @@
   <rect x="760" y="185" width="30" height="40" class="wall"/>
   <line x1="760" y1="185" x2="790" y2="225" class="stair-line"/>
   <line x1="790" y1="185" x2="760" y2="225" class="stair-line"/>
-  <text x="775" y="175" text-anchor="start" class="label-sm">后门楼梯</text>
-  <text x="780" y="245" text-anchor="start" class="label-sm">至2F</text>
+  <text x="780" y="165" text-anchor="start" class="label-sm">后门楼梯</text>
+  <text x="780" y="180" text-anchor="start" class="label-sm">至2F</text>
 
   <!-- 301房间 -->
   <rect x="570" y="135" width="180" height="180" class="wall-inner"/>
@@ -217,7 +220,7 @@
 
 <!-- 第四层 -->
 <div class="deck-wrap">
-<svg width="800" height="460" xmlns="http://www.w3.org/2000/svg">
+<svg viewBox="0 0 800 460" xmlns="http://www.w3.org/2000/svg">
   <defs><style>.bg { fill: #fbf8f0; }.title { font-family: 'Times New Roman', serif; font-size: 22px; font-weight: bold; fill: #1a1a1a; }.sub { font-family: 'Times New Roman', serif; font-size: 14px; fill: #1a1a1a; }.label { font-family: 'Courier New', monospace; font-size: 13px; fill: #1a1a1a; text-anchor: middle; }.label-sm { font-family: 'Courier New', monospace; font-size: 10px; fill: #1a1a1a; text-anchor: middle; }.wall { stroke: #1a1a1a; stroke-width: 2.5; fill: none; }.wall-inner { stroke: #1a1a1a; stroke-width: 1.5; stroke-dasharray: 5 4; fill: none; }.stair-line { stroke: #1a1a1a; stroke-width: 1.5; }.deck-area { stroke: #1a1a1a; stroke-width: 1.5; stroke-dasharray: 3 3; fill: none; }</style></defs>
   <rect class="bg" width="100%" height="100%"/>
   <text x="400" y="25" text-anchor="middle" class="title">艾希皇后号 · 四层平面图</text>
