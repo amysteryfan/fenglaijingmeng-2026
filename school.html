@@ -820,10 +820,12 @@
             // ---------- 新搜索与下拉菜单逻辑 ----------
             // =======================================================
 
+            // 【修改点】在这里添加了“招聘简章”关键词
             const searchMap = {
                 "金玉奖": { title: "首届“金玉奖”圆满落幕，六位学子斩获殊荣", url: "school_page_5.html" },
                 "特招生": { title: "明德私立学校2019学年招生公示", url: "school_page_8.html" },
-                "教师邮箱": { title: "关于开通教师专属办公邮箱的通知", url: "school_page_9.html" }
+                "教师邮箱": { title: "关于开通教师专属办公邮箱的通知", url: "school_page_9.html" },
+                "招聘简章": { title: "明德私立学校2015年度高中部教师招聘简章", url: "school_page_10.html" }
             };
 
             document.addEventListener('click', function(e) {
@@ -875,8 +877,6 @@
                     searchBtn.click();
                 }
             });
-
-            // 为了保持您的需求，将 input 监听事件移除，避免出现“输入过程中弹出下拉框”的情况
 
             // ---------- 搜索历史记录逻辑 ----------
             const HISTORY_KEY = 'mingde_search_history';
