@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>明德私立学校2015年度高中部教师招聘简章 - 明德私立学校</title>
+
+    <!-- 引入全局样式和脚本 -->
+    <link rel="stylesheet" href="css/style.css">
+    <script src="js/main.js" defer></script>
+
+    <style>
+        /* --- 局部页面专属样式 (基于学校官网风格扩展) --- */
+        
+        /* 修复滚动问题的核心代码 */
+        html, body {
+            height: auto;       /* 允许高度随内容拉伸 */
+            overflow-y: auto;   /* 强制启用纵向滚动 */
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Microsoft YaHei", "PingFang SC", sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        a { text-decoration: none; color: inherit; }
+        ul { list-style: none; }
+
+        /* --- 顶部通栏 --- */
+        .top-bar {
+            background-color: #fff;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 40px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            z-index: 100;
+            width: 100%;
+            box-sizing: border-box;
+            flex-shrink: 0; /* 防止顶部导航栏被挤压 */
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: #8B0000; /* 校徽红 */
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo img {
+            height: 40px;
+            margin-right: 12px;
+        }
+
+        .logo span {
+            margin-left: 10px;
+            font-size: 14px;
+            color: #666;
+            font-weight: normal;
+            letter-spacing: 1px;
+        }
+
+        /* 返回首页按钮 */
+        .back-home-btn {
+            background-color: #8B0000;
+            color: #fff;
+            padding: 8px 18px;
+            border-radius: 20px;
+            font-size: 14px;
+            transition: background 0.3s, transform 0.2s;
+            font-weight: bold;
+            box-shadow: 0 2px 4px rgba(139, 0, 0, 0.3);
+        }
+
+        .back-home-btn:hover {
+            background-color: #6d0000;
+            transform: translateY(-1px);
+        }
+
+        /* --- 文章容器 --- */
+        .article-container {
+            flex: 1 0 auto; /* 核心修复：自动撑开高度 */
+            max-width: 880px;
+            margin: 40px auto;
+            padding: 0 20px;
+            width: 100%;
+        }
+
+        .article-card {
+            background-color: #fff;
+            border-radius: 8px;
+            padding: 50px 55px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+            border-top: 4px solid #8B0000; /* 顶部红线增加庄重感 */
+        }
+
+        /* 文章头部 */
+        .article-header {
+            text-align: center;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 25px;
+            margin-bottom: 30px;
+        }
+
+        .article-header h1 {
+            font-size: 30px;
+            color: #8B0000;
+            margin-bottom: 15px;
+            letter-spacing: 2px;
+        }
+
+        .article-meta {
+            color: #999;
+            font-size: 14px;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        /* 文章正文 */
+        .article-content {
+            font-size: 16px;
+            line-height: 1.8;
+            color: #444;
+        }
+
+        .article-content p {
+            margin-bottom: 15px;
+            text-indent: 2em; /* 首行缩进 */
+        }
+
+        /* 深红色加粗的子标题 */
+        .article-content p.sub-title-red {
+            color: #8B0000;
+            font-weight: bold;
+            text-indent: 0; /* 子标题不需要首行缩进 */
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+
+        .article-footer {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+            text-align: right;
+            font-size: 15px;
+            color: #666;
+            line-height: 1.6;
+        }
+
+        /* --- 响应式设计 (适配手机端) --- */
+        @media (max-width: 768px) {
+            .top-bar {
+                padding: 0 15px;
+                flex-wrap: wrap;
+                height: auto;
+                padding-top: 10px;
+                padding-bottom: 10px;
+            }
+            .logo img { height: 30px; }
+            .logo { font-size: 18px; }
+            .logo span { font-size: 12px; margin-left: 5px; }
+            .back-home-btn { padding: 6px 12px; font-size: 13px; }
+
+            .article-card {
+                padding: 30px 20px;
+            }
+            .article-header h1 {
+                font-size: 24px;
+            }
+            .article-content {
+                font-size: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 顶部通栏 (与官网保持统一) -->
+    <header class="top-bar">
+        <div class="logo">
+            <!-- 确保 images 下有 school_logo.png -->
+            <img src="images/school_logo.png" alt="明德私立学校校徽">
+            明德私立学校 <span>MINGDE PRIVATE SCHOOL</span>
+        </div>
+        <!-- 返回官网首页的按钮 -->
+        <a href="school.html" class="back-home-btn">← 返回首页</a>
+    </header>
+
+    <!-- 正文容器 -->
+    <main class="article-container">
+        <div class="article-card">
+            
+            <!-- 文章头部信息 -->
+            <div class="article-header">
+                <h1>明德私立学校2015年度高中部教师招聘简章</h1>
+                <div class="article-meta">
+                    <span>发布部门：明德私立学校 招生办</span>
+                    <span>发布日期：2015年6月22日</span>
+                </div>
+            </div>
+
+            <!-- 文章正文内容 -->
+            <div class="article-content">
+                <p class="sub-title-red">一、学校简介</p>
+                <p>明德私立学校坐落于韶光市中心，建校十余载，秉承“明德至善，知行合一”之校训，致力于培养兼具学术素养与人文情怀的时代英才。学校分设初中部与高中部，现有在校学生两千余人，教职工三百余名。高中部以严谨治学、多元发展为特色，历年升学成绩斐然，在社会各界享有盛誉。</p>
+
+                <p class="sub-title-red">二、招聘岗位</p>
+                <p>高中部各学科专任教师若干名，涵盖语文、数学、英语、物理、化学、生物、历史、地理、政治、计算机等学科。</p>
+
+                <p class="sub-title-red">三、应聘条件</p>
+                <p>1.热爱教育事业，师德高尚，身心健康；</p>
+                <p>2.具有全日制本科及以上学历，所学专业与应聘学科一致；</p>
+                <p>3.持有相应学科高级中学教师资格证书；</p>
+                <p>4.具备扎实的专业功底与良好的课堂驾驭能力；</p>
+                <p>5.有重点中学教学经验或省级以上教学竞赛获奖者优先考虑。</p>
+
+                <p class="sub-title-red">四、薪酬福利</p>
+                <p>1.薪资待遇：提供具有竞争力的薪酬体系，具体面议；</p>
+                <p>2.住房保障：在职教师由学校统一分配单身公寓宿舍，配备基本生活设施；</p>
+                <p>3.社会保障：按国家规定缴纳五险一金；</p>
+                <p>4.其他福利：享受寒暑假带薪休假、节日慰问、定期体检、子女教育优惠等。</p>
+
+                <p class="sub-title-red">五、实习与转正制度</p>
+                <p>1.新入职教师实行为期三个月的试岗，试岗通过后再实行为期九个月的实习；</p>
+                <p>2.实习期内由资深骨干教师担任指导导师，开展“一对一”教学帮扶；</p>
+                <p>3.实习期满经考核合格者，正式签订聘用合同；</p>
+                <p>4.考核不合格者，视情况延长实习期或解除聘用关系</p>
+
+                <p class="sub-title-red">六、教师考核与培训制度</p>
+                <p>1.学校每年组织一次全体在职教师综合考核，内容包括教学业绩、学生评价、教研成果、师德师风等方面；</p>
+                <p>2.考核结果分为优秀、合格、待提升三个等级；</p>
+                <p>3.凡考核未达到合格标准的教师，须在规定时间内参加学校统一安排的短期集中培训，培训内容涵盖教学方法改进、课程设计优化、班级管理技巧等；</p>
+                <p>4.培训结束后进行二次评估，仍不达标者将调整工作岗位或予以解聘。</p>
+
+                <p class="sub-title-red">七、教职工子女入学优惠政策</p>
+                <p>为感谢长期服务学校的教职员工，特制定以下入学优待办法：</p>
+                <p>1.适用对象：在校连续任职满十年及以上的在职教师，其子女或有血缘关系的三代以内直系亲属（包括子女、孙子女、外孙子女）；</p>
+                <p>2.选拔方式：符合条件的适龄学生须统一参加学校组织的入学考试，考试分为面试与笔试两部分，全面考察学生的综合素质与学业潜力；</p>
+                <p>3.录取名额：根据综合成绩排名，前三位学生获得正式入学资格；</p>
+                <p>4.费用减免：被录取学生的学杂费按三分之一比例予以减免，直至该生从明德学校毕业为止；</p>
+                <p>5.本政策解释权归明德私立学校校务委员会所有。</p>
+
+                <p class="sub-title-red">八、应聘方式</p>
+                <p>1.请将个人简历、学历学位证书、教师资格证及相关荣誉证明电子版发送至招聘邮箱：mingdeschoolHR@edu.mail.com；</p>
+                <p>2.邮件主题请注明“应聘高中部XX学科+姓名”；</p>
+                <p>3.初审通过者将在一周内收到面试通知，面试包含试讲与面谈两个环节；</p>
+                <p>4.报名截止日期：2015年8月31日。</p>
+
+                <p>明德私立学校，期待与您共育桃李，同铸未来。</p>
+            </div>
+
+            <!-- 文章尾部签名 -->
+            <div class="article-footer">
+                <p>明德私立学校 招生办</p>
+                <p style="font-size: 13px; color: #999; margin-top: 5px;">2015年6月22日</p>
+            </div>
+
+        </div>
+    </main>
+
+</body>
+</html>
