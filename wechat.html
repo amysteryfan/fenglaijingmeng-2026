@@ -268,20 +268,20 @@
 
         @media (max-width: 768px) {
             .wechat-desktop { display: none; }
-            .wechat-mobile {
-                display: flex; width: 100vw; height: 100vh;
-                background: #fff; flex-direction: column; position: relative;
-            }
+            .wechat-mobile { display: flex; width: 100vw; height: 100vh; background: #fff; flex-direction: column; }
+            
             .mobile-header {
                 background: #1a1a1a; color: #fff; padding: 12px 16px;
-                display: flex; justify-content: space-between; align-items: center;
+                display: flex; justify-content: space-between; align-items: center; flex-shrink: 0;
             }
             .mobile-header .title { font-size: 18px; display: flex; align-items: center; }
             .back-btn { font-size: 20px; margin-right: 12px; cursor: pointer; }
-            .mobile-main { flex: 1; overflow-y: auto; display: flex; flex-direction: column; position: relative; }
+            
+            .mobile-main { flex: 1; overflow-y: auto; display: flex; flex-direction: column; position: relative; background: #f3f3f3; }
+            
             .mobile-tabbar {
                 background: #f7f7f7; border-top: 1px solid #d9d9d9;
-                display: flex; justify-content: space-around; padding: 6px 0;
+                display: flex; justify-content: space-around; padding: 6px 0; flex-shrink: 0;
             }
             .mobile-tab-item {
                 display: flex; flex-direction: column; align-items: center;
@@ -289,16 +289,19 @@
             }
             .mobile-tab-item.active { color: #07c160; }
             .mobile-tab-item .icon { font-size: 24px; margin-bottom: 2px; }
+            
             .fill-blank.wide { width: 140px; }
             .fill-text { font-size: 14px; }
             .select-dropdown { width: 240px; }
             .message-bubble { max-width: 80%; }
+            
             .lynne-modal-overlay, .moments-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; }
             .moments-modal-box { width: 100%; max-width: 100%; max-height: 100%; border-radius: 0; }
         }
     </style>
 </head>
 <body>
+    <!-- 桌面版 -->
     <div class="wechat-desktop" id="desktopApp">
         <div class="global-close" id="desktopClose" title="退出微信">✕</div>
         <!-- Lynne 弹窗 -->
@@ -318,7 +321,6 @@
             </div>
             <div class="search-box">🔍 搜索</div>
             <div class="chat-list" id="chatList">
-                <!-- 聊天列表：Lynne -->
                 <div class="chat-item" data-chatid="lynne" id="item-lynne">
                     <div class="chat-avatar">L</div>
                     <div class="chat-info">
@@ -327,7 +329,6 @@
                     </div>
                     <div class="chat-time">今天</div>
                 </div>
-                <!-- 聊天列表：宋令仪 -->
                 <div class="chat-item" data-chatid="song" id="item-song">
                     <div class="chat-avatar" style="background:#e6a8d7;">👑</div>
                     <div class="chat-info">
@@ -336,7 +337,6 @@
                     </div>
                     <div class="chat-time">2022</div>
                 </div>
-                <!-- 聊天列表：19级高中部聊天群 -->
                 <div class="chat-item" data-chatid="group19" id="item-group19">
                     <div class="chat-avatar" style="background:#8e44ad;">群</div>
                     <div class="chat-info">
@@ -345,7 +345,6 @@
                     </div>
                     <div class="chat-time">2020</div>
                 </div>
-                <!-- 聊天列表：路琮 -->
                 <div class="chat-item" data-chatid="lu" id="item-lu">
                     <div class="chat-avatar" style="background:#3498db;">路</div>
                     <div class="chat-info">
@@ -365,8 +364,20 @@
         <div class="chat-area" id="chatArea"></div>
     </div>
 
+    <!-- 移动版 (HTML骨架固定，JS只改中间区域) -->
     <div class="wechat-mobile" id="mobileApp" style="display: none;">
-        <!-- 移动端 Lynne 弹窗 -->
+        <div class="mobile-header">
+            <span class="title" id="mobileTitle">微信</span>
+            <div class="global-close" id="mobileClose" style="position:static; color:#fff; cursor:pointer;">✕</div>
+        </div>
+        <div class="mobile-main" id="mobileMain"></div>
+        <div class="mobile-tabbar">
+            <div class="mobile-tab-item active" data-tab="chats"><span class="icon">💬</span><span>聊天</span></div>
+            <div class="mobile-tab-item disabled"><span class="icon">👥</span><span>通讯录</span></div>
+            <div class="mobile-tab-item disabled"><span class="icon">🔍</span><span>发现</span></div>
+            <div class="mobile-tab-item" data-tab="profile"><span class="icon">👤</span><span>我</span></div>
+        </div>
+        <!-- Lynne 弹窗 -->
         <div class="lynne-modal-overlay" id="lynneModalMobile">
             <div class="lynne-modal-box">
                 <div class="title">提示</div>
@@ -425,7 +436,7 @@
                 step7Me: { from: 'me', text: '当然。交给我吧，我会让这件事走向应有的结局的。', isCorrect: true }
             };
 
-            // 宋令仪聊天内容（转账已替换为图片）
+            // 宋令仪聊天内容
             const songMessages = [
                 { date: '2019年10月29日' },
                 { from: 'song', text: '下课陪我散步。' }, { from: 'me', text: '嗯。' },
@@ -461,7 +472,6 @@
                 { id: '我不稀罕', text: '当你的组员还非得听你的话？告诉你吧，我不稀罕！走就走！' }
             ];
 
-            // 路琮聊天内容
             const luMessages = [
                 { date: '2019年11月27日' },
                 { from: 'lu', text: '你跟那个大小姐怎么回事啊？' },
@@ -545,27 +555,22 @@
                 return '';
             }
 
-            // 宋令仪专属的展示逻辑，标准化气泡与头像（皇冠头像增加点击事件）
             function renderDetailedMessages(messages) {
                 let html = '';
                 messages.forEach(msg => {
                     if (msg.date) { html += `<div class="message-time">${msg.date}</div>`; return; }
-                    
                     const isMe = msg.from === 'me';
                     const cls = isMe ? 'me' : 'other';
                     const avatar = isMe ? '♟️' : '👑';
-                    
                     let bubbleContent = '';
                     if (msg.type === 'image') {
                         bubbleContent = `<div class="message-bubble image-message"><img src="${msg.src}" alt="图片" class="chat-thumbnail"></div>`;
                     } else {
                         bubbleContent = `<div class="message-bubble">${msg.text}</div>`;
                     }
-
                     if (isMe) {
                         html += `<div class="message-row me"><div class="message-content-wrapper">${bubbleContent}</div><div class="message-avatar" style="background:#f0f0f0;">${avatar}</div></div>`;
                     } else {
-                        // 为宋令仪的皇冠头像添加特殊 class，便于监听点击进入朋友圈
                         html += `<div class="message-row other"><div class="message-avatar song-avatar-trigger" style="background:#f0f0f0; color:#333; cursor:pointer;">${avatar}</div><div class="message-content-wrapper">${bubbleContent}</div></div>`;
                     }
                 });
@@ -587,7 +592,6 @@
                 return html;
             }
 
-            // ---------- Lynne 输入/交互控制 ----------
             function renderLynneInput(step, isMobileSuffix = '') {
                 if (step === 0) return `<div class="chat-input-area"><div class="input-wrapper"><input type="text" value="我知道你是谁。" readonly disabled style="width:100%;"></div><button class="send-btn" id="sendBtn${isMobileSuffix}">发送</button></div>`;
                 if (step === 1) return `<div class="chat-input-area"><div class="input-wrapper"><span class="fill-text">你是</span><input class="fill-blank" id="blank1${isMobileSuffix}"><span class="fill-text">，并且，你在艾希皇后号杀了</span><input class="fill-blank" id="blank2${isMobileSuffix}"><span class="fill-text">。</span></div><button class="send-btn" id="sendBtn1${isMobileSuffix}">发送</button></div>`;
@@ -603,7 +607,6 @@
                 return `<div class="chat-input-area"><div class="input-wrapper"><input type="text" disabled placeholder=" " style="width:100%;"></div></div>`;
             }
 
-            // ---------- 朋友圈显示逻辑 ----------
             function renderSongMoments() {
                 let html = `<div class="moments-list">`;
                 songMoments.forEach(m => {
@@ -632,16 +635,11 @@
                         </div>
                     `;
                     container.appendChild(overlay);
-                    overlay.querySelector('#momentsClose').addEventListener('click', function() {
-                        overlay.style.display = 'none';
-                    });
-                    overlay.addEventListener('click', function(e) {
-                        if (e.target === this) this.style.display = 'none';
-                    });
+                    overlay.querySelector('#momentsClose').addEventListener('click', function() { overlay.style.display = 'none'; });
+                    overlay.addEventListener('click', function(e) { if (e.target === this) this.style.display = 'none'; });
                 }
                 overlay.style.display = 'flex';
             }
-
 
             // ---------- 桌面端初始化 ----------
             function initDesktop() {
@@ -653,7 +651,6 @@
                 const lynneModal = document.getElementById('lynneModal');
                 const lynneModalConfirm = document.getElementById('lynneModalConfirm');
 
-                // 初始状态为空
                 let currentChatId = null;
                 let messages = [];
                 let step = 0;
@@ -740,7 +737,6 @@
                     renderChat('lynne', true);
                 });
 
-                // 绑定侧边栏点击事件
                 document.querySelectorAll('.chat-item').forEach(item => {
                     item.addEventListener('click', function() {
                         const id = this.dataset.chatid;
@@ -748,12 +744,10 @@
                     });
                 });
 
-                // 聊天和我的切换
                 funcChats.addEventListener('click', () => switchChat('lynne'));
                 profileTrigger.addEventListener('click', renderProfileView);
                 funcProfile.addEventListener('click', renderProfileView);
 
-                // 绑定朋友圈事件（点击宋令仪头像）
                 chatArea.addEventListener('click', function(e) {
                     if (e.target.closest('.song-avatar-trigger')) {
                         if (currentChatId === 'song') {
@@ -785,8 +779,7 @@
                         document.getElementById('goToEnding').addEventListener('click', () => window.location.href = 'ending.html');
                         document.getElementById('restartChatBtn').addEventListener('click', function() {
                             clearProgress();
-                            step = 0;
-                            messages = [...baseMessages];
+                            step = 0; messages = [...baseMessages];
                             renderChat('lynne', false);
                             saveProgress(0);
                         });
@@ -814,8 +807,7 @@
                     renderChat('lynne', true);
                     await new Promise(r => setTimeout(r, 1200));
                     messages.push({ ...dynamicCorrect.step1Other });
-                    step = 1;
-                    renderChat('lynne', true);
+                    step = 1; renderChat('lynne', true);
                     animating = false; document.querySelector('.send-btn').disabled = false;
                     saveProgress(step);
                 };
@@ -853,28 +845,16 @@
 
             // ---------- 移动端初始化 ----------
             function initMobile() {
-                const mobileApp = document.getElementById('mobileApp');
-                mobileApp.innerHTML = `
-                    <div class="mobile-header"><span class="title" id="mobileTitle">微信</span><div class="global-close" id="mobileClose" style="position:static; color:#fff; cursor:pointer;">✕</div></div>
-                    <div class="mobile-main" id="mobileMain"></div>
-                    <div class="mobile-tabbar">
-                        <div class="mobile-tab-item active" data-tab="chats"><span class="icon">💬</span><span>聊天</span></div>
-                        <div class="mobile-tab-item disabled"><span class="icon">👥</span><span>通讯录</span></div>
-                        <div class="mobile-tab-item disabled"><span class="icon">🔍</span><span>发现</span></div>
-                        <div class="mobile-tab-item" data-tab="profile"><span class="icon">👤</span><span>我</span></div>
-                    </div>
-                `;
-                const mobileMain = document.getElementById('mobileMain');
+                // 获取固定的DOM节点，不再暴力重绘 #mobileApp
                 const mobileTitle = document.getElementById('mobileTitle');
+                const mobileMain = document.getElementById('mobileMain');
                 const mobileClose = document.getElementById('mobileClose');
-                const tabs = document.querySelectorAll('.mobile-tab-item:not(.disabled)');
-                
-                let mobileChatId = 'lynne';
-                let currentMobileView = 'chats';
-                
                 const lynneModalMobile = document.getElementById('lynneModalMobile');
                 const lynneModalConfirmMobile = document.getElementById('lynneModalConfirmMobile');
-                
+                const tabbarItems = document.querySelectorAll('#mobileApp .mobile-tab-item');
+
+                let mobileChatId = 'lynne';
+                let currentMobileView = 'chats';
                 let messages = [];
                 let step = 0;
                 let animating = false;
@@ -888,9 +868,21 @@
                     step = 0;
                 }
 
+                // 更换高亮状态
+                function setActiveMobileTab(tabName) {
+                    tabbarItems.forEach(t => {
+                        t.classList.remove('active');
+                        if (t.dataset.tab === tabName) {
+                            t.classList.add('active');
+                        }
+                    });
+                }
+
                 function renderMobileList() {
                     currentMobileView = 'chats';
                     mobileTitle.textContent = '微信';
+                    setActiveMobileTab('chats');
+
                     mobileMain.innerHTML = `
                         <div class="chat-item" data-chatid="lynne" style="display:flex;align-items:center;padding:14px 16px;border-bottom:1px solid #eee;cursor:pointer;">
                             <div class="chat-avatar" style="background:#07c160;width:42px;height:42px;border-radius:6px;display:flex;align-items:center;justify-content:center;color:white;font-size:20px;">L</div>
@@ -913,10 +905,8 @@
                             <div class="chat-time">2019</div>
                         </div>
                     `;
-                    document.querySelectorAll('.mobile-tab-item').forEach(t => t.classList.remove('active'));
-                    document.querySelector('.mobile-tab-item[data-tab="chats"]').classList.add('active');
-                    
-                    document.querySelectorAll('.chat-item').forEach(item => {
+
+                    mobileMain.querySelectorAll('.chat-item').forEach(item => {
                         item.addEventListener('click', function() {
                             const id = this.dataset.chatid;
                             if (id === 'lynne' && !localStorage.getItem('lynne_alert_done')) {
@@ -928,6 +918,7 @@
                     });
                 }
 
+                // 移动端弹窗确认事件绑定
                 lynneModalConfirmMobile.addEventListener('click', function() {
                     lynneModalMobile.style.display = 'none';
                     localStorage.setItem('lynne_alert_done', 'true');
@@ -967,7 +958,6 @@
                     });
                 }
 
-                // 绑定移动端朋友圈事件（点击宋令仪头像）
                 mobileMain.addEventListener('click', function(e) {
                     if (e.target.closest('.song-avatar-trigger')) {
                         if (currentMobileView === 'detail' && mobileChatId === 'song') {
@@ -977,7 +967,7 @@
                 });
 
                 function bindLynneMobileEvents(stepLevel) {
-                    const setDisabled = (disabled) => { const btn = document.querySelector('.send-btn'); if (btn) btn.disabled = disabled; };
+                    const setDisabled = (disabled) => { const btn = document.querySelector('#mobileMain .send-btn'); if (btn) btn.disabled = disabled; };
 
                     if (stepLevel === 0) document.getElementById('sendBtnM').addEventListener('click', mobileSendLynneFirst);
                     else if (stepLevel >= 1 && stepLevel <= 5) document.getElementById(`sendBtn${stepLevel}M`).addEventListener('click', () => mobileCheckLynneFill(stepLevel));
@@ -1019,13 +1009,13 @@
 
                 const mobileSendLynneFirst = async function() {
                     if (animating) return;
-                    animating = true; document.querySelector('.send-btn').disabled = true;
+                    animating = true; document.querySelector('#mobileMain .send-btn').disabled = true;
                     messages.push({ ...dynamicCorrect.step1Me });
                     openMobileDetail('lynne');
                     await new Promise(r => setTimeout(r, 1200));
                     messages.push({ ...dynamicCorrect.step1Other });
                     step = 1; openMobileDetail('lynne');
-                    animating = false; document.querySelector('.send-btn').disabled = false;
+                    animating = false; document.querySelector('#mobileMain .send-btn').disabled = false;
                     saveProgress(step);
                 };
 
@@ -1038,7 +1028,7 @@
                     else if (level === 4) { const placeholder = document.getElementById('selectPlaceholderM'); const selectedText = placeholder ? placeholder.textContent.trim() : ''; sentMsg = `你真的不知道吗？你比谁都清楚那起事件背后的原因。看看这则报道：《${selectedText}》。现在，想起什么了吧？`; correct = (selectedText === '明德私立学校一高中女生郊游途中失踪，母亲陈百惠急寻线索'); }
                     else if (level === 5) { const a6a = document.getElementById('blank6aM').value.trim(); const a6b = document.getElementById('blank6bM').value.trim(); sentMsg = `你错了。${a6a}和${a6b}，根本没有血缘关系。`; correct = (a6a === '宋闻溪' && a6b === '宋远山') || (a6a === '宋远山' && a6b === '宋闻溪'); }
 
-                    animating = true; document.querySelector('.send-btn').disabled = true;
+                    animating = true; document.querySelector('#mobileMain .send-btn').disabled = true;
                     messages.push({ from: 'me', text: sentMsg, isCorrect: correct });
                     openMobileDetail('lynne');
                     await new Promise(r => setTimeout(r, 800));
@@ -1054,14 +1044,21 @@
                         messages.push({ ...errorReply });
                         openMobileDetail('lynne');
                     }
-                    animating = false; document.querySelector('.send-btn').disabled = false;
+                    animating = false; document.querySelector('#mobileMain .send-btn').disabled = false;
                 };
 
-                tabs.forEach(tab => {
+                // 绑定移动端 Tab 栏切换
+                tabbarItems.forEach(tab => {
                     tab.addEventListener('click', function() {
                         const tabName = this.dataset.tab;
-                        if (tabName === 'chats') renderMobileList();
-                        else if (tabName === 'profile') { currentMobileView = 'profile'; mobileTitle.textContent = '我'; mobileMain.innerHTML = `<div class="profile-view" style="height:100%;"><div class="profile-avatar">♟️</div><div class="profile-name">chess player</div><div class="profile-id">微信号：chess_player</div><div class="profile-sign">棋子不应该跳出棋盘。</div></div>`; }
+                        if (tabName === 'chats') {
+                            renderMobileList();
+                        } else if (tabName === 'profile') {
+                            currentMobileView = 'profile';
+                            mobileTitle.textContent = '我';
+                            setActiveMobileTab('profile');
+                            mobileMain.innerHTML = `<div class="profile-view" style="height:100%;"><div class="profile-avatar">♟️</div><div class="profile-name">chess player</div><div class="profile-id">微信号：chess_player</div><div class="profile-sign">棋子不应该跳出棋盘。</div></div>`;
+                        }
                     });
                 });
 
