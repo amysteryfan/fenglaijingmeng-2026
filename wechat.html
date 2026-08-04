@@ -135,6 +135,7 @@
             padding: 10px 14px; border-radius: 8px;
             font-size: 15px; line-height: 1.5; word-break: break-word;
             background: #fff; border: 1px solid #e4e4e4;
+            overflow: hidden; /* 防止超出内容 */
         }
         .message-row.me .message-bubble { background: #95ec69; border-color: #95ec69; }
         .message-bubble .chat-thumbnail {
@@ -295,6 +296,17 @@
             .select-dropdown { width: 240px; }
             .message-bubble { max-width: 80%; }
             
+            /* 【重点修复】移动端聊天气泡里的图片自适应 */
+            .message-bubble .chat-thumbnail {
+                max-width: 100% !important;
+                max-height: 220px !important;
+                width: 100%;
+                height: auto;
+                object-fit: contain !important;
+                border-radius: 4px;
+                display: block;
+            }
+            
             .lynne-modal-overlay, .moments-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; }
             .moments-modal-box { width: 100%; max-width: 100%; max-height: 100%; border-radius: 0; }
         }
@@ -364,8 +376,8 @@
         <div class="chat-area" id="chatArea"></div>
     </div>
 
-    <!-- 移动版 (HTML骨架固定，JS只改中间区域) -->
-    <div class="wechat-mobile" id="mobileApp" style="display: none;">
+    <!-- 移动版 -->
+    <div class="wechat-mobile" id="mobileApp">
         <div class="mobile-header">
             <span class="title" id="mobileTitle">微信</span>
             <div class="global-close" id="mobileClose" style="position:static; color:#fff; cursor:pointer;">✕</div>
@@ -436,7 +448,6 @@
                 step7Me: { from: 'me', text: '当然。交给我吧，我会让这件事走向应有的结局的。', isCorrect: true }
             };
 
-            // 宋令仪聊天内容
             const songMessages = [
                 { date: '2019年10月29日' },
                 { from: 'song', text: '下课陪我散步。' }, { from: 'me', text: '嗯。' },
@@ -456,14 +467,12 @@
                 { from: 'song', text: '这个号以后不用了。我们结束吧。' }, { from: 'me', text: '。' }
             ];
 
-            // 宋令仪朋友圈数据
             const songMoments = [
                 { date: '2020年2月14日', text: '男朋友说：这是属于我们的日子。\n然后送了我礼物～', image: 'images/xiangshui.jpg' },
                 { date: '2020年6月5日', text: '不期而遇的惊喜。即使不开口，你也最懂我想要什么。\n男朋友送的礼物～', image: 'images/erhuan.jpg' },
                 { date: '2021年6月5日', text: '男朋友说：谢谢你降生在这个世界，出现在我的生命中。\n哈哈，太肉麻啦～', image: 'images/xianglian.jpg' }
             ];
 
-            // 19级高中部聊天群内容
             const groupMessages = [
                 { date: '2020年12月20日' },
                 { id: '我不稀罕', text: '不是，许故你到底什么毛病？' },
@@ -489,7 +498,6 @@
                 '鼎峰、阅辉"继承人"角力升级：低调转型VS高调拓新'
             ];
 
-            // ---------- 工具函数 ----------
             function buildCorrectMessages(step) {
                 let msgs = [...baseMessages];
                 if (step >= 1) msgs.push(dynamicCorrect.step1Me, dynamicCorrect.step1Other);
@@ -522,7 +530,6 @@
             const isMobile = () => window.innerWidth <= 768;
             const errorReply = { from: 'other', text: '你到底在说什么？？？', isCorrect: false };
 
-            // ---------- 聊天渲染逻辑 ----------
             function renderChatMessages(chatId, messages, step) {
                 if (chatId === 'lynne' && messages.length > 0) {
                     let html = '<div class="message-time">今天</div>';
@@ -532,15 +539,8 @@
                     }).join('');
                     return html;
                 }
-                
-                if (chatId === 'song') {
-                    return renderDetailedMessages(messages);
-                }
-                
-                if (chatId === 'group19') {
-                    return renderGroupMessages(messages);
-                }
-                
+                if (chatId === 'song') return renderDetailedMessages(messages);
+                if (chatId === 'group19') return renderGroupMessages(messages);
                 if (chatId === 'lu') {
                     let html = '';
                     messages.forEach(msg => {
@@ -641,8 +641,11 @@
                 overlay.style.display = 'flex';
             }
 
-            // ---------- 桌面端初始化 ----------
+            // ---------- 核心初始化逻辑 ----------
             function initDesktop() {
+                if (window.desktopInitialized) return;
+                window.desktopInitialized = true;
+
                 const chatArea = document.getElementById('chatArea');
                 const profileTrigger = document.getElementById('profileTrigger');
                 const funcChats = document.getElementById('funcChats');
@@ -843,247 +846,264 @@
                 renderEmptyState();
             }
 
-            // ---------- 移动端初始化 ----------
             function initMobile() {
-                // 获取固定的DOM节点，不再暴力重绘 #mobileApp
-                const mobileTitle = document.getElementById('mobileTitle');
-                const mobileMain = document.getElementById('mobileMain');
-                const mobileClose = document.getElementById('mobileClose');
-                const lynneModalMobile = document.getElementById('lynneModalMobile');
-                const lynneModalConfirmMobile = document.getElementById('lynneModalConfirmMobile');
-                const tabbarItems = document.querySelectorAll('#mobileApp .mobile-tab-item');
+                if (window.mobileInitialized) return;
+                window.mobileInitialized = true;
 
-                let mobileChatId = 'lynne';
-                let currentMobileView = 'chats';
-                let messages = [];
-                let step = 0;
-                let animating = false;
+                try {
+                    const mobileTitle = document.getElementById('mobileTitle');
+                    const mobileMain = document.getElementById('mobileMain');
+                    const mobileClose = document.getElementById('mobileClose');
+                    const lynneModalMobile = document.getElementById('lynneModalMobile');
+                    const lynneModalConfirmMobile = document.getElementById('lynneModalConfirmMobile');
+                    const tabbarItems = document.querySelectorAll('#mobileApp .mobile-tab-item');
 
-                const savedProgress = loadProgress();
-                if (savedProgress) {
-                    step = savedProgress.step;
-                    messages = savedProgress.messages.map(m => ({...m, isCorrect: true}));
-                } else {
-                    messages = [...baseMessages];
-                    step = 0;
-                }
+                    let mobileChatId = 'lynne';
+                    let currentMobileView = 'chats';
+                    let messages = [];
+                    let step = 0;
+                    let animating = false;
 
-                // 更换高亮状态
-                function setActiveMobileTab(tabName) {
-                    tabbarItems.forEach(t => {
-                        t.classList.remove('active');
-                        if (t.dataset.tab === tabName) {
-                            t.classList.add('active');
-                        }
-                    });
-                }
+                    const savedProgress = loadProgress();
+                    if (savedProgress) {
+                        step = savedProgress.step;
+                        messages = savedProgress.messages.map(m => ({...m, isCorrect: true}));
+                    } else {
+                        messages = [...baseMessages];
+                        step = 0;
+                    }
 
-                function renderMobileList() {
-                    currentMobileView = 'chats';
-                    mobileTitle.textContent = '微信';
-                    setActiveMobileTab('chats');
-
-                    mobileMain.innerHTML = `
-                        <div class="chat-item" data-chatid="lynne" style="display:flex;align-items:center;padding:14px 16px;border-bottom:1px solid #eee;cursor:pointer;">
-                            <div class="chat-avatar" style="background:#07c160;width:42px;height:42px;border-radius:6px;display:flex;align-items:center;justify-content:center;color:white;font-size:20px;">L</div>
-                            <div class="chat-info" style="flex:1;margin-left:12px;"><div class="chat-name">Lynne</div><div class="chat-preview" style="color:#888;font-size:13px;">${messages[messages.length-1]?.text || ''}</div></div>
-                            <div class="chat-time">今天</div>
-                        </div>
-                        <div class="chat-item" data-chatid="song" style="display:flex;align-items:center;padding:14px 16px;border-bottom:1px solid #eee;cursor:pointer;">
-                            <div class="chat-avatar" style="background:#e6a8d7;width:42px;height:42px;border-radius:6px;display:flex;align-items:center;justify-content:center;color:white;font-size:20px;">👑</div>
-                            <div class="chat-info" style="flex:1;margin-left:12px;"><div class="chat-name">宋令仪</div><div class="chat-preview" style="color:#888;font-size:13px;">。</div></div>
-                            <div class="chat-time">2022</div>
-                        </div>
-                        <div class="chat-item" data-chatid="group19" style="display:flex;align-items:center;padding:14px 16px;border-bottom:1px solid #eee;cursor:pointer;">
-                            <div class="chat-avatar" style="background:#8e44ad;width:42px;height:42px;border-radius:6px;display:flex;align-items:center;justify-content:center;color:white;font-size:20px;">群</div>
-                            <div class="chat-info" style="flex:1;margin-left:12px;"><div class="chat-name">19级高中部聊天群</div><div class="chat-preview" style="color:#888;font-size:13px;">当你的组员还非得听你的话？</div></div>
-                            <div class="chat-time">2020</div>
-                        </div>
-                        <div class="chat-item" data-chatid="lu" style="display:flex;align-items:center;padding:14px 16px;border-bottom:1px solid #eee;cursor:pointer;">
-                            <div class="chat-avatar" style="background:#3498db;width:42px;height:42px;border-radius:6px;display:flex;align-items:center;justify-content:center;color:white;font-size:20px;">路</div>
-                            <div class="chat-info" style="flex:1;margin-left:12px;"><div class="chat-name">路琮</div><div class="chat-preview" style="color:#888;font-size:13px;">就当我们是夏洛特和柯林斯吧。</div></div>
-                            <div class="chat-time">2019</div>
-                        </div>
-                    `;
-
-                    mobileMain.querySelectorAll('.chat-item').forEach(item => {
-                        item.addEventListener('click', function() {
-                            const id = this.dataset.chatid;
-                            if (id === 'lynne' && !localStorage.getItem('lynne_alert_done')) {
-                                lynneModalMobile.style.display = 'flex';
-                                return;
+                    function setActiveMobileTab(tabName) {
+                        tabbarItems.forEach(t => {
+                            t.classList.remove('active');
+                            if (t.dataset.tab === tabName) {
+                                t.classList.add('active');
                             }
-                            openMobileDetail(id);
                         });
-                    });
-                }
-
-                // 移动端弹窗确认事件绑定
-                lynneModalConfirmMobile.addEventListener('click', function() {
-                    lynneModalMobile.style.display = 'none';
-                    localStorage.setItem('lynne_alert_done', 'true');
-                    openMobileDetail('lynne');
-                });
-
-                function openMobileDetail(chatId) {
-                    mobileChatId = chatId;
-                    currentMobileView = 'detail';
-                    const nameMap = { 'lynne': 'Lynne', 'song': '宋令仪', 'group19': '19级高中部聊天群', 'lu': '路琮' };
-                    mobileTitle.innerHTML = `<span class="back-btn" id="mobileBack" style="margin-right:10px;cursor:pointer;">←</span> ${nameMap[chatId] || '聊天'}`;
-
-                    if (chatId === 'lynne') {
-                        mobileMain.innerHTML = `<div class="chat-messages" id="mobileChatMessages" style="flex:1;overflow-y:auto;padding:12px;"></div>${renderLynneInput(step, 'M')}`;
-                        const msgContainer = document.getElementById('mobileChatMessages');
-                        if (msgContainer) {
-                            msgContainer.innerHTML = renderChatMessages('lynne', messages, step);
-                            msgContainer.scrollTop = msgContainer.scrollHeight;
-                        }
-                        bindLynneMobileEvents(step);
-                    } else {
-                        let msgsData = [];
-                        if (chatId === 'song') msgsData = songMessages;
-                        else if (chatId === 'group19') msgsData = groupMessages;
-                        else if (chatId === 'lu') msgsData = luMessages;
-                        
-                        mobileMain.innerHTML = `<div class="chat-messages" id="mobileChatMessages" style="flex:1;overflow-y:auto;padding:12px;"></div><div class="chat-input-area"><div class="input-wrapper"><input type="text" disabled placeholder=" " style="width:100%;"></div></div>`;
-                        const msgContainer = document.getElementById('mobileChatMessages');
-                        if (msgContainer) {
-                            msgContainer.innerHTML = renderChatMessages(chatId, msgsData, step);
-                            msgContainer.scrollTop = msgContainer.scrollHeight;
-                        }
                     }
-                    
-                    document.getElementById('mobileBack').addEventListener('click', function() {
-                        renderMobileList();
-                    });
-                }
 
-                mobileMain.addEventListener('click', function(e) {
-                    if (e.target.closest('.song-avatar-trigger')) {
-                        if (currentMobileView === 'detail' && mobileChatId === 'song') {
-                            showMoments(mobileMain);
-                        }
-                    }
-                });
+                    function renderMobileList() {
+                        currentMobileView = 'chats';
+                        mobileTitle.textContent = '微信';
+                        setActiveMobileTab('chats');
 
-                function bindLynneMobileEvents(stepLevel) {
-                    const setDisabled = (disabled) => { const btn = document.querySelector('#mobileMain .send-btn'); if (btn) btn.disabled = disabled; };
+                        mobileMain.innerHTML = `
+                            <div class="chat-item" data-chatid="lynne">
+                                <div class="chat-avatar">L</div>
+                                <div class="chat-info">
+                                    <div class="chat-name">Lynne</div>
+                                    <div class="chat-preview">${messages[messages.length-1]?.text || ''}</div>
+                                </div>
+                                <div class="chat-time">今天</div>
+                            </div>
+                            <div class="chat-item" data-chatid="song">
+                                <div class="chat-avatar" style="background:#e6a8d7;">👑</div>
+                                <div class="chat-info">
+                                    <div class="chat-name">宋令仪</div>
+                                    <div class="chat-preview">。</div>
+                                </div>
+                                <div class="chat-time">2022</div>
+                            </div>
+                            <div class="chat-item" data-chatid="group19">
+                                <div class="chat-avatar" style="background:#8e44ad;">群</div>
+                                <div class="chat-info">
+                                    <div class="chat-name">19级高中部聊天群</div>
+                                    <div class="chat-preview">当你的组员还非得听你的话？</div>
+                                </div>
+                                <div class="chat-time">2020</div>
+                            </div>
+                            <div class="chat-item" data-chatid="lu">
+                                <div class="chat-avatar" style="background:#3498db;">路</div>
+                                <div class="chat-info">
+                                    <div class="chat-name">路琮</div>
+                                    <div class="chat-preview">就当我们是夏洛特和柯林斯吧。</div>
+                                </div>
+                                <div class="chat-time">2019</div>
+                            </div>
+                        `;
 
-                    if (stepLevel === 0) document.getElementById('sendBtnM').addEventListener('click', mobileSendLynneFirst);
-                    else if (stepLevel >= 1 && stepLevel <= 5) document.getElementById(`sendBtn${stepLevel}M`).addEventListener('click', () => mobileCheckLynneFill(stepLevel));
-                    else if (stepLevel === 6) {
-                        document.querySelectorAll('.option-btn').forEach(btn => {
-                            btn.addEventListener('click', async function() {
-                                if (animating) return;
-                                animating = true;
-                                messages.push({ ...dynamicCorrect.step7Me });
-                                step = 7;
-                                openMobileDetail('lynne');
-                                saveProgress(step);
-                                animating = false;
+                        mobileMain.querySelectorAll('.chat-item').forEach(item => {
+                            item.addEventListener('click', function() {
+                                const id = this.dataset.chatid;
+                                if (id === 'lynne' && !localStorage.getItem('lynne_alert_done')) {
+                                    lynneModalMobile.style.display = 'flex';
+                                    return;
+                                }
+                                openMobileDetail(id);
                             });
                         });
-                    } else if (stepLevel === 7) {
-                        document.getElementById('goToEndingM').addEventListener('click', () => window.location.href = 'ending.html');
-                        document.getElementById('restartChatBtnM').addEventListener('click', function() {
-                            clearProgress();
-                            step = 0; messages = [...baseMessages];
-                            openMobileDetail('lynne');
-                            saveProgress(0);
-                        });
                     }
-                    if (stepLevel === 4) {
-                        const placeholder = document.getElementById('selectPlaceholderM');
-                        const dropdown = document.getElementById('selectDropdownM');
-                        if (placeholder && dropdown) {
-                            placeholder.addEventListener('click', function(e) { e.stopPropagation(); dropdown.classList.toggle('active'); });
-                            dropdown.querySelectorAll('.select-item').forEach(item => {
-                                item.addEventListener('click', function() { placeholder.textContent = this.textContent; dropdown.classList.remove('active'); });
-                            });
-                            document.addEventListener('click', function(e) {
-                                if (!dropdown.contains(e.target) && e.target !== placeholder) dropdown.classList.remove('active');
-                            }, { once: false });
-                        }
-                    }
-                }
 
-                const mobileSendLynneFirst = async function() {
-                    if (animating) return;
-                    animating = true; document.querySelector('#mobileMain .send-btn').disabled = true;
-                    messages.push({ ...dynamicCorrect.step1Me });
-                    openMobileDetail('lynne');
-                    await new Promise(r => setTimeout(r, 1200));
-                    messages.push({ ...dynamicCorrect.step1Other });
-                    step = 1; openMobileDetail('lynne');
-                    animating = false; document.querySelector('#mobileMain .send-btn').disabled = false;
-                    saveProgress(step);
-                };
-
-                const mobileCheckLynneFill = async function(level) {
-                    if (animating) return;
-                    let correct = false; let sentMsg = '';
-                    if (level === 1) { const a1 = document.getElementById('blank1M').value.trim(); const a2 = document.getElementById('blank2M').value.trim(); sentMsg = `你是${a1}，并且，你在艾希皇后号杀了${a2}。`; correct = (a1 === '宋令仪' && a2 === '陈楚梦'); }
-                    else if (level === 2) { const a3 = document.getElementById('blank3M').value.trim(); sentMsg = `答案差点就要颠倒过来。但是你房间里那个未使用的${a3}告诉我，某人的计划恐怕破产了。`; correct = (a3 === '麻醉剂'); }
-                    else if (level === 3) { const a4 = document.getElementById('blank4M').value.trim(); sentMsg = `尸体已经被你扔到大海里了吧？连同凶器一起。至于凶器，恐怕就是你房间消失的${a4}。`; correct = (a4 === '定制红酒'); }
-                    else if (level === 4) { const placeholder = document.getElementById('selectPlaceholderM'); const selectedText = placeholder ? placeholder.textContent.trim() : ''; sentMsg = `你真的不知道吗？你比谁都清楚那起事件背后的原因。看看这则报道：《${selectedText}》。现在，想起什么了吧？`; correct = (selectedText === '明德私立学校一高中女生郊游途中失踪，母亲陈百惠急寻线索'); }
-                    else if (level === 5) { const a6a = document.getElementById('blank6aM').value.trim(); const a6b = document.getElementById('blank6bM').value.trim(); sentMsg = `你错了。${a6a}和${a6b}，根本没有血缘关系。`; correct = (a6a === '宋闻溪' && a6b === '宋远山') || (a6a === '宋远山' && a6b === '宋闻溪'); }
-
-                    animating = true; document.querySelector('#mobileMain .send-btn').disabled = true;
-                    messages.push({ from: 'me', text: sentMsg, isCorrect: correct });
-                    openMobileDetail('lynne');
-                    await new Promise(r => setTimeout(r, 800));
-
-                    if (correct) {
-                        if (level === 1) { messages.push({ ...dynamicCorrect.step2Other }); step = 2; }
-                        else if (level === 2) { messages.push({ ...dynamicCorrect.step3Other }); step = 3; }
-                        else if (level === 3) { messages.push({ ...dynamicCorrect.step4Other1 }); openMobileDetail('lynne'); await new Promise(r => setTimeout(r, 1200)); messages.push({ ...dynamicCorrect.step4Me }); openMobileDetail('lynne'); await new Promise(r => setTimeout(r, 1200)); messages.push({ ...dynamicCorrect.step4Other2 }); step = 4; }
-                        else if (level === 4) { messages.push({ ...dynamicCorrect.step5Other1 }); openMobileDetail('lynne'); await new Promise(r => setTimeout(r, 1500)); messages.push({ ...dynamicCorrect.step5Me }); openMobileDetail('lynne'); await new Promise(r => setTimeout(r, 1200)); messages.push({ ...dynamicCorrect.step5Other2 }); step = 5; }
-                        else if (level === 5) { messages.push({ ...dynamicCorrect.step6Other1 }); openMobileDetail('lynne'); await new Promise(r => setTimeout(r, 1200)); messages.push({ ...dynamicCorrect.step6Me }); openMobileDetail('lynne'); await new Promise(r => setTimeout(r, 1000)); messages.push({ ...dynamicCorrect.step6Other2 }); openMobileDetail('lynne'); await new Promise(r => setTimeout(r, 1000)); messages.push({ ...dynamicCorrect.step6Me2 }); openMobileDetail('lynne'); await new Promise(r => setTimeout(r, 800)); messages.push({ ...dynamicCorrect.step6Other3 }); step = 6; }
-                        openMobileDetail('lynne'); saveProgress(step);
-                    } else {
-                        messages.push({ ...errorReply });
+                    lynneModalConfirmMobile.addEventListener('click', function() {
+                        lynneModalMobile.style.display = 'none';
+                        localStorage.setItem('lynne_alert_done', 'true');
                         openMobileDetail('lynne');
-                    }
-                    animating = false; document.querySelector('#mobileMain .send-btn').disabled = false;
-                };
+                    });
 
-                // 绑定移动端 Tab 栏切换
-                tabbarItems.forEach(tab => {
-                    tab.addEventListener('click', function() {
-                        const tabName = this.dataset.tab;
-                        if (tabName === 'chats') {
+                    function openMobileDetail(chatId) {
+                        mobileChatId = chatId;
+                        currentMobileView = 'detail';
+                        const nameMap = { 'lynne': 'Lynne', 'song': '宋令仪', 'group19': '19级高中部聊天群', 'lu': '路琮' };
+                        mobileTitle.innerHTML = `<span class="back-btn" id="mobileBack" style="margin-right:10px;cursor:pointer;">←</span> ${nameMap[chatId] || '聊天'}`;
+
+                        if (chatId === 'lynne') {
+                            mobileMain.innerHTML = `<div class="chat-messages" id="mobileChatMessages" style="flex:1;overflow-y:auto;padding:12px;"></div>${renderLynneInput(step, 'M')}`;
+                            const msgContainer = document.getElementById('mobileChatMessages');
+                            if (msgContainer) {
+                                msgContainer.innerHTML = renderChatMessages('lynne', messages, step);
+                                msgContainer.scrollTop = msgContainer.scrollHeight;
+                            }
+                            bindLynneMobileEvents(step);
+                        } else {
+                            let msgsData = [];
+                            if (chatId === 'song') msgsData = songMessages;
+                            else if (chatId === 'group19') msgsData = groupMessages;
+                            else if (chatId === 'lu') msgsData = luMessages;
+                            
+                            mobileMain.innerHTML = `<div class="chat-messages" id="mobileChatMessages" style="flex:1;overflow-y:auto;padding:12px;"></div><div class="chat-input-area"><div class="input-wrapper"><input type="text" disabled placeholder=" " style="width:100%;"></div></div>`;
+                            const msgContainer = document.getElementById('mobileChatMessages');
+                            if (msgContainer) {
+                                msgContainer.innerHTML = renderChatMessages(chatId, msgsData, step);
+                                msgContainer.scrollTop = msgContainer.scrollHeight;
+                            }
+                        }
+                        
+                        document.getElementById('mobileBack').addEventListener('click', function() {
                             renderMobileList();
-                        } else if (tabName === 'profile') {
-                            currentMobileView = 'profile';
-                            mobileTitle.textContent = '我';
-                            setActiveMobileTab('profile');
-                            mobileMain.innerHTML = `<div class="profile-view" style="height:100%;"><div class="profile-avatar">♟️</div><div class="profile-name">chess player</div><div class="profile-id">微信号：chess_player</div><div class="profile-sign">棋子不应该跳出棋盘。</div></div>`;
+                        });
+                    }
+
+                    mobileMain.addEventListener('click', function(e) {
+                        if (e.target.closest('.song-avatar-trigger')) {
+                            if (currentMobileView === 'detail' && mobileChatId === 'song') {
+                                showMoments(mobileMain);
+                            }
                         }
                     });
-                });
 
-                mobileClose.addEventListener('click', () => { saveProgress(step); window.location.href = 'desktop.html'; });
+                    function bindLynneMobileEvents(stepLevel) {
+                        const setDisabled = (disabled) => { const btn = document.querySelector('#mobileMain .send-btn'); if (btn) btn.disabled = disabled; };
 
-                renderMobileList();
-            }
+                        if (stepLevel === 0) document.getElementById('sendBtnM').addEventListener('click', mobileSendLynneFirst);
+                        else if (stepLevel >= 1 && stepLevel <= 5) document.getElementById(`sendBtn${stepLevel}M`).addEventListener('click', () => mobileCheckLynneFill(stepLevel));
+                        else if (stepLevel === 6) {
+                            document.querySelectorAll('.option-btn').forEach(btn => {
+                                btn.addEventListener('click', async function() {
+                                    if (animating) return;
+                                    animating = true;
+                                    messages.push({ ...dynamicCorrect.step7Me });
+                                    step = 7;
+                                    openMobileDetail('lynne');
+                                    saveProgress(step);
+                                    animating = false;
+                                });
+                            });
+                        } else if (stepLevel === 7) {
+                            document.getElementById('goToEndingM').addEventListener('click', () => window.location.href = 'ending.html');
+                            document.getElementById('restartChatBtnM').addEventListener('click', function() {
+                                clearProgress();
+                                step = 0; messages = [...baseMessages];
+                                openMobileDetail('lynne');
+                                saveProgress(0);
+                            });
+                        }
+                        if (stepLevel === 4) {
+                            const placeholder = document.getElementById('selectPlaceholderM');
+                            const dropdown = document.getElementById('selectDropdownM');
+                            if (placeholder && dropdown) {
+                                placeholder.addEventListener('click', function(e) { e.stopPropagation(); dropdown.classList.toggle('active'); });
+                                dropdown.querySelectorAll('.select-item').forEach(item => {
+                                    item.addEventListener('click', function() { placeholder.textContent = this.textContent; dropdown.classList.remove('active'); });
+                                });
+                                document.addEventListener('click', function(e) {
+                                    if (!dropdown.contains(e.target) && e.target !== placeholder) dropdown.classList.remove('active');
+                                }, { once: false });
+                            }
+                        }
+                    }
 
-            // ---------- 启动应用 ----------
-            if (!isMobile()) {
-                initDesktop();
-            } else {
-                initMobile();
-            }
+                    const mobileSendLynneFirst = async function() {
+                        if (animating) return;
+                        animating = true; document.querySelector('#mobileMain .send-btn').disabled = true;
+                        messages.push({ ...dynamicCorrect.step1Me });
+                        openMobileDetail('lynne');
+                        await new Promise(r => setTimeout(r, 1200));
+                        messages.push({ ...dynamicCorrect.step1Other });
+                        step = 1; openMobileDetail('lynne');
+                        animating = false; document.querySelector('#mobileMain .send-btn').disabled = false;
+                        saveProgress(step);
+                    };
 
-            window.addEventListener('resize', function() {
-                if (isMobile() && document.getElementById('mobileApp').style.display === 'none') {
-                    document.getElementById('desktopApp').style.display = 'none';
-                    initMobile();
-                } else if (!isMobile() && document.getElementById('desktopApp').style.display === 'none') {
-                    document.getElementById('mobileApp').style.display = 'none';
-                    document.getElementById('desktopApp').style.display = 'flex';
-                    initDesktop();
+                    const mobileCheckLynneFill = async function(level) {
+                        if (animating) return;
+                        let correct = false; let sentMsg = '';
+                        if (level === 1) { const a1 = document.getElementById('blank1M').value.trim(); const a2 = document.getElementById('blank2M').value.trim(); sentMsg = `你是${a1}，并且，你在艾希皇后号杀了${a2}。`; correct = (a1 === '宋令仪' && a2 === '陈楚梦'); }
+                        else if (level === 2) { const a3 = document.getElementById('blank3M').value.trim(); sentMsg = `答案差点就要颠倒过来。但是你房间里那个未使用的${a3}告诉我，某人的计划恐怕破产了。`; correct = (a3 === '麻醉剂'); }
+                        else if (level === 3) { const a4 = document.getElementById('blank4M').value.trim(); sentMsg = `尸体已经被你扔到大海里了吧？连同凶器一起。至于凶器，恐怕就是你房间消失的${a4}。`; correct = (a4 === '定制红酒'); }
+                        else if (level === 4) { const placeholder = document.getElementById('selectPlaceholderM'); const selectedText = placeholder ? placeholder.textContent.trim() : ''; sentMsg = `你真的不知道吗？你比谁都清楚那起事件背后的原因。看看这则报道：《${selectedText}》。现在，想起什么了吧？`; correct = (selectedText === '明德私立学校一高中女生郊游途中失踪，母亲陈百惠急寻线索'); }
+                        else if (level === 5) { const a6a = document.getElementById('blank6aM').value.trim(); const a6b = document.getElementById('blank6bM').value.trim(); sentMsg = `你错了。${a6a}和${a6b}，根本没有血缘关系。`; correct = (a6a === '宋闻溪' && a6b === '宋远山') || (a6a === '宋远山' && a6b === '宋闻溪'); }
+
+                        animating = true; document.querySelector('#mobileMain .send-btn').disabled = true;
+                        messages.push({ from: 'me', text: sentMsg, isCorrect: correct });
+                        openMobileDetail('lynne');
+                        await new Promise(r => setTimeout(r, 800));
+
+                        if (correct) {
+                            if (level === 1) { messages.push({ ...dynamicCorrect.step2Other }); step = 2; }
+                            else if (level === 2) { messages.push({ ...dynamicCorrect.step3Other }); step = 3; }
+                            else if (level === 3) { messages.push({ ...dynamicCorrect.step4Other1 }); openMobileDetail('lynne'); await new Promise(r => setTimeout(r, 1200)); messages.push({ ...dynamicCorrect.step4Me }); openMobileDetail('lynne'); await new Promise(r => setTimeout(r, 1200)); messages.push({ ...dynamicCorrect.step4Other2 }); step = 4; }
+                            else if (level === 4) { messages.push({ ...dynamicCorrect.step5Other1 }); openMobileDetail('lynne'); await new Promise(r => setTimeout(r, 1500)); messages.push({ ...dynamicCorrect.step5Me }); openMobileDetail('lynne'); await new Promise(r => setTimeout(r, 1200)); messages.push({ ...dynamicCorrect.step5Other2 }); step = 5; }
+                            else if (level === 5) { messages.push({ ...dynamicCorrect.step6Other1 }); openMobileDetail('lynne'); await new Promise(r => setTimeout(r, 1200)); messages.push({ ...dynamicCorrect.step6Me }); openMobileDetail('lynne'); await new Promise(r => setTimeout(r, 1000)); messages.push({ ...dynamicCorrect.step6Other2 }); openMobileDetail('lynne'); await new Promise(r => setTimeout(r, 1000)); messages.push({ ...dynamicCorrect.step6Me2 }); openMobileDetail('lynne'); await new Promise(r => setTimeout(r, 800)); messages.push({ ...dynamicCorrect.step6Other3 }); step = 6; }
+                            openMobileDetail('lynne'); saveProgress(step);
+                        } else {
+                            messages.push({ ...errorReply });
+                            openMobileDetail('lynne');
+                        }
+                        animating = false; document.querySelector('#mobileMain .send-btn').disabled = false;
+                    };
+
+                    tabbarItems.forEach(tab => {
+                        tab.addEventListener('click', function() {
+                            const tabName = this.dataset.tab;
+                            if (tabName === 'chats') {
+                                renderMobileList();
+                            } else if (tabName === 'profile') {
+                                currentMobileView = 'profile';
+                                mobileTitle.textContent = '我';
+                                setActiveMobileTab('profile');
+                                mobileMain.innerHTML = `<div class="profile-view" style="height:100%;"><div class="profile-avatar">♟️</div><div class="profile-name">chess player</div><div class="profile-id">微信号：chess_player</div><div class="profile-sign">棋子不应该跳出棋盘。</div></div>`;
+                            }
+                        });
+                    });
+
+                    mobileClose.addEventListener('click', () => { saveProgress(step); window.location.href = 'desktop.html'; });
+
+                    renderMobileList();
+
+                } catch (e) {
+                    console.error("移动端初始化异常，已自动兜底:", e);
                 }
-            });
+            }
+
+            // ---------- 稳固的设备切换与启动逻辑 ----------
+            function handleResize() {
+                const desktopEl = document.getElementById('desktopApp');
+                const mobileEl = document.getElementById('mobileApp');
+                
+                if (window.innerWidth <= 768) {
+                    desktopEl.style.display = 'none';
+                    mobileEl.style.display = 'flex';
+                    if (!window.mobileInitialized) initMobile();
+                } else {
+                    mobileEl.style.display = 'none';
+                    desktopEl.style.display = 'flex';
+                    if (!window.desktopInitialized) initDesktop();
+                }
+            }
+
+            handleResize();
+            window.addEventListener('resize', handleResize);
+
         })();
     </script>
 </body>
