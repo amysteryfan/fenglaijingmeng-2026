@@ -70,7 +70,7 @@
         }
         .init-error-screen.fade-off {
             opacity: 0;
-            pointer-events: none; /* 这里虽然设置无交互，但为了防止极个别兼容问题，再配合JS移除 */
+            pointer-events: none;
         }
 
         /* 日记容器 */
@@ -85,7 +85,6 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            pointer-events: none; /* 防止日记本身拦截点击，事件全部交给最外层侦听 */
         }
 
         .page-wrapper {
@@ -136,7 +135,7 @@
             z-index: 1;
         }
 
-        /* 日记被火烧的两个阶段 */
+        /* 日记被火烧的两个阶段：烘烤变色 → 烧毁消失 */
         .page-wrapper.burning img {
             filter: brightness(0.5) sepia(0.4) saturate(1.6);
         }
@@ -146,7 +145,7 @@
             transform: scale(0.93) translateY(-6px);
         }
 
-        /* 火焰层 */
+        /* 火焰三层状态 */
         .fire-container {
             position: fixed;
             inset: 0;
@@ -177,7 +176,7 @@
             transition: opacity 0.25s ease;
         }
 
-        /* 提示箭头 */
+        /* 点击区域 */
         #hint-area {
             position: absolute;
             bottom: 0;
@@ -190,7 +189,7 @@
             align-items: flex-end;
             cursor: pointer;
             padding-bottom: 40px;
-            pointer-events: auto; /* 允许下半部分触控 */
+            pointer-events: auto;
         }
 
         #hint-icon {
@@ -198,7 +197,6 @@
             color: rgba(255, 255, 255, 0.4);
             animation: floatHint 1.8s ease-in-out infinite;
             transition: opacity 0.5s;
-            pointer-events: none;
         }
 
         @keyframes floatHint {
@@ -233,6 +231,69 @@
             opacity: 1 !important;
         }
 
+        /* ---------------------- 跳过弹窗样式 ---------------------- */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.75);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 10000;
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
+        }
+        .modal-box {
+            background: #1e1e1e;
+            padding: 30px 35px;
+            border-radius: 18px;
+            max-width: 380px;
+            width: 85%;
+            text-align: center;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.9);
+            border: 1px solid rgba(255,255,255,0.08);
+            color: #eee;
+            font-size: 18px;
+            line-height: 1.6;
+        }
+        .modal-box p {
+            margin-bottom: 26px;
+            font-weight: 300;
+        }
+        .modal-buttons {
+            display: flex;
+            gap: 14px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .modal-buttons button {
+            padding: 10px 28px;
+            border: none;
+            border-radius: 30px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s;
+            flex: 1;
+            min-width: 100px;
+        }
+        .btn-yes {
+            background: #ff6b6b;
+            color: #fff;
+        }
+        .btn-yes:hover {
+            background: #ff4f4f;
+            transform: scale(1.02);
+        }
+        .btn-no {
+            background: #4a4a4a;
+            color: #ccc;
+        }
+        .btn-no:hover {
+            background: #5a5a5a;
+            transform: scale(1.02);
+        }
+
         @media (max-width: 768px) {
             #diary-wrapper {
                 width: 92vw;
@@ -250,6 +311,10 @@
                 height: 40%;
                 padding-bottom: 25px;
             }
+            .modal-box {
+                padding: 25px 20px;
+                font-size: 16px;
+            }
         }
 
         @media (min-height: 900px) {
@@ -260,21 +325,32 @@
     </style>
 </head>
 <body>
-    <!-- 页面入场乱码报错图 -->
+    <!-- 入场乱码报错图 -->
     <div class="init-error-screen" id="errorScreen"></div>
+
+    <!-- 跳过动画弹窗（默认隐藏） -->
+    <div id="skip-modal" class="modal-overlay" style="display: none;">
+        <div class="modal-box">
+            <p>加载似乎较慢，是否跳过加载动画？</p>
+            <div class="modal-buttons">
+                <button class="btn-yes" onclick="skipAnimation(true)">是，跳过</button>
+                <button class="btn-no" onclick="skipAnimation(false)">否，等待</button>
+            </div>
+        </div>
+    </div>
 
     <div id="app">
         <div id="bg-layer"></div>
         <div id="bg-overlay"></div>
 
         <!-- 火焰层 -->
-        <div class="fire-container">
+        <div class="fire-container" id="fireBox">
             <img src="images/fire1.png" class="fire-img" alt="fire">
             <img src="images/fire2.png" class="fire-img" alt="fire" style="opacity:0">
             <img src="images/fire3.png" class="fire-img" alt="fire" style="opacity:0">
         </div>
 
-        <div id="diary-wrapper">
+        <div id="diary-wrapper" onclick="handlePageClick()">
             <div id="page1" class="page-wrapper state-active">
                 <img src="images/riji1.jpg" alt="2011年8月日记" draggable="false">
             </div>
@@ -283,7 +359,7 @@
             </div>
         </div>
 
-        <div id="hint-area">
+        <div id="hint-area" onclick="handlePageClick()">
             <div id="hint-icon">▼</div>
         </div>
 
@@ -291,33 +367,63 @@
     </div>
 
     <script>
-        // 获取所有元素
+        let state = 0;
+        let skipFlag = false;          // 是否跳过加载动画
+        let slowLoadTimer = null;      // 加载缓慢检测定时器
+        let fireAnimationTimer = null;
+
         const page1 = document.getElementById('page1');
         const page2 = document.getElementById('page2');
         const hintIcon = document.getElementById('hint-area');
         const endText = document.getElementById('end-text');
         const errorScreen = document.getElementById('errorScreen');
-        const fireBox = document.querySelector('.fire-container');
+        const fireBox = document.getElementById('fireBox');
         const fireImgs = document.querySelectorAll('.fire-img');
-        const appContainer = document.getElementById('app');
-        const diaryWrapper = document.getElementById('diary-wrapper');
+        const skipModal = document.getElementById('skip-modal');
 
-        let state = 0;
-        let fireAnimationTimer = null;
+        // ---------- 加载缓慢检测 ----------
+        // 如果页面在 2.5 秒内没加载完所有资源（含图片），则弹出弹窗
+        slowLoadTimer = setTimeout(() => {
+            showSkipDialog();
+        }, 2500);
 
-        // ===== 修复1：乱码层消散与彻底移除 =====
+        // 页面完全加载后，清除缓慢检测定时器（表示加载很快，不弹窗）
         window.addEventListener('load', () => {
+            if (slowLoadTimer) {
+                clearTimeout(slowLoadTimer);
+                slowLoadTimer = null;
+            }
+            // 无论是否跳过，正常开始乱码淡出（但如果已经跳过则不再重复执行）
             setTimeout(() => {
-                errorScreen.classList.add('fade-off');
-                // 等待过渡动画彻底结束（3秒），然后直接移走 DOM 节点，防止遮挡移动端点击
-                setTimeout(() => {
-                    if (errorScreen) errorScreen.style.display = 'none';
-                }, 3200); 
-            }, 500); // 延迟 500ms 再开始消散，提高移动端适配度
+                if (!skipFlag) {
+                    errorScreen.classList.add('fade-off');
+                }
+            }, 300);
         });
 
-        // ===== 修复2：全局点击事件监听（解决移动端点击不灵敏） =====
-        // 燃烧时序
+        // ---------- 弹窗控制 ----------
+        function showSkipDialog() {
+            skipModal.style.display = 'flex';
+        }
+
+        function skipAnimation(choice) {
+            skipModal.style.display = 'none';
+            if (choice === true) {
+                skipFlag = true;
+                // 立即隐藏乱码图
+                errorScreen.classList.add('fade-off');
+                // 如果此时定时器还在，清除它，避免后续再次触发淡出
+                if (slowLoadTimer) {
+                    clearTimeout(slowLoadTimer);
+                    slowLoadTimer = null;
+                }
+            } else {
+                skipFlag = false;
+                // 什么也不做，等 load 事件正常淡出乱码图
+            }
+        }
+
+        // ---------- 正常火焰特效 ----------
         function runFireEffect() {
             fireBox.classList.add('play-fire');
             let index = 0;
@@ -339,36 +445,47 @@
                 fireBox.classList.remove('play-fire', 'fire-fading');
                 fireBox.classList.add('fire-gone');
             }, 3200);
-            // 火焰熄灭后停顿 400ms，再弹出结束文字
+            // 火焰熄灭后停顿400ms，再弹出结束文字
             setTimeout(() => endText.classList.add('text-fade-in'), 3600);
         }
 
-        // 核心互动监听器
-        appContainer.addEventListener('click', function(e) {
-            // 1. 如果乱码层还存在（显示不等于 none），阻止任何操作
-            if (errorScreen.style.display !== 'none') return;
-
-            // 2. 如果点击的目标是 IMG (图片) 本身，或者点击在日记包装器内部，阻断操作 (只允许点击空白阴影区域)
-            if (e.target.tagName === 'IMG' || diaryWrapper.contains(e.target)) {
-                return;
-            }
-
-            // 3. 如果游戏已经结束，不响应
-            if (state === 2) return;
-
-            // 4. 开始判定流程
+        // ---------- 点击交互 ----------
+        function handlePageClick() {
             if (state === 0) {
-                // 第一页 -> 第二页
+                // 第1页 -> 翻页到第2页（riji1 -> riji2）
                 state = 1;
                 page1.className = 'page-wrapper state-hide-left';
                 setTimeout(() => page2.className = 'page-wrapper state-active', 50);
             } else if (state === 1) {
-                // 第二页 -> 燃烧
+                // 第2页 -> 触发特效（此时才触发，而不是翻页后自动触发）
                 state = 2;
                 hintIcon.classList.add('hint-hidden');
-                runFireEffect();
+
+                if (skipFlag) {
+                    // 【跳过模式】：直接让 riji2 淡出，跳过火焰
+                    // 如果有残余的火焰定时器，清除掉
+                    if (fireAnimationTimer) {
+                        clearInterval(fireAnimationTimer);
+                        fireAnimationTimer = null;
+                    }
+                    fireBox.classList.remove('play-fire', 'fire-fading');
+                    fireBox.classList.add('fire-gone');
+
+                    // 直接给 riji2 添加 burned 类，触发 css 淡出（opacity:0）
+                    page2.classList.add('burned');
+
+                    // 等待淡出动画完成后，浮现结束文字（1.8s 后）
+                    setTimeout(() => {
+                        endText.classList.add('text-fade-in');
+                    }, 1800);
+                } else {
+                    // 【正常模式】：播放火焰特效
+                    runFireEffect();
+                }
+            } else {
+                return;
             }
-        });
+        }
     </script>
 </body>
 </html>
