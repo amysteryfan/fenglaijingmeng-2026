@@ -203,7 +203,6 @@
         }
         .restart-btn-chat:hover { background: #f5f5f5; color: #333; }
 
-        /* 下拉选择器 */
         .select-wrapper { position: relative; display: inline-block; }
         .select-placeholder {
             display: inline-block; min-width: 100px; padding: 2px 8px;
@@ -221,7 +220,6 @@
         .select-item:last-child { border-bottom: none; }
         .select-item:hover { background: #f0f0f0; }
 
-        /* Lynne 弹窗 */
         .lynne-modal-overlay {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0,0,0,0.5); z-index: 100; display: none;
@@ -239,7 +237,6 @@
         }
         .lynne-modal-box .btn-confirm:hover { background: #06b057; }
 
-        /* 朋友圈模态框 */
         .moments-overlay {
             position: absolute; top: 0; left: 0; right: 0; bottom: 0;
             background: rgba(0,0,0,0.5); z-index: 999; display: none;
@@ -270,16 +267,13 @@
         @media (max-width: 768px) {
             .wechat-desktop { display: none; }
             .wechat-mobile { display: flex; width: 100vw; height: 100vh; background: #fff; flex-direction: column; }
-            
             .mobile-header {
                 background: #1a1a1a; color: #fff; padding: 12px 16px;
                 display: flex; justify-content: space-between; align-items: center; flex-shrink: 0;
             }
             .mobile-header .title { font-size: 18px; display: flex; align-items: center; }
             .back-btn { font-size: 20px; margin-right: 12px; cursor: pointer; }
-            
             .mobile-main { flex: 1; overflow-y: auto; display: flex; flex-direction: column; position: relative; background: #f3f3f3; }
-            
             .mobile-tabbar {
                 background: #f7f7f7; border-top: 1px solid #d9d9d9;
                 display: flex; justify-content: space-around; padding: 6px 0; flex-shrink: 0;
@@ -290,32 +284,23 @@
             }
             .mobile-tab-item.active { color: #07c160; }
             .mobile-tab-item .icon { font-size: 24px; margin-bottom: 2px; }
-            
             .fill-blank.wide { width: 140px; }
             .fill-text { font-size: 14px; }
             .select-dropdown { width: 240px; }
             .message-bubble { max-width: 80%; }
-            
             .message-bubble .chat-thumbnail {
-                max-width: 100% !important;
-                max-height: 220px !important;
-                width: 100%;
-                height: auto;
-                object-fit: contain !important;
-                border-radius: 4px;
-                display: block;
+                max-width: 100% !important; max-height: 220px !important;
+                width: 100%; height: auto; object-fit: contain !important;
+                border-radius: 4px; display: block;
             }
-            
             .lynne-modal-overlay, .moments-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; }
             .moments-modal-box { width: 100%; max-width: 100%; max-height: 100%; border-radius: 0; }
         }
     </style>
 </head>
 <body>
-    <!-- 桌面版 -->
     <div class="wechat-desktop" id="desktopApp">
         <div class="global-close" id="desktopClose" title="退出微信">✕</div>
-        <!-- Lynne 弹窗 -->
         <div class="lynne-modal-overlay" id="lynneModal">
             <div class="lynne-modal-box">
                 <div class="title">提示</div>
@@ -375,7 +360,6 @@
         <div class="chat-area" id="chatArea"></div>
     </div>
 
-    <!-- 移动版 -->
     <div class="wechat-mobile" id="mobileApp">
         <div class="mobile-header">
             <span class="title" id="mobileTitle">微信</span>
@@ -388,7 +372,6 @@
             <div class="mobile-tab-item disabled"><span class="icon">🔍</span><span>发现</span></div>
             <div class="mobile-tab-item" data-tab="profile"><span class="icon">👤</span><span>我</span></div>
         </div>
-        <!-- Lynne 弹窗 -->
         <div class="lynne-modal-overlay" id="lynneModalMobile">
             <div class="lynne-modal-box">
                 <div class="title">提示</div>
@@ -400,8 +383,6 @@
 
     <script>
         (function() {
-            // ---------- 静态数据配置 ----------
-            // Lynne 的基础交互数据
             const baseMessages = [
                 { from: 'me', text: '7月9日的事，聊聊？', isCorrect: true },
                 { from: 'other', text: '你是……许故？', isCorrect: true },
@@ -447,10 +428,50 @@
                 step7Me: { from: 'me', text: '当然。交给我吧，我会让这件事走向应有的结局的。', isCorrect: true }
             };
 
-            const songMessages = [ /* 宋令仪聊天记录保持不变 */ ];
-            const songMoments = [ /* 朋友圈记录保持不变 */ ];
-            const groupMessages = [ /* 群聊记录保持不变 */ ];
-            const luMessages = [ /* 路琮记录保持不变 */ ];
+            // ★ 补全宋令仪聊天记录
+            const songMessages = [
+                { date: '2019年10月29日' },
+                { from: 'song', text: '下课陪我散步。' }, { from: 'me', text: '嗯。' },
+                { date: '2019年12月10日' },
+                { from: 'song', text: '晚上的舞会结束了，送我回宿舍。' }, { from: 'me', text: '嗯。' },
+                { date: '2020年2月6日' },
+                { type: 'image', from: 'song', src: 'images/zhuanzhangliwu.jpg' }, { type: 'image', from: 'song', src: 'images/xiangshui.jpg' }, { from: 'song', text: '我要这个。' }, { from: 'me', text: '好。' },
+                { date: '2020年5月31日' },
+                { type: 'image', from: 'song', src: 'images/zhuanzhangliwu.jpg' }, { type: 'image', from: 'song', src: 'images/erhuan.jpg' }, { from: 'song', text: '我要这个。' }, { from: 'me', text: '好。' },
+                { date: '2021年3月14日' },
+                { from: 'song', text: '我要去咖啡厅，陪我。' }, { from: 'me', text: '嗯。' },
+                { date: '2021年5月31日' },
+                { type: 'image', from: 'song', src: 'images/zhuanzhangliwu.jpg' }, { type: 'image', from: 'song', src: 'images/xianglian.jpg' }, { from: 'song', text: '我要这个。' }, { from: 'me', text: '好。' },
+                { date: '2021年9月15日' },
+                { type: 'image', from: 'song', src: 'images/zhuanzhangjiangjin.jpg' }, { from: 'song', text: '喏，我不欠你。' }, { from: 'song', text: '给你多转了，就当是感谢金。' }, { from: 'me', text: '……' },
+                { date: '2022年6月10日' },
+                { from: 'song', text: '这个号以后不用了。我们结束吧。' }, { from: 'me', text: '。' }
+            ];
+
+            // ★ 补全朋友圈记录
+            const songMoments = [
+                { date: '2020年2月14日', text: '男朋友说：这是属于我们的日子。\n然后送了我礼物～', image: 'images/xiangshui.jpg' },
+                { date: '2020年6月5日', text: '不期而遇的惊喜。即使不开口，你也最懂我想要什么。\n男朋友送的礼物～', image: 'images/erhuan.jpg' },
+                { date: '2021年6月5日', text: '男朋友说：谢谢你降生在这个世界，出现在我的生命中。\n哈哈，太肉麻啦～', image: 'images/xianglian.jpg' }
+            ];
+
+            // ★ 补全群聊记录
+            const groupMessages = [
+                { date: '2020年12月20日' },
+                { id: '我不稀罕', text: '不是，许故你到底什么毛病？' },
+                { id: '我不稀罕', text: '大家都是一个组的，肯定都想做好这次实践，让考核好看一点。' },
+                { id: '我不稀罕', text: '我不过是提出另一种方法，你就让我离开？？？' },
+                { id: '我不稀罕', text: '当你的组员还非得听你的话？告诉你吧，我不稀罕！走就走！' }
+            ];
+
+            // ★ 补全路琮聊天记录
+            const luMessages = [
+                { date: '2019年11月27日' },
+                { from: 'lu', text: '你跟那个大小姐怎么回事啊？' },
+                { from: 'me', text: '我们都做了自己认为合适的事情。' },
+                { from: 'lu', text: '什么意思啊？是真谈了吗？你俩到底什么关系啊？' },
+                { from: 'me', text: '就当我们是夏洛特和柯林斯吧。' }
+            ];
 
             const newsOptions = [
                 '风来水榭发生旅客死亡事件',
@@ -480,15 +501,11 @@
 
             function loadProgress() {
                 const saved = localStorage.getItem('wechat_progress');
-                if (saved) {
-                    try { const data = JSON.parse(saved); return { step: data.step, messages: data.messages }; } catch (e) {}
-                }
+                if (saved) { try { const data = JSON.parse(saved); return { step: data.step, messages: data.messages }; } catch (e) {} }
                 return null;
             }
 
-            function clearProgress() {
-                localStorage.removeItem('wechat_progress');
-            }
+            function clearProgress() { localStorage.removeItem('wechat_progress'); }
 
             const isMobile = () => window.innerWidth <= 768;
             const errorReply = { from: 'other', text: '你到底在说什么？？？', isCorrect: false };
@@ -518,15 +535,47 @@
                 return '';
             }
 
-            function renderDetailedMessages(messages) { /* 保持不变 */ }
-            function renderGroupMessages(messages) { /* 保持不变 */ }
+            function renderDetailedMessages(messages) {
+                let html = '';
+                messages.forEach(msg => {
+                    if (msg.date) { html += `<div class="message-time">${msg.date}</div>`; return; }
+                    const isMe = msg.from === 'me';
+                    const cls = isMe ? 'me' : 'other';
+                    const avatar = isMe ? '♟️' : '👑';
+                    let bubbleContent = '';
+                    if (msg.type === 'image') {
+                        bubbleContent = `<div class="message-bubble image-message"><img src="${msg.src}" alt="图片" class="chat-thumbnail"></div>`;
+                    } else {
+                        bubbleContent = `<div class="message-bubble">${msg.text}</div>`;
+                    }
+                    if (isMe) {
+                        html += `<div class="message-row me"><div class="message-content-wrapper">${bubbleContent}</div><div class="message-avatar" style="background:#f0f0f0;">${avatar}</div></div>`;
+                    } else {
+                        html += `<div class="message-row other"><div class="message-avatar song-avatar-trigger" style="background:#f0f0f0; color:#333; cursor:pointer;">${avatar}</div><div class="message-content-wrapper">${bubbleContent}</div></div>`;
+                    }
+                });
+                return html;
+            }
+
+            function renderGroupMessages(messages) {
+                let html = '';
+                messages.forEach(msg => {
+                    if (msg.date) { html += `<div class="message-time">${msg.date}</div>`; return; }
+                    html += `<div class="message-row other">
+                        <div class="message-avatar" style="background:#8e44ad; color:white; font-size:14px;">不</div>
+                        <div class="message-content-wrapper">
+                            <div class="message-sender">${msg.id}</div>
+                            <div class="message-bubble">${msg.text}</div>
+                        </div>
+                    </div>`;
+                });
+                return html;
+            }
 
             function renderLynneInput(step, isMobileSuffix = '') {
                 if (step === 0) return `<div class="chat-input-area"><div class="input-wrapper"><input type="text" value="我知道你是谁。" readonly disabled style="width:100%;"></div><button class="send-btn" id="sendBtn${isMobileSuffix}">发送</button></div>`;
                 if (step === 1) return `<div class="chat-input-area"><div class="input-wrapper"><span class="fill-text">你是</span><input class="fill-blank" id="blank1${isMobileSuffix}"><span class="fill-text">，并且，你在艾希皇后号杀了</span><input class="fill-blank" id="blank2${isMobileSuffix}"><span class="fill-text">。</span></div><button class="send-btn" id="sendBtn1${isMobileSuffix}">发送</button></div>`;
-                // ★ 修改：step 2 添加提示“三个字”
                 if (step === 2) return `<div class="chat-input-area"><div class="input-wrapper"><span class="fill-text">答案差点就要颠倒过来。但是你房间里那个未使用的</span><input class="fill-blank" id="blank3${isMobileSuffix}"><span class="fill-text">告诉我，某人的计划恐怕破产了。</span><span style="font-size:12px;color:#999;display:block;margin-top:4px;">提示：三个字</span></div><button class="send-btn" id="sendBtn2${isMobileSuffix}">发送</button></div>`;
-                // ★ 修改：step 3 添加提示“四个字”
                 if (step === 3) return `<div class="chat-input-area"><div class="input-wrapper"><span class="fill-text">尸体已经被你扔到大海里了吧？惊慌之下，死者的衣服被栏杆勾破，你也顾不上注意，只想尽早处理凶器。至于凶器，恐怕就是你房间消失的</span><input class="fill-blank" id="blank4${isMobileSuffix}"><span class="fill-text">。虽然你把凶器一并扔进大海，仍有一些没有收拾妥当的碎片残留。</span><span style="font-size:12px;color:#999;display:block;margin-top:4px;">提示：四个字</span></div><button class="send-btn" id="sendBtn3${isMobileSuffix}">发送</button></div>`;
                 if (step === 4) {
                     const optionsHTML = newsOptions.map(opt => `<div class="select-item">${opt}</div>`).join('');
@@ -538,10 +587,29 @@
                 return `<div class="chat-input-area"><div class="input-wrapper"><input type="text" disabled placeholder=" " style="width:100%;"></div></div>`;
             }
 
-            function renderSongMoments() { /* 保持不变 */ }
-            function showMoments(container) { /* 保持不变 */ }
+            function renderSongMoments() {
+                let html = `<div class="moments-list">`;
+                songMoments.forEach(m => {
+                    html += `<div class="moments-item"><div class="m-date">${m.date}</div><div class="m-text">${m.text}</div><img src="${m.image}" alt="礼物照片" class="m-img" onerror="this.style.display='none'"></div>`;
+                });
+                html += `</div>`;
+                return html;
+            }
 
-            // ---------- 核心初始化逻辑 ----------
+            function showMoments(container) {
+                let overlay = container.querySelector('.moments-overlay');
+                if (!overlay) {
+                    overlay = document.createElement('div');
+                    overlay.className = 'moments-overlay';
+                    overlay.innerHTML = `<div class="moments-modal-box"><div class="moments-header"><span>朋友圈</span><span class="close-btn" id="momentsClose">✕</span></div>${renderSongMoments()}</div>`;
+                    container.appendChild(overlay);
+                    overlay.querySelector('#momentsClose').addEventListener('click', function() { overlay.style.display = 'none'; });
+                    overlay.addEventListener('click', function(e) { if (e.target === this) this.style.display = 'none'; });
+                }
+                overlay.style.display = 'flex';
+            }
+
+            // ---------- 桌面端 ----------
             function initDesktop() {
                 if (window.desktopInitialized) return;
                 window.desktopInitialized = true;
@@ -560,13 +628,8 @@
                 let animating = false;
 
                 const savedProgress = loadProgress();
-                if (savedProgress) {
-                    step = savedProgress.step;
-                    messages = savedProgress.messages.map(m => ({...m, isCorrect: true}));
-                } else {
-                    messages = [...baseMessages];
-                    step = 0;
-                }
+                if (savedProgress) { step = savedProgress.step; messages = savedProgress.messages.map(m => ({...m, isCorrect: true})); }
+                else { messages = [...baseMessages]; step = 0; }
 
                 function updatePreview() {
                     const lastMsg = messages[messages.length - 1];
@@ -576,159 +639,79 @@
 
                 function setActiveItem(id) {
                     document.querySelectorAll('.chat-item').forEach(el => el.classList.remove('active'));
-                    if (id) {
-                        const el = document.getElementById('item-' + id);
-                        if (el) el.classList.add('active');
-                    }
+                    if (id) { const el = document.getElementById('item-' + id); if (el) el.classList.add('active'); }
                 }
 
                 function renderEmptyState() {
-                    currentChatId = 'empty';
-                    setActiveItem(null);
+                    currentChatId = 'empty'; setActiveItem(null);
                     chatArea.innerHTML = `<div class="profile-view" style="background:#f3f3f3;"><div style="color:#bbb;font-size:16px;text-align:center;line-height:1.8;">请选择左侧聊天<br>开始对话</div></div>`;
                 }
 
                 function renderProfileView() {
-                    currentChatId = 'profile';
-                    setActiveItem(null);
+                    currentChatId = 'profile'; setActiveItem(null);
                     chatArea.innerHTML = `<div class="profile-view"><div class="profile-avatar">♟️</div><div class="profile-name">chess player</div><div class="profile-id">微信号：chess_player</div><div class="profile-sign">棋子不应该跳出棋盘。</div></div>`;
                 }
 
                 function renderChat(targetChatId, scrollToBottom = false) {
-                    currentChatId = targetChatId;
-                    setActiveItem(targetChatId);
-
+                    currentChatId = targetChatId; setActiveItem(targetChatId);
                     if (targetChatId === 'lynne') {
                         chatArea.innerHTML = `<div class="chat-titlebar"><span>Lynne</span></div><div class="chat-messages" id="chatMessages"></div>${renderLynneInput(step)}`;
                         const msgContainer = document.getElementById('chatMessages');
-                        if (msgContainer) {
-                            msgContainer.innerHTML = renderChatMessages('lynne', messages, step);
-                            if (scrollToBottom) msgContainer.scrollTop = msgContainer.scrollHeight;
-                        }
-                        bindLynneDesktopEvents(step);
-                        updatePreview();
-                        return;
+                        if (msgContainer) { msgContainer.innerHTML = renderChatMessages('lynne', messages, step); if (scrollToBottom) msgContainer.scrollTop = msgContainer.scrollHeight; }
+                        bindLynneDesktopEvents(step); updatePreview(); return;
                     }
-
                     let msgsData = [];
                     if (targetChatId === 'song') msgsData = songMessages;
                     else if (targetChatId === 'group19') msgsData = groupMessages;
                     else if (targetChatId === 'lu') msgsData = luMessages;
-                    
                     if (!msgsData.length) return;
                     chatArea.innerHTML = `<div class="chat-titlebar"><span>${document.getElementById('item-' + targetChatId).querySelector('.chat-name').textContent}</span></div><div class="chat-messages" id="chatMessages"></div><div class="chat-input-area"><div class="input-wrapper"><input type="text" disabled placeholder=" " style="width:100%;"></div></div>`;
                     const msgContainer = document.getElementById('chatMessages');
-                    if (msgContainer) {
-                        msgContainer.innerHTML = renderChatMessages(targetChatId, msgsData, step);
-                        if (scrollToBottom) msgContainer.scrollTop = msgContainer.scrollHeight;
-                    }
+                    if (msgContainer) { msgContainer.innerHTML = renderChatMessages(targetChatId, msgsData, step); if (scrollToBottom) msgContainer.scrollTop = msgContainer.scrollHeight; }
                 }
 
                 function switchChat(targetChatId) {
-                    if (targetChatId === 'lynne') {
-                        if (!localStorage.getItem('lynne_alert_done')) {
-                            lynneModal.style.display = 'flex';
-                            return;
-                        }
-                    }
+                    if (targetChatId === 'lynne') { if (!localStorage.getItem('lynne_alert_done')) { lynneModal.style.display = 'flex'; return; } }
                     renderChat(targetChatId, true);
                 }
 
-                lynneModalConfirm.addEventListener('click', function() {
-                    lynneModal.style.display = 'none';
-                    localStorage.setItem('lynne_alert_done', 'true');
-                    renderChat('lynne', true);
-                });
+                lynneModalConfirm.addEventListener('click', function() { lynneModal.style.display = 'none'; localStorage.setItem('lynne_alert_done', 'true'); renderChat('lynne', true); });
 
-                document.querySelectorAll('.chat-item').forEach(item => {
-                    item.addEventListener('click', function() {
-                        const id = this.dataset.chatid;
-                        if (id) switchChat(id);
-                    });
-                });
-
+                document.querySelectorAll('.chat-item').forEach(item => { item.addEventListener('click', function() { const id = this.dataset.chatid; if (id) switchChat(id); }); });
                 funcChats.addEventListener('click', () => switchChat('lynne'));
                 profileTrigger.addEventListener('click', renderProfileView);
                 funcProfile.addEventListener('click', renderProfileView);
 
-                chatArea.addEventListener('click', function(e) {
-                    if (e.target.closest('.song-avatar-trigger')) {
-                        if (currentChatId === 'song') {
-                            showMoments(chatArea);
-                        }
-                    }
-                });
+                chatArea.addEventListener('click', function(e) { if (e.target.closest('.song-avatar-trigger') && currentChatId === 'song') showMoments(chatArea); });
+
+                desktopClose.addEventListener('click', function() { saveProgress(step); window.location.href = 'desktop.html'; });
 
                 function bindLynneDesktopEvents(stepLevel) {
                     const setDisabled = (disabled) => { const btn = document.querySelector('.send-btn'); if (btn) btn.disabled = disabled; };
-
-                    if (stepLevel === 0) {
-                        document.getElementById('sendBtn').addEventListener('click', sendLynneFirst);
-                    } else if (stepLevel >= 1 && stepLevel <= 5) {
-                        document.getElementById(`sendBtn${stepLevel}`).addEventListener('click', () => checkLynneFill(stepLevel));
-                    } else if (stepLevel === 6) {
-                        document.querySelectorAll('.option-btn').forEach(btn => {
-                            btn.addEventListener('click', async function() {
-                                if (animating) return;
-                                animating = true;
-                                messages.push({ ...dynamicCorrect.step7Me });
-                                step = 7;
-                                renderChat('lynne', true);
-                                saveProgress(step);
-                                animating = false;
-                            });
-                        });
-                    } else if (stepLevel === 7) {
-                        document.getElementById('goToEnding').addEventListener('click', () => window.location.href = 'ending.html');
-                        document.getElementById('restartChatBtn').addEventListener('click', function() {
-                            clearProgress();
-                            step = 0; messages = [...baseMessages];
-                            renderChat('lynne', false);
-                            saveProgress(0);
-                        });
-                    }
-
+                    if (stepLevel === 0) document.getElementById('sendBtn').addEventListener('click', sendLynneFirst);
+                    else if (stepLevel >= 1 && stepLevel <= 5) document.getElementById(`sendBtn${stepLevel}`).addEventListener('click', () => checkLynneFill(stepLevel));
+                    else if (stepLevel === 6) { document.querySelectorAll('.option-btn').forEach(btn => { btn.addEventListener('click', async function() { if (animating) return; animating = true; messages.push({ ...dynamicCorrect.step7Me }); step = 7; renderChat('lynne', true); saveProgress(step); animating = false; }); }); }
+                    else if (stepLevel === 7) { document.getElementById('goToEnding').addEventListener('click', () => window.location.href = 'ending.html'); document.getElementById('restartChatBtn').addEventListener('click', function() { clearProgress(); step = 0; messages = [...baseMessages]; renderChat('lynne', false); saveProgress(0); }); }
                     if (stepLevel === 4) {
-                        const placeholder = document.getElementById('selectPlaceholder');
-                        const dropdown = document.getElementById('selectDropdown');
+                        const placeholder = document.getElementById('selectPlaceholder'); const dropdown = document.getElementById('selectDropdown');
                         if (placeholder && dropdown) {
                             placeholder.addEventListener('click', function(e) { e.stopPropagation(); dropdown.classList.toggle('active'); });
-                            dropdown.querySelectorAll('.select-item').forEach(item => {
-                                item.addEventListener('click', function() { placeholder.textContent = this.textContent; dropdown.classList.remove('active'); });
-                            });
-                            document.addEventListener('click', function(e) {
-                                if (!dropdown.contains(e.target) && e.target !== placeholder) dropdown.classList.remove('active');
-                            }, { once: false });
+                            dropdown.querySelectorAll('.select-item').forEach(item => { item.addEventListener('click', function() { placeholder.textContent = this.textContent; dropdown.classList.remove('active'); }); });
+                            document.addEventListener('click', function(e) { if (!dropdown.contains(e.target) && e.target !== placeholder) dropdown.classList.remove('active'); }, { once: false });
                         }
                     }
                 }
 
-                const sendLynneFirst = async function() {
-                    if (animating) return;
-                    animating = true; document.querySelector('.send-btn').disabled = true;
-                    messages.push({ ...dynamicCorrect.step1Me });
-                    renderChat('lynne', true);
-                    await new Promise(r => setTimeout(r, 1200));
-                    messages.push({ ...dynamicCorrect.step1Other });
-                    step = 1; renderChat('lynne', true);
-                    animating = false; document.querySelector('.send-btn').disabled = false;
-                    saveProgress(step);
-                };
+                const sendLynneFirst = async function() { if (animating) return; animating = true; document.querySelector('.send-btn').disabled = true; messages.push({ ...dynamicCorrect.step1Me }); renderChat('lynne', true); await new Promise(r => setTimeout(r, 1200)); messages.push({ ...dynamicCorrect.step1Other }); step = 1; renderChat('lynne', true); animating = false; document.querySelector('.send-btn').disabled = false; saveProgress(step); };
 
                 const checkLynneFill = async function(level) {
-                    if (animating) return;
-                    let correct = false; let sentMsg = '';
+                    if (animating) return; let correct = false; let sentMsg = '';
                     if (level === 1) { const a1 = document.getElementById('blank1').value.trim(); const a2 = document.getElementById('blank2').value.trim(); sentMsg = `你是${a1}，并且，你在艾希皇后号杀了${a2}。`; correct = (a1 === '宋令仪' && a2 === '陈楚梦'); }
                     else if (level === 2) { const a3 = document.getElementById('blank3').value.trim(); sentMsg = `答案差点就要颠倒过来。但是你房间里那个未使用的${a3}告诉我，某人的计划恐怕破产了。`; correct = (a3 === '麻醉剂'); }
                     else if (level === 3) { const a4 = document.getElementById('blank4').value.trim(); sentMsg = `尸体已经被你扔到大海里了吧？惊慌之下，死者的衣服被栏杆勾破，你也顾不上注意，只想尽早处理凶器。至于凶器，恐怕就是你房间消失的${a4}。虽然你把凶器一并扔进大海，仍有一些没有收拾妥当的碎片残留。`; correct = (a4 === '定制红酒'); }
                     else if (level === 4) { const placeholder = document.getElementById('selectPlaceholder'); const selectedText = placeholder ? placeholder.textContent.trim() : ''; sentMsg = `你真的不知道吗？你比谁都清楚那起事件背后的原因。看看这则报道：《${selectedText}》。现在，想起什么了吧？`; correct = (selectedText === '明德私立学校一高中女生郊游途中失踪，母亲陈百惠急寻线索'); }
                     else if (level === 5) { const a6a = document.getElementById('blank6a').value.trim(); const a6b = document.getElementById('blank6b').value.trim(); sentMsg = `你错了。${a6a}和${a6b}，根本没有血缘关系。`; correct = (a6a === '宋闻溪' && a6b === '宋远山') || (a6a === '宋远山' && a6b === '宋闻溪'); }
-
-                    animating = true; document.querySelector('.send-btn').disabled = true;
-                    messages.push({ from: 'me', text: sentMsg, isCorrect: correct });
-                    renderChat('lynne', true);
-                    await new Promise(r => setTimeout(r, 800));
-
+                    animating = true; document.querySelector('.send-btn').disabled = true; messages.push({ from: 'me', text: sentMsg, isCorrect: correct }); renderChat('lynne', true); await new Promise(r => setTimeout(r, 800));
                     if (correct) {
                         if (level === 1) { messages.push({ ...dynamicCorrect.step2Other }); step = 2; }
                         else if (level === 2) { messages.push({ ...dynamicCorrect.step3Other }); step = 3; }
@@ -736,16 +719,14 @@
                         else if (level === 4) { messages.push({ ...dynamicCorrect.step5Other1 }); renderChat('lynne', true); await new Promise(r => setTimeout(r, 1500)); messages.push({ ...dynamicCorrect.step5Me }); renderChat('lynne', true); await new Promise(r => setTimeout(r, 1200)); messages.push({ ...dynamicCorrect.step5Other2 }); step = 5; }
                         else if (level === 5) { messages.push({ ...dynamicCorrect.step6Other1 }); renderChat('lynne', true); await new Promise(r => setTimeout(r, 1200)); messages.push({ ...dynamicCorrect.step6Me }); renderChat('lynne', true); await new Promise(r => setTimeout(r, 1000)); messages.push({ ...dynamicCorrect.step6Other2 }); renderChat('lynne', true); await new Promise(r => setTimeout(r, 1000)); messages.push({ ...dynamicCorrect.step6Me2 }); renderChat('lynne', true); await new Promise(r => setTimeout(r, 800)); messages.push({ ...dynamicCorrect.step6Other3 }); step = 6; }
                         renderChat('lynne', true); saveProgress(step);
-                    } else {
-                        messages.push({ ...errorReply });
-                        renderChat('lynne', true);
-                    }
+                    } else { messages.push({ ...errorReply }); renderChat('lynne', true); }
                     animating = false; document.querySelector('.send-btn').disabled = false;
                 };
 
                 renderEmptyState();
             }
 
+            // ---------- 移动端 ----------
             function initMobile() {
                 if (window.mobileInitialized) return;
                 window.mobileInitialized = true;
@@ -765,189 +746,73 @@
                     let animating = false;
 
                     const savedProgress = loadProgress();
-                    if (savedProgress) {
-                        step = savedProgress.step;
-                        messages = savedProgress.messages.map(m => ({...m, isCorrect: true}));
-                    } else {
-                        messages = [...baseMessages];
-                        step = 0;
-                    }
+                    if (savedProgress) { step = savedProgress.step; messages = savedProgress.messages.map(m => ({...m, isCorrect: true})); }
+                    else { messages = [...baseMessages]; step = 0; }
 
-                    function setActiveMobileTab(tabName) {
-                        tabbarItems.forEach(t => {
-                            t.classList.remove('active');
-                            if (t.dataset.tab === tabName) {
-                                t.classList.add('active');
-                            }
-                        });
-                    }
+                    function setActiveMobileTab(tabName) { tabbarItems.forEach(t => { t.classList.remove('active'); if (t.dataset.tab === tabName) t.classList.add('active'); }); }
 
                     function renderMobileList() {
-                        currentMobileView = 'chats';
-                        mobileTitle.textContent = '微信';
-                        setActiveMobileTab('chats');
-
+                        currentMobileView = 'chats'; mobileTitle.textContent = '微信'; setActiveMobileTab('chats');
                         mobileMain.innerHTML = `
-                            <div class="chat-item" data-chatid="lynne">
-                                <div class="chat-avatar">L</div>
-                                <div class="chat-info">
-                                    <div class="chat-name">Lynne</div>
-                                    <div class="chat-preview">${messages[messages.length-1]?.text || ''}</div>
-                                </div>
-                                <div class="chat-time">今天</div>
-                            </div>
-                            <div class="chat-item" data-chatid="song">
-                                <div class="chat-avatar" style="background:#e6a8d7;">👑</div>
-                                <div class="chat-info">
-                                    <div class="chat-name">宋令仪</div>
-                                    <div class="chat-preview">。</div>
-                                </div>
-                                <div class="chat-time">2022</div>
-                            </div>
-                            <div class="chat-item" data-chatid="group19">
-                                <div class="chat-avatar" style="background:#8e44ad;">群</div>
-                                <div class="chat-info">
-                                    <div class="chat-name">19级高中部聊天群</div>
-                                    <div class="chat-preview">当你的组员还非得听你的话？</div>
-                                </div>
-                                <div class="chat-time">2020</div>
-                            </div>
-                            <div class="chat-item" data-chatid="lu">
-                                <div class="chat-avatar" style="background:#3498db;">路</div>
-                                <div class="chat-info">
-                                    <div class="chat-name">路琮</div>
-                                    <div class="chat-preview">就当我们是夏洛特和柯林斯吧。</div>
-                                </div>
-                                <div class="chat-time">2019</div>
-                            </div>
+                            <div class="chat-item" data-chatid="lynne"><div class="chat-avatar">L</div><div class="chat-info"><div class="chat-name">Lynne</div><div class="chat-preview">${messages[messages.length-1]?.text || ''}</div></div><div class="chat-time">今天</div></div>
+                            <div class="chat-item" data-chatid="song"><div class="chat-avatar" style="background:#e6a8d7;">👑</div><div class="chat-info"><div class="chat-name">宋令仪</div><div class="chat-preview">。</div></div><div class="chat-time">2022</div></div>
+                            <div class="chat-item" data-chatid="group19"><div class="chat-avatar" style="background:#8e44ad;">群</div><div class="chat-info"><div class="chat-name">19级高中部聊天群</div><div class="chat-preview">当你的组员还非得听你的话？</div></div><div class="chat-time">2020</div></div>
+                            <div class="chat-item" data-chatid="lu"><div class="chat-avatar" style="background:#3498db;">路</div><div class="chat-info"><div class="chat-name">路琮</div><div class="chat-preview">就当我们是夏洛特和柯林斯吧。</div></div><div class="chat-time">2019</div></div>
                         `;
-
-                        mobileMain.querySelectorAll('.chat-item').forEach(item => {
-                            item.addEventListener('click', function() {
-                                const id = this.dataset.chatid;
-                                if (id === 'lynne' && !localStorage.getItem('lynne_alert_done')) {
-                                    lynneModalMobile.style.display = 'flex';
-                                    return;
-                                }
-                                openMobileDetail(id);
-                            });
-                        });
+                        mobileMain.querySelectorAll('.chat-item').forEach(item => { item.addEventListener('click', function() { const id = this.dataset.chatid; if (id === 'lynne' && !localStorage.getItem('lynne_alert_done')) { lynneModalMobile.style.display = 'flex'; return; } openMobileDetail(id); }); });
                     }
 
-                    lynneModalConfirmMobile.addEventListener('click', function() {
-                        lynneModalMobile.style.display = 'none';
-                        localStorage.setItem('lynne_alert_done', 'true');
-                        openMobileDetail('lynne');
-                    });
+                    lynneModalConfirmMobile.addEventListener('click', function() { lynneModalMobile.style.display = 'none'; localStorage.setItem('lynne_alert_done', 'true'); openMobileDetail('lynne'); });
 
                     function openMobileDetail(chatId) {
-                        mobileChatId = chatId;
-                        currentMobileView = 'detail';
+                        mobileChatId = chatId; currentMobileView = 'detail';
                         const nameMap = { 'lynne': 'Lynne', 'song': '宋令仪', 'group19': '19级高中部聊天群', 'lu': '路琮' };
                         mobileTitle.innerHTML = `<span class="back-btn" id="mobileBack" style="margin-right:10px;cursor:pointer;">←</span> ${nameMap[chatId] || '聊天'}`;
-
                         if (chatId === 'lynne') {
                             mobileMain.innerHTML = `<div class="chat-messages" id="mobileChatMessages" style="flex:1;overflow-y:auto;padding:12px;"></div>${renderLynneInput(step, 'M')}`;
                             const msgContainer = document.getElementById('mobileChatMessages');
-                            if (msgContainer) {
-                                msgContainer.innerHTML = renderChatMessages('lynne', messages, step);
-                                msgContainer.scrollTop = msgContainer.scrollHeight;
-                            }
+                            if (msgContainer) { msgContainer.innerHTML = renderChatMessages('lynne', messages, step); msgContainer.scrollTop = msgContainer.scrollHeight; }
                             bindLynneMobileEvents(step);
                         } else {
                             let msgsData = [];
                             if (chatId === 'song') msgsData = songMessages;
                             else if (chatId === 'group19') msgsData = groupMessages;
                             else if (chatId === 'lu') msgsData = luMessages;
-                            
                             mobileMain.innerHTML = `<div class="chat-messages" id="mobileChatMessages" style="flex:1;overflow-y:auto;padding:12px;"></div><div class="chat-input-area"><div class="input-wrapper"><input type="text" disabled placeholder=" " style="width:100%;"></div></div>`;
                             const msgContainer = document.getElementById('mobileChatMessages');
-                            if (msgContainer) {
-                                msgContainer.innerHTML = renderChatMessages(chatId, msgsData, step);
-                                msgContainer.scrollTop = msgContainer.scrollHeight;
-                            }
+                            if (msgContainer) { msgContainer.innerHTML = renderChatMessages(chatId, msgsData, step); msgContainer.scrollTop = msgContainer.scrollHeight; }
                         }
-                        
-                        document.getElementById('mobileBack').addEventListener('click', function() {
-                            renderMobileList();
-                        });
+                        document.getElementById('mobileBack').addEventListener('click', function() { renderMobileList(); });
                     }
 
-                    mobileMain.addEventListener('click', function(e) {
-                        if (e.target.closest('.song-avatar-trigger')) {
-                            if (currentMobileView === 'detail' && mobileChatId === 'song') {
-                                showMoments(mobileMain);
-                            }
-                        }
-                    });
+                    mobileMain.addEventListener('click', function(e) { if (e.target.closest('.song-avatar-trigger') && currentMobileView === 'detail' && mobileChatId === 'song') showMoments(mobileMain); });
 
                     function bindLynneMobileEvents(stepLevel) {
                         const setDisabled = (disabled) => { const btn = document.querySelector('#mobileMain .send-btn'); if (btn) btn.disabled = disabled; };
-
                         if (stepLevel === 0) document.getElementById('sendBtnM').addEventListener('click', mobileSendLynneFirst);
                         else if (stepLevel >= 1 && stepLevel <= 5) document.getElementById(`sendBtn${stepLevel}M`).addEventListener('click', () => mobileCheckLynneFill(stepLevel));
-                        else if (stepLevel === 6) {
-                            document.querySelectorAll('.option-btn').forEach(btn => {
-                                btn.addEventListener('click', async function() {
-                                    if (animating) return;
-                                    animating = true;
-                                    messages.push({ ...dynamicCorrect.step7Me });
-                                    step = 7;
-                                    openMobileDetail('lynne');
-                                    saveProgress(step);
-                                    animating = false;
-                                });
-                            });
-                        } else if (stepLevel === 7) {
-                            document.getElementById('goToEndingM').addEventListener('click', () => window.location.href = 'ending.html');
-                            document.getElementById('restartChatBtnM').addEventListener('click', function() {
-                                clearProgress();
-                                step = 0; messages = [...baseMessages];
-                                openMobileDetail('lynne');
-                                saveProgress(0);
-                            });
-                        }
+                        else if (stepLevel === 6) { document.querySelectorAll('.option-btn').forEach(btn => { btn.addEventListener('click', async function() { if (animating) return; animating = true; messages.push({ ...dynamicCorrect.step7Me }); step = 7; openMobileDetail('lynne'); saveProgress(step); animating = false; }); }); }
+                        else if (stepLevel === 7) { document.getElementById('goToEndingM').addEventListener('click', () => window.location.href = 'ending.html'); document.getElementById('restartChatBtnM').addEventListener('click', function() { clearProgress(); step = 0; messages = [...baseMessages]; openMobileDetail('lynne'); saveProgress(0); }); }
                         if (stepLevel === 4) {
-                            const placeholder = document.getElementById('selectPlaceholderM');
-                            const dropdown = document.getElementById('selectDropdownM');
+                            const placeholder = document.getElementById('selectPlaceholderM'); const dropdown = document.getElementById('selectDropdownM');
                             if (placeholder && dropdown) {
                                 placeholder.addEventListener('click', function(e) { e.stopPropagation(); dropdown.classList.toggle('active'); });
-                                dropdown.querySelectorAll('.select-item').forEach(item => {
-                                    item.addEventListener('click', function() { placeholder.textContent = this.textContent; dropdown.classList.remove('active'); });
-                                });
-                                document.addEventListener('click', function(e) {
-                                    if (!dropdown.contains(e.target) && e.target !== placeholder) dropdown.classList.remove('active');
-                                }, { once: false });
+                                dropdown.querySelectorAll('.select-item').forEach(item => { item.addEventListener('click', function() { placeholder.textContent = this.textContent; dropdown.classList.remove('active'); }); });
+                                document.addEventListener('click', function(e) { if (!dropdown.contains(e.target) && e.target !== placeholder) dropdown.classList.remove('active'); }, { once: false });
                             }
                         }
                     }
 
-                    const mobileSendLynneFirst = async function() {
-                        if (animating) return;
-                        animating = true; document.querySelector('#mobileMain .send-btn').disabled = true;
-                        messages.push({ ...dynamicCorrect.step1Me });
-                        openMobileDetail('lynne');
-                        await new Promise(r => setTimeout(r, 1200));
-                        messages.push({ ...dynamicCorrect.step1Other });
-                        step = 1; openMobileDetail('lynne');
-                        animating = false; document.querySelector('#mobileMain .send-btn').disabled = false;
-                        saveProgress(step);
-                    };
+                    const mobileSendLynneFirst = async function() { if (animating) return; animating = true; document.querySelector('#mobileMain .send-btn').disabled = true; messages.push({ ...dynamicCorrect.step1Me }); openMobileDetail('lynne'); await new Promise(r => setTimeout(r, 1200)); messages.push({ ...dynamicCorrect.step1Other }); step = 1; openMobileDetail('lynne'); animating = false; document.querySelector('#mobileMain .send-btn').disabled = false; saveProgress(step); };
 
                     const mobileCheckLynneFill = async function(level) {
-                        if (animating) return;
-                        let correct = false; let sentMsg = '';
+                        if (animating) return; let correct = false; let sentMsg = '';
                         if (level === 1) { const a1 = document.getElementById('blank1M').value.trim(); const a2 = document.getElementById('blank2M').value.trim(); sentMsg = `你是${a1}，并且，你在艾希皇后号杀了${a2}。`; correct = (a1 === '宋令仪' && a2 === '陈楚梦'); }
                         else if (level === 2) { const a3 = document.getElementById('blank3M').value.trim(); sentMsg = `答案差点就要颠倒过来。但是你房间里那个未使用的${a3}告诉我，某人的计划恐怕破产了。`; correct = (a3 === '麻醉剂'); }
                         else if (level === 3) { const a4 = document.getElementById('blank4M').value.trim(); sentMsg = `尸体已经被你扔到大海里了吧？惊慌之下，死者的衣服被栏杆勾破，你也顾不上注意，只想尽早处理凶器。至于凶器，恐怕就是你房间消失的${a4}。虽然你把凶器一并扔进大海，仍有一些没有收拾妥当的碎片残留。`; correct = (a4 === '定制红酒'); }
                         else if (level === 4) { const placeholder = document.getElementById('selectPlaceholderM'); const selectedText = placeholder ? placeholder.textContent.trim() : ''; sentMsg = `你真的不知道吗？你比谁都清楚那起事件背后的原因。看看这则报道：《${selectedText}》。现在，想起什么了吧？`; correct = (selectedText === '明德私立学校一高中女生郊游途中失踪，母亲陈百惠急寻线索'); }
                         else if (level === 5) { const a6a = document.getElementById('blank6aM').value.trim(); const a6b = document.getElementById('blank6bM').value.trim(); sentMsg = `你错了。${a6a}和${a6b}，根本没有血缘关系。`; correct = (a6a === '宋闻溪' && a6b === '宋远山') || (a6a === '宋远山' && a6b === '宋闻溪'); }
-
-                        animating = true; document.querySelector('#mobileMain .send-btn').disabled = true;
-                        messages.push({ from: 'me', text: sentMsg, isCorrect: correct });
-                        openMobileDetail('lynne');
-                        await new Promise(r => setTimeout(r, 800));
-
+                        animating = true; document.querySelector('#mobileMain .send-btn').disabled = true; messages.push({ from: 'me', text: sentMsg, isCorrect: correct }); openMobileDetail('lynne'); await new Promise(r => setTimeout(r, 800));
                         if (correct) {
                             if (level === 1) { messages.push({ ...dynamicCorrect.step2Other }); step = 2; }
                             else if (level === 2) { messages.push({ ...dynamicCorrect.step3Other }); step = 3; }
@@ -955,55 +820,24 @@
                             else if (level === 4) { messages.push({ ...dynamicCorrect.step5Other1 }); openMobileDetail('lynne'); await new Promise(r => setTimeout(r, 1500)); messages.push({ ...dynamicCorrect.step5Me }); openMobileDetail('lynne'); await new Promise(r => setTimeout(r, 1200)); messages.push({ ...dynamicCorrect.step5Other2 }); step = 5; }
                             else if (level === 5) { messages.push({ ...dynamicCorrect.step6Other1 }); openMobileDetail('lynne'); await new Promise(r => setTimeout(r, 1200)); messages.push({ ...dynamicCorrect.step6Me }); openMobileDetail('lynne'); await new Promise(r => setTimeout(r, 1000)); messages.push({ ...dynamicCorrect.step6Other2 }); openMobileDetail('lynne'); await new Promise(r => setTimeout(r, 1000)); messages.push({ ...dynamicCorrect.step6Me2 }); openMobileDetail('lynne'); await new Promise(r => setTimeout(r, 800)); messages.push({ ...dynamicCorrect.step6Other3 }); step = 6; }
                             openMobileDetail('lynne'); saveProgress(step);
-                        } else {
-                            messages.push({ ...errorReply });
-                            openMobileDetail('lynne');
-                        }
+                        } else { messages.push({ ...errorReply }); openMobileDetail('lynne'); }
                         animating = false; document.querySelector('#mobileMain .send-btn').disabled = false;
                     };
 
-                    tabbarItems.forEach(tab => {
-                        tab.addEventListener('click', function() {
-                            const tabName = this.dataset.tab;
-                            if (tabName === 'chats') {
-                                renderMobileList();
-                            } else if (tabName === 'profile') {
-                                currentMobileView = 'profile';
-                                mobileTitle.textContent = '我';
-                                setActiveMobileTab('profile');
-                                mobileMain.innerHTML = `<div class="profile-view" style="height:100%;"><div class="profile-avatar">♟️</div><div class="profile-name">chess player</div><div class="profile-id">微信号：chess_player</div><div class="profile-sign">棋子不应该跳出棋盘。</div></div>`;
-                            }
-                        });
-                    });
-
+                    tabbarItems.forEach(tab => { tab.addEventListener('click', function() { const tabName = this.dataset.tab; if (tabName === 'chats') renderMobileList(); else if (tabName === 'profile') { currentMobileView = 'profile'; mobileTitle.textContent = '我'; setActiveMobileTab('profile'); mobileMain.innerHTML = `<div class="profile-view" style="height:100%;"><div class="profile-avatar">♟️</div><div class="profile-name">chess player</div><div class="profile-id">微信号：chess_player</div><div class="profile-sign">棋子不应该跳出棋盘。</div></div>`; } }); });
                     mobileClose.addEventListener('click', () => { saveProgress(step); window.location.href = 'desktop.html'; });
-
                     renderMobileList();
-
-                } catch (e) {
-                    console.error("移动端初始化异常，已自动兜底:", e);
-                }
+                } catch (e) { console.error("移动端初始化异常，已自动兜底:", e); }
             }
 
-            // ---------- 稳固的设备切换与启动逻辑 ----------
             function handleResize() {
                 const desktopEl = document.getElementById('desktopApp');
                 const mobileEl = document.getElementById('mobileApp');
-                
-                if (window.innerWidth <= 768) {
-                    desktopEl.style.display = 'none';
-                    mobileEl.style.display = 'flex';
-                    if (!window.mobileInitialized) initMobile();
-                } else {
-                    mobileEl.style.display = 'none';
-                    desktopEl.style.display = 'flex';
-                    if (!window.desktopInitialized) initDesktop();
-                }
+                if (window.innerWidth <= 768) { desktopEl.style.display = 'none'; mobileEl.style.display = 'flex'; if (!window.mobileInitialized) initMobile(); }
+                else { mobileEl.style.display = 'none'; desktopEl.style.display = 'flex'; if (!window.desktopInitialized) initDesktop(); }
             }
-
             handleResize();
             window.addEventListener('resize', handleResize);
-
         })();
     </script>
 </body>
