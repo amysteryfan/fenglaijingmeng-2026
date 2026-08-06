@@ -53,6 +53,8 @@
             font-weight: bold;
             color: #000;
             line-height: 1;
+            flex-shrink: 0;          /* 防止被压缩，电脑端不变 */
+            position: relative;        /* 为移动端伪元素定位做准备（电脑端不影响） */
         }
         .content {
             display: flex;
@@ -140,6 +142,8 @@
             color: #000080;
             font-size: 15px;
         }
+
+        /* ===== 移动端适配 (仅调整关闭按钮) ===== */
         @media (max-width: 600px) {
             .window {
                 width: 100%;
@@ -156,6 +160,52 @@
             }
             .player-icon { font-size: 28px; }
             .progress-bar { width: 80px; }
+
+            /* ---- 关闭按钮在手机上的优化 ---- */
+            .titlebar {
+                padding: 6px 10px;      /* 增加内边距，给大按钮留空间 */
+                min-height: 48px;        /* 保证标题栏高度足够 */
+            }
+            .titlebar .close-btn {
+                width: 40px;             /* 视觉尺寸放大 */
+                height: 40px;
+                font-size: 22px;         /* ✖ 符号更大 */
+                /* 边框样式保持经典不变 */
+            }
+            /* 用伪元素扩大实际点击热区（视觉不变） */
+            .titlebar .close-btn::after {
+                content: '';
+                position: absolute;
+                top: -10px;
+                right: -10px;
+                bottom: -10px;
+                left: -10px;
+                border-radius: 2px;      /* 微圆角，更自然 */
+            }
+            /* 标题文字避免被挤压，留出间距 */
+            .titlebar span {
+                margin-right: 10px;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                flex: 1;
+                min-width: 0;
+            }
+        }
+
+        /* 超小屏 (≤400px) 可再略微增大，但非必须 */
+        @media (max-width: 400px) {
+            .titlebar .close-btn {
+                width: 44px;
+                height: 44px;
+                font-size: 26px;
+            }
+            .titlebar .close-btn::after {
+                top: -8px;
+                right: -8px;
+                bottom: -8px;
+                left: -8px;
+            }
         }
     </style>
 </head>
