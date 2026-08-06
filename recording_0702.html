@@ -53,8 +53,8 @@
             font-weight: bold;
             color: #000;
             line-height: 1;
-            flex-shrink: 0;          /* 防止被压缩，电脑端不变 */
-            position: relative;        /* 为移动端伪元素定位做准备（电脑端不影响） */
+            flex-shrink: 0;
+            position: relative;
         }
         .content {
             display: flex;
@@ -143,7 +143,9 @@
             font-size: 15px;
         }
 
-        /* ===== 移动端适配 (仅调整关闭按钮) ===== */
+        /* ============================================
+                   移动端适配 (仅调整顶部空隙 & 按钮大小)
+                   ============================================ */
         @media (max-width: 600px) {
             .window {
                 width: 100%;
@@ -161,18 +163,24 @@
             .player-icon { font-size: 28px; }
             .progress-bar { width: 80px; }
 
-            /* ---- 关闭按钮在手机上的优化 ---- */
+            /* ---- 关键修改：在手机顶部增加空隙 ---- */
+            body {
+                padding: 40px 15px 20px 15px; /* 顶部空隙从20px增加到40px，让标题栏完整下移 */
+            }
+
             .titlebar {
-                padding: 6px 10px;      /* 增加内边距，给大按钮留空间 */
-                min-height: 48px;        /* 保证标题栏高度足够 */
+                padding: 16px 10px 8px 10px; /* 标题栏内部顶部也增加空隙，双重保险 */
+                min-height: 56px;             /* 确保高度足够 */
             }
+
+            /* ---- 关闭按钮放大，方便点击 ---- */
             .titlebar .close-btn {
-                width: 40px;             /* 视觉尺寸放大 */
+                width: 40px;
                 height: 40px;
-                font-size: 22px;         /* ✖ 符号更大 */
-                /* 边框样式保持经典不变 */
+                font-size: 22px;
             }
-            /* 用伪元素扩大实际点击热区（视觉不变） */
+
+            /* 扩大点击热区 */
             .titlebar .close-btn::after {
                 content: '';
                 position: absolute;
@@ -180,9 +188,10 @@
                 right: -10px;
                 bottom: -10px;
                 left: -10px;
-                border-radius: 2px;      /* 微圆角，更自然 */
+                border-radius: 2px;
             }
-            /* 标题文字避免被挤压，留出间距 */
+
+            /* 标题文字避免与按钮重叠 */
             .titlebar span {
                 margin-right: 10px;
                 white-space: nowrap;
@@ -193,18 +202,18 @@
             }
         }
 
-        /* 超小屏 (≤400px) 可再略微增大，但非必须 */
+        /* 超小屏（≤400px）再略微增加安全空间 */
         @media (max-width: 400px) {
+            body {
+                padding-top: 30px; /* 保持足够上边距 */
+            }
+            .titlebar {
+                padding-top: 14px;
+            }
             .titlebar .close-btn {
                 width: 44px;
                 height: 44px;
                 font-size: 26px;
-            }
-            .titlebar .close-btn::after {
-                top: -8px;
-                right: -8px;
-                bottom: -8px;
-                left: -8px;
             }
         }
     </style>
