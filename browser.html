@@ -299,11 +299,24 @@
             align-items: center;
             margin-bottom: 12px;
         }
-        .history-header span {
+        .history-left-group {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .history-label {
             color: #aaa;
             font-size: 13px;
             letter-spacing: 1px;
             font-weight: 300;
+        }
+        .history-counter {
+            color: #888;
+            font-size: 12px;
+            background: rgba(255, 255, 255, 0.08);
+            padding: 0 8px;
+            border-radius: 10px;
+            line-height: 20px;
         }
         .history-clear-btn {
             color: #888;
@@ -314,6 +327,7 @@
             text-decoration: underline;
             transition: color 0.2s;
             padding: 0;
+            flex-shrink: 0; /* 防止按钮在窄屏下被挤压 */
         }
         .history-clear-btn:hover {
             color: #fff;
@@ -444,7 +458,12 @@
                 <!-- 搜索记录容器 -->
                 <div id="history-container">
                     <div class="history-header">
-                        <span>🕒 搜索记录</span>
+                        <!-- 左侧：图标、标题、计数器 -->
+                        <div class="history-left-group">
+                            <span class="history-label">🕒 搜索记录</span>
+                            <span class="history-counter" id="history-counter">0/14</span>
+                        </div>
+                        <!-- 右侧：清除记录 -->
                         <button class="history-clear-btn" id="clear-history-btn">清除记录</button>
                     </div>
                     <div class="history-list" id="history-list"></div>
@@ -463,6 +482,7 @@
         document.addEventListener('DOMContentLoaded', function() {
             // 定义本地存储的键名
             const SEARCH_HISTORY_KEY = 'browserSearchHistory';
+            const TOTAL_KEYWORDS = 14; // 定义总共可检索的关键词数量
 
             // 1. 搜索跳转逻辑与历史记录写入
             const topForm = document.getElementById('top-search-form');
@@ -520,6 +540,7 @@
             const historyContainer = document.getElementById('history-container');
             const historyList = document.getElementById('history-list');
             const clearHistoryBtn = document.getElementById('clear-history-btn');
+            const counterElement = document.getElementById('history-counter');
 
             // 读取记录
             function getHistory() {
@@ -546,7 +567,7 @@
                 history = history.filter(item => item !== keyword);
                 // 插入到最前面
                 history.unshift(keyword);
-                // 限制条数（已修改为15，如果您想改成13，将两处15改为13即可）
+                // 限制条数
                 if (history.length > 15) { 
                     history = history.slice(0, 15);
                 }
@@ -575,8 +596,12 @@
             function renderHistory() {
                 const history = getHistory();
                 historyList.innerHTML = '';
+                
                 if (history.length > 0) {
                     historyContainer.classList.add('has-history');
+                    // 更新进度计数器
+                    counterElement.textContent = `${history.length}/${TOTAL_KEYWORDS}`;
+                    
                     history.forEach(keyword => {
                         const el = document.createElement('div');
                         el.className = 'history-item';
@@ -588,6 +613,8 @@
                     });
                 } else {
                     historyContainer.classList.remove('has-history');
+                    // 即使隐藏，重置计数器
+                    counterElement.textContent = `0/${TOTAL_KEYWORDS}`;
                 }
             }
 
