@@ -332,7 +332,6 @@
                 height: 50px;
                 display: flex;
                 justify-content: space-between;
-                /* 【关键修复】移除了 `overflow: hidden`，让下拉菜单能正常显示和点击 */
             }
             
             /* 左侧 LOGO 区域 */
@@ -359,17 +358,17 @@
 
             .close-btn { width: 28px; height: 28px; font-size: 18px; }
 
-            /* 【关键修复】下拉菜单移动端专用适配 */
+            /* 下拉菜单移动端专用适配 */
             .search-dropdown {
-                width: 140px;       /* 在手机端缩窄宽度 */
-                left: auto;         /* 取消默认左对齐 */
-                right: 0;           /* 改为右对齐，防止跑出屏幕右侧导致无法点击 */
-                z-index: 9999;      /* 确保在最顶层 */
+                width: 140px;
+                left: auto;
+                right: 0;
+                z-index: 9999;
                 min-width: unset;
             }
             .search-dropdown-item {
                 font-size: 12px;
-                white-space: normal; /* 允许长标题在手机端自动换行 */
+                white-space: normal;
                 overflow: visible;
                 text-overflow: clip;
                 line-height: 1.4;
@@ -594,7 +593,7 @@
             // 3. 浏览足迹持久化与渲染模块
             // =============================================
             const STORAGE_KEY = 'forumBrowsingHistory';
-            const MAX_HISTORY_LIMIT = 10;
+            const MAX_HISTORY_LIMIT = 11; // 【修改】上限更改为 11
 
             function getHistory() {
                 try {
