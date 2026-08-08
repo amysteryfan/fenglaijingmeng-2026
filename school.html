@@ -528,6 +528,8 @@
             <div class="nav-item" data-target="culture">校园文化</div>
             <div class="nav-item">社团活动</div>
             <div class="nav-item">校友之家</div>
+            <!-- 【新增】浏览足迹导航 -->
+            <div class="nav-item" data-target="footprint">浏览足迹</div>
         </aside>
 
         <!-- 中间展示区 -->
@@ -808,6 +810,11 @@
                         panelTitle.innerText = cultureTitle;
                         newsList.innerHTML = cultureNewsHTML;
                         moreLink.href = cultureMoreLink;
+                    } else if (navName === '浏览足迹') {
+                        // 【新增】加载浏览足迹
+                        panelTitle.innerText = '浏览足迹';
+                        newsList.innerHTML = renderFootprintsHTML();
+                        moreLink.href = 'javascript:void(0);';
                     } else {
                         panelTitle.innerText = defaultTitle;
                         newsList.innerHTML = defaultNewsHTML;
@@ -816,11 +823,7 @@
                 });
             });
 
-            // =======================================================
-            // ---------- 新搜索与下拉菜单逻辑 ----------
-            // =======================================================
-
-            // 【修改点】已删除"招聘简章"关键词
+            // ---------- 搜索与下拉菜单逻辑 ----------
             const searchMap = {
                 "金玉奖": { title: "首届“金玉奖”圆满落幕，六位学子斩获殊荣", url: "school_page_5.html" },
                 "特招生": { title: "明德私立学校2019学年招生公示", url: "school_page_8.html" },
@@ -846,9 +849,12 @@
                         const item = document.createElement('div');
                         item.className = 'search-dropdown-item';
                         item.textContent = value.title;
+                        // 【修复】在下拉菜单点击跳转前，手动调用记录足迹
                         item.addEventListener('click', function(e) {
                             e.stopPropagation();
                             saveSearchHistory(key);
+                            // 此处核心增加：将搜索跳转记录到浏览足迹
+                            saveFootprint(value.title, value.url);
                             window.location.href = value.url;
                         });
                         searchDropdown.appendChild(item);
@@ -903,7 +909,6 @@
             }
 
             function renderHistoryTags() {
-                // 保留最前方的 "🔍" 标签
                 const iconSpan = historyContainer.querySelector('span');
                 historyContainer.innerHTML = '';
                 historyContainer.appendChild(iconSpan);
@@ -933,6 +938,83 @@
             }
 
             loadSearchHistory();
+
+
+            // =======================================================
+            // ---------- 【新增】浏览足迹与跳转监听逻辑 ----------
+            // =======================================================
+
+            const FOOTPRINT_KEY = 'mingde_browse_footprints';
+
+            // 获取足迹数据
+            function getFootprints() {
+                try {
+                    const data = localStorage.getItem(FOOTPRINT_KEY);
+                    return data ? JSON.parse(data) : [];
+                } catch (e) {
+                    return [];
+                }
+            }
+
+            // 保存足迹
+            function saveFootprint(title, url) {
+                let footprints = getFootprints();
+                // 去重：如果已有相同 URL，移除旧的
+                const existingIndex = footprints.findIndex(item => item.url === url);
+                if (existingIndex !== -1) {
+                    footprints.splice(existingIndex, 1);
+                }
+                // 插到最前面（最新的在最上面）
+                footprints.unshift({ title, url });
+                // 最多保留 10 条
+                if (footprints.length > 10) {
+                    footprints = footprints.slice(0, 10);
+                }
+                localStorage.setItem(FOOTPRINT_KEY, JSON.stringify(footprints));
+
+                // 如果当前正处于“浏览足迹”面板，动态刷新列表
+                const activeNav = document.querySelector('.nav-item.active');
+                if (activeNav && activeNav.innerText.trim() === '浏览足迹') {
+                    panelTitle.innerText = '浏览足迹';
+                    newsList.innerHTML = renderFootprintsHTML();
+                    moreLink.href = 'javascript:void(0);';
+                }
+            }
+
+            // 渲染足迹列表 HTML
+            function renderFootprintsHTML() {
+                const footprints = getFootprints();
+                let html = `<div style="text-align:right;font-size:13px;color:#8B0000;padding-bottom:8px;border-bottom:1px dashed #ddd;margin-bottom:10px;">${footprints.length} / 10</div>`;
+                
+                if (footprints.length === 0) {
+                    html += `<li style="text-align:center;color:#999;padding:20px;">暂无浏览记录</li>`;
+                } else {
+                    footprints.forEach((item, index) => {
+                        html += `<li>
+                                    <span class="news-date">#${index + 1}</span>
+                                    <a href="${item.url}" class="news-title">${item.title}</a>
+                                 </li>`;
+                    });
+                }
+                return html;
+            }
+
+            // 使用事件委托监听右侧列表里的所有点击，捕获跳转行为
+            newsList.addEventListener('click', function(e) {
+                const link = e.target.closest('.news-title');
+                if (!link) return;
+
+                const url = link.getAttribute('href');
+                // 如果是跳转到校园帖子的链接，并且当前面板不是“浏览足迹”
+                if (url && url.startsWith('school_page_')) {
+                    // 避免在足迹面板里点击记录自己造成死循环
+                    const currentPanel = panelTitle.innerText;
+                    if (currentPanel !== '浏览足迹') {
+                        const title = link.innerText.trim();
+                        saveFootprint(title, url);
+                    }
+                }
+            });
 
         })();
     </script>
