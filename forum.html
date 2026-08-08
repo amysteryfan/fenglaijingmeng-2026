@@ -323,49 +323,59 @@
         }
 
         /* ============================================== */
-        /* --- 响应式适配 (手机端彻底修复) --- */
+        /* --- 响应式适配 (手机端彻底修复下拉菜单) --- */
         /* ============================================== */
         @media (max-width: 640px) {
-            /* 顶部导航彻底修复 */
+            /* 顶部导航修复 */
             .header {
-                padding: 0 8px; /* 减小左右边距 */
+                padding: 0 8px;
                 height: 50px;
                 display: flex;
-                justify-content: space-between; /* 强制左右贴边，绝不重叠 */
-                overflow: hidden;
+                justify-content: space-between;
+                /* 【关键修复】移除了 `overflow: hidden`，让下拉菜单能正常显示和点击 */
             }
             
-            /* 左侧 LOGO 区域（彻底解决竖排、挤压问题） */
+            /* 左侧 LOGO 区域 */
             .logo-area {
-                flex: 1;            /* 占据除右侧外剩余的全部空间 */
-                min-width: 0;       /* 允许 Flex 子项缩小到比内容更小 */
-                overflow: hidden;   /* 截断多余部分 */
+                flex: 1;
+                min-width: 0;
+                overflow: hidden;
                 gap: 6px;
-                margin-right: 10px; /* 与右侧保持最小安全距离 */
+                margin-right: 10px;
             }
             .logo-img { height: 28px; flex-shrink: 0; }
             .site-name {
                 font-size: 14px;
                 white-space: nowrap;
                 overflow: hidden;
-                text-overflow: ellipsis; /* 空间不足时自动变成省略号，绝不换行或竖排 */
+                text-overflow: ellipsis; 
             }
 
-            /* 右侧按钮组（强制死锁在右侧） */
-            .header-right {
-                flex-shrink: 0; /* 无论左侧怎么挤，右侧坚决不收缩 */
-                gap: 6px;
-            }
-            
-            .search-area { gap: 4px; flex-shrink: 0; }
+            /* 右侧按钮组 */
+            .header-right { flex-shrink: 0; gap: 6px; }
+            .search-area { gap: 4px; flex-shrink: 0; position: relative; z-index: 1000; }
             .search-input { width: 80px; padding: 4px 6px; font-size: 12px; }
             .search-btn { padding: 4px 8px; font-size: 12px; }
 
-            .close-btn {
-                width: 28px;
-                height: 28px;
-                font-size: 18px;
+            .close-btn { width: 28px; height: 28px; font-size: 18px; }
+
+            /* 【关键修复】下拉菜单移动端专用适配 */
+            .search-dropdown {
+                width: 140px;       /* 在手机端缩窄宽度 */
+                left: auto;         /* 取消默认左对齐 */
+                right: 0;           /* 改为右对齐，防止跑出屏幕右侧导致无法点击 */
+                z-index: 9999;      /* 确保在最顶层 */
+                min-width: unset;
             }
+            .search-dropdown-item {
+                font-size: 12px;
+                white-space: normal; /* 允许长标题在手机端自动换行 */
+                overflow: visible;
+                text-overflow: clip;
+                line-height: 1.4;
+                height: auto;
+            }
+            .search-dropdown-empty { font-size: 12px; }
 
             /* 其他部分缩小适配 */
             .container { margin: 0; width: 100%; box-shadow: none; }
@@ -375,13 +385,6 @@
             .reply-num { font-size: 14px; }
             #history-panel { padding: 15px; font-size: 13px; }
             #history-list li { padding: 6px 0; }
-
-            .thread-title {
-                white-space: normal !important;
-                overflow: visible !important;
-                text-overflow: clip !important;
-                line-height: 1.5;
-            }
         }
     </style>
 </head>
